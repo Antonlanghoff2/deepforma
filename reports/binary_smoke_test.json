@@ -1,0 +1,111 @@
+{
+  "task": "binary",
+  "base_model": "camembert-base",
+  "n_samples": 32,
+  "epochs": 15,
+  "device": "cuda",
+  "label_names": [
+    "non_ia",
+    "ia"
+  ],
+  "losses": [
+    0.6092,
+    0.4541,
+    0.3664,
+    0.3104,
+    0.261,
+    0.2314,
+    0.22,
+    0.2044,
+    0.1826,
+    0.1694,
+    0.1591,
+    0.1611,
+    0.1543,
+    0.1565,
+    0.1521
+  ],
+  "loss_delta": 0.4571,
+  "loss_first": 0.6092,
+  "loss_last": 0.1521,
+  "f1": 0.9979,
+  "n_unique_predictions": 2,
+  "score_variation": 0.093369,
+  "optimizer_check": {
+    "classifier.dense.weight": true,
+    "classifier.dense.bias": true,
+    "classifier.out_proj.weight": true,
+    "classifier.out_proj.bias": true
+  },
+  "gradient_check": {
+    "gradients": {
+      "classifier.dense.weight": {
+        "grad_norm": 1.4920740127563477,
+        "grad_mean": 8.673547995385888e-07,
+        "grad_std": 0.0019428061787039042,
+        "grad_min": -0.07440385222434998,
+        "grad_max": 0.0922786295413971,
+        "grad_nonzero_prop": 0.9999949137369791
+      },
+      "classifier.dense.bias": {
+        "grad_norm": 0.3898979425430298,
+        "grad_mean": 6.757082155672833e-05,
+        "grad_std": 0.014078236185014248,
+        "grad_min": -0.04981660842895508,
+        "grad_max": 0.040027979761362076,
+        "grad_nonzero_prop": 1.0
+      },
+      "classifier.out_proj.weight": {
+        "grad_norm": 1.487426519393921,
+        "grad_mean": 6.851526984652523e-11,
+        "grad_std": 0.03796481713652611,
+        "grad_min": -0.12565593421459198,
+        "grad_max": 0.12565594911575317,
+        "grad_nonzero_prop": 1.0
+      },
+      "classifier.out_proj.bias": {
+        "grad_norm": 0.7021055817604065,
+        "grad_mean": -1.4901161193847656e-08,
+        "grad_std": 0.7021056413650513,
+        "grad_min": -0.4964636564254761,
+        "grad_max": 0.4964636266231537,
+        "grad_nonzero_prop": 1.0
+      }
+    },
+    "errors": [],
+    "loss_value": 0.6863077878952026,
+    "has_errors": false
+  },
+  "weight_changes": {
+    "classifier.dense.weight": {
+      "before_norm": 15.379530906677246,
+      "after_norm": 15.386659622192383,
+      "max_abs_change": 0.00067419
+    },
+    "classifier.dense.bias": {
+      "before_norm": 0.0,
+      "after_norm": 0.014252531342208385,
+      "max_abs_change": 0.00063016
+    },
+    "classifier.out_proj.weight": {
+      "before_norm": 0.7729247212409973,
+      "after_norm": 0.777799129486084,
+      "max_abs_change": 0.0006321
+    },
+    "classifier.out_proj.bias": {
+      "before_norm": 0.0,
+      "after_norm": 0.0007315439870581031,
+      "max_abs_change": 0.00051728
+    }
+  },
+  "passed_checks": [
+    "loss_baisse: delta=0.4571",
+    "poids_classifieur_modifies",
+    "scores_diversifies: 2 uniques, score_std=0.0934",
+    "f1_superieur_hasard: F1=0.9979",
+    "gradients_presents_et_non_nuls",
+    "tete_classifieur_dans_optimiseur"
+  ],
+  "failed_checks": [],
+  "passed": true
+}
