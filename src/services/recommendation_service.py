@@ -4,8 +4,8 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Iterable
 
-from src.common.text import clean_text, normalize_for_match
-from src.skills.skill_normalizer import SkillNormalizer
+from common.text import clean_text, normalize_for_match
+from skills.skill_normalizer import SkillNormalizer
 
 
 @dataclass(frozen=True)

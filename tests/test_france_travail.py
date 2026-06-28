@@ -8,13 +8,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from src.analytics.territorial_skills import compute_territorial_stats
-from src.france_travail.client import FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
-from src.france_travail.normalizer import normalize_offer
-from src.france_travail.skill_extractor import extract_structured_skills
-from src.inference.skill_model import load_label_classes, load_thresholds
-from src.jobs.collect_france_travail_offers import deduplicate_offers, save_jsonl
-from src.skills.skill_normalizer import SkillNormalizer
+from analytics.territorial_skills import compute_territorial_stats
+from france_travail.client import FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
+from france_travail.normalizer import normalize_offer
+from france_travail.skill_extractor import extract_structured_skills
+from inference.skill_model import load_label_classes, load_thresholds
+from jobs.collect_france_travail_offers import deduplicate_offers, save_jsonl
+from skills.skill_normalizer import SkillNormalizer
 
 
 class FakeResponse:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from src.common.text import clean_text, split_multi_values
+from common.text import clean_text, split_multi_values
 
 
 def _extract_label(item: Any) -> str:

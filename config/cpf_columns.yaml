@@ -1,0 +1,104 @@
+id:
+  - id
+  - identifiant
+  - id_action
+  - code_formation
+  - identifiant_action
+
+title:
+  - intitule
+  - intitulé
+  - nom_formation
+  - libelle_formation
+  - libellé_formation
+  - titre
+
+certification:
+  - certification
+  - code_certification
+  - code certification
+  - libelle_certification
+  - libellé_certification
+  - type_certification
+  - type de certification
+
+referential_type:
+  - rncp_rs
+  - type_referentiel
+  - type referentiel
+  - referentiel
+  - référentiel
+  - type_certification
+  - type de certification
+
+description:
+  - description
+  - contenu
+  - objectifs
+  - objectif_formation
+  - objectif formation
+
+objectives:
+  - objectifs
+  - objectif
+  - objectifs_pedagogiques
+  - objectifs pédagogiques
+
+exit_level:
+  - niveau
+  - niveau_de_sortie
+  - niveau sortie
+  - niveau_requis
+
+nsf:
+  - nsf
+  - code_nsf
+  - domaine_nsf
+  - libelle_nsf
+
+region:
+  - nom_region
+  - region
+  - libelle_region
+  - région
+
+department:
+  - nom_departement
+  - departement
+  - département
+  - libelle_departement
+
+region_code:
+  - code_region
+  - code région
+  - code_regional
+  - code region
+
+department_code:
+  - code_departement
+  - code département
+  - code_dept
+  - code_postal_departement
+
+organization_siret:
+  - siret
+  - siret_organisme
+  - siret organisme
+
+organization:
+  - organisme
+  - organisme_de_formation
+  - organisme formation
+  - nom_organisme
+  - raison_sociale
+
+description_long:
+  - description_detaillee
+  - description détaillée
+  - detail_description
+
+territory:
+  - territoire
+  - territoire_cible
+  - zone_geographique
+  - zone géographique

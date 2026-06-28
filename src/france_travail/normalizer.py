@@ -3,8 +3,8 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from typing import Any
 
-from src.common.text import clean_text, normalize_for_match, stable_hash
-from src.france_travail.skill_extractor import extract_structured_skills
+from common.text import clean_text, normalize_for_match, stable_hash
+from france_travail.skill_extractor import extract_structured_skills
 
 
 @dataclass

@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from src.services.recommendation_service import RecommendationService
+from services.recommendation_service import RecommendationService
 from src.web_app import create_app
 
 
@@ -168,7 +168,7 @@ def test_recommendation_comparison():
 
 
 def test_model_loading_once(monkeypatch):
-    from src.inference import deepforma_predictor as predictor_module
+    from inference import deepforma_predictor as predictor_module
 
     class FakeModel:
         def __init__(self, out_features):

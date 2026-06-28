@@ -11,3 +11,11 @@ pytest
 requests
 python-dotenv
 Flask
+pyarrow
+faiss-cpu
+rapidfuzz
+sentence-transformers
+charset-normalizer
+beautifulsoup4
+openpyxl
+pyyaml

@@ -1,0 +1,585 @@
+{
+  "path": "data/raw/cpf/cpf_catalog.csv",
+  "encoding": "utf_8",
+  "separator": ";",
+  "row_sampled": 50000,
+  "column_count": 47,
+  "columns": [
+    "date_extract",
+    "nom_of",
+    "nom_departement",
+    "nom_region",
+    "type_referentiel",
+    "code_inventaire",
+    "code_rncp",
+    "intitule_certification",
+    "libelle_niveau_sortie_formation",
+    "code_formacode_1",
+    "code_formacode_2",
+    "code_formacode_3",
+    "code_formacode_4",
+    "code_formacode_5",
+    "libelle_code_formacode_principal",
+    "code_rome_1",
+    "code_rome_2",
+    "code_rome_3",
+    "code_rome_4",
+    "code_rome_5",
+    "libelle_nsf_1",
+    "libelle_nsf_2",
+    "libelle_nsf_3",
+    "code_nsf_1",
+    "code_nsf_2",
+    "code_nsf_3",
+    "code_certifinfo",
+    "siret",
+    "numero_formation",
+    "intitule_formation",
+    "points_forts",
+    "objectif_formation",
+    "contenu_formation",
+    "resultats_attendus_formation",
+    "nb_action",
+    "nb_session_active",
+    "nb_session_a_distance",
+    "nombre_heures_total_min",
+    "nombre_heures_total_max",
+    "nombre_heures_total_mean",
+    "frais_ttc_tot_min",
+    "frais_ttc_tot_max",
+    "frais_ttc_tot_mean",
+    "code_departement",
+    "code_region",
+    "nbaction_nbheures",
+    "coderegion_export"
+  ],
+  "missing_rates": {
+    "date_extract": 0.0,
+    "nom_of": 0.0,
+    "nom_departement": 0.1708,
+    "nom_region": 0.1708,
+    "type_referentiel": 0.0,
+    "code_inventaire": 0.0,
+    "code_rncp": 0.0,
+    "intitule_certification": 0.0,
+    "libelle_niveau_sortie_formation": 0.7672,
+    "code_formacode_1": 0.0,
+    "code_formacode_2": 0.4045,
+    "code_formacode_3": 0.8255,
+    "code_formacode_4": 0.9144,
+    "code_formacode_5": 0.9732,
+    "libelle_code_formacode_principal": 0.0,
+    "code_rome_1": 0.7672,
+    "code_rome_2": 0.8722,
+    "code_rome_3": 0.9116,
+    "code_rome_4": 0.9383,
+    "code_rome_5": 0.9646,
+    "libelle_nsf_1": 0.0,
+    "libelle_nsf_2": 0.8554,
+    "libelle_nsf_3": 0.9542,
+    "code_nsf_1": 0.0,
+    "code_nsf_2": 0.8554,
+    "code_nsf_3": 0.9542,
+    "code_certifinfo": 0.0,
+    "siret": 0.0,
+    "numero_formation": 0.0,
+    "intitule_formation": 0.0,
+    "points_forts": 0.0007,
+    "objectif_formation": 0.0,
+    "contenu_formation": 0.0,
+    "resultats_attendus_formation": 0.0042,
+    "nb_action": 0.0,
+    "nb_session_active": 0.0,
+    "nb_session_a_distance": 0.0,
+    "nombre_heures_total_min": 0.0,
+    "nombre_heures_total_max": 0.0,
+    "nombre_heures_total_mean": 0.0,
+    "frais_ttc_tot_min": 0.0,
+    "frais_ttc_tot_max": 0.0,
+    "frais_ttc_tot_mean": 0.0,
+    "code_departement": 0.1708,
+    "code_region": 0.1708,
+    "nbaction_nbheures": 0.0,
+    "coderegion_export": 0.1708
+  },
+  "estimated_types": {
+    "date_extract": "date",
+    "nom_of": "text",
+    "nom_departement": "text",
+    "nom_region": "text",
+    "type_referentiel": "text",
+    "code_inventaire": "integer",
+    "code_rncp": "integer",
+    "intitule_certification": "text",
+    "libelle_niveau_sortie_formation": "text",
+    "code_formacode_1": "integer",
+    "code_formacode_2": "numeric",
+    "code_formacode_3": "numeric",
+    "code_formacode_4": "numeric",
+    "code_formacode_5": "numeric",
+    "libelle_code_formacode_principal": "text",
+    "code_rome_1": "text",
+    "code_rome_2": "text",
+    "code_rome_3": "text",
+    "code_rome_4": "text",
+    "code_rome_5": "text",
+    "libelle_nsf_1": "text",
+    "libelle_nsf_2": "text",
+    "libelle_nsf_3": "text",
+    "code_nsf_1": "integer",
+    "code_nsf_2": "numeric",
+    "code_nsf_3": "numeric",
+    "code_certifinfo": "integer",
+    "siret": "integer",
+    "numero_formation": "text",
+    "intitule_formation": "text",
+    "points_forts": "text",
+    "objectif_formation": "text",
+    "contenu_formation": "text",
+    "resultats_attendus_formation": "text",
+    "nb_action": "integer",
+    "nb_session_active": "integer",
+    "nb_session_a_distance": "integer",
+    "nombre_heures_total_min": "integer",
+    "nombre_heures_total_max": "integer",
+    "nombre_heures_total_mean": "integer",
+    "frais_ttc_tot_min": "numeric",
+    "frais_ttc_tot_max": "numeric",
+    "frais_ttc_tot_mean": "numeric",
+    "code_departement": "integer",
+    "code_region": "integer",
+    "nbaction_nbheures": "integer",
+    "coderegion_export": "integer"
+  },
+  "examples": {
+    "date_extract": [
+      "202***26",
+      "202***26",
+      "202***26"
+    ],
+    "nom_of": [
+      "PRO***IE",
+      "ETA***RE",
+      "IMT***ES"
+    ],
+    "nom_departement": [
+      "Ais***ne",
+      "Ess***ne",
+      "***"
+    ],
+    "nom_region": [
+      "Hau***ce",
+      "Île***ce",
+      "Hau***ce"
+    ],
+    "type_referentiel": [
+      "***",
+      "***",
+      "***"
+    ],
+    "code_inventaire": [
+      "***",
+      "***",
+      "***"
+    ],
+    "code_rncp": [
+      "***",
+      "38***93",
+      "36***85"
+    ],
+    "intitule_certification": [
+      "Cer***le",
+      "BP ***le",
+      "Tec***es"
+    ],
+    "libelle_niveau_sortie_formation": [
+      "BAC***4)",
+      "BAC***4)",
+      "BAC***7)"
+    ],
+    "code_formacode_1": [
+      "31***68",
+      "21***52",
+      "31***20"
+    ],
+    "code_formacode_2": [
+      "317***.0",
+      "125***.0",
+      "317***.0"
+    ],
+    "code_formacode_3": [
+      "320***.0",
+      "132***.0",
+      "463***.0"
+    ],
+    "code_formacode_4": [
+      "320***.0",
+      "321***.0",
+      "714***.0"
+    ],
+    "code_formacode_5": [
+      "463***.0",
+      "320***.0",
+      "125***.0"
+    ],
+    "libelle_code_formacode_principal": [
+      "Cha***ur",
+      "Ges***le",
+      "Con***le"
+    ],
+    "code_rome_1": [
+      "A14***07",
+      "H23***01",
+      "D14***06"
+    ],
+    "code_rome_2": [
+      "A14***09",
+      "M12***04",
+      "M14***02"
+    ],
+    "code_rome_3": [
+      "A14***10",
+      "M15***03",
+      "M15***02"
+    ],
+    "code_rome_4": [
+      "A14***11",
+      "M17***04",
+      "M14***02"
+    ],
+    "code_rome_5": [
+      "A14***16",
+      "M17***05",
+      "M14***03"
+    ],
+    "libelle_nsf_1": [
+      "Tra***ge",
+      "Spé***re",
+      "Tra***e)"
+    ],
+    "libelle_nsf_2": [
+      "Spé***on",
+      "Mét***.)",
+      "Dro***es"
+    ],
+    "libelle_nsf_3": [
+      "Tec***es",
+      "Spé***it",
+      "Sci***ie"
+    ],
+    "code_nsf_1": [
+      "***",
+      "***",
+      "***"
+    ],
+    "code_nsf_2": [
+      "310***.0",
+      "223***.0",
+      "128***.0"
+    ],
+    "code_nsf_3": [
+      "200***.0",
+      "120***.0",
+      "113***.0"
+    ],
+    "code_certifinfo": [
+      "10***03",
+      "94***11",
+      "76***34"
+    ],
+    "siret": [
+      "78***97",
+      "19***13",
+      "34***53"
+    ],
+    "numero_formation": [
+      "780***70",
+      "191***24",
+      "343***21"
+    ],
+    "intitule_formation": [
+      "CAC***1B",
+      "BP ***le",
+      "Tec***es"
+    ],
+    "points_forts": [
+      "Plu***fr",
+      "Obt***e.",
+      "For***s."
+    ],
+    "objectif_formation": [
+      "- C***AM",
+      "Ce ***n.",
+      "La ***u."
+    ],
+    "contenu_formation": [
+      "Pro***B)",
+      "UC2***).",
+      "La ***és"
+    ],
+    "resultats_attendus_formation": [
+      "Cer***ns",
+      "Dip***e.",
+      "La ***s."
+    ],
+    "nb_action": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nb_session_active": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nb_session_a_distance": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nombre_heures_total_min": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nombre_heures_total_max": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nombre_heures_total_mean": [
+      "***",
+      "***",
+      "***"
+    ],
+    "frais_ttc_tot_min": [
+      "907***.2",
+      "686***.0",
+      "108***.0"
+    ],
+    "frais_ttc_tot_max": [
+      "907***.2",
+      "686***.0",
+      "108***.0"
+    ],
+    "frais_ttc_tot_mean": [
+      "907***.2",
+      "686***.0",
+      "108***.0"
+    ],
+    "code_departement": [
+      "***",
+      "***",
+      "***"
+    ],
+    "code_region": [
+      "***",
+      "***",
+      "***"
+    ],
+    "nbaction_nbheures": [
+      "***",
+      "***",
+      "***"
+    ],
+    "coderegion_export": [
+      "***",
+      "***",
+      "***"
+    ]
+  },
+  "resolved_columns": {
+    "id": null,
+    "title": "intitule_formation",
+    "certification": "intitule_certification",
+    "referential_type": "type_referentiel",
+    "description": "objectif_formation",
+    "objectives": "objectif_formation",
+    "exit_level": "libelle_niveau_sortie_formation",
+    "nsf": "code_nsf_1",
+    "region": "nom_region",
+    "department": "nom_departement",
+    "region_code": "code_region",
+    "department_code": "code_departement",
+    "organization_siret": "siret",
+    "organization": null,
+    "description_long": null,
+    "territory": null
+  },
+  "candidate_columns": {
+    "id": [],
+    "title": [
+      "intitule_formation",
+      "intitule_formation",
+      "intitule_certification",
+      "intitule_certification"
+    ],
+    "certification": [
+      "intitule_certification"
+    ],
+    "referential_type": [
+      "type_referentiel",
+      "type_referentiel",
+      "type_referentiel",
+      "type_referentiel"
+    ],
+    "description": [
+      "objectif_formation",
+      "objectif_formation",
+      "contenu_formation"
+    ],
+    "objectives": [
+      "objectif_formation"
+    ],
+    "exit_level": [
+      "libelle_niveau_sortie_formation",
+      "libelle_niveau_sortie_formation"
+    ],
+    "nsf": [
+      "code_nsf_1",
+      "code_nsf_2",
+      "code_nsf_3",
+      "libelle_nsf_1",
+      "libelle_nsf_2"
+    ],
+    "region": [
+      "nom_region",
+      "nom_region",
+      "nom_region",
+      "code_region",
+      "code_region"
+    ],
+    "department": [
+      "nom_departement",
+      "nom_departement",
+      "nom_departement",
+      "code_departement",
+      "code_departement"
+    ],
+    "region_code": [
+      "code_region",
+      "code_region",
+      "code_region",
+      "code_region"
+    ],
+    "department_code": [
+      "code_departement",
+      "code_departement"
+    ],
+    "organization_siret": [
+      "siret",
+      "siret",
+      "siret"
+    ],
+    "organization": [],
+    "description_long": [],
+    "territory": []
+  },
+  "alias_map": {
+    "id": [
+      "id",
+      "identifiant",
+      "id_action",
+      "code_formation",
+      "identifiant_action"
+    ],
+    "title": [
+      "intitule",
+      "intitulé",
+      "nom_formation",
+      "libelle_formation",
+      "libellé_formation",
+      "titre"
+    ],
+    "certification": [
+      "certification",
+      "code_certification",
+      "code certification",
+      "libelle_certification",
+      "libellé_certification",
+      "type_certification",
+      "type de certification"
+    ],
+    "referential_type": [
+      "rncp_rs",
+      "type_referentiel",
+      "type referentiel",
+      "referentiel",
+      "référentiel",
+      "type_certification",
+      "type de certification"
+    ],
+    "description": [
+      "description",
+      "contenu",
+      "objectifs",
+      "objectif_formation",
+      "objectif formation"
+    ],
+    "objectives": [
+      "objectifs",
+      "objectif",
+      "objectifs_pedagogiques",
+      "objectifs pédagogiques"
+    ],
+    "exit_level": [
+      "niveau",
+      "niveau_de_sortie",
+      "niveau sortie",
+      "niveau_requis"
+    ],
+    "nsf": [
+      "nsf",
+      "code_nsf",
+      "domaine_nsf",
+      "libelle_nsf"
+    ],
+    "region": [
+      "nom_region",
+      "region",
+      "libelle_region",
+      "région"
+    ],
+    "department": [
+      "nom_departement",
+      "departement",
+      "département",
+      "libelle_departement"
+    ],
+    "region_code": [
+      "code_region",
+      "code région",
+      "code_regional",
+      "code region"
+    ],
+    "department_code": [
+      "code_departement",
+      "code département",
+      "code_dept",
+      "code_postal_departement"
+    ],
+    "organization_siret": [
+      "siret",
+      "siret_organisme",
+      "siret organisme"
+    ],
+    "organization": [
+      "organisme",
+      "organisme_de_formation",
+      "organisme formation",
+      "nom_organisme",
+      "raison_sociale"
+    ],
+    "description_long": [
+      "description_detaillee",
+      "description détaillée",
+      "detail_description"
+    ],
+    "territory": [
+      "territoire",
+      "territoire_cible",
+      "zone_geographique",
+      "zone géographique"
+    ]
+  }
+}

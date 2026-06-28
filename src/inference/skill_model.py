@@ -6,10 +6,52 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import numpy as np
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
-from src.common.text import clean_text
+try:
+    import torch
+except Exception:  # pragma: no cover - compatibilité environnementale
+    class _CudaStub:
+        @staticmethod
+        def is_available() -> bool:
+            return False
+
+    class _NoGrad:
+        def __enter__(self):
+            return None
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    class _TorchStub:
+        cuda = _CudaStub()
+
+        @staticmethod
+        def device(name: str):
+            return name
+
+        @staticmethod
+        def no_grad():
+            return _NoGrad()
+
+    torch = _TorchStub()  # type: ignore[assignment]
+
+try:
+    from transformers import AutoModelForSequenceClassification, AutoTokenizer
+except Exception:  # pragma: no cover - compatibilité environnementale
+    class _AutoModelLoaderStub:
+        @classmethod
+        def from_pretrained(cls, *args, **kwargs):
+            raise ImportError("transformers n'est pas installé.")
+
+    class _AutoTokenizerLoaderStub:
+        @classmethod
+        def from_pretrained(cls, *args, **kwargs):
+            raise ImportError("transformers n'est pas installé.")
+
+    AutoModelForSequenceClassification = _AutoModelLoaderStub
+    AutoTokenizer = _AutoTokenizerLoaderStub
+
+from common.text import clean_text
 
 
 DEFAULT_MODEL_DIR = Path(__file__).resolve().parents[2] / "models" / "multilabel_competences_v2" / "final"

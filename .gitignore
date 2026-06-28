@@ -4,8 +4,19 @@ __pycache__/
 .pytest_cache/
 .venv/
 
-# Training artifacts and generated datasets
-data/
+# Données et artefacts générés
+data/raw/
+data/moncompteformation_catalogueformation.csv
+data/france_travail/
+data/processed/
+data/indexes/
+data/training/*.jsonl
+data/training/*.npy
+*.faiss
+*.index
+*.npy
+
+# Modèles historiques et checkpoints
 models/
 camembert_competences_ia_checkpoints/
 modele_camembert_competences_ia/

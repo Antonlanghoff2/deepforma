@@ -6,7 +6,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
-from src.common.text import clean_text, normalize_for_match
+from common.text import clean_text, normalize_for_match
 
 
 DEFAULT_SKILLS_PATH = Path(__file__).resolve().parents[2] / "data" / "referentials" / "skills.json"

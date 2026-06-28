@@ -9,13 +9,13 @@ from typing import Any
 import requests
 from flask import Flask, jsonify, render_template, request
 
-from src.analytics.territorial_skills import compute_territorial_stats
-from src.common.text import clean_text
-from src.france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
-from src.france_travail.normalizer import normalize_offer
-from src.inference.deepforma_predictor import DeepformaPredictor, get_predictor
-from src.skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
-from src.services.recommendation_service import RecommendationService
+from analytics.territorial_skills import compute_territorial_stats
+from common.text import clean_text
+from france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
+from france_travail.normalizer import normalize_offer
+from inference.deepforma_predictor import DeepformaPredictor, get_predictor
+from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
+from services.recommendation_service import RecommendationService
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

@@ -7,11 +7,73 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+try:
+    import torch
+except Exception:  # pragma: no cover - compatibilité environnementale
+    import numpy as _np
 
-from src.common.text import clean_text
-from src.inference.skill_model import load_label_classes, load_thresholds
+    class _CudaStub:
+        @staticmethod
+        def is_available() -> bool:
+            return False
+
+    class _NoGrad:
+        def __enter__(self):
+            return None
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    class _InferenceMode(_NoGrad):
+        pass
+
+    class _TorchStub:
+        cuda = _CudaStub()
+
+        @staticmethod
+        def device(name: str):
+            return name
+
+        @staticmethod
+        def no_grad():
+            return _NoGrad()
+
+        @staticmethod
+        def inference_mode():
+            return _InferenceMode()
+
+        @staticmethod
+        def softmax(logits, dim=-1):
+            arr = _np.asarray(logits, dtype=float)
+            arr = arr - arr.max(axis=dim, keepdims=True)
+            exp = _np.exp(arr)
+            return exp / exp.sum(axis=dim, keepdims=True)
+
+        @staticmethod
+        def sigmoid(logits):
+            arr = _np.asarray(logits, dtype=float)
+            return 1.0 / (1.0 + _np.exp(-arr))
+
+    torch = _TorchStub()  # type: ignore[assignment]
+
+try:
+    from transformers import AutoModelForSequenceClassification, AutoTokenizer
+except Exception:  # pragma: no cover - compatibilité environnementale
+    class _AutoModelLoaderStub:
+        @classmethod
+        def from_pretrained(cls, *args, **kwargs):
+            raise ImportError("transformers n'est pas installé.")
+
+    class _AutoTokenizerLoaderStub:
+        @classmethod
+        def from_pretrained(cls, *args, **kwargs):
+            raise ImportError("transformers n'est pas installé.")
+
+    AutoModelForSequenceClassification = _AutoModelLoaderStub
+    AutoTokenizer = _AutoTokenizerLoaderStub
+
+from common.text import clean_text
+from inference.skill_model import load_label_classes, load_thresholds
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

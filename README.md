@@ -2,6 +2,21 @@
 
 Pipeline de nettoyage et d'entraînement pour les formations IA et généralistes.
 
+## Pipeline CPF
+
+Le dépôt contient maintenant un pipeline dédié au catalogue Mon Compte Formation:
+
+- téléchargement du catalogue brut;
+- inspection du schéma;
+- nettoyage et normalisation en streaming par chunks;
+- extraction et normalisation des compétences;
+- embeddings multilingues;
+- index vectoriel local;
+- moteur de recommandation territorialisé;
+- génération de paires d'entraînement heuristiques.
+
+Le guide détaillé est dans [docs/CPF_CATALOG_PIPELINE.md](docs/CPF_CATALOG_PIPELINE.md).
+
 ## Fichiers sources
 
 - `Dataset_V7_Anton_CSV - Dataset_V7_Anton_CSV.csv.csv` : dataset IA existant.
@@ -156,3 +171,19 @@ curl -X POST http://127.0.0.1:5000/api/analyze   -H 'Content-Type: application/j
 Avertissement:
 
 > Résultat expérimental. Le modèle doit encore être validé avant utilisation opérationnelle.
+
+## Développement CPF
+
+Installation éditable:
+
+```bash
+source .venv/bin/activate
+python -m pip install -e .
+```
+
+Diagnostics:
+
+```bash
+make cpf-check-imports
+make cpf-test
+```

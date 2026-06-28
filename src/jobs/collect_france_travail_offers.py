@@ -8,12 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from src.analytics.territorial_skills import compute_territorial_stats, stats_to_dataframe
-from src.common.text import clean_text
-from src.france_travail.client import FranceTravailClient, SearchCriteria
-from src.france_travail.normalizer import normalize_offer
-from src.inference.skill_model import SkillModel
-from src.skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
+from analytics.territorial_skills import compute_territorial_stats, stats_to_dataframe
+from common.text import clean_text
+from france_travail.client import FranceTravailClient, SearchCriteria
+from france_travail.normalizer import normalize_offer
+from inference.skill_model import SkillModel
+from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
 
 
 LOGGER = logging.getLogger(__name__)
