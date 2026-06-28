@@ -405,8 +405,15 @@
               <li>Architecture: {{ result_dict.checkpoint_audit.architecture_declared }}</li>
               <li>Problem type: {{ result_dict.checkpoint_audit.problem_type }}</li>
               <li>Apparence initialisation aleatoire: {{ 'Oui' if result_dict.checkpoint_audit.appears_random_init else 'Non' }}</li>
-              <li>Poids classifieur - moyenne: {{ '%.4f'|format(result_dict.checkpoint_audit.classifier_weight_mean) }}</li>
-              <li>Poids classifieur - ecart-type: {{ '%.4f'|format(result_dict.checkpoint_audit.classifier_weight_std) }}</li>
+              <li>Poids identiques au modele de base: {{ 'Oui' if result_dict.checkpoint_audit.body_params_match_base else 'Non' }}</li>
+              {% set out_proj = result_dict.checkpoint_audit.classifier_params.get('classifier.out_proj.weight', {}) %}
+              {% set dense = result_dict.checkpoint_audit.classifier_params.get('classifier.dense.weight', {}) %}
+              {% if out_proj %}
+              <li>out_proj.weight — moyenne: {{ '%.4f'|format(out_proj.get('mean', 0)) }}, std: {{ '%.4f'|format(out_proj.get('std', 0)) }}, shape: {{ out_proj.get('shape', []) }}</li>
+              {% endif %}
+              {% if dense %}
+              <li>dense.weight — moyenne: {{ '%.4f'|format(dense.get('mean', 0)) }}, std: {{ '%.4f'|format(dense.get('std', 0)) }}, shape: {{ dense.get('shape', []) }}</li>
+              {% endif %}
             </ul>
             {% endif %}
           </div>
@@ -414,19 +421,39 @@
         <details class="collapsible">
           <summary>Methode de detection</summary>
           <div class="method-doc">
-            <p>Les scores de competences sont calcules par un modele <strong>CamemBERT</strong> fine-tune en classification multi-etiquette.</p>
-            <p>Pour chaque competence parmi les {{ result_dict.model_metadata.num_labels }} labels, le modele produit un <strong>logit</strong> qui est transforme en score via la fonction <strong>sigmoid</strong> (et non softmax, car les labels ne sont pas mutuellement exclusifs).</p>
-            <p>Un score de 0.50 signifie que le modele n'a pas appris de signal discriminant pour cette competence sur ce texte. Les scores proches de 0.50 pour toutes les competences indiquent un probleme de calibration ou d'entrainement.</p>
-            <p><strong>Difference entre non-detection et absence :</strong> Une competence non detectee (score &lt; seuil) est marquee <strong>indeterminate</strong> si les scores globaux ne sont pas discriminants. Elle n'est declaree <strong>absente</strong> que lorsque le modele est discriminant et que le score est sous le seuil.</p>
-            <p><strong>Score a 0.5 :</strong> Un score de 0.5 correspond a un logit de 0. C'est la sortie par defaut d'un modele non entraine ou d'un texte hors-domaine. Ce n'est pas une probabilite reelle.</p>
-            <p>La classification binaire IA/non-IA utilise <strong>softmax</strong> sur 2 classes. La classe retenue est celle avec le score le plus eleve.</p>
-            <p><strong>Limites :</strong></p>
+            <p>Les scores de competences sont produits par un modele <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette.</p>
+            <p>Pour chacune des {{ result_dict.model_metadata.num_labels }} competences du referentiel, le modele genere une valeur brute appelee <strong>logit</strong>. Cette valeur est transformee en score compris entre 0 et 1 par une fonction <strong>sigmoid</strong>. Contrairement a une classification avec softmax, plusieurs competences peuvent etre detectees simultanement, car elles ne sont pas mutuellement exclusives.</p>
+
+            <h4>Interpretation des scores</h4>
+            <p>Un score eleve indique que le modele a trouve dans le texte des elements associes a la competence.</p>
+            <p>Un score faible indique que la competence n'a pas ete detectee avec suffisamment de confiance dans le texte analyse.</p>
+            <p>Un score proche de 0,50 correspond a un logit proche de zero. Il traduit generalement une forte incertitude du modele. Sur un seul texte, ce resultat ne suffit pas a conclure que le modele n'est pas entraine. En revanche, lorsque presque tous les scores restent proches de 0,50 sur de nombreux textes, cela peut reveler un probleme d'entrainement, de chargement du checkpoint, de donnees ou de traitement des entrees.</p>
+            <p>Ces scores sont des scores internes du modele. Ils ne constituent pas des probabilites reelles ou calibrees.</p>
+
+            <h4>Non-detection, absence et resultat indetermine</h4>
+            <p>Une competence non detectee ne doit pas automatiquement etre consideree comme absente de la formation.</p>
+            <p>Le systeme distingue trois situations :</p>
             <ul>
-              <li>Le referentiel est limite a 18 labels IA. Des competences non-IA ne seront pas detectees.</li>
-              <li>Les scores ne sont pas des probabilites calibrees (ils ne refletent pas une frequence reelle).</li>
-              <li>Le marche territorial repose sur les donnees France Travail, dont la couverture et la fraicheur varient.</li>
-              <li>Un faible nombre d'offres reduit la fiabilite statistique des tendances territoriales.</li>
-              <li>Ce modele de 18 labels IA ne doit pas etre utilise comme extracteur generaliste pour les 27 694 formations CPF.</li>
+              <li><strong>Detectee</strong> : le score depasse le seuil de confiance et l'analyse globale est consideree comme fiable.</li>
+              <li><strong>Non detectee dans le texte analyse</strong> : le score est inferieur au seuil, mais cela ne prouve pas que la competence est absente du programme complet.</li>
+              <li><strong>Indeterminee</strong> : les scores globaux ne sont pas suffisamment discriminants pour conclure.</li>
+            </ul>
+            <p>Lorsque le modele est declare non fiable, aucune competence ne peut etre consideree comme presente ou absente, et la comparaison avec le marche ainsi que les recommandations sont suspendues.</p>
+
+            <h4>Classification IA / non-IA</h4>
+            <p>La classification IA / non-IA repose sur un modele binaire distinct. Il produit deux scores transformes par une fonction <strong>softmax</strong>.</p>
+            <p>La classe ayant le score le plus eleve est normalement retenue. Toutefois, lorsque l'ecart entre les deux classes est trop faible, le resultat est marque comme <strong>classification incertaine</strong>.</p>
+
+            <h4>Limites</h4>
+            <ul>
+              <li>Le referentiel actuel est limite a {{ result_dict.model_metadata.num_labels }} competences liees a l'intelligence artificielle.</li>
+              <li>Les competences non-IA ne peuvent pas etre detectees par ce modele.</li>
+              <li>Les scores ne sont pas calibres et ne representent pas une frequence ou une probabilite reelle.</li>
+              <li>Une competence non detectee dans le texte ne peut pas etre consideree avec certitude comme absente de la formation.</li>
+              <li>Les resultats dependent de la qualite, de la longueur et de la precision du texte fourni.</li>
+              <li>Les donnees territoriales reposent sur les offres France Travail, dont la couverture, la qualite et la fraicheur peuvent varier.</li>
+              <li>Un faible nombre d'offres reduit la robustesse statistique des tendances territoriales.</li>
+              <li>Le modele specialise sur {{ result_dict.model_metadata.num_labels }} competences IA ne doit pas etre utilise comme extracteur generaliste pour les 27 694 formations CPF.</li>
             </ul>
           </div>
         </details>

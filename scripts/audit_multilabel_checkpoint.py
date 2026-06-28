@@ -150,94 +150,12 @@ def check_weights(model_dir: Path) -> dict:
 
 
 def check_strict_loading(model_dir: Path) -> dict:
-    section('CHARGEMENT STRICT')
-    report: dict = {
-        'strict_load_success': False,
-        'missing_keys': [],
-        'unexpected_keys': [],
-        'classifier_weight_shape': '',
-        'classifier_weight_mean': 0.0,
-        'classifier_weight_std': 0.0,
-        'classifier_weight_min': 0.0,
-        'classifier_weight_max': 0.0,
-        'classifier_bias_mean': None,
-        'appears_random_init': True,
-        'issues': [],
-    }
-
-    if AutoModelForSequenceClassification is None:
-        report['issues'].append('transformers non disponible')
-        return report
-
+    section('CHARGEMENT STRICT (via _audit_checkpoint)')
     try:
-        model = AutoModelForSequenceClassification.from_pretrained(
-            model_dir, return_dict=True
-        )
-        report['strict_load_success'] = True
-        logger.info('Chargement strict: OK')
+        return _deepforma_audit(model_dir)
     except Exception as exc:
-        msg = str(exc)
-        logger.warning('Chargement strict echoue: %s', msg)
-        if 'is not in the model' in msg:
-            report['unexpected_keys'] = [msg]
-        if 'are missing' in msg:
-            report['missing_keys'] = [msg]
-
-        logger.warning('Missing keys: %s', report['missing_keys'])
-        logger.warning('Unexpected keys: %s', report['unexpected_keys'])
-
-        try:
-            model = AutoModelForSequenceClassification.from_pretrained(
-                model_dir, return_dict=True, ignore_mismatched_sizes=True
-            )
-            logger.info('Chargement avec ignore_mismatched_sizes: OK')
-        except Exception as exc2:
-            report['issues'].append(f'Echec chargement: {exc2}')
-            return report
-
-    classifier = getattr(model, 'classifier', None)
-    if classifier is None:
-        report['issues'].append('Pas de tete de classification (classifier)')
-        logger.error('Pas de tete de classification')
-        return report
-
-    weight = getattr(classifier, 'weight', None)
-    if weight is not None:
-        w = weight.data.detach().cpu().numpy()
-        report['classifier_weight_shape'] = str(list(w.shape))
-        report['classifier_weight_mean'] = float(w.mean())
-        report['classifier_weight_std'] = float(w.std())
-        report['classifier_weight_min'] = float(w.min())
-        report['classifier_weight_max'] = float(w.max())
-        logger.info('Poids du classifier: shape=%s', report['classifier_weight_shape'])
-        logger.info('  mean=%.6f, std=%.6f', report['classifier_weight_mean'],
-                     report['classifier_weight_std'])
-        logger.info('  min=%.6f, max=%.6f', report['classifier_weight_min'],
-                     report['classifier_weight_max'])
-
-        hidden_size = w.shape[1] if len(w.shape) > 1 else 768
-        rng = np.random.RandomState(42)
-        fresh_weight = rng.randn(w.shape[0], hidden_size) * 0.02
-        fresh_std = float(fresh_weight.std())
-
-        logger.info('Comparaison initialisation aleatoire: std checkpoint=%.6f, std fresh=%.6f',
-                     report['classifier_weight_std'], fresh_std)
-
-        if abs(report['classifier_weight_mean']) < 0.01 and abs(report['classifier_weight_std'] - fresh_std) < 0.005:
-            report['appears_random_init'] = True
-            logger.warning('ATTENTION: les poids du classifier sont coherents avec une initialisation aleatoire')
-        else:
-            report['appears_random_init'] = False
-            logger.info('Les poids du classifier semblent avoir ete entraines')
-
-    bias = getattr(classifier, 'bias', None)
-    if bias is not None:
-        b = bias.data.detach().cpu().numpy()
-        report['classifier_bias_mean'] = float(b.mean())
-        logger.info('Biais du classifier: mean=%.6f', report['classifier_bias_mean'])
-
-    model.to('cpu')
-    return report
+        logger.error('Echec _audit_checkpoint: %s', exc)
+        return {'strict_load_success': False, 'issues': [str(exc)], 'appears_random_init': True}
 
 
 def check_label_classes(model_dir: Path) -> dict:

@@ -154,15 +154,32 @@ def _to_device(batch: Any, device: torch.device) -> Any:
     return {key: value.to(device) for key, value in batch.items()}
 
 
-def _fresh_init_classifier_stats(num_labels: int, hidden_size: int = 768) -> dict[str, float]:
-    rng = np.random.RandomState(42)
-    fresh_weight = rng.randn(num_labels, hidden_size) * 0.02
+def _param_stats(param) -> dict[str, Any]:
+    if param is None:
+        return {'parameter_not_found': True}
+    w = param.data.detach().cpu().numpy()
+    nz = int((w != 0).sum())
     return {
-        'mean': float(fresh_weight.mean()),
-        'std': float(fresh_weight.std()),
-        'min': float(fresh_weight.min()),
-        'max': float(fresh_weight.max()),
+        'shape': str(list(w.shape)),
+        'dtype': str(param.dtype),
+        'requires_grad': param.requires_grad,
+        'mean': float(w.mean()),
+        'std': float(w.std()),
+        'min': float(w.min()),
+        'max': float(w.max()),
+        'l2_norm': float(np.sqrt((w * w).sum())),
+        'n_nonzero': nz,
+        'proportion_nonzero': round(nz / max(w.size, 1), 6),
     }
+
+
+def _classifier_param_names() -> list[str]:
+    return [
+        'classifier.dense.weight',
+        'classifier.dense.bias',
+        'classifier.out_proj.weight',
+        'classifier.out_proj.bias',
+    ]
 
 
 def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
@@ -172,6 +189,7 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         'weights_size_bytes': 0,
         'architecture_declared': '',
         'num_labels_declared': 0,
+        'num_labels_effective': 0,
         'problem_type': '',
         'id2label_count': 0,
         'label2id_count': 0,
@@ -179,13 +197,9 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         'missing_keys': [],
         'unexpected_keys': [],
         'ignored_keys': [],
-        'classifier_weight_shape': '',
-        'classifier_weight_mean': 0.0,
-        'classifier_weight_std': 0.0,
-        'classifier_weight_min': 0.0,
-        'classifier_weight_max': 0.0,
-        'classifier_bias_mean': None,
+        'classifier_params': {},
         'appears_random_init': True,
+        'parameter_errors': [],
     }
 
     config_path = model_dir / 'config.json'
@@ -194,6 +208,7 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         audit['config_present'] = True
         audit['architecture_declared'] = str(cfg.get('architectures', [''])[0])
         audit['num_labels_declared'] = int(cfg.get('num_labels', 0))
+        audit['num_labels_effective'] = len(cfg.get('id2label', {}))
         audit['problem_type'] = str(cfg.get('problem_type', ''))
         audit['id2label_count'] = len(cfg.get('id2label', {}))
         audit['label2id_count'] = len(cfg.get('label2id', {}))
@@ -203,21 +218,17 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         audit['weights_present'] = True
         audit['weights_size_bytes'] = weights_path.stat().st_size
 
+    # -------- Load model --------
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_dir)
         model = AutoModelForSequenceClassification.from_pretrained(
             model_dir, return_dict=True
         )
-        strict_model = AutoModelForSequenceClassification.from_pretrained(
-            model_dir, return_dict=True,
-        )
-        _ = strict_model  # loaded without strict=False
         audit['strict_load_success'] = True
     except Exception as exc:
         msg = str(exc)
         if 'is not in the model' in msg or 'are missing' in msg:
             audit['missing_keys'] = _extract_keys_from_error(msg)
-
         try:
             model = AutoModelForSequenceClassification.from_pretrained(
                 model_dir, return_dict=True, ignore_mismatched_sizes=True
@@ -226,49 +237,73 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
             logger.error('Echec chargement checkpoint %s: %s', model_dir, fallback_exc)
             return audit
 
-    classifier = getattr(model, 'classifier', None)
-    if classifier is not None:
-        weight = getattr(classifier, 'weight', None)
-        if weight is not None:
-            w = weight.data.detach().cpu().numpy()
-            audit['classifier_weight_shape'] = str(list(w.shape))
-            audit['classifier_weight_mean'] = float(w.mean())
-            audit['classifier_weight_std'] = float(w.std())
-            audit['classifier_weight_min'] = float(w.min())
-            audit['classifier_weight_max'] = float(w.max())
+    # -------- Inspect ALL classifier parameters --------
+    param_map = dict(model.named_parameters())
+    for param_name in _classifier_param_names():
+        param = param_map.get(param_name)
+        stats = _param_stats(param)
+        if stats.get('parameter_not_found'):
+            err = f'Parametre attendu {param_name} non trouve dans le modele'
+            audit['parameter_errors'].append(err)
+            logger.warning(err)
+            audit['classifier_params'][param_name] = {'error': 'parameter_not_found'}
+        else:
+            audit['classifier_params'][param_name] = stats
 
-            hidden_size = w.shape[1] if len(w.shape) > 1 else 768
-            fresh_stats = _fresh_init_classifier_stats(w.shape[0], hidden_size)
-            weight_mean_close_to_zero = abs(audit['classifier_weight_mean']) < 0.01
-            weight_std_close_to_fresh = abs(
-                audit['classifier_weight_std'] - fresh_stats['std']
-            ) < 0.005
+    # -------- Determine appears_random_init --------
+    out_proj_weight_stats = audit['classifier_params'].get('classifier.out_proj.weight', {})
+    dense_weight_stats = audit['classifier_params'].get('classifier.dense.weight', {})
 
-            if weight_mean_close_to_zero and weight_std_close_to_fresh:
-                audit['appears_random_init'] = True
-                logger.warning(
-                    'Poids du classifier (mean=%.4f, std=%.4f) sont coherents avec '
-                    'une initialisation aleatoire (fresh std=%.4f). '
-                    'Le checkpoint semble ne pas avoir ete entraine.',
-                    audit['classifier_weight_mean'], audit['classifier_weight_std'],
-                    fresh_stats['std']
-                )
-            else:
-                audit['appears_random_init'] = False
-                logger.info(
-                    'Poids du classifier coherents avec un entrainement: '
-                    'mean=%.4f, std=%.4f (fresh init std=%.4f)',
-                    audit['classifier_weight_mean'], audit['classifier_weight_std'],
-                    fresh_stats['std']
-                )
+    weight_mean_close_to_zero = (
+        abs(out_proj_weight_stats.get('mean', 0)) < 0.01
+        and abs(dense_weight_stats.get('mean', 0)) < 0.01
+    )
+    weight_std_near_002 = (
+        abs(out_proj_weight_stats.get('std', 0) - 0.02) < 0.005
+        and abs(dense_weight_stats.get('std', 0) - 0.02) < 0.005
+    )
 
-        bias = getattr(classifier, 'bias', None)
-        if bias is not None:
-            b = bias.data.detach().cpu().numpy()
-            audit['classifier_bias_mean'] = float(b.mean())
+    if weight_mean_close_to_zero and weight_std_near_002:
+        audit['appears_random_init'] = True
+        logger.warning(
+            'Poids du classifier coherents avec une initialisation aleatoire '
+            '(out_proj.weight std=%.4f, dense.weight std=%.4f). '
+            'Le checkpoint semble ne pas avoir ete entraine.',
+            out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0)
+        )
+    else:
+        audit['appears_random_init'] = False
+        logger.info(
+            'Poids du classifier coherents avec un entrainement: '
+            'out_proj.weight std=%.4f, dense.weight std=%.4f.',
+            out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0)
+        )
+
+    # -------- Check if body weights differ from pretrained base --------
+    # A truly trained model will have body differences from camembert-base
+    audit['body_params_match_base'] = _check_body_against_base(model)
 
     model.to('cpu')
     return audit
+
+
+def _check_body_against_base(model) -> bool | str:
+    try:
+        from transformers import AutoModelForSequenceClassification as AM
+        base = AM.from_pretrained('camembert-base', num_labels=2)
+        base_dict = {n: p for n, p in base.named_parameters() if 'classifier' not in n}
+        diffs = []
+        for n, p in model.named_parameters():
+            if 'classifier' not in n and n in base_dict:
+                d = (p.data - base_dict[n].data).abs().max().item()
+                if d > 1e-8:
+                    diffs.append((n, d))
+        if not diffs:
+            return True
+        logger.info('Body differe du base sur %d parametres (entraine?).', len(diffs))
+        return False
+    except Exception:
+        return 'check_skipped'
 
 
 def _extract_keys_from_error(msg: str) -> list[str]:
@@ -344,11 +379,10 @@ class DeepformaPredictor:
         ).to(self.device)
         self.multilabel_model.eval()
         self.checkpoint_audit = _audit_checkpoint(self.multilabel_model_dir)
-        logger.info('Audit checkpoint: appears_random_init=%s, shape=%s, mean=%.4f, std=%.4f',
+        logger.info('Audit checkpoint: appears_random_init=%s, n_params=%d, errors=%s',
                      self.checkpoint_audit['appears_random_init'],
-                     self.checkpoint_audit['classifier_weight_shape'],
-                     self.checkpoint_audit['classifier_weight_mean'],
-                     self.checkpoint_audit['classifier_weight_std'])
+                     len(self.checkpoint_audit.get('classifier_params', {})),
+                     self.checkpoint_audit.get('parameter_errors', []))
 
         self.labels = load_label_classes(self.multilabel_model_dir)
         self.thresholds = load_thresholds(self.multilabel_model_dir)

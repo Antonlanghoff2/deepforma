@@ -261,6 +261,7 @@ def _build_analysis_result(
         weights_size_bytes=checkpoint_audit_raw.get('weights_size_bytes', 0),
         architecture_declared=checkpoint_audit_raw.get('architecture_declared', ''),
         num_labels_declared=checkpoint_audit_raw.get('num_labels_declared', 0),
+        num_labels_effective=checkpoint_audit_raw.get('num_labels_effective', 0),
         problem_type=checkpoint_audit_raw.get('problem_type', ''),
         id2label_count=checkpoint_audit_raw.get('id2label_count', 0),
         label2id_count=checkpoint_audit_raw.get('label2id_count', 0),
@@ -268,13 +269,10 @@ def _build_analysis_result(
         missing_keys=checkpoint_audit_raw.get('missing_keys', []),
         unexpected_keys=checkpoint_audit_raw.get('unexpected_keys', []),
         ignored_keys=checkpoint_audit_raw.get('ignored_keys', []),
-        classifier_weight_shape=checkpoint_audit_raw.get('classifier_weight_shape', ''),
-        classifier_weight_mean=checkpoint_audit_raw.get('classifier_weight_mean', 0.0),
-        classifier_weight_std=checkpoint_audit_raw.get('classifier_weight_std', 0.0),
-        classifier_weight_min=checkpoint_audit_raw.get('classifier_weight_min', 0.0),
-        classifier_weight_max=checkpoint_audit_raw.get('classifier_weight_max', 0.0),
-        classifier_bias_mean=checkpoint_audit_raw.get('classifier_bias_mean'),
         appears_random_init=checkpoint_audit_raw.get('appears_random_init', True),
+        body_params_match_base=checkpoint_audit_raw.get('body_params_match_base', True),
+        parameter_errors=checkpoint_audit_raw.get('parameter_errors', []),
+        classifier_params=checkpoint_audit_raw.get('classifier_params', {}),
     )
 
     result.model_metadata = ModelMetadata(
@@ -289,11 +287,9 @@ def _build_analysis_result(
         thresholds={'multilabel': threshold, 'binary': None},
         inference_time_ms=analysis.get('inference_time_ms', 0.0),
         classifier_weight_stats={
-            'mean': result.checkpoint_audit.classifier_weight_mean,
-            'std': result.checkpoint_audit.classifier_weight_std,
-            'min': result.checkpoint_audit.classifier_weight_min,
-            'max': result.checkpoint_audit.classifier_weight_max,
             'appears_random_init': result.checkpoint_audit.appears_random_init,
+            'out_proj': result.checkpoint_audit.classifier_params.get('classifier.out_proj.weight', {}),
+            'dense': result.checkpoint_audit.classifier_params.get('classifier.dense.weight', {}),
         },
     )
 
