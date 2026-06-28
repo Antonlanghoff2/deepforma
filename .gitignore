@@ -6,4 +6,4 @@ __pycache__/
 data/france_travail/raw/
 data/france_travail/normalized/
 data/france_travail/reports/
-
+data/
