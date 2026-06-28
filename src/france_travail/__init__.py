@@ -1,0 +1,2 @@
+"""France Travail integration package."""
+

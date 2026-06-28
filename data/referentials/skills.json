@@ -1,0 +1,52 @@
+[
+  {
+    "skill_id": "gestion_de_projet",
+    "label": "Gestion de projet",
+    "aliases": ["conduite de projet", "pilotage de projet", "project management"],
+    "category": "competence_transversale",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "python",
+    "label": "Python",
+    "aliases": ["python programming", "python language", "python pour la data"],
+    "category": "informatique",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "fastapi",
+    "label": "FastAPI",
+    "aliases": ["fast api"],
+    "category": "informatique",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "api_rest",
+    "label": "API REST",
+    "aliases": ["rest api", "web api", "api web"],
+    "category": "informatique",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "machine_learning",
+    "label": "Machine Learning",
+    "aliases": ["apprentissage automatique", "machine learning"],
+    "category": "ia",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "data_analysis",
+    "label": "Analyse de données",
+    "aliases": ["data analysis", "analyse data"],
+    "category": "data",
+    "codes_rome": []
+  },
+  {
+    "skill_id": "communication",
+    "label": "Communication",
+    "aliases": ["communication orale", "communication écrite"],
+    "category": "competence_transversale",
+    "codes_rome": []
+  }
+]
+

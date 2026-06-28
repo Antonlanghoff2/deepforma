@@ -1,0 +1,36 @@
+{
+  "labels": [
+    "Automatisation",
+    "Big Data",
+    "Computer Vision",
+    "Data Engineering",
+    "Data Science",
+    "Deep Learning",
+    "Gestion de projet IA",
+    "IA Générative",
+    "LangChain / Agents RAG",
+    "MLOps / Déploiement",
+    "Machine Learning",
+    "NLP / Traitement du langage",
+    "No-code / Low-code",
+    "Prompt Engineering",
+    "Python",
+    "Reinforcement Learning",
+    "SQL / Data Engineering",
+    "Séries temporelles",
+    "Visualisation",
+    "Éthique IA & RGPD"
+  ],
+  "threshold": 0.45,
+  "max_length": 256,
+  "base_model": "camembert-base",
+  "input_columns": [
+    "Intitulé de la formation",
+    "Type de certification",
+    "Niveau",
+    "Codes ROME",
+    "Modalité",
+    "Durée",
+    "Public cible"
+  ]
+}
