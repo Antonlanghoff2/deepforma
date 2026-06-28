@@ -3,7 +3,13 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
-data/france_travail/raw/
-data/france_travail/normalized/
-data/france_travail/reports/
+
+# Training artifacts and generated datasets
 data/
+models/
+camembert_competences_ia_checkpoints/
+modele_camembert_competences_ia/
+Dataset_*
+**/training_args.bin
+**/trainer_state.json
+**/*.safetensors
