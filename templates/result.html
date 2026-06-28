@@ -148,19 +148,36 @@
         <p class="meta-info">Seuil extraction: automatique | Methode: regles linguistiques</p>
       </article>
 
-      <!-- IA Categories (secondary, collapsible) -->
+      <!-- IA Categories (secondary, technical, collapsible) -->
       <article class="card" aria-label="Categories IA">
         <h2>Categorisation IA <span class="badge badge-yellow">experimentale</span></h2>
 
         {% if result_dict.ia_classification.status == 'success' %}
         <p>Categories IA detectees dans la formation :</p>
-        {% if result_dict.ia_classification.categories %}
+
+        {% if result_dict.ia_classification.families %}
+        {% for family in result_dict.ia_classification.families %}
+        <details class="collapsible" open>
+          <summary>{{ family.family_label }} ({{ family.skills|length }})</summary>
+          <div class="chips">
+            {% for skill in family.skills %}
+            <div class="chip chip-ia" tabindex="0"
+                 aria-label="{{ skill.label }}: {{ skill.probability|sigmoid_pct }}">
+              <span>{{ skill.label }}</span>
+              <small>{{ skill.probability|sigmoid_pct }}</small>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+        {% endfor %}
+
+        {% elif result_dict.ia_classification.categories %}
         <div class="chips">
           {% for cat in result_dict.ia_classification.categories %}
           <div class="chip chip-ia" tabindex="0"
-               aria-label="{{ cat.label }}: {{ '%.0f'|format(cat.probability * 100) }}%">
+               aria-label="{{ cat.label }}: {{ cat.probability|sigmoid_pct }}">
             <span>{{ cat.label }}</span>
-            <small>{{ '%.0f'|format(cat.probability * 100) }}%</small>
+            <small>{{ cat.probability|sigmoid_pct }}</small>
           </div>
           {% endfor %}
         </div>
@@ -171,53 +188,139 @@
         {% elif result_dict.ia_classification.status == 'unreliable' %}
         <div class="alert alert-warning" role="alert">
           <strong>Classification IA non disponible</strong>
-          <p>Le modele specialise dans les 18 categories IA ne produit pas de scores
+          <p>Le classifieur experimental ne produit pas de scores
           suffisamment discriminants. Ses resultats sont desactives.</p>
           <p>Cette anomalie n'empeche pas l'extraction directe des competences depuis
           le texte de la formation.</p>
         </div>
-
-        {% if result_dict.indeterminate_skills %}
-        <details class="collapsible">
-          <summary>Scores bruts du modele 18 labels ({{ result_dict.indeterminate_skills|length }})</summary>
-          <p class="meta-info">Tous les scores sont proches de 0.50 — aucun n'est exploitable.</p>
-          <div class="chips">
-            {% for skill in result_dict.indeterminate_skills %}
-            <div class="chip chip-low" tabindex="0">
-              <span>{{ skill.label }}</span>
-              <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
-              <span class="confidence-dot confidence-faible" title="Indetermine"></span>
-            </div>
-            {% endfor %}
-          </div>
-        </details>
-        {% endif %}
-
         {% else %}
         <p>Categorisation IA indisponible.</p>
         {% endif %}
 
-        <details class="collapsible">
-          <summary>Scores detailles du modele 18 labels</summary>
+        {# --- Technical scores block (single, collapsed by default, dynamic labels) --- #}
+        {% set mm = result_dict.model_metadata %}
+        {% set ic = result_dict.ia_classification %}
+        {% set total_labels = ic.scores|length %}
+        {% if total_labels > 0 %}
+        <details class="collapsible" {% if ic.status == 'success' %}open{% endif %}>
+          <summary>
+            Scores techniques du classifieur IA
+            ({{ mm.model_name }}{% if mm.taxonomy_version %} &mdash; taxonomie {{ mm.taxonomy_version }}{% endif %})
+          </summary>
+
+          {# Metadata header #}
+          <div class="meta-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.5rem;margin-bottom:1rem;font-size:0.85rem;color:#666;">
+            <div><strong>Modèle :</strong> {{ mm.model_name }}</div>
+            {% if mm.taxonomy_version %}<div><strong>Taxonomie :</strong> {{ mm.taxonomy_version }}</div>{% endif %}
+            <div><strong>Nombre de labels :</strong> {{ total_labels }}</div>
+            <div><strong>Statut :</strong> {{ mm.validation_status }}</div>
+            <div><strong>Seuil :</strong> {{ ic.threshold_applied|default(0.35)|sigmoid_pct }}</div>
+          </div>
+
+          {# Aggregated stats #}
+          <p class="meta-info" style="margin-bottom:0.75rem;">
+            Min: {{ ic.score_min|sigmoid_pct }} |
+            Max: {{ ic.score_max|sigmoid_pct }} |
+            Moy: {{ ic.score_mean|sigmoid_pct }} |
+            Écart-type: {{ '%.4f'|format(ic.score_std) }}
+          </p>
+
+          {# Label scores #}
+          {% if total_labels <= 25 %}
+          {# --- Few labels: flat list --- #}
           <div class="chips">
-            {% for p in result_dict.ia_classification.scores %}
-            {% if loop.index0 < result_dict.model_metadata.labels|length %}
-            {% set label = result_dict.model_metadata.labels[loop.index0] %}
-            {% set prob = p %}
-            <div class="chip chip-low" tabindex="0">
+            {% for p in ic.scores %}
+            {% if loop.index0 < mm.labels|length %}
+            {% set label = mm.labels[loop.index0] %}
+            <div class="chip chip-low" tabindex="0" title="{{ label }}: {{ p|sigmoid_pct }}">
               <span>{{ label }}</span>
-              <small>{{ '%.1f'|format(prob * 100) }}%</small>
+              <small>{{ p|sigmoid_pct }}</small>
             </div>
             {% endif %}
             {% endfor %}
           </div>
-          <p class="meta-info">
-            Min: {{ '%.4f'|format(result_dict.ia_classification.score_min) }} |
-            Max: {{ '%.4f'|format(result_dict.ia_classification.score_max) }} |
-            Moy: {{ '%.4f'|format(result_dict.ia_classification.score_mean) }} |
-            Std: {{ '%.4f'|format(result_dict.ia_classification.score_std) }}
-          </p>
+
+          {% elif ic.families %}
+          {# --- Many labels: grouped by family with search/filter --- #}
+          <div style="margin-bottom:0.5rem;">
+            <input type="text" class="search-input" data-target="ia-family-list"
+                   placeholder="Rechercher un label..."
+                   style="width:100%;padding:0.4rem;border:1px solid #ccc;border-radius:4px;font-size:0.85rem;">
+          </div>
+          <div id="ia-family-list">
+            {% for family in ic.families %}
+            <details class="collapsible" {% if loop.first %}open{% endif %}>
+              <summary class="family-summary">{{ family.family_label }}
+                <span class="chip-count">({{ family.skills|length }})</span>
+              </summary>
+              <div class="chips">
+                {% for skill in family.skills %}
+                <div class="chip chip-low" tabindex="0"
+                     data-search="{{ skill.label|lower }}"
+                     title="{{ skill.label }}: {{ skill.probability|sigmoid_pct }}">
+                  <span>{{ skill.label }}</span>
+                  <small>{{ skill.probability|sigmoid_pct }}</small>
+                </div>
+                {% endfor %}
+              </div>
+            </details>
+            {% endfor %}
+          </div>
+
+          {% if total_labels > 50 %}
+          <div style="margin-top:0.5rem;">
+            <details class="collapsible">
+              <summary>Tous les labels ({{ total_labels }})</summary>
+              <div class="chips">
+                {% for p in ic.scores %}
+                {% if loop.index0 < mm.labels|length %}
+                {% set label = mm.labels[loop.index0] %}
+                <div class="chip chip-low" tabindex="0" title="{{ label }}: {{ p|sigmoid_pct }}">
+                  <span>{{ label }}</span>
+                  <small>{{ p|sigmoid_pct }}</small>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </details>
+          </div>
+          {% endif %}
+
+          {% else %}
+          {# --- Many labels, no families: top N + show all --- #}
+          {% set top_n = 15 %}
+          <div class="chips">
+            {% for i in range(top_n) %}
+            {% if i < total_labels and i < mm.labels|length %}
+            {% set label = mm.labels[i] %}
+            {% set prob = ic.scores[i] %}
+            <div class="chip chip-low" tabindex="0" title="{{ label }}: {{ prob|sigmoid_pct }}">
+              <span>{{ label }}</span>
+              <small>{{ prob|sigmoid_pct }}</small>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% if total_labels > top_n %}
+          <details class="collapsible">
+            <summary>Afficher tous les labels ({{ total_labels }})</summary>
+            <div class="chips">
+              {% for i in range(top_n, total_labels) %}
+              {% if i < mm.labels|length %}
+              {% set label = mm.labels[i] %}
+              {% set prob = ic.scores[i] %}
+              <div class="chip chip-low" tabindex="0" title="{{ label }}: {{ prob|sigmoid_pct }}">
+                <span>{{ label }}</span>
+                <small>{{ prob|sigmoid_pct }}</small>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </details>
+          {% endif %}
+          {% endif %}
         </details>
+        {% endif %}
       </article>
 
       <!-- Territorial Market -->
@@ -434,14 +537,20 @@
             </div>
             {% endif %}
 
-            <h3>Classification IA (18 labels)</h3>
+            <h3>Classification IA</h3>
             <ul class="list">
-              <li>Statut: {{ result_dict.ia_classification.status }}</li>
-              <li>Scores discriminants: {{ 'Oui' if result_dict.ia_classification.discriminating else 'Non' }}</li>
-              <li>Min: {{ '%.4f'|format(result_dict.ia_classification.score_min) }}</li>
-              <li>Max: {{ '%.4f'|format(result_dict.ia_classification.score_max) }}</li>
-              <li>Moyenne: {{ '%.4f'|format(result_dict.ia_classification.score_mean) }}</li>
+              <li>Modele: {{ result_dict.model_metadata.model_name }}</li>
+              {% if result_dict.model_metadata.taxonomy_version %}
+              <li>Taxonomie: {{ result_dict.model_metadata.taxonomy_version }}</li>
+              {% endif %}
+              <li>Nombre de labels: {{ result_dict.ia_classification.scores|length }}</li>
+              <li>Statut: {{ result_dict.model_metadata.validation_status }}</li>
+              <li>Seuil: {{ result_dict.ia_classification.threshold_applied|sigmoid_pct }}</li>
+              <li>Min: {{ result_dict.ia_classification.score_min|sigmoid_pct }}</li>
+              <li>Max: {{ result_dict.ia_classification.score_max|sigmoid_pct }}</li>
+              <li>Moyenne: {{ result_dict.ia_classification.score_mean|sigmoid_pct }}</li>
               <li>Ecart-type: {{ '%.4f'|format(result_dict.ia_classification.score_std) }}</li>
+              <li>Scores discriminants: {{ 'Oui' if result_dict.ia_classification.discriminating else 'Non' }}</li>
             </ul>
             {% if result_dict.ia_classification.warnings %}
             <div class="alert alert-warning" role="alert">
@@ -500,13 +609,13 @@
             <p>Contrairement a l'ancien modele, cette methode peut detecter <strong>n'importe quelle competence</strong>, qu'elle soit liee ou non a l'intelligence artificielle.</p>
 
             <h4>Classification IA (secondaire)</h4>
-            <p>Les scores de categories IA sont produits par un modele <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette limitee a 18 categories IA.</p>
+            <p>Les scores de categories IA sont produits par un classifieur <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette.</p>
             <p>Ce modele est <strong>uniquement</strong> utilise pour categoriser les competences extraites dans des familles IA. Il ne determine pas quelles competences sont presentes ou absentes.</p>
 
             <h4>Limites</h4>
             <ul>
               <li>L'extraction par regles linguistiques peut manquer certaines formulations implicites.</li>
-              <li>Le referentiel du modele 18 labels est limite aux competences liees a l'intelligence artificielle.</li>
+              <li>Le referentiel du classifieur IA est limite aux competences liees a l'intelligence artificielle.</li>
               <li>Les donnees territoriales reposent sur les offres France Travail, dont la couverture, la qualite et la fraicheur peuvent varier.</li>
             </ul>
           </div>
@@ -561,6 +670,30 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    // Live search for IA labels
+    document.addEventListener('input', function(e) {
+      if (e.target.matches('.search-input[data-target]')) {
+        const query = e.target.value.toLowerCase().trim();
+        const container = document.getElementById(e.target.dataset.target);
+        if (!container) return;
+        const chips = container.querySelectorAll('.chip[data-search]');
+        let visibleCount = 0;
+        chips.forEach(function(chip) {
+          const label = chip.getAttribute('data-search') || '';
+          const match = !query || label.includes(query);
+          chip.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+        const summaries = container.querySelectorAll('.family-summary');
+        summaries.forEach(function(summary) {
+          const details = summary.closest('details');
+          if (!details) return;
+          const visible = details.querySelectorAll('.chip[data-search]:not([style*=\"none\"])').length;
+          details.style.display = visible > 0 ? '' : 'none';
+        });
+      }
+    });
   </script>
 </body>
 </html>

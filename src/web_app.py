@@ -149,12 +149,14 @@ def _check_ia_classifier_quality(skills_result: dict[str, Any]) -> IAClassificat
         {'label': p['label'], 'probability': p['probability']}
         for p in predictions if p['probability'] >= 0.35
     ]
+    families = skills_result.get('family_groups', [])
     status = 'success' if discriminating and categories else (
         'unreliable' if not discriminating else 'unavailable'
     )
     return IAClassificationInfo(
         status=status,
         categories=categories,
+        families=families,
         scores=skills_result.get('all_scores', []),
         score_min=score_min,
         score_max=score_max,
@@ -162,6 +164,7 @@ def _check_ia_classifier_quality(skills_result: dict[str, Any]) -> IAClassificat
         score_std=score_std,
         discriminating=discriminating,
         warnings=warnings,
+        threshold_applied=skills_result.get("threshold_applied", 0.35),
     )
 
 
@@ -341,21 +344,43 @@ def _build_analysis_result(
         classifier_params=checkpoint_audit_raw.get('classifier_params', {}),
     )
 
+    from inference.deepforma_predictor import DEFAULT_TAXONOMY_PATH
+    _taxonomy_version = ""
+    _tax_path = Path(DEFAULT_TAXONOMY_PATH)
+    if _tax_path.exists():
+        try:
+            _tax = json.loads(_tax_path.read_text(encoding="utf-8"))
+            _taxonomy_version = _tax.get("version", "")
+        except Exception:
+            pass
+    _model_name = "Classifieur IA"
+    _num_labels = len(skills_result.get("predictions", []))
+    _validation_status = "non validé"
+    if result.checkpoint_audit.appears_random_init:
+        _validation_status = "non entraîné"
+    elif result.checkpoint_audit.strict_load_success:
+        _validation_status = "entraîné (non validé)"
+    if _taxonomy_version:
+        _model_name = f"Classifieur IA v{_taxonomy_version}"
+
     result.model_metadata = ModelMetadata(
-        binary_model='CamemBERT (CamembertForSequenceClassification)',
-        multilabel_model='CamemBERT (CamembertForSequenceClassification)',
+        binary_model="CamemBERT (CamembertForSequenceClassification)",
+        multilabel_model="CamemBERT (CamembertForSequenceClassification)",
+        model_name=_model_name,
+        taxonomy_version=_taxonomy_version,
+        validation_status=_validation_status,
         binary_checkpoint=binary_model_checkpoint,
         multilabel_checkpoint=multilabel_model_checkpoint,
-        device=analysis.get('device', 'cpu'),
+        device=analysis.get("device", "cpu"),
         max_length=512,
-        num_labels=len(skills_result.get('predictions', [])),
-        labels=[p['label'] for p in predictions] if predictions else [],
-        thresholds={'multilabel': threshold, 'binary': None},
-        inference_time_ms=analysis.get('inference_time_ms', 0.0),
+        num_labels=_num_labels,
+        labels=[p["label"] for p in predictions] if predictions else [],
+        thresholds={"multilabel": threshold, "binary": None},
+        inference_time_ms=analysis.get("inference_time_ms", 0.0),
         classifier_weight_stats={
-            'appears_random_init': result.checkpoint_audit.appears_random_init,
-            'out_proj': result.checkpoint_audit.classifier_params.get('classifier.out_proj.weight', {}),
-            'dense': result.checkpoint_audit.classifier_params.get('classifier.dense.weight', {}),
+            "appears_random_init": result.checkpoint_audit.appears_random_init,
+            "out_proj": result.checkpoint_audit.classifier_params.get("classifier.out_proj.weight", {}),
+            "dense": result.checkpoint_audit.classifier_params.get("classifier.dense.weight", {}),
         },
     )
 
@@ -571,6 +596,12 @@ def create_app(
     france_travail_client_factory: Any | None = None,
 ) -> Flask:
     app = Flask(__name__, template_folder=str(TEMPLATE_DIR), static_folder=str(STATIC_DIR))
+
+    @app.template_filter('sigmoid_pct')
+    def _fmt_sigmoid_pct(value):
+        """Format a sigmoid probability as percentage (e.g. 0.5234 -> '52.3%')."""
+        return f"{float(value) * 100:.1f}%"
+
     app.config.update(
         CACHE_TTL_SECONDS=cache_ttl_seconds or DEFAULT_CACHE_TTL_SECONDS,
         MAX_OFFERS=DEFAULT_MAX_OFFERS,

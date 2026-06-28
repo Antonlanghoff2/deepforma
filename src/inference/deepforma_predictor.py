@@ -83,10 +83,10 @@ except Exception:
 from common.text import clean_text
 from inference.skill_model import load_label_classes, load_thresholds
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_BINARY_MODEL_DIR = PROJECT_ROOT / 'models' / 'binary_ia_v2' / 'final'
 DEFAULT_MULTILABEL_MODEL_DIR = PROJECT_ROOT / 'models' / 'multilabel_competences_v2' / 'final'
+DEFAULT_TAXONOMY_PATH = PROJECT_ROOT / 'data' / 'referentials' / 'ai_skill_taxonomy.json'
 DEFAULT_MAX_LENGTH = 512
 
 
@@ -356,6 +356,7 @@ class DeepformaPredictor:
         self,
         binary_model_dir: str | Path = DEFAULT_BINARY_MODEL_DIR,
         multilabel_model_dir: str | Path = DEFAULT_MULTILABEL_MODEL_DIR,
+        taxonomy_path: str | Path | None = DEFAULT_TAXONOMY_PATH,
         device: torch.device | None = None,
     ) -> None:
         self.binary_model_dir = Path(binary_model_dir)
@@ -395,6 +396,85 @@ class DeepformaPredictor:
         logger.info('Max length: %d', self.max_length)
 
         self._validate_model_shapes()
+
+        # Taxonomy loading (optional, for family grouping)
+        self.taxonomy = self._load_taxonomy(taxonomy_path)
+        self.family_map = self._build_family_map()
+
+    def _load_taxonomy(self, path: str | Path | None) -> dict | None:
+        if path is None:
+            return None
+        p = Path(path)
+        if not p.exists():
+            logger.warning('Taxonomie non trouvee: %s', p)
+            return None
+        try:
+            tax = json.loads(p.read_text(encoding='utf-8'))
+            logger.info('Taxonomie chargee: %s (version %s, %d familles)',
+                         p, tax.get('version', 'N/A'), len(tax.get('families', [])))
+            return tax
+        except Exception as e:
+            logger.warning('Echec chargement taxonomie: %s', e)
+            return None
+
+    def _build_family_map(self) -> dict[str, dict]:
+        """Build {skill_id: {family_id, family_label, skill_label}} from taxonomy."""
+        mapping: dict[str, dict] = {}
+        if not self.taxonomy:
+            return mapping
+        for family in self.taxonomy.get('families', []):
+            for skill in family.get('skills', []):
+                skill_id = skill['id']
+                mapping[skill_id] = {
+                    'family_id': family['id'],
+                    'family_label': family['label'],
+                    'skill_label': skill['label'],
+                    'skill_id': skill_id,
+                }
+        return mapping
+
+    def _group_predictions_by_family(
+        self,
+        predictions: list[dict[str, Any]],
+        threshold: float,
+    ) -> list[dict[str, Any]]:
+        """Group predictions by taxonomy family."""
+        if not self.taxonomy or not self.family_map:
+            return []
+
+        families: dict[str, dict] = {}
+        for pred in predictions:
+            label = pred['label']
+            prob = pred['probability']
+            # Try to find skill_id from label via reverse lookup
+            skill_id = None
+            for sid, info in self.family_map.items():
+                if info['skill_label'] == label or sid == label:
+                    skill_id = sid
+                    break
+
+            if not skill_id:
+                continue
+
+            fam = self.family_map[skill_id]
+            fam_id = fam['family_id']
+            if fam_id not in families:
+                families[fam_id] = {
+                    'family_id': fam_id,
+                    'family_label': fam['family_label'],
+                    'skills': [],
+                }
+            families[fam_id]['skills'].append({
+                'skill_id': skill_id,
+                'label': fam['skill_label'],
+                'probability': round(prob, 4),
+                'above_threshold': prob >= threshold,
+            })
+
+        result = sorted(families.values(), key=lambda f: f['family_label'])
+        for fam in result:
+            fam['skills'].sort(key=lambda s: s['probability'], reverse=True)
+        return result
 
     def _validate_model_shapes(self) -> None:
         binary_num_labels = _infer_num_labels(self.binary_model)
@@ -497,6 +577,7 @@ class DeepformaPredictor:
         ]
         predictions.sort(key=lambda item: item['probability'], reverse=True)
         all_scores = [p['probability'] for p in predictions]
+        family_groups = self._group_predictions_by_family(predictions, current_threshold)
         return {
             'predictions': predictions,
             'all_scores': all_scores,
@@ -508,6 +589,7 @@ class DeepformaPredictor:
             'num_labels': len(self.labels),
             'threshold_applied': current_threshold,
             'raw_logits': raw_logits,
+            'family_groups': family_groups,
         }
 
     def analyze(self, text: str, threshold: float | None = None) -> dict[str, Any]:

@@ -1,0 +1,1872 @@
+{
+  "version": "1.0",
+  "description": "Taxonomie hiérarchique des compétences en intelligence artificielle",
+  "created": "2026-06-29",
+  "families": [
+    {
+      "id": "ml_fundamentals",
+      "label": "Fondamentaux IA et Machine Learning",
+      "order": 1,
+      "skills": [
+        {
+          "id": "ml.intro",
+          "label": "Machine Learning",
+          "aliases": [
+            "apprentissage automatique",
+            "ML",
+            "machine learning"
+          ],
+          "description": "Concepts fondamentaux du machine learning",
+          "active": true,
+          "source_18_label": "Machine Learning",
+          "frequency_dataset": 102,
+          "activation_level": "actif"
+        },
+        {
+          "id": "ml.supervised",
+          "label": "Apprentissage supervisé",
+          "aliases": [
+            "supervised learning",
+            "apprentissage supervisé"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.unsupervised",
+          "label": "Apprentissage non supervisé",
+          "aliases": [
+            "unsupervised learning",
+            "apprentissage non supervisé"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.reinforcement",
+          "label": "Apprentissage par renforcement",
+          "aliases": [
+            "reinforcement learning",
+            "RL",
+            "apprentissage par renforcement"
+          ],
+          "active": true,
+          "source_18_label": "Reinforcement Learning",
+          "frequency_dataset": 14,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "ml.classification",
+          "label": "Classification",
+          "aliases": [
+            "classification"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.regression",
+          "label": "Régression",
+          "aliases": [
+            "régression",
+            "regression"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.clustering",
+          "label": "Clustering",
+          "aliases": [
+            "clustering",
+            "partitionnement"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.anomaly",
+          "label": "Détection d'anomalies",
+          "aliases": [
+            "détection d'anomalies",
+            "anomaly detection",
+            "détection d'anomalie"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.recommendation",
+          "label": "Systèmes de recommandation",
+          "aliases": [
+            "système de recommandation",
+            "recommender system",
+            "systèmes de recommandation"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.feature_engineering",
+          "label": "Feature engineering",
+          "aliases": [
+            "feature engineering",
+            "ingénierie des caractéristiques",
+            "extraction de caractéristiques"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.cross_validation",
+          "label": "Validation croisée",
+          "aliases": [
+            "validation croisée",
+            "cross-validation",
+            "cross validation"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.hyperparameter_optimization",
+          "label": "Optimisation des hyperparamètres",
+          "aliases": [
+            "optimisation des hyperparamètres",
+            "hyperparameter tuning",
+            "hyperparameter optimization"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.model_evaluation",
+          "label": "Évaluation des modèles",
+          "aliases": [
+            "évaluation des modèles",
+            "model evaluation",
+            "évaluation de modèle"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ml.interpretability",
+          "label": "Interprétabilité",
+          "aliases": [
+            "interprétabilité",
+            "interpretability",
+            "explicabilité",
+            "explainability"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "deep_learning",
+      "label": "Deep Learning",
+      "order": 2,
+      "skills": [
+        {
+          "id": "dl.intro",
+          "label": "Deep Learning",
+          "aliases": [
+            "deep learning",
+            "apprentissage profond",
+            "DL"
+          ],
+          "active": true,
+          "source_18_label": "Deep Learning",
+          "frequency_dataset": 82,
+          "activation_level": "actif"
+        },
+        {
+          "id": "dl.neural_networks",
+          "label": "Réseaux de neurones",
+          "aliases": [
+            "réseaux de neurones",
+            "neural networks",
+            "réseau de neurones"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.cnn",
+          "label": "CNN",
+          "aliases": [
+            "CNN",
+            "convolutional neural network",
+            "réseau de neurones convolutif",
+            "convolution"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.rnn",
+          "label": "RNN",
+          "aliases": [
+            "RNN",
+            "recurrent neural network",
+            "réseau de neurones récurrent"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.transformers",
+          "label": "Transformers",
+          "aliases": [
+            "transformer",
+            "transformers",
+            "architecture transformer"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.autoencoders",
+          "label": "Autoencodeurs",
+          "aliases": [
+            "autoencodeur",
+            "autoencoder",
+            "auto-encodeur"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.transfer_learning",
+          "label": "Transfer learning",
+          "aliases": [
+            "transfer learning",
+            "apprentissage par transfert",
+            "transfert d'apprentissage"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.finetuning",
+          "label": "Fine-tuning",
+          "aliases": [
+            "fine-tuning",
+            "fine tuning",
+            "réglage fin"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.contrastive",
+          "label": "Apprentissage contrastif",
+          "aliases": [
+            "apprentissage contrastif",
+            "contrastive learning"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.distillation",
+          "label": "Distillation",
+          "aliases": [
+            "distillation",
+            "knowledge distillation",
+            "distillation de connaissances"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "dl.quantization",
+          "label": "Quantification",
+          "aliases": [
+            "quantification",
+            "quantization"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "nlp",
+      "label": "NLP et IA générative",
+      "order": 3,
+      "skills": [
+        {
+          "id": "nlp.intro",
+          "label": "NLP",
+          "aliases": [
+            "NLP",
+            "traitement du langage naturel",
+            "TAL",
+            "traitement automatique du langage",
+            "natural language processing"
+          ],
+          "active": true,
+          "source_18_label": "NLP",
+          "frequency_dataset": 115,
+          "activation_level": "actif"
+        },
+        {
+          "id": "nlp.text_classification",
+          "label": "Classification de texte",
+          "aliases": [
+            "classification de texte",
+            "text classification"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.sentiment",
+          "label": "Analyse de sentiment",
+          "aliases": [
+            "analyse de sentiment",
+            "sentiment analysis",
+            "analyse d'opinion"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.ner",
+          "label": "NER",
+          "aliases": [
+            "NER",
+            "reconnaissance d'entités nommées",
+            "named entity recognition",
+            "reconnaissance d'entité nommée"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.summarization",
+          "label": "Résumé automatique",
+          "aliases": [
+            "résumé automatique",
+            "summarization",
+            "text summarization",
+            "résumé de texte"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.machine_translation",
+          "label": "Traduction automatique",
+          "aliases": [
+            "traduction automatique",
+            "machine translation"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.semantic_search",
+          "label": "Recherche sémantique",
+          "aliases": [
+            "recherche sémantique",
+            "semantic search"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.embeddings",
+          "label": "Embeddings",
+          "aliases": [
+            "embeddings",
+            "plongement",
+            "word embeddings",
+            "plongement de mots",
+            "text embeddings"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.llm",
+          "label": "LLM",
+          "aliases": [
+            "LLM",
+            "large language model",
+            "grand modèle de langage",
+            "modèle de langage"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.generative_ai",
+          "label": "IA générative",
+          "aliases": [
+            "IA générative",
+            "intelligence artificielle générative",
+            "generative AI",
+            "AI générative"
+          ],
+          "active": true,
+          "source_18_label": "IA générative",
+          "frequency_dataset": 202,
+          "activation_level": "actif"
+        },
+        {
+          "id": "nlp.prompt_engineering",
+          "label": "Prompt Engineering",
+          "aliases": [
+            "prompt engineering",
+            "ingénierie de prompt",
+            "prompt"
+          ],
+          "active": true,
+          "source_18_label": "Prompt Engineering",
+          "frequency_dataset": 156,
+          "activation_level": "actif"
+        },
+        {
+          "id": "nlp.rag",
+          "label": "RAG",
+          "aliases": [
+            "RAG",
+            "retrieval augmented generation",
+            "génération augmentée par récupération"
+          ],
+          "active": true,
+          "source_18_label": "RAG",
+          "frequency_dataset": 72,
+          "activation_level": "actif"
+        },
+        {
+          "id": "nlp.agents",
+          "label": "Agents IA",
+          "aliases": [
+            "agents IA",
+            "AI agents",
+            "agent IA",
+            "smart agents",
+            "agents intelligents"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.function_calling",
+          "label": "Function calling",
+          "aliases": [
+            "function calling",
+            "appel de fonction",
+            "tool calling"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.llm_finetuning",
+          "label": "Fine-tuning de LLM",
+          "aliases": [
+            "fine-tuning de LLM",
+            "LLM fine-tuning",
+            "réglage de LLM"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.llm_evaluation",
+          "label": "Évaluation de LLM",
+          "aliases": [
+            "évaluation de LLM",
+            "LLM evaluation",
+            "LLM eval"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.guardrails",
+          "label": "Guardrails",
+          "aliases": [
+            "guardrails",
+            "garde-fous",
+            "LLM guardrails"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "nlp.vector_databases",
+          "label": "Vector databases",
+          "aliases": [
+            "vector database",
+            "base de données vectorielle",
+            "vecteur database",
+            "vector store",
+            "vecteur store"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "computer_vision",
+      "label": "Computer Vision",
+      "order": 4,
+      "skills": [
+        {
+          "id": "cv.intro",
+          "label": "Computer Vision",
+          "aliases": [
+            "computer vision",
+            "vision par ordinateur",
+            "vision artificielle"
+          ],
+          "active": true,
+          "source_18_label": "Computer Vision",
+          "frequency_dataset": 13,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "cv.image_classification",
+          "label": "Classification d'images",
+          "aliases": [
+            "classification d'images",
+            "image classification"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.object_detection",
+          "label": "Détection d'objets",
+          "aliases": [
+            "détection d'objets",
+            "object detection"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.segmentation",
+          "label": "Segmentation",
+          "aliases": [
+            "segmentation",
+            "image segmentation",
+            "segmentation d'image"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.ocr",
+          "label": "OCR",
+          "aliases": [
+            "OCR",
+            "reconnaissance optique de caractères",
+            "optical character recognition"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.tracking",
+          "label": "Suivi d'objets",
+          "aliases": [
+            "suivi d'objets",
+            "object tracking",
+            "tracking"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.3d_vision",
+          "label": "Vision 3D",
+          "aliases": [
+            "vision 3D",
+            "3D vision",
+            "vision tridimensionnelle"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.image_generation",
+          "label": "Génération d'images",
+          "aliases": [
+            "génération d'images",
+            "image generation"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "cv.video_processing",
+          "label": "Traitement vidéo",
+          "aliases": [
+            "traitement vidéo",
+            "video processing",
+            "analyse vidéo",
+            "video analysis"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "audio_speech",
+      "label": "Audio et parole",
+      "order": 5,
+      "skills": [
+        {
+          "id": "audio.speech_recognition",
+          "label": "Reconnaissance vocale",
+          "aliases": [
+            "reconnaissance vocale",
+            "speech recognition",
+            "ASR",
+            "reconnaissance de la parole"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "audio.text_to_speech",
+          "label": "Synthèse vocale",
+          "aliases": [
+            "synthèse vocale",
+            "text-to-speech",
+            "TTS",
+            "synthèse de la parole"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "audio.audio_processing",
+          "label": "Traitement audio",
+          "aliases": [
+            "traitement audio",
+            "audio processing"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "data_science",
+      "label": "Data Science",
+      "order": 6,
+      "skills": [
+        {
+          "id": "ds.intro",
+          "label": "Data Science",
+          "aliases": [
+            "data science",
+            "science des données"
+          ],
+          "active": true,
+          "source_18_label": "Data Science",
+          "frequency_dataset": 91,
+          "activation_level": "actif"
+        },
+        {
+          "id": "ds.analysis",
+          "label": "Analyse de données",
+          "aliases": [
+            "analyse de données",
+            "data analysis"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.cleaning",
+          "label": "Nettoyage des données",
+          "aliases": [
+            "nettoyage des données",
+            "data cleaning"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.preparation",
+          "label": "Préparation des données",
+          "aliases": [
+            "préparation des données",
+            "data preparation",
+            "data preprocessing"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.visualization",
+          "label": "Visualisation",
+          "aliases": [
+            "visualisation",
+            "visualization",
+            "dataviz",
+            "data visualization"
+          ],
+          "active": true,
+          "source_18_label": "Visualisation",
+          "frequency_dataset": 89,
+          "activation_level": "actif"
+        },
+        {
+          "id": "ds.statistics",
+          "label": "Statistiques",
+          "aliases": [
+            "statistiques",
+            "statistics"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.time_series",
+          "label": "Séries temporelles",
+          "aliases": [
+            "séries temporelles",
+            "time series",
+            "analyse de séries temporelles"
+          ],
+          "active": true,
+          "source_18_label": "Séries temporelles",
+          "frequency_dataset": 28,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "ds.forecasting",
+          "label": "Prévision",
+          "aliases": [
+            "prévision",
+            "forecasting",
+            "prédiction"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.big_data",
+          "label": "Big Data",
+          "aliases": [
+            "big data",
+            "données massives"
+          ],
+          "active": true,
+          "source_18_label": "Big Data",
+          "frequency_dataset": 45,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "ds.data_quality",
+          "label": "Qualité des données",
+          "aliases": [
+            "qualité des données",
+            "data quality"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.data_annotation",
+          "label": "Annotation de données",
+          "aliases": [
+            "annotation de données",
+            "data annotation",
+            "labeling",
+            "étiquetage"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "ds.synthetic_data",
+          "label": "Données synthétiques",
+          "aliases": [
+            "données synthétiques",
+            "synthetic data"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "data_engineering",
+      "label": "Data Engineering",
+      "order": 7,
+      "skills": [
+        {
+          "id": "de.intro",
+          "label": "Data Engineering",
+          "aliases": [
+            "data engineering",
+            "ingénierie des données"
+          ],
+          "active": true,
+          "source_18_label": "Data Engineering",
+          "frequency_dataset": 87,
+          "activation_level": "actif"
+        },
+        {
+          "id": "de.etl",
+          "label": "ETL",
+          "aliases": [
+            "ETL",
+            "extract transform load"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.elt",
+          "label": "ELT",
+          "aliases": [
+            "ELT",
+            "extract load transform"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.sql",
+          "label": "SQL",
+          "aliases": [
+            "SQL",
+            "bases de données relationnelles"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.nosql",
+          "label": "NoSQL",
+          "aliases": [
+            "NoSQL",
+            "bases de données non relationnelles"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.data_warehouse",
+          "label": "Data warehouse",
+          "aliases": [
+            "data warehouse",
+            "entrepôt de données"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.data_lake",
+          "label": "Data lake",
+          "aliases": [
+            "data lake",
+            "lac de données"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.streaming",
+          "label": "Streaming",
+          "aliases": [
+            "streaming",
+            "data streaming",
+            "traitement en flux"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.orchestration",
+          "label": "Orchestration",
+          "aliases": [
+            "orchestration",
+            "data orchestration",
+            "pipeline orchestration"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "de.data_governance",
+          "label": "Gouvernance des données",
+          "aliases": [
+            "gouvernance des données",
+            "data governance"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "mlops",
+      "label": "MLOps et déploiement",
+      "order": 8,
+      "skills": [
+        {
+          "id": "mlops.intro",
+          "label": "MLOps",
+          "aliases": [
+            "MLOps",
+            "machine learning operations"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.deployment",
+          "label": "Déploiement de modèles",
+          "aliases": [
+            "déploiement de modèles",
+            "model deployment",
+            "déploiement"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.serving",
+          "label": "Serving",
+          "aliases": [
+            "serving",
+            "model serving",
+            "inférence",
+            "inférence de modèles"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.api_inference",
+          "label": "API d'inférence",
+          "aliases": [
+            "API d'inférence",
+            "inference API",
+            "API de prédiction"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.docker",
+          "label": "Docker",
+          "aliases": [
+            "Docker"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.kubernetes",
+          "label": "Kubernetes",
+          "aliases": [
+            "Kubernetes",
+            "K8s"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.cicd",
+          "label": "CI/CD ML",
+          "aliases": [
+            "CI/CD",
+            "intégration continue",
+            "déploiement continu",
+            "continuous integration",
+            "continuous deployment"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.monitoring",
+          "label": "Monitoring",
+          "aliases": [
+            "monitoring",
+            "surveillance",
+            "model monitoring"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.drift_detection",
+          "label": "Détection de dérive",
+          "aliases": [
+            "détection de dérive",
+            "drift detection",
+            "data drift",
+            "model drift"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.data_versioning",
+          "label": "Versionnement des données",
+          "aliases": [
+            "versionnement des données",
+            "data versioning",
+            "DVC"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.model_versioning",
+          "label": "Versionnement des modèles",
+          "aliases": [
+            "versionnement des modèles",
+            "model versioning"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.mlflow",
+          "label": "MLflow",
+          "aliases": [
+            "MLflow"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.feature_store",
+          "label": "Feature store",
+          "aliases": [
+            "feature store"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.model_registry",
+          "label": "Model registry",
+          "aliases": [
+            "model registry"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.cloud_ai",
+          "label": "Cloud IA",
+          "aliases": [
+            "cloud IA",
+            "cloud AI",
+            "AI cloud"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "mlops.edge_ai",
+          "label": "Edge AI",
+          "aliases": [
+            "edge AI",
+            "IA embarquée",
+            "edge computing",
+            "IA sur périphérique"
+          ],
+          "active": false,
+          "source_18_label": null,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "programming_tools",
+      "label": "Programmation et outils",
+      "order": 9,
+      "skills": [
+        {
+          "id": "prog.python",
+          "label": "Python pour l’IA",
+          "aliases": [
+            "Python",
+            "Python pour l’IA",
+            "Python pour l IA"
+          ],
+          "active": true,
+          "source_18_label": "Python pour l’IA",
+          "frequency_dataset": 76,
+          "activation_level": "actif"
+        },
+        {
+          "id": "prog.r",
+          "label": "R",
+          "aliases": [
+            "R",
+            "langage R"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.pytorch",
+          "label": "PyTorch",
+          "aliases": [
+            "PyTorch"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.tensorflow",
+          "label": "TensorFlow",
+          "aliases": [
+            "TensorFlow"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.keras",
+          "label": "Keras",
+          "aliases": [
+            "Keras"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.scikit_learn",
+          "label": "Scikit-learn",
+          "aliases": [
+            "scikit-learn",
+            "sklearn"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.huggingface",
+          "label": "Hugging Face",
+          "aliases": [
+            "Hugging Face",
+            "huggingface",
+            "transformers"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.pandas",
+          "label": "Pandas",
+          "aliases": [
+            "Pandas"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.numpy",
+          "label": "NumPy",
+          "aliases": [
+            "NumPy",
+            "numpy"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.spark",
+          "label": "Spark",
+          "aliases": [
+            "Spark",
+            "Apache Spark"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.fastapi",
+          "label": "FastAPI",
+          "aliases": [
+            "FastAPI"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.airflow",
+          "label": "Airflow",
+          "aliases": [
+            "Airflow",
+            "Apache Airflow"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.git",
+          "label": "Git",
+          "aliases": [
+            "Git",
+            "GitHub",
+            "GitLab"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.linux",
+          "label": "Linux",
+          "aliases": [
+            "Linux",
+            "Unix",
+            "bash"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.jupyter",
+          "label": "Jupyter",
+          "aliases": [
+            "Jupyter",
+            "Jupyter Notebook"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.langchain",
+          "label": "LangChain",
+          "aliases": [
+            "LangChain",
+            "langchain"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "prog.llamaindex",
+          "label": "LlamaIndex",
+          "aliases": [
+            "LlamaIndex",
+            "llamaindex"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "governance_ethics",
+      "label": "Gouvernance, éthique et sécurité",
+      "order": 10,
+      "skills": [
+        {
+          "id": "gov.ethics",
+          "label": "Éthique de l’IA",
+          "aliases": [
+            "éthique de l’IA",
+            "éthique IA",
+            "éthique de l'intelligence artificielle",
+            "ethique ia"
+          ],
+          "active": true,
+          "source_18_label": "Éthique de l’IA",
+          "frequency_dataset": 232,
+          "activation_level": "actif"
+        },
+        {
+          "id": "gov.responsible_ai",
+          "label": "IA responsable",
+          "aliases": [
+            "IA responsable",
+            "responsible AI",
+            "AI responsable"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.bias",
+          "label": "Biais algorithmiques",
+          "aliases": [
+            "biais algorithmiques",
+            "algorithmic bias",
+            "biais"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.fairness",
+          "label": "Équité",
+          "aliases": [
+            "équité",
+            "fairness"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.explainability",
+          "label": "Explicabilité",
+          "aliases": [
+            "explicabilité",
+            "explainability",
+            "XAI",
+            "IA explicable"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.rgpd",
+          "label": "RGPD",
+          "aliases": [
+            "RGPD",
+            "GDPR",
+            "conformité RGPD",
+            "protection des données"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.security",
+          "label": "Sécurité des systèmes IA",
+          "aliases": [
+            "sécurité IA",
+            "AI security",
+            "sécurité des systèmes"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.robustness",
+          "label": "Robustesse",
+          "aliases": [
+            "robustesse",
+            "robustness",
+            "IA robuste"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.model_audit",
+          "label": "Audit des modèles",
+          "aliases": [
+            "audit des modèles",
+            "model audit"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.governance",
+          "label": "Gouvernance de l’IA",
+          "aliases": [
+            "gouvernance de l’IA",
+            "gouvernance IA",
+            "IA governance",
+            "gouvernance de l ia"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.risk_management",
+          "label": "Gestion des risques",
+          "aliases": [
+            "gestion des risques",
+            "risk management"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "gov.ai_act",
+          "label": "AI Act",
+          "aliases": [
+            "AI Act",
+            "réglementation IA",
+            "régulation IA"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "project_management",
+      "label": "Gestion de projet IA",
+      "order": 11,
+      "skills": [
+        {
+          "id": "pm.intro",
+          "label": "Gestion de projet IA",
+          "aliases": [
+            "gestion de projet IA",
+            "pilotage de projet IA",
+            "gestion de projet ia"
+          ],
+          "active": true,
+          "source_18_label": "Gestion de projet IA",
+          "frequency_dataset": 10,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "pm.scoping",
+          "label": "Cadrage",
+          "aliases": [
+            "cadrage",
+            "scoping"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.use_case",
+          "label": "Cas d'usage",
+          "aliases": [
+            "cas d'usage",
+            "use case"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.requirements",
+          "label": "Recueil des besoins",
+          "aliases": [
+            "recueil des besoins",
+            "requirements"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.feasibility",
+          "label": "Faisabilité",
+          "aliases": [
+            "faisabilité",
+            "feasibility"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.roi",
+          "label": "ROI",
+          "aliases": [
+            "ROI",
+            "retour sur investissement"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.poc",
+          "label": "Preuve de concept",
+          "aliases": [
+            "preuve de concept",
+            "POC",
+            "proof of concept"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.industrialization",
+          "label": "Industrialisation",
+          "aliases": [
+            "industrialisation",
+            "industrialization"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.documentation",
+          "label": "Documentation",
+          "aliases": [
+            "documentation"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.communication",
+          "label": "Communication des résultats",
+          "aliases": [
+            "communication",
+            "reporting",
+            "présentation des résultats"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.change_management",
+          "label": "Conduite du changement",
+          "aliases": [
+            "conduite du changement",
+            "change management"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "pm.product_management",
+          "label": "Product management IA",
+          "aliases": [
+            "product management",
+            "product manager IA"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    },
+    {
+      "id": "automation",
+      "label": "Automatisation et No-code",
+      "order": 12,
+      "skills": [
+        {
+          "id": "auto.intro",
+          "label": "Automatisation",
+          "aliases": [
+            "automatisation",
+            "automation",
+            "workflow automation"
+          ],
+          "active": true,
+          "source_18_label": "Automatisation",
+          "frequency_dataset": 131,
+          "activation_level": "actif"
+        },
+        {
+          "id": "auto.rpa",
+          "label": "RPA",
+          "aliases": [
+            "RPA",
+            "robotic process automation"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "auto.nocode",
+          "label": "No-code / Low-code",
+          "aliases": [
+            "no-code",
+            "low-code",
+            "no code",
+            "low code"
+          ],
+          "active": true,
+          "source_18_label": "No-code / Low-code",
+          "frequency_dataset": 45,
+          "activation_level": "experimental"
+        },
+        {
+          "id": "auto.api_integration",
+          "label": "Intégration d'API",
+          "aliases": [
+            "intégration d'API",
+            "API integration"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "auto.workflows",
+          "label": "Workflows IA",
+          "aliases": [
+            "workflows IA",
+            "AI workflows"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "auto.n8n",
+          "label": "n8n",
+          "aliases": [
+            "n8n"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        },
+        {
+          "id": "auto.power_automate",
+          "label": "Power Automate",
+          "aliases": [
+            "Power Automate",
+            "Microsoft Power Automate"
+          ],
+          "active": false,
+          "frequency_dataset": 0,
+          "activation_level": "inactif"
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "total_labels": 130,
+    "active_labels": 12,
+    "experimental_labels": 3,
+    "inactive_labels": 115,
+    "activation_criteria": {
+      "actif": "≥ 50 positifs dans le dataset",
+      "experimental": "10 à 49 positifs",
+      "inactif": "< 10 positifs ou aucun exemple",
+      "note": "La plupart des nouveaux labels sont inactifs par défaut en l'absence d'exemples d'entraînement. Ils deviendront activables au fur et à mesure de l'annotation."
+    },
+    "source_18_labels_mapping": {
+      "Machine Learning": "ml.intro",
+      "Deep Learning": "dl.intro",
+      "NLP": "nlp.intro",
+      "IA générative": "nlp.generative_ai",
+      "RAG": "nlp.rag",
+      "Computer Vision": "cv.intro",
+      "Data Science": "ds.intro",
+      "Data Engineering": "de.intro",
+      "Reinforcement Learning": "ml.reinforcement",
+      "Gestion de projet IA": "pm.intro",
+      "Prompt Engineering": "nlp.prompt_engineering",
+      "No-code / Low-code": "auto.nocode",
+      "Automatisation": "auto.intro",
+      "Big Data": "ds.big_data",
+      "Visualisation": "ds.visualization",
+      "Séries temporelles": "ds.time_series",
+      "Python pour l’IA": "prog.python",
+      "Éthique de l’IA": "gov.ethics"
+    },
+    "label_activation_by_frequency": {
+      "≥ 100": "actif",
+      "50-99": "actif",
+      "30-49": "actif (utilisable avec prudence)",
+      "10-29": "experimental",
+      "< 10": "inactif (fusionner ou désactiver)"
+    }
+  }
+}

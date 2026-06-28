@@ -1,0 +1,116 @@
+{
+  "task": "multilabel",
+  "base_model": "camembert-base",
+  "n_samples": 16,
+  "epochs": 5,
+  "device": "cuda",
+  "label_names": [
+    "Automatisation",
+    "Big Data",
+    "Computer Vision",
+    "Data Engineering",
+    "Data Science",
+    "Deep Learning",
+    "IA générative",
+    "Machine Learning",
+    "NLP",
+    "No-code / Low-code",
+    "Prompt Engineering",
+    "Python pour l’IA",
+    "Reinforcement Learning",
+    "Séries temporelles",
+    "Visualisation",
+    "Éthique de l’IA"
+  ],
+  "losses": [
+    0.6919,
+    0.6856,
+    0.6755,
+    0.67,
+    0.6703
+  ],
+  "loss_delta": 0.0216,
+  "loss_first": 0.6919,
+  "loss_last": 0.6703,
+  "f1": 0.3849,
+  "n_unique_predictions": 1,
+  "score_variation": 0.007394,
+  "optimizer_check": {
+    "classifier.dense.weight": true,
+    "classifier.dense.bias": true,
+    "classifier.out_proj.weight": true,
+    "classifier.out_proj.bias": true
+  },
+  "gradient_check": {
+    "gradients": {
+      "classifier.dense.weight": {
+        "grad_norm": 0.1838960200548172,
+        "grad_mean": -7.008205216152419e-08,
+        "grad_std": 0.00023944814165588468,
+        "grad_min": -0.012456625699996948,
+        "grad_max": 0.011859911493957043,
+        "grad_nonzero_prop": 0.9999983045789931
+      },
+      "classifier.dense.bias": {
+        "grad_norm": 0.04261082410812378,
+        "grad_mean": -1.6228926824624068e-06,
+        "grad_std": 0.0015385868027806282,
+        "grad_min": -0.004517646040767431,
+        "grad_max": 0.004990768618881702,
+        "grad_nonzero_prop": 1.0
+      },
+      "classifier.out_proj.weight": {
+        "grad_norm": 0.192216157913208,
+        "grad_mean": -4.56687921541743e-05,
+        "grad_std": 0.0017334697768092155,
+        "grad_min": -0.00867767445743084,
+        "grad_max": 0.008366666734218597,
+        "grad_nonzero_prop": 1.0
+      },
+      "classifier.out_proj.bias": {
+        "grad_norm": 0.0783972516655922,
+        "grad_mean": 0.017156772315502167,
+        "grad_std": 0.009785881265997887,
+        "grad_min": -0.0010296404361724854,
+        "grad_max": 0.03218773007392883,
+        "grad_nonzero_prop": 1.0
+      }
+    },
+    "errors": [],
+    "loss_value": 0.6998882293701172,
+    "has_errors": false
+  },
+  "weight_changes": {
+    "classifier.dense.weight": {
+      "before_norm": 15.315691947937012,
+      "after_norm": 15.315969467163086,
+      "max_abs_change": 0.00011079
+    },
+    "classifier.dense.bias": {
+      "before_norm": 0.0,
+      "after_norm": 0.0026177745312452316,
+      "max_abs_change": 0.00011008
+    },
+    "classifier.out_proj.weight": {
+      "before_norm": 2.220548152923584,
+      "after_norm": 2.220695734024048,
+      "max_abs_change": 0.00011041
+    },
+    "classifier.out_proj.bias": {
+      "before_norm": 0.0,
+      "after_norm": 0.00038881716318428516,
+      "max_abs_change": 0.00010931
+    }
+  },
+  "passed_checks": [
+    "poids_classifieur_modifies",
+    "scores_diversifies: 1 uniques, score_std=0.0074",
+    "f1_superieur_hasard: F1=0.3849",
+    "gradients_presents_et_non_nuls",
+    "tete_classifieur_dans_optimiseur"
+  ],
+  "failed_checks": [
+    "loss_baisse: delta=0.0216 < 0.05"
+  ],
+  "passed": false
+}

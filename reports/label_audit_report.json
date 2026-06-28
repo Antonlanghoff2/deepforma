@@ -1,0 +1,211 @@
+{
+  "dataset": {
+    "path": "/home/bibi/deepforma/data/processed/dataset_entrainement.csv",
+    "total_rows": 1235,
+    "ia_confirmee": 334,
+    "non_ia_confirmee": 901,
+    "ia_pct": 27.04,
+    "label_classes_source": "/home/bibi/deepforma/models/multilabel_competences_v2/final/label_classes.json",
+    "taxonomy_version": "1.0"
+  },
+  "labels_18": {
+    "count": 18,
+    "order": [
+      "Automatisation",
+      "Big Data",
+      "Computer Vision",
+      "Data Engineering",
+      "Data Science",
+      "Deep Learning",
+      "Gestion de projet IA",
+      "IA générative",
+      "Machine Learning",
+      "NLP",
+      "No-code / Low-code",
+      "Prompt Engineering",
+      "Python pour l’IA",
+      "RAG",
+      "Reinforcement Learning",
+      "Séries temporelles",
+      "Visualisation",
+      "Éthique de l’IA"
+    ],
+    "id2label_status": "GENERIQUE (LABEL_0..LABEL_17)"
+  },
+  "per_label_statistics": [
+    {
+      "label": "Automatisation",
+      "positives": 131,
+      "negatives": 203,
+      "frequency_pct": 39.22,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Big Data",
+      "positives": 45,
+      "negatives": 289,
+      "frequency_pct": 13.47,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "Computer Vision",
+      "positives": 13,
+      "negatives": 321,
+      "frequency_pct": 3.89,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "Data Engineering",
+      "positives": 87,
+      "negatives": 247,
+      "frequency_pct": 26.05,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Data Science",
+      "positives": 91,
+      "negatives": 243,
+      "frequency_pct": 27.25,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Deep Learning",
+      "positives": 82,
+      "negatives": 252,
+      "frequency_pct": 24.55,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Gestion de projet IA",
+      "positives": 10,
+      "negatives": 324,
+      "frequency_pct": 2.99,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "IA générative",
+      "positives": 202,
+      "negatives": 132,
+      "frequency_pct": 60.48,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Machine Learning",
+      "positives": 102,
+      "negatives": 232,
+      "frequency_pct": 30.54,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "NLP",
+      "positives": 115,
+      "negatives": 219,
+      "frequency_pct": 34.43,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "No-code / Low-code",
+      "positives": 45,
+      "negatives": 289,
+      "frequency_pct": 13.47,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "Prompt Engineering",
+      "positives": 156,
+      "negatives": 178,
+      "frequency_pct": 46.71,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Python pour l’IA",
+      "positives": 76,
+      "negatives": 258,
+      "frequency_pct": 22.75,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "RAG",
+      "positives": 72,
+      "negatives": 262,
+      "frequency_pct": 21.56,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Reinforcement Learning",
+      "positives": 14,
+      "negatives": 320,
+      "frequency_pct": 4.19,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "Séries temporelles",
+      "positives": 28,
+      "negatives": 306,
+      "frequency_pct": 8.38,
+      "total_rows": 334,
+      "activation_level": "experimental"
+    },
+    {
+      "label": "Visualisation",
+      "positives": 89,
+      "negatives": 245,
+      "frequency_pct": 26.65,
+      "total_rows": 334,
+      "activation_level": "actif"
+    },
+    {
+      "label": "Éthique de l’IA",
+      "positives": 232,
+      "negatives": 102,
+      "frequency_pct": 69.46,
+      "total_rows": 334,
+      "activation_level": "actif"
+    }
+  ],
+  "taxonomy_mapping_18": {
+    "Machine Learning": "ml.intro",
+    "Reinforcement Learning": "ml.reinforcement",
+    "Deep Learning": "dl.intro",
+    "NLP": "nlp.intro",
+    "IA générative": "nlp.generative_ai",
+    "Prompt Engineering": "nlp.prompt_engineering",
+    "RAG": "nlp.rag",
+    "Computer Vision": "cv.intro",
+    "Data Science": "ds.intro",
+    "Visualisation": "ds.visualization",
+    "Séries temporelles": "ds.time_series",
+    "Big Data": "ds.big_data",
+    "Data Engineering": "de.intro",
+    "Python pour l'IA": "prog.python",
+    "Éthique de l'IA": "gov.ethics",
+    "Gestion de projet IA": "pm.intro",
+    "Automatisation": "auto.intro",
+    "No-code / Low-code": "auto.nocode"
+  },
+  "summary": {
+    "total_labels_in_dataset": 18,
+    "total_labels_in_taxonomy": 141,
+    "active_labels": 12,
+    "experimental_labels": 6,
+    "inactive_labels": 0,
+    "total_positives": 1590,
+    "total_negatives": 4422,
+    "imbalance_ratio_max_min": 23.2
+  }
+}
