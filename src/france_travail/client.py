@@ -74,6 +74,14 @@ class FranceTravailAuthError(FranceTravailError):
     pass
 
 
+class FranceTravailRateLimitError(FranceTravailError):
+    pass
+
+
+class FranceTravailTimeoutError(FranceTravailError):
+    pass
+
+
 class FranceTravailClient:
     def __init__(
         self,
@@ -153,13 +161,16 @@ class FranceTravailClient:
 
         last_exc: Exception | None = None
         for attempt in range(1, MAX_RETRIES + 1):
-            response = self.session.request(
-                method,
-                url,
-                params=params,
-                headers=current_headers,
-                timeout=self.timeout,
-            )
+            try:
+                response = self.session.request(
+                    method,
+                    url,
+                    params=params,
+                    headers=current_headers,
+                    timeout=self.timeout,
+                )
+            except requests.Timeout as exc:
+                raise FranceTravailTimeoutError(f"Timeout France Travail sur {path}.") from exc
             if response.status_code == 401 and attempt < MAX_RETRIES:
                 self._token = None
                 current_headers = self._auth_headers()
@@ -173,6 +184,8 @@ class FranceTravailClient:
                 LOGGER.warning("Retry France Travail status=%s attempt=%s path=%s", response.status_code, attempt, path)
                 time.sleep(wait)
                 continue
+            if response.status_code == 429:
+                raise FranceTravailRateLimitError(f"Limite de débit France Travail atteinte sur {path}.")
             if response.status_code >= 400:
                 raise FranceTravailError(
                     f"Erreur France Travail {response.status_code} sur {path}."

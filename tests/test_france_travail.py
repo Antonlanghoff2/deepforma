@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from src.analytics.territorial_skills import compute_territorial_stats
-from src.france_travail.client import FranceTravailClient, FranceTravailError, SearchCriteria
+from src.france_travail.client import FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
 from src.france_travail.normalizer import normalize_offer
 from src.france_travail.skill_extractor import extract_structured_skills
 from src.inference.skill_model import load_label_classes, load_thresholds
@@ -125,6 +125,34 @@ def test_error_429_retries(monkeypatch):
     payload = client.get_offer("1")
     assert payload["id"] == "1"
     assert sleeps == [1]
+
+
+def test_error_429_final_raises_specific_error(monkeypatch):
+    session = FakeSession(
+        post_responses=[FakeResponse(json_data={"access_token": "tok", "expires_in": 3600})],
+        request_responses=[
+            FakeResponse(status_code=429, json_data={}),
+            FakeResponse(status_code=429, json_data={}),
+            FakeResponse(status_code=429, json_data={}),
+        ],
+    )
+    sleeps = []
+    monkeypatch.setattr("src.france_travail.client.time.sleep", lambda s: sleeps.append(s))
+    client = FranceTravailClient(client_id="id", client_secret="secret", session=session, load_env=False)
+    with pytest.raises(FranceTravailRateLimitError):
+        client.get_offer("1")
+    assert sleeps == [1, 2]
+
+
+def test_timeout_is_wrapped(monkeypatch):
+    class TimeoutSession(FakeSession):
+        def request(self, *args, **kwargs):
+            raise __import__('requests').Timeout('boom')
+
+    session = TimeoutSession(post_responses=[FakeResponse(json_data={"access_token": "tok", "expires_in": 3600})])
+    client = FranceTravailClient(client_id="id", client_secret="secret", session=session, load_env=False)
+    with pytest.raises(FranceTravailTimeoutError):
+        client.get_offer("1")
 
 
 def test_pagination_and_deduplication():

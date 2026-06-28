@@ -10,3 +10,4 @@ matplotlib
 pytest
 requests
 python-dotenv
+Flask

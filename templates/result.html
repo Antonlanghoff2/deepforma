@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Résultat Deepforma</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero compact">
+      <p class="eyebrow">Deepforma</p>
+      <h1>Résultat de l’analyse</h1>
+      <p class="lead">{{ warning }}</p>
+    </section>
+
+    <section class="grid">
+      <article class="card accent">
+        <h2>Classification</h2>
+        <p class="metric">{{ 'IA' if analysis.binary.is_ia else 'Non-IA' }}</p>
+        <p>Probabilité IA: <strong>{{ '%.2f'|format(analysis.binary.probability_ia * 100) }}%</strong></p>
+        <p>Probabilité non-IA: {{ '%.2f'|format(analysis.binary.probability_non_ia * 100) }}%</p>
+        <p>Device: {{ analysis.device }}</p>
+      </article>
+
+      <article class="card">
+        <h2>Compétences détectées</h2>
+        {% if analysis.skills %}
+        <ul class="chips">
+          {% for item in analysis.skills %}
+          <li><span>{{ item.label }}</span><small>{{ '%.2f'|format(item.probability * 100) }}%</small></li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>Aucune compétence n’a dépassé le seuil choisi.</p>
+        {% endif %}
+      </article>
+
+      <article class="card">
+        <h2>Marché territorial</h2>
+        {% if model_only %}
+        <p>Analyse modèle uniquement. Aucun appel à France Travail n’a été effectué.</p>
+        {% elif context.market_status == 'ok' %}
+        <p><strong>{{ context.territorial_stats.offer_count }}</strong> offres analysées.</p>
+        <p>Compétences territoriales principales:</p>
+        <ul class="list">
+          {% for skill in context.recommendation.market_skills[:8] %}
+          <li>{{ skill.label }} - {{ skill.offer_count }} offres ({{ '%.2f'|format(skill.share_percent) }}%)</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>Aucune donnée marché n’est disponible pour cette analyse.</p>
+        {% endif %}
+      </article>
+
+      <article class="card wide">
+        <h2>Comparaison formation / marché</h2>
+        {% if context.recommendation %}
+        <p>Score de couverture pondéré: <strong>{{ '%.2f'|format(context.recommendation.coverage_score) }}%</strong></p>
+        <div class="columns">
+          <div>
+            <h3>Compétences couvertes</h3>
+            {% if context.recommendation.covered_skills %}
+            <ul class="list">
+              {% for skill in context.recommendation.covered_skills %}
+              <li>{{ skill }}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p>Aucune correspondance directe trouvée.</p>
+            {% endif %}
+          </div>
+          <div>
+            <h3>Compétences manquantes prioritaires</h3>
+            {% if context.recommendation.missing_priority_skills %}
+            <ul class="list">
+              {% for skill in context.recommendation.missing_priority_skills[:8] %}
+              <li>{{ skill.label }} - {{ skill.offer_count }} offres ({{ '%.2f'|format(skill.share_percent) }}%)</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p>La formation couvre les compétences les plus visibles du marché territorial.</p>
+            {% endif %}
+          </div>
+        </div>
+        {% else %}
+        <p>Mode modèle uniquement: comparaison territoire non calculée.</p>
+        {% endif %}
+      </article>
+    </section>
+
+    <div class="actions bottom">
+      <a class="button-link" href="{{ url_for('index') }}">Nouvelle analyse</a>
+    </div>
+  </main>
+</body>
+</html>

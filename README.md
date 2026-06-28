@@ -123,3 +123,36 @@ Le pipeline vérifie notamment :
 - Non-IA confirmées : 441
 - À vérifier : 433
 - Compétences distinctes observées : 18
+
+## Application web Flask
+
+Lancement local:
+
+```bash
+cd /home/bibi/deepforma
+source .venv/bin/activate
+pip install flask
+python -m src.web_app
+```
+
+Puis ouvrir:
+
+```text
+http://127.0.0.1:5000
+```
+
+Test API avec `curl`:
+
+```bash
+curl -X POST http://127.0.0.1:5000/api/analyze   -H 'Content-Type: application/json'   -d '{
+    "programme": "Programme de formation en Python, data et IA",
+    "departement": "93",
+    "keywords": "python,data",
+    "threshold": 0.35,
+    "model_only": true
+  }'
+```
+
+Avertissement:
+
+> Résultat expérimental. Le modèle doit encore être validé avant utilisation opérationnelle.

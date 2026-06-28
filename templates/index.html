@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deepforma</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Deepforma</p>
+      <h1>Diagnostic territorial des compétences de formation</h1>
+      <p class="lead">Collez un programme, choisissez un département, ajoutez des mots-clés si besoin, puis comparez la formation au marché local.</p>
+    </section>
+
+    <section class="card">
+      {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
+        <label class="field field-full">
+          <span>Programme de formation</span>
+          <textarea name="programme" rows="10" placeholder="Collez ici le programme complet..." required></textarea>
+        </label>
+
+        <label class="field">
+          <span>Département</span>
+          <select name="departement" required>
+            <option value="">Sélectionner un département</option>
+            {% for code in department_options %}
+            <option value="{{ code }}">{{ code }}</option>
+            {% endfor %}
+          </select>
+        </label>
+
+        <label class="field">
+          <span>Mots-clés</span>
+          <input type="text" name="keywords" placeholder="ex. data, python, IA">
+        </label>
+
+        <label class="field">
+          <span>Seuil multi-étiquette</span>
+          <input type="number" name="threshold" min="0" max="1" step="0.01" value="{{ default_threshold }}">
+        </label>
+
+        <label class="field field-inline field-full">
+          <input type="checkbox" name="model_only" value="1">
+          <span>Tester uniquement les modèles sans appeler France Travail</span>
+        </label>
+
+        <div class="actions field-full">
+          <button type="submit">Lancer l’analyse</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
