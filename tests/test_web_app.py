@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import pytest
 
 from services.recommendation_service import RecommendationService
-from src.web_app import create_app
+from web_app import create_app
 
 
 @dataclass

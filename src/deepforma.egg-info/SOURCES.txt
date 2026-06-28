@@ -23,6 +23,9 @@ src/deepforma/recommendation/__init__.py
 src/deepforma/recommendation/training_recommender.py
 src/deepforma/skills/__init__.py
 src/deepforma/skills/normalizer.py
+src/deepforma/training/__init__.py
+src/deepforma/training/cpf_dataset.py
+src/deepforma/training/cpf_trainer.py
 src/france_travail/__init__.py
 src/france_travail/client.py
 src/france_travail/normalizer.py
@@ -39,5 +42,6 @@ src/skills/merge_offer_skills.py
 src/skills/skill_normalizer.py
 tests/test_cleaning.py
 tests/test_cpf_pipeline.py
+tests/test_cpf_training_pipeline.py
 tests/test_france_travail.py
 tests/test_web_app.py

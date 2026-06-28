@@ -187,3 +187,30 @@ Diagnostics:
 make cpf-check-imports
 make cpf-test
 ```
+
+## Entraînement CPF
+
+Installation éditable:
+
+```bash
+source .venv/bin/activate
+python -m pip install -e .
+```
+
+Commandes utiles:
+
+```bash
+make cpf-check-imports
+make cpf-test
+make cpf-build-pairs CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet
+make cpf-train CPF_TRAIN=data/training/cpf_train.jsonl CPF_VALIDATION=data/training/cpf_validation.jsonl
+make cpf-evaluate CPF_TEST=data/training/cpf_test.jsonl
+make cpf-reindex CPF_FORMATIONS_WITH_SKILLS=data/processed/cpf/formations_with_skills.parquet CPF_MODEL_OUTPUT=models/cpf-recommender
+make cpf-training-pipeline CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 CPF_MODEL_OUTPUT=models/cpf-recommender
+```
+
+Reprise après interruption:
+
+```bash
+python scripts/train_cpf_recommender.py   --train data/training/cpf_train.jsonl   --validation data/training/cpf_validation.jsonl   --base-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2   --output-dir models/cpf-recommender   --resume-from-checkpoint models/cpf-recommender/checkpoints
+```

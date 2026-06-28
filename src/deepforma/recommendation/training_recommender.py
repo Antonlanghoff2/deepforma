@@ -25,11 +25,10 @@ class RecommenderWeights:
     """Pondérations du score final."""
 
     skill_coverage: float = 40.0
-    semantic_similarity: float = 25.0
+    semantic_similarity: float = 30.0
     territory: float = 15.0
     certification_level: float = 10.0
     data_quality: float = 5.0
-    diversity: float = 5.0
 
 
 @dataclass(frozen=True)
@@ -305,14 +304,12 @@ class TrainingRecommender:
             territory_ratio = _territory_score(candidate, region_code, department_code, remote_allowed)
             level_ratio = _level_score(candidate, required_level)
             quality_ratio = _quality_score(candidate)
-            diversity_ratio = 1.0
             global_score = (
                 self.config.weights.skill_coverage * coverage_ratio
                 + self.config.weights.semantic_similarity * semantic_score
                 + self.config.weights.territory * territory_ratio
                 + self.config.weights.certification_level * level_ratio
                 + self.config.weights.data_quality * quality_ratio
-                + self.config.weights.diversity * diversity_ratio
             )
             if missing_skills and not covered:
                 global_score = min(global_score, 45.0)
