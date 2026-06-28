@@ -16,6 +16,7 @@ from sentence_transformers import SentenceTransformer
 
 from common.text import clean_text, normalize_for_match
 from deepforma.training.cpf_dataset import load_jsonl
+from deepforma.training.cpf_trainer import resolve_device
 
 
 LOGGER = logging.getLogger(__name__)
@@ -122,18 +123,37 @@ def evaluate_model(name: str, similarities: np.ndarray, queries: list[dict[str, 
     errors: list[dict[str, Any]] = []
     grouped: dict[str, list[int]] = {}
     candidate_ids = [str(row.get('formation_uid')) for row in candidates]
+    candidate_index = {uid: idx for idx, uid in enumerate(candidate_ids)}
+    missing_positives = 0
     for idx, query in enumerate(queries):
         row_scores = list(zip(candidate_ids, similarities[idx].tolist()))
         row_scores.sort(key=lambda item: item[1], reverse=True)
         positive_uid = str(query['positive_uid'])
+        positive_index = candidate_index.get(positive_uid)
+        if positive_index is None:
+            missing_positives += 1
+            errors.append(
+                {
+                    'query': query.get('query'),
+                    'expected_uid': positive_uid,
+                    'expected_title': '',
+                    'proposed_uids': ' | '.join(uid for uid, _ in row_scores[:5]),
+                    'covered_skills': ' | '.join(query.get('required_skills') or []),
+                    'missing_skills': ' | '.join(query.get('missing_skills') or []),
+                    'territory': f"{query.get('region_code') or ''}/{query.get('department_code') or ''}",
+                    'score': round(float(row_scores[0][1]) if row_scores else 0.0, 4),
+                    'positive_rank': 0,
+                    'coverage': 0.0,
+                }
+            )
+            continue
         positive_rank = next((rank for rank, (uid, _) in enumerate(row_scores, start=1) if uid == positive_uid), len(row_scores) + 1)
         ranks.append(positive_rank)
         grouped.setdefault(clean_text(query.get('region_code')) or 'unknown', []).append(positive_rank)
-        positive_index = candidate_ids.index(positive_uid)
         positive_scores.append(float(similarities[idx][positive_index]))
         negative_uid = str(query.get('negative_uid') or '')
-        if negative_uid in candidate_ids:
-            negative_scores.append(float(similarities[idx][candidate_ids.index(negative_uid)]))
+        if negative_uid in candidate_index:
+            negative_scores.append(float(similarities[idx][candidate_index[negative_uid]]))
         if positive_rank > 10:
             top_candidates = [uid for uid, _ in row_scores[:5]]
             covered = _coverage(query, candidates[positive_index])
@@ -155,6 +175,8 @@ def evaluate_model(name: str, similarities: np.ndarray, queries: list[dict[str, 
     metrics.update(
         {
             'validation_examples': len(queries),
+            'evaluated_examples': len(ranks),
+            'missing_positives': missing_positives,
             'mean_positive_similarity': round(float(np.mean(positive_scores)) if positive_scores else 0.0, 4),
             'mean_negative_similarity': round(float(np.mean(negative_scores)) if negative_scores else 0.0, 4),
             'by_region': {region: _metrics_from_ranks(region_ranks) for region, region_ranks in grouped.items()},
@@ -166,6 +188,8 @@ def evaluate_model(name: str, similarities: np.ndarray, queries: list[dict[str, 
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s %(message)s')
     args = build_parser().parse_args()
+    device = resolve_device()
+    LOGGER.info("Device retenu pour l'évaluation: %s", device)
     queries = load_jsonl(args.test)
     if args.limit is not None:
         queries = queries[: args.limit]
@@ -173,8 +197,8 @@ def main() -> None:
     candidate_texts = [_candidate_text(row) for row in candidates]
     query_texts = [clean_text(row.get('query')) for row in queries]
 
-    base_model = SentenceTransformer(args.base_model)
-    tuned_model = SentenceTransformer(str(args.fine_tuned_model)) if args.fine_tuned_model.exists() else base_model
+    base_model = SentenceTransformer(args.base_model, device=device)
+    tuned_model = SentenceTransformer(str(args.fine_tuned_model), device=device) if args.fine_tuned_model.exists() else base_model
 
     base_sim = _similarity_matrix(base_model, query_texts, candidate_texts)
     tuned_sim = _similarity_matrix(tuned_model, query_texts, candidate_texts)

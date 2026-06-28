@@ -5,6 +5,7 @@ src/analytics/territorial_skills.py
 src/common/__init__.py
 src/common/text.py
 src/data/__init__.py
+src/data/cpf_loader.py
 src/deepforma/__init__.py
 src/deepforma.egg-info/PKG-INFO
 src/deepforma.egg-info/SOURCES.txt
@@ -43,5 +44,6 @@ src/skills/skill_normalizer.py
 tests/test_cleaning.py
 tests/test_cpf_pipeline.py
 tests/test_cpf_training_pipeline.py
+tests/test_cpf_v3_import.py
 tests/test_france_travail.py
 tests/test_web_app.py

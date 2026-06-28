@@ -3,95 +3,483 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Résultat Deepforma</title>
+  <title>Diagnostic Deepforma</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <main class="shell">
+
+    <!-- Header -->
     <section class="hero compact">
-      <p class="eyebrow">Deepforma</p>
-      <h1>Résultat de l’analyse</h1>
+      <p class="eyebrow">Deepforma — Diagnostic de formation</p>
+      <h1>Tableau de bord</h1>
       <p class="lead">{{ warning }}</p>
+      {% if result_dict.quality.warnings %}
+      <div class="alert alert-warning" role="alert">
+        <strong>Avertissement :</strong>
+        <ul>
+          {% for w in result_dict.quality.warnings %}
+          <li>{{ w }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </section>
+
+    <!-- Executive Summary -->
+    <section class="card wide summary-cards" aria-label="Resume executif">
+      <h2>Resume executif</h2>
+      <div class="stat-grid">
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.summary.formation_analysis_status }}</span>
+          <span class="stat-label">Etat analyse competences</span>
+        </div>
+        {% if result_dict.comparison_available %}
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.summary.total_skills_detected }}</span>
+          <span class="stat-label">Competences detectees</span>
+        </div>
+        {% endif %}
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.summary.total_offers_analyzed }}</span>
+          <span class="stat-label">Offres analysees</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.summary.classification_state }}</span>
+          <span class="stat-label">Etat classification</span>
+        </div>
+        {% if result_dict.global_score %}
+        <div class="stat-block">
+          <span class="stat-value">{{ '%.1f'|format(result_dict.global_score.global_score) }}%</span>
+          <span class="stat-label">Score global</span>
+        </div>
+        {% endif %}
+        <div class="stat-block">
+          <span class="stat-value">{{ '%.0f'|format(result_dict.summary.inference_time_ms) }} ms</span>
+          <span class="stat-label">Temps d'analyse</span>
+        </div>
+      </div>
     </section>
 
     <section class="grid">
-      <article class="card accent">
+
+      <!-- Classification -->
+      <article class="card accent" aria-label="Classification">
         <h2>Classification</h2>
-        <p class="metric">{{ 'IA' if analysis.binary.is_ia else 'Non-IA' }}</p>
-        <p>Probabilité IA: <strong>{{ '%.2f'|format(analysis.binary.probability_ia * 100) }}%</strong></p>
-        <p>Probabilité non-IA: {{ '%.2f'|format(analysis.binary.probability_non_ia * 100) }}%</p>
-        <p>Device: {{ analysis.device }}</p>
-      </article>
-
-      <article class="card">
-        <h2>Compétences détectées</h2>
-        {% if analysis.skills %}
-        <ul class="chips">
-          {% for item in analysis.skills %}
-          <li><span>{{ item.label }}</span><small>{{ '%.2f'|format(item.probability * 100) }}%</small></li>
-          {% endfor %}
-        </ul>
+        {% set cls = result_dict.classification %}
+        {% set state = cls.state %}
+        {% if state == 'fiable' %}
+        <span class="badge badge-green">Classification fiable</span>
+        {% elif state == 'probable' %}
+        <span class="badge badge-yellow">Classification probable</span>
+        {% elif state == 'incertaine' %}
+        <span class="badge badge-orange">Classification incertaine</span>
         {% else %}
-        <p>Aucune compétence n’a dépassé le seuil choisi.</p>
+        <span class="badge badge-red">Donnees insuffisantes</span>
         {% endif %}
+        <p class="metric">{{ 'IA' if cls.is_ia else 'Non-IA' }}</p>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: {{ '%.0f'|format(cls.probability_ia * 100) }}%"></div>
+        </div>
+        <div class="flex-between">
+          <span>IA: <strong>{{ '%.1f'|format(cls.probability_ia * 100) }}%</strong></span>
+          <span>Non-IA: <strong>{{ '%.1f'|format(cls.probability_non_ia * 100) }}%</strong></span>
+        </div>
+        <p class="state-desc">{{ cls.state_description }}</p>
+        <p class="meta-info">Ecart: {{ '%.2f'|format(cls.gap) }} | Seuil d'incertitude: 0.10</p>
       </article>
 
-      <article class="card">
-        <h2>Marché territorial</h2>
+      <!-- Skills detected -->
+      <article class="card" aria-label="Competences">
+        <h2>Competences</h2>
+
+        {% if result_dict.formation_analysis_status == 'unreliable' %}
+        <div class="alert alert-warning" role="alert">
+          <strong>Analyse du programme non exploitable</strong>
+          <p>Le modele de competences ne produit pas de scores suffisamment discriminants.
+          La presence ou l'absence des competences dans la formation ne peut pas etre determinee.</p>
+          <p>Les donnees du marche territorial restent consultables, mais elles ne peuvent
+          pas etre comparees de maniere fiable au programme analyse.</p>
+        </div>
+        {% if result_dict.indeterminate_skills %}
+        <details class="collapsible open" open>
+          <summary>Scores du modele ({{ result_dict.indeterminate_skills|length }})</summary>
+          <p class="meta-info">Tous les scores sont proches de 0.50 — aucun n'est exploitable.</p>
+          <div class="chips">
+            {% for skill in result_dict.indeterminate_skills %}
+            <div class="chip chip-low" tabindex="0">
+              <span>{{ skill.label }}</span>
+              <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
+              <span class="confidence-dot confidence-faible" title="Indetermine"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+        {% endif %}
+
+        {% elif result_dict.detected_skills %}
+        <div class="chips">
+          {% for skill in result_dict.detected_skills %}
+          <div class="chip" tabindex="0" role="button" aria-label="{{ skill.label }}: {{ '%.1f'|format(skill.score_brut * 100) }}%">
+            <span>{{ skill.label }}</span>
+            <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
+            <span class="confidence-dot confidence-{{ skill.niveau_confiance }}" title="Confiance {{ skill.niveau_confiance }}"></span>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p>Aucune competence fiable detectee.</p>
+        {% endif %}
+
+        {% if result_dict.low_confidence_skills %}
+        <details class="collapsible">
+          <summary>Competences a verifier ({{ result_dict.low_confidence_skills|length }})</summary>
+          <div class="chips">
+            {% for skill in result_dict.low_confidence_skills %}
+            <div class="chip chip-low" tabindex="0">
+              <span>{{ skill.label }}</span>
+              <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
+              <span class="confidence-dot confidence-faible" title="Confiance faible"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+        {% endif %}
+
+        <div class="flex-between">
+          <p class="meta-info">Seuil: {{ threshold }}</p>
+          <p class="meta-info">Ecart-type scores: {{ '%.4f'|format(result_dict.quality.score_std) }}</p>
+        </div>
+      </article>
+
+      <!-- Territorial Market -->
+      <article class="card wide" aria-label="Marche territorial">
+        <h2>Marche territorial</h2>
         {% if model_only %}
-        <p>Analyse modèle uniquement. Aucun appel à France Travail n’a été effectué.</p>
+        <p>Analyse modele uniquement. Aucun appel a France Travail n'a ete effectue.</p>
         {% elif context.market_status == 'ok' %}
-        <p><strong>{{ context.territorial_stats.offer_count }}</strong> offres analysées.</p>
-        <p>Compétences territoriales principales:</p>
-        <ul class="list">
-          {% for skill in context.recommendation.market_skills[:8] %}
-          <li>{{ skill.label }} - {{ skill.offer_count }} offres ({{ '%.2f'|format(skill.share_percent) }}%)</li>
+        {% set tm = result_dict.territorial_market %}
+        <div class="stat-grid">
+          <div class="stat-block small">
+            <span class="stat-value">{{ tm.offer_count }}</span>
+            <span class="stat-label">Offres collectees</span>
+          </div>
+          <div class="stat-block small">
+            <span class="stat-value">{{ tm.exploitable_offers }}</span>
+            <span class="stat-label">Offres exploitables</span>
+          </div>
+          <div class="stat-block small">
+            <span class="stat-value">{{ tm.statistical_robustness }}</span>
+            <span class="stat-label">Robustesse</span>
+          </div>
+        </div>
+        {% if tm.alert %}
+        <div class="alert alert-warning" role="alert">{{ tm.alert }}</div>
+        {% endif %}
+        <h3>Competences les plus demandees</h3>
+        {% if tm.top_skills %}
+        <div class="skill-bar-list">
+          {% for skill in tm.top_skills[:10] %}
+          <div class="skill-bar-row">
+            <span class="skill-bar-label">{{ skill.label }}</span>
+            <div class="progress-bar thin">
+              <div class="progress-fill" style="width: {{ '%.0f'|format(skill.share_percent) }}%"></div>
+            </div>
+            <span class="skill-bar-value">{{ skill.offer_count }} offres ({{ '%.1f'|format(skill.share_percent) }}%)</span>
+          </div>
           {% endfor %}
-        </ul>
+        </div>
         {% else %}
-        <p>Aucune donnée marché n’est disponible pour cette analyse.</p>
+        <p>Aucune competence identifiee dans les offres.</p>
+        {% endif %}
+        {% if tm.contract_types %}
+        <details class="collapsible">
+          <summary>Types de contrats</summary>
+          <ul class="list">
+            {% for type, count in tm.contract_types.items() %}
+            <li>{{ type }}: {{ count }} offres</li>
+            {% endfor %}
+          </ul>
+        </details>
+        {% endif %}
+        <p class="meta-info">Territoire: {{ department }} | Periode: {{ tm.period }}</p>
+        {% else %}
+        <p>Aucune donnee marche disponible pour cette analyse.</p>
         {% endif %}
       </article>
 
-      <article class="card wide">
-        <h2>Comparaison formation / marché</h2>
-        {% if context.recommendation %}
-        <p>Score de couverture pondéré: <strong>{{ '%.2f'|format(context.recommendation.coverage_score) }}%</strong></p>
+      {% if result_dict.formation_analysis_status == 'unreliable' %}
+      <!-- Comparison unavailable -->
+      <article class="card wide" aria-label="Comparaison indisponible">
+        <h2>Comparaison formation / marche</h2>
+        <div class="alert alert-warning" role="alert">
+          <strong>Comparaison indisponible</strong>
+          <p>L'analyse des competences de la formation a echoue.
+          Aucune competence ne peut etre declaree presente ou absente.</p>
+        </div>
+      </article>
+
+      <!-- Recommendations suspended -->
+      <article class="card wide" aria-label="Recommandations suspendues">
+        <h2>Recommandations</h2>
+        <div class="alert alert-warning" role="alert">
+          <strong>Recommandations suspendues</strong>
+          <p>Le systeme ne peut pas produire de preconisations fiables tant que les
+          competences de la formation n'ont pas ete identifiees.</p>
+        </div>
+      </article>
+      {% endif %}
+
+      <!-- Global score -->
+      {% if result_dict.global_score %}
+      <article class="card" aria-label="Score global">
+        <h2>Score global</h2>
+        <div class="big-score">
+          <span class="score-value">{{ '%.0f'|format(result_dict.global_score.global_score) }}%</span>
+          <span class="score-label">Adequation formation / marche</span>
+        </div>
+        <div class="sub-scores">
+          {% for key, value in result_dict.global_score.sub_scores.items() %}
+          {% set expl = result_dict.global_score.explanations[key] %}
+          <div class="sub-score-row" tabindex="0" role="tooltip" aria-label="{{ expl.description }}">
+            <span class="sub-score-label">{{ key|replace('_', ' ') }}</span>
+            <div class="progress-bar thin">
+              <div class="progress-fill" style="width: {{ '%.0f'|format(value) }}%"></div>
+            </div>
+            <span class="sub-score-value">{{ '%.0f'|format(value) }}%</span>
+            <span class="tooltip-text">{{ expl.description }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </article>
+      {% endif %}
+
+      <!-- Comparison (reliable only) -->
+      {% if result_dict.formation_market_comparison and result_dict.comparison_available %}
+      <article class="card wide" aria-label="Comparaison formation marche">
+        <h2>Comparaison formation / marche</h2>
+        {% if result_dict.comparison_categories.covered %}
+        <details class="collapsible open" open>
+          <summary>Competences bien couvertes ({{ result_dict.comparison_categories.covered|length }})</summary>
+          <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+              <thead>
+                <tr><th>Competence</th><th>Confiance</th><th>Frequence marche</th><th>Offres</th><th>Priorite</th></tr>
+              </thead>
+              <tbody>
+                {% for item in result_dict.comparison_categories.covered %}
+                <tr>
+                  <td>{{ item.skill }}</td>
+                  <td>{{ '%.0f'|format(item.detection_confidence * 100) }}%</td>
+                  <td>{{ '%.1f'|format(item.frequency_in_offers) }}%</td>
+                  <td>{{ item.offer_count }}</td>
+                  <td><span class="badge badge-green">{{ item.priority }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </details>
+        {% endif %}
+        {% if result_dict.comparison_categories.missing %}
+        <details class="collapsible open" open>
+          <summary>Competences demandees mais absentes ({{ result_dict.comparison_categories.missing|length }})</summary>
+          <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+              <thead>
+                <tr><th>Competence</th><th>Frequence marche</th><th>Offres</th><th>Priorite</th></tr>
+              </thead>
+              <tbody>
+                {% for item in result_dict.comparison_categories.missing %}
+                <tr>
+                  <td>{{ item.skill }}</td>
+                  <td>{{ '%.1f'|format(item.frequency_in_offers) }}%</td>
+                  <td>{{ item.offer_count }}</td>
+                  <td><span class="badge badge-{{ 'red' if item.priority == 'haute' else 'yellow' }}">{{ item.priority }}</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </details>
+        {% endif %}
+        {% if result_dict.comparison_categories.overrepresented %}
+        <details class="collapsible">
+          <summary>Competences surrepresentees ({{ result_dict.comparison_categories.overrepresented|length }})</summary>
+          <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+              <thead>
+                <tr><th>Competence</th><th>Confiance</th><th>Frequence marche</th></tr>
+              </thead>
+              <tbody>
+                {% for item in result_dict.comparison_categories.overrepresented %}
+                <tr>
+                  <td>{{ item.skill }}</td>
+                  <td>{{ '%.0f'|format(item.detection_confidence * 100) }}%</td>
+                  <td>{{ '%.1f'|format(item.frequency_in_offers) }}%</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </details>
+        {% endif %}
+      </article>
+      {% endif %}
+
+      <!-- Recommendations (reliable only) -->
+      {% if result_dict.recommendations and result_dict.recommendations_available %}
+      <article class="card wide" aria-label="Recommandations">
+        <h2>Recommandations</h2>
+        <div class="rec-list">
+          {% for rec in result_dict.recommendations %}
+          <div class="rec-card rec-{{ rec.priorite }}">
+            <div class="rec-header">
+              <span class="badge badge-{{ 'red' if rec.priorite == 'haute' else 'yellow' if rec.priorite == 'moyenne' else 'green' }}">
+                {{ rec.priorite }}
+              </span>
+              <span class="rec-type">{{ rec.type|replace('_', ' ') }}</span>
+              <span class="rec-skill">{{ rec.skill }}</span>
+            </div>
+            <p class="rec-justification">{{ rec.justification }}</p>
+            <div class="rec-meta">
+              <span>Impact: {{ rec.impact_estime }}</span>
+              {% if rec.offer_count > 0 %}
+              <span>{{ rec.offer_count }} offres ({{ rec.offer_percent }}%)</span>
+              {% endif %}
+              <span>Confiance: {{ rec.niveau_confiance }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </article>
+      {% endif %}
+
+      <!-- Reliability & Methodology -->
+      <article class="card wide" aria-label="Fiabilite et methodologie">
+        <h2>Fiabilite et methodologie</h2>
         <div class="columns">
           <div>
-            <h3>Compétences couvertes</h3>
-            {% if context.recommendation.covered_skills %}
+            <h3>Qualite des scores</h3>
             <ul class="list">
-              {% for skill in context.recommendation.covered_skills %}
-              <li>{{ skill }}</li>
-              {% endfor %}
+              <li>Modele charge: {{ 'Oui' if result_dict.quality.model_loaded else 'Non' }}</li>
+              <li>Scores discriminants: {{ 'Oui' if result_dict.quality.skills_discriminating else 'Non' }}</li>
+              <li>Min: {{ '%.4f'|format(result_dict.quality.score_min) }}</li>
+              <li>Max: {{ '%.4f'|format(result_dict.quality.score_max) }}</li>
+              <li>Moyenne: {{ '%.4f'|format(result_dict.quality.score_mean) }}</li>
+              <li>Ecart-type: {{ '%.4f'|format(result_dict.quality.score_std) }}</li>
+              <li>Seuil de preselection: {{ threshold }}</li>
+              <li>Seuil detection fiable: 0.60</li>
+              <li>Seuil forte confiance: 0.80</li>
+              <li>Regle d'invalidation globale: ecart-type &lt; 0.05 <strong>et</strong> max &lt; 0.70</li>
             </ul>
-            {% else %}
-            <p>Aucune correspondance directe trouvée.</p>
+            {% if result_dict.quality.warnings %}
+            <div class="alert alert-warning" role="alert">
+              <strong>Alertes qualite :</strong>
+              <ul>
+                {% for w in result_dict.quality.warnings %}
+                <li>{{ w }}</li>
+                {% endfor %}
+              </ul>
+            </div>
             {% endif %}
           </div>
           <div>
-            <h3>Compétences manquantes prioritaires</h3>
-            {% if context.recommendation.missing_priority_skills %}
+            <h3>Metadonnees du modele</h3>
             <ul class="list">
-              {% for skill in context.recommendation.missing_priority_skills[:8] %}
-              <li>{{ skill.label }} - {{ skill.offer_count }} offres ({{ '%.2f'|format(skill.share_percent) }}%)</li>
-              {% endfor %}
+              <li>Modele binaire: {{ result_dict.model_metadata.binary_model }}</li>
+              <li>Modele competences: {{ result_dict.model_metadata.multilabel_model }}</li>
+              <li>Checkpoint binaire: {{ result_dict.model_metadata.binary_checkpoint }}</li>
+              <li>Checkpoint competences: {{ result_dict.model_metadata.multilabel_checkpoint }}</li>
+              <li>Device: {{ result_dict.model_metadata.device }}</li>
+              <li>Labels: {{ result_dict.model_metadata.num_labels }}</li>
+              <li>Seuil applique: {{ result_dict.model_metadata.thresholds.multilabel }}</li>
+              <li>Temps inference: {{ '%.0f'|format(result_dict.model_metadata.inference_time_ms) }} ms</li>
             </ul>
-            {% else %}
-            <p>La formation couvre les compétences les plus visibles du marché territorial.</p>
+            {% if result_dict.checkpoint_audit %}
+            <h3>Audit du checkpoint</h3>
+            <ul class="list">
+              <li>Configuration presente: {{ 'Oui' if result_dict.checkpoint_audit.config_present else 'Non' }}</li>
+              <li>Poids presents: {{ 'Oui' if result_dict.checkpoint_audit.weights_present else 'Non' }}</li>
+              <li>Taille: {{ result_dict.checkpoint_audit.weights_size_bytes }} octets</li>
+              <li>Architecture: {{ result_dict.checkpoint_audit.architecture_declared }}</li>
+              <li>Problem type: {{ result_dict.checkpoint_audit.problem_type }}</li>
+              <li>Apparence initialisation aleatoire: {{ 'Oui' if result_dict.checkpoint_audit.appears_random_init else 'Non' }}</li>
+              <li>Poids classifieur - moyenne: {{ '%.4f'|format(result_dict.checkpoint_audit.classifier_weight_mean) }}</li>
+              <li>Poids classifieur - ecart-type: {{ '%.4f'|format(result_dict.checkpoint_audit.classifier_weight_std) }}</li>
+            </ul>
             {% endif %}
           </div>
         </div>
-        {% else %}
-        <p>Mode modèle uniquement: comparaison territoire non calculée.</p>
-        {% endif %}
+        <details class="collapsible">
+          <summary>Methode de detection</summary>
+          <div class="method-doc">
+            <p>Les scores de competences sont calcules par un modele <strong>CamemBERT</strong> fine-tune en classification multi-etiquette.</p>
+            <p>Pour chaque competence parmi les {{ result_dict.model_metadata.num_labels }} labels, le modele produit un <strong>logit</strong> qui est transforme en score via la fonction <strong>sigmoid</strong> (et non softmax, car les labels ne sont pas mutuellement exclusifs).</p>
+            <p>Un score de 0.50 signifie que le modele n'a pas appris de signal discriminant pour cette competence sur ce texte. Les scores proches de 0.50 pour toutes les competences indiquent un probleme de calibration ou d'entrainement.</p>
+            <p><strong>Difference entre non-detection et absence :</strong> Une competence non detectee (score &lt; seuil) est marquee <strong>indeterminate</strong> si les scores globaux ne sont pas discriminants. Elle n'est declaree <strong>absente</strong> que lorsque le modele est discriminant et que le score est sous le seuil.</p>
+            <p><strong>Score a 0.5 :</strong> Un score de 0.5 correspond a un logit de 0. C'est la sortie par defaut d'un modele non entraine ou d'un texte hors-domaine. Ce n'est pas une probabilite reelle.</p>
+            <p>La classification binaire IA/non-IA utilise <strong>softmax</strong> sur 2 classes. La classe retenue est celle avec le score le plus eleve.</p>
+            <p><strong>Limites :</strong></p>
+            <ul>
+              <li>Le referentiel est limite a 18 labels IA. Des competences non-IA ne seront pas detectees.</li>
+              <li>Les scores ne sont pas des probabilites calibrees (ils ne refletent pas une frequence reelle).</li>
+              <li>Le marche territorial repose sur les donnees France Travail, dont la couverture et la fraicheur varient.</li>
+              <li>Un faible nombre d'offres reduit la fiabilite statistique des tendances territoriales.</li>
+              <li>Ce modele de 18 labels IA ne doit pas etre utilise comme extracteur generaliste pour les 27 694 formations CPF.</li>
+            </ul>
+          </div>
+        </details>
       </article>
+
     </section>
 
+    <!-- Actions -->
     <div class="actions bottom">
       <a class="button-link" href="{{ url_for('index') }}">Nouvelle analyse</a>
+      <button class="button-link" onclick="downloadJSON()">Export JSON</button>
+      <button class="button-link" onclick="downloadCSV()">Export CSV</button>
+      <button class="button-link" onclick="window.print()">Export PDF</button>
     </div>
   </main>
+
+  <script>
+    const RESULT_DATA = {{ result_json|safe }};
+
+    function downloadJSON() {
+      const blob = new Blob([JSON.stringify(RESULT_DATA, null, 2)], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'deepforma_analysis.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadCSV() {
+      const rows = [['Competence','Presente_formation','Confiance_detection','Frequence_offres','Nb_offres','Niveau_couverture','Priorite']];
+      if (RESULT_DATA.formation_market_comparison) {
+        RESULT_DATA.formation_market_comparison.forEach(function(item) {
+          rows.push([
+            item.skill,
+            item.in_formation ? 'Oui' : 'Non',
+            (item.detection_confidence * 100).toFixed(2),
+            item.frequency_in_offers.toFixed(1) + '%',
+            item.offer_count,
+            item.coverage_level,
+            item.priority
+          ]);
+        });
+      }
+      const csv = rows.map(r => r.join(',')).join('\\n');
+      const blob = new Blob([csv], {type: 'text/csv'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'deepforma_comparison.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
 </body>
 </html>

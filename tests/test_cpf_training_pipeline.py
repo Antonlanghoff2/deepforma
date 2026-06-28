@@ -249,6 +249,131 @@ def test_load_dataset_and_validate(tmp_path):
     assert validation.ok
 
 
+
+
+
+def test_resolve_device_prefers_cpu_when_cuda_memory_low(monkeypatch):
+    from deepforma.training import cpf_trainer as trainer_module
+
+    monkeypatch.setattr(trainer_module.torch.cuda, 'is_available', lambda: True)
+    monkeypatch.setattr(trainer_module.torch.cuda, 'mem_get_info', lambda: (500_000_000, 8_000_000_000))
+    assert trainer_module.resolve_device() == 'cpu'
+
+
+def test_trainer_falls_back_to_cpu_on_cuda_oom(monkeypatch, tmp_path):
+    from deepforma.training import cpf_trainer as trainer_module
+
+    class FakeModel:
+        def __init__(self):
+            self.max_seq_length = None
+
+        def fit(self, *args, **kwargs):
+            pass
+
+        def save(self, path):
+            Path(path).mkdir(parents=True, exist_ok=True)
+
+    load_calls = []
+
+    def fake_sentence_transformer(*args, **kwargs):
+        load_calls.append(kwargs.get('device'))
+        if kwargs.get('device') == 'cuda':
+            raise trainer_module.torch.OutOfMemoryError('CUDA out of memory')
+        return FakeModel()
+
+    monkeypatch.setattr(trainer_module.torch.cuda, 'is_available', lambda: True)
+    monkeypatch.setattr(trainer_module.torch.cuda, 'mem_get_info', lambda: (8_000_000_000, 8_000_000_000))
+    monkeypatch.setattr(trainer_module, 'SentenceTransformer', fake_sentence_transformer)
+    trainer = CPFRecommenderTrainer(TrainingConfig(base_model='dummy', output_dir=str(tmp_path / 'model'), epochs=1, batch_size=2, mixed_precision=False))
+    model = trainer.load_model()
+    assert trainer.device == 'cpu'
+    assert load_calls == ['cuda', 'cpu']
+    assert model.max_seq_length == 256
+
+
+
+def test_trainer_retries_training_on_cpu_after_cuda_oom(monkeypatch, tmp_path):
+    from deepforma.training import cpf_trainer as trainer_module
+
+    class FakeModel:
+        def __init__(self, device):
+            self.device = device
+            self.max_seq_length = None
+            self.fit_calls = 0
+
+        def fit(self, *args, **kwargs):
+            self.fit_calls += 1
+            if self.device == 'cuda' and self.fit_calls == 1:
+                raise trainer_module.torch.OutOfMemoryError('CUDA out of memory')
+
+        def save(self, path):
+            Path(path).mkdir(parents=True, exist_ok=True)
+
+        def encode(self, texts, **kwargs):
+            import numpy as np
+            return np.array([[1.0, 0.0] for _ in texts], dtype=float)
+
+    def fake_sentence_transformer(*args, **kwargs):
+        return FakeModel(kwargs.get('device'))
+
+    monkeypatch.setattr(trainer_module.torch.cuda, 'is_available', lambda: True)
+    monkeypatch.setattr(trainer_module.torch.cuda, 'mem_get_info', lambda: (8_000_000_000, 8_000_000_000))
+    monkeypatch.setattr(trainer_module, 'SentenceTransformer', fake_sentence_transformer)
+    trainer = CPFRecommenderTrainer(TrainingConfig(base_model='dummy', output_dir=str(tmp_path / 'model'), epochs=1, batch_size=2, mixed_precision=False))
+
+    train_rows = [
+        {
+            'query_id': f'q{i}',
+            'query': 'Python',
+            'target_job': 'Développeur Python',
+            'required_skills': ['Python'],
+            'missing_skills': ['Python'],
+            'region_code': '11',
+            'department_code': '75',
+            'positive_uid': f'p{i}',
+            'positive_text': 'Python',
+            'negative_uid': f'n{i}',
+            'negative_text': 'Java',
+            'negative_type': 'easy',
+            'label_source': 'heuristic',
+            'label_confidence': 0.8,
+            'group_id': f'g{i}',
+            'certification_code': f'CERT{i}',
+        }
+        for i in range(10)
+    ]
+    validation_rows = [
+        {
+            'query_id': f'vq{i}',
+            'query': 'Python',
+            'target_job': 'Développeur Python',
+            'required_skills': ['Python'],
+            'missing_skills': ['Python'],
+            'region_code': '11',
+            'department_code': '75',
+            'positive_uid': f'vp{i}',
+            'positive_text': 'Python',
+            'negative_uid': f'vn{i}',
+            'negative_text': 'Java',
+            'negative_type': 'easy',
+            'label_source': 'heuristic',
+            'label_confidence': 0.8,
+            'group_id': f'vg{i}',
+            'certification_code': f'VCERT{i}',
+        }
+        for i in range(10)
+    ]
+    train_path = tmp_path / 'train.jsonl'
+    val_path = tmp_path / 'validation.jsonl'
+    save_jsonl(train_path, train_rows)
+    save_jsonl(val_path, validation_rows)
+
+    result = trainer.train(train_path, val_path)
+    assert trainer.device == 'cpu'
+    assert Path(result['model_path']).exists()
+    assert result['manifest']['device'] == 'cpu'
+
+
 def test_trainer_load_model_and_train_mock(monkeypatch, tmp_path):
     from deepforma.training import cpf_trainer as trainer_module
 

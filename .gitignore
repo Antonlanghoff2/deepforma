@@ -24,3 +24,11 @@ Dataset_*
 **/training_args.bin
 **/trainer_state.json
 **/*.safetensors
+# CPF V3 and training artifacts
+data/raw/*.xlsx
+data/raw/*.xls
+data/processed/*.parquet
+data/processed/*.csv
+data/processed/*.jsonl
+models/
+artifacts/

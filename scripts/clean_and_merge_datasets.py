@@ -12,6 +12,8 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
+
+from data.cpf_loader import load_cpf_v3_frame
 from xml.etree import ElementTree as ET
 
 import pandas as pd
@@ -35,6 +37,7 @@ COMMON_COLUMNS = [
     "codes_rome",
     "organisme",
     "source_dataset",
+    "record_type",
     "texte_modele",
     "competences_ia",
     "competences_ia_suggerees",
@@ -749,6 +752,35 @@ def source_kind_from_columns(columns: Iterable[str]) -> str:
     return "unknown"
 
 
+def translate_cpf_v3_for_merge(frame: pd.DataFrame, source_file: Path) -> pd.DataFrame:
+    translated = pd.DataFrame(index=frame.index)
+    translated["intitule"] = frame.get("titre", "")
+    translated["description"] = frame.get("description", "")
+    translated["objectifs"] = frame.get("objectives", "")
+    translated["programme"] = frame.get("contenu", "")
+    translated["public_cible"] = frame.get("metiers_cibles", "")
+    translated["prerequis"] = frame.get("prerequis", "")
+    translated["niveau"] = frame.get("niveau", "")
+    translated["modalite"] = frame.get("modalite", "")
+    translated["duree"] = frame.get("duree", "")
+    translated["certification"] = frame.get("certification", "")
+    translated["codes_rome"] = frame.get("code_rome", "")
+    translated["organisme"] = frame.get("organisme", "")
+    translated["competences_ia"] = frame.get("competences", pd.Series(dtype=object)).apply(lambda value: " | ".join([clean_text(item) for item in (value or []) if clean_text(item)]) if isinstance(value, list) else clean_text(value))
+    translated["source_dataset"] = "Dataset_Generaliste_CPF"
+    translated["source_file"] = source_file.name
+    translated["source_row"] = frame.get("source_row_id", pd.Series(dtype=object)).astype(str)
+    translated["texte_modele"] = frame.get("texte_modele", "")
+    translated["formation_id"] = frame.get("formation_id", "")
+    translated["formation_group_id"] = frame.get("formation_id", "")
+    translated["record_type"] = "formation"
+    translated["source_tags"] = frame.get("tags", pd.Series(dtype=object)).apply(lambda value: " | ".join([clean_text(item) for item in (value or []) if clean_text(item)]) if isinstance(value, list) else clean_text(value))
+    translated["est_lie_ia"] = pd.NA
+    translated["statut_annotation"] = "a_verifier"
+    translated["competences_ia_suggerees"] = ""
+    return translated
+
+
 def standardize_source_dataframe(
     df: pd.DataFrame,
     source_file: Path,
@@ -814,6 +846,9 @@ def standardize_source_dataframe(
         comp_col = detect_fuzzy_column(df.columns, normalized_lookup("Compétences IA extraites"))
         if comp_col:
             standardized["competences_ia"] = df[comp_col].apply(lambda v: " | ".join(normalize_competence_field(v)))
+    elif source_kind == "cpf_v3":
+        if "competences_ia" not in standardized.columns or standardized["competences_ia"].eq("").all():
+            standardized["competences_ia"] = standardized.get("competences_ia", "")
     else:
         standardized["competences_ia"] = ""
 
@@ -857,6 +892,7 @@ def standardize_source_dataframe(
             standardized["source_tags"] = ""
     else:
         standardized["source_tags"] = ""
+    standardized["record_type"] = standardized.get("record_type", "formation")
 
     report = mapping_report
     ignored = [item for item in report if item["action"] == "ignored"]
@@ -1142,6 +1178,11 @@ def build_processed_outputs(root: Path, output_dir: Path) -> dict[str, Any]:
         source_frames.append((csv_path, df, kind))
 
     for xlsx_path in detected["xlsx"]:
+        if xlsx_path.name == "Dataset_Generaliste_CPF_V3.xlsx":
+            df = translate_cpf_v3_for_merge(load_cpf_v3_frame(xlsx_path), xlsx_path)
+            inspections.append(inspect_dataframe(df, f"{xlsx_path.name}::Generaliste_CPF"))
+            source_frames.append((xlsx_path, df, "cpf_v3"))
+            continue
         workbook = read_xlsx_file(xlsx_path)
         for sheet_name, df in workbook.items():
             inspections.append(inspect_dataframe(df, f"{xlsx_path.name}::{sheet_name}"))

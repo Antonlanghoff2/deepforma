@@ -72,6 +72,30 @@ def prepare_catalog(
     """Nettoie et normalise le catalogue CPF en streaming."""
 
     source_path = Path(csv_path)
+    if source_path.suffix.lower() in {'.xlsx', '.xls'}:
+        from data.cpf_loader import prepare_cpf_v3_dataset
+
+        prepared = prepare_cpf_v3_dataset(source_path, output_dir, config_path=config_path)
+        frame = prepared.frame
+        stats = PreparationStats(
+            rows_read=int(prepared.report['rows_initial']),
+            rows_kept=int(prepared.report['rows_kept']),
+            rows_rejected=int(prepared.report['rows_rejected']),
+            exact_duplicates=int(prepared.report['duplicates']),
+            near_duplicates=0,
+            enriched_rows=int(prepared.report['formations_with_skills']),
+            unique_formations=int(frame['formation_id'].nunique()) if not frame.empty else 0,
+        )
+        return {
+            'stats': stats,
+            'report': prepared.report,
+            'parquet_path': Path(prepared.report['output_files']['formations_normalized_parquet']),
+            'sample_path': Path(prepared.report['output_files']['formations_normalized_csv']),
+            'report_path': Path(prepared.report['output_files']['import_report']),
+            'kept_rows': frame.to_dict(orient='records'),
+            'corpus_hash': prepared.report.get('corpus_hash'),
+        }
+
     output_root = Path(output_dir)
     processed_dir = output_root / "processed" / "cpf"
     reports_dir = output_root / "reports"

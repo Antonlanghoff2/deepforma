@@ -20,7 +20,7 @@ Le guide détaillé est dans [docs/CPF_CATALOG_PIPELINE.md](docs/CPF_CATALOG_PIP
 ## Fichiers sources
 
 - `Dataset_V7_Anton_CSV - Dataset_V7_Anton_CSV.csv.csv` : dataset IA existant.
-- `Dataset_Generaliste_CPF_V1.xlsx` : nouveau dataset généraliste.
+- `Dataset_Generaliste_CPF_V3.xlsx` : source CPF généraliste principale, avec V2/V1 en secours.
 - `entrainement_camembert_competences_ia.ipynb` : notebook historique conservé intact.
 
 ## Nettoyage effectué
@@ -181,11 +181,14 @@ source .venv/bin/activate
 python -m pip install -e .
 ```
 
-Diagnostics:
+Diagnostics et préparation:
 
 ```bash
 make cpf-check-imports
 make cpf-test
+make cpf-inspect CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-prepare CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
 ```
 
 ## Entraînement CPF
@@ -202,11 +205,15 @@ Commandes utiles:
 ```bash
 make cpf-check-imports
 make cpf-test
+make cpf-inspect CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-prepare CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
 make cpf-build-pairs CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet
 make cpf-train CPF_TRAIN=data/training/cpf_train.jsonl CPF_VALIDATION=data/training/cpf_validation.jsonl
 make cpf-evaluate CPF_TEST=data/training/cpf_test.jsonl
-make cpf-reindex CPF_FORMATIONS_WITH_SKILLS=data/processed/cpf/formations_with_skills.parquet CPF_MODEL_OUTPUT=models/cpf-recommender
-make cpf-training-pipeline CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 CPF_MODEL_OUTPUT=models/cpf-recommender
+make cpf-reindex CPF_MODEL_OUTPUT=models/cpf-recommender
+make cpf-training-pipeline CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 CPF_MODEL_OUTPUT=models/cpf-recommender
+make cpf-all CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
 ```
 
 Reprise après interruption:

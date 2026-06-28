@@ -214,6 +214,8 @@ def canonicalize_formation_row(row: dict[str, Any], *, normalizer: SkillTaxonomy
         'region_code': clean_text(row.get('region_code')) or None,
         'department': clean_text(row.get('department')) or None,
         'department_code': clean_text(row.get('department_code')) or None,
+        'distance_compatible': bool(row.get('distance_compatible')) if row.get('distance_compatible') not in (None, '') else False,
+        'remote': bool(row.get('remote')) if row.get('remote') not in (None, '') else bool(row.get('distance_compatible')) if row.get('distance_compatible') not in (None, '') else False,
         'search_text': search_text,
         'skills_explicit': skills_explicit,
         'skills_inferred': skills_inferred,

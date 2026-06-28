@@ -1,13 +1,13 @@
 PYTHON ?= python
 COLLECT_ARGS ?=
 CPF_SOURCE_URL ?=
-CPF_SOURCE_FILE ?=
+CPF_SOURCE_FILE ?= data/raw/Dataset_Generaliste_CPF_V3.xlsx
 CPF_RAW_DIR ?= data/raw/cpf
 CPF_RAW_FILE ?= $(CPF_RAW_DIR)/cpf_catalog.csv
-CPF_PREPARE_OUTPUT_DIR ?= data
-CPF_PREPARED_PARQUET ?= $(CPF_PREPARE_OUTPUT_DIR)/processed/cpf/formations.parquet
-CPF_FORMATIONS_WITH_SKILLS ?= data/processed/cpf/formations_with_skills.parquet
-CPF_INSPECT_REPORT ?= data/reports/cpf_schema_report.json
+CPF_PROCESSED_DIR ?= data/processed
+CPF_FORMATIONS_NORMALIZED ?= data/processed/cpf/formations_normalized.parquet
+CPF_FORMATIONS ?= data/processed/cpf/formations_with_skills.parquet
+CPF_INSPECT_REPORT ?= data/processed/reports/cpf_v3_inspection.json
 CPF_INDEX_METADATA ?= data/indexes/cpf/metadata.parquet
 CPF_INDEX_FILE ?= data/indexes/cpf/faiss.index
 CPF_INDEX_MANIFEST ?= data/indexes/cpf/index_manifest.json
@@ -27,11 +27,14 @@ CPF_WARMUP_RATIO ?= 0.1
 CPF_MAX_SEQ_LENGTH ?= 256
 CPF_LOSS ?= MultipleNegativesRankingLoss
 CPF_SEED ?= 42
+CPF_MIN_SKILL_COVERAGE ?= 0.05
+CPF_MIN_SEMANTIC_SIMILARITY ?= 0.2
+CPF_MAX_QUERIES ?= 100
 CPF_DEVICE ?=
 CPF_GRADIENT_ACCUMULATION ?= 2
 CPF_MIXED_PRECISION ?= true
 
-.PHONY: install-dev collect-france-travail cpf-download cpf-inspect cpf-prepare cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train cpf-evaluate cpf-reindex cpf-training-pipeline test
+.PHONY: install-dev collect-france-travail cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train cpf-evaluate cpf-reindex cpf-training-pipeline cpf-all test
 
 install-dev:
 	$(PYTHON) -m pip install -e .
@@ -39,18 +42,24 @@ install-dev:
 collect-france-travail:
 	$(PYTHON) -m src.jobs.collect_france_travail_offers $(COLLECT_ARGS)
 
+cpf-source-check:
+	@$(PYTHON) -c "from data.cpf_loader import resolve_cpf_source; print(resolve_cpf_source('$(CPF_SOURCE_FILE)'))"
+
 cpf-download:
 	@if [ -z "$(strip $(CPF_SOURCE_URL))" ] && [ -z "$(strip $(CPF_SOURCE_FILE))" ]; then 		echo "Set CPF_SOURCE_URL or CPF_SOURCE_FILE before running cpf-download or cpf-all"; 		exit 1; 	fi
 	$(PYTHON) scripts/download_cpf_catalog.py --output-dir "$(CPF_RAW_DIR)" $(if $(strip $(CPF_SOURCE_FILE)),--source-file "$(CPF_SOURCE_FILE)",) $(if $(strip $(CPF_SOURCE_URL)),--source-url "$(CPF_SOURCE_URL)",)
 
-cpf-inspect:
-	$(PYTHON) scripts/inspect_cpf_catalog.py --input "$(CPF_RAW_FILE)" --output "$(CPF_INSPECT_REPORT)"
+cpf-inspect: cpf-source-check
+	$(PYTHON) scripts/inspect_cpf_dataset.py --input "$(CPF_SOURCE_FILE)" --output "$(CPF_INSPECT_REPORT)"
 
-cpf-prepare:
-	$(PYTHON) scripts/prepare_cpf_catalog.py --input "$(CPF_RAW_FILE)" --output-dir "$(CPF_PREPARE_OUTPUT_DIR)"
+cpf-prepare: cpf-inspect
+	$(PYTHON) scripts/prepare_cpf_dataset.py --input "$(CPF_SOURCE_FILE)" --output-dir "$(CPF_PROCESSED_DIR)"
 
-cpf-embed:
-	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS_WITH_SKILLS)" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
+cpf-enrich-skills: cpf-prepare
+	$(PYTHON) scripts/extract_cpf_skills.py --input "$(CPF_FORMATIONS_NORMALIZED)" --output "$(CPF_FORMATIONS)"
+
+cpf-embed: cpf-enrich-skills
+	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS)" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
 
 cpf-check-imports:
 	$(PYTHON) -c "import deepforma; import deepforma.cpf"
@@ -58,21 +67,21 @@ cpf-check-imports:
 cpf-test:
 	$(PYTHON) -m pytest -q tests/test_cpf_pipeline.py
 
-cpf-build-pairs:
-	$(PYTHON) scripts/build_cpf_training_pairs.py --formations "$(CPF_FORMATIONS_WITH_SKILLS)" --offers-dir "$(CPF_OFFERS_DIR)" --output "$(CPF_PAIRS)" --review-output "$(CPF_REVIEW)" --train-output "$(CPF_TRAIN)" --validation-output "$(CPF_VALIDATION)" --test-output "$(CPF_TEST)"
+cpf-build-pairs: cpf-enrich-skills
+	$(PYTHON) scripts/build_cpf_training_pairs.py --formations "$(CPF_FORMATIONS)" --offers-dir "$(CPF_OFFERS_DIR)" --output "$(CPF_PAIRS)" --review-output "$(CPF_REVIEW)" --train-output "$(CPF_TRAIN)" --validation-output "$(CPF_VALIDATION)" --test-output "$(CPF_TEST)" --min-skill-coverage $(CPF_MIN_SKILL_COVERAGE) --min-semantic-similarity $(CPF_MIN_SEMANTIC_SIMILARITY) --max-queries $(CPF_MAX_QUERIES)
 
-cpf-train:
+cpf-train: cpf-build-pairs
 	$(PYTHON) scripts/train_cpf_recommender.py --train "$(CPF_TRAIN)" --validation "$(CPF_VALIDATION)" --base-model "$(CPF_BASE_MODEL)" --output-dir "$(CPF_MODEL_OUTPUT)" --epochs $(CPF_EPOCHS) --batch-size $(CPF_BATCH_SIZE) --learning-rate $(CPF_LEARNING_RATE) --warmup-ratio $(CPF_WARMUP_RATIO) --max-seq-length $(CPF_MAX_SEQ_LENGTH) --loss $(CPF_LOSS) --seed $(CPF_SEED) --gradient-accumulation $(CPF_GRADIENT_ACCUMULATION) $(if $(strip $(CPF_DEVICE)),--device "$(CPF_DEVICE)",) $(if $(filter true,$(CPF_MIXED_PRECISION)),--mixed-precision,--no-mixed-precision)
 
-cpf-evaluate:
-	$(PYTHON) scripts/evaluate_cpf_recommender.py --test "$(CPF_TEST)" --formations "$(CPF_FORMATIONS_WITH_SKILLS)" --base-model "$(CPF_BASE_MODEL)" --fine-tuned-model "$(CPF_MODEL_OUTPUT)/final"
+cpf-evaluate: cpf-train
+	$(PYTHON) scripts/evaluate_cpf_recommender.py --test "$(CPF_TEST)" --formations "$(CPF_FORMATIONS)" --base-model "$(CPF_BASE_MODEL)" --fine-tuned-model "$(CPF_MODEL_OUTPUT)/final"
 
-cpf-reindex:
-	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS_WITH_SKILLS)" --model "$(CPF_MODEL_OUTPUT)/final" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
+cpf-reindex: cpf-evaluate
+	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS)" --model "$(CPF_MODEL_OUTPUT)/final" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
 
-cpf-training-pipeline: cpf-build-pairs cpf-train cpf-evaluate cpf-reindex
+cpf-training-pipeline: cpf-reindex
 
-cpf-all: cpf-download cpf-inspect cpf-prepare cpf-embed cpf-test
+cpf-all: cpf-training-pipeline
 
 test:
 	$(PYTHON) -m pytest -q

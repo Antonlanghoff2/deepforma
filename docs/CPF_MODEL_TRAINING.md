@@ -1,5 +1,25 @@
 # Entraînement du recommender CPF
 
+## Données sources
+
+La source principale du pipeline est `data/raw/Dataset_Generaliste_CPF_V3.xlsx`. Le pipeline peut aussi retrouver `Dataset_Generaliste_CPF_V2.xlsx` ou `Dataset_Generaliste_CPF_V1.xlsx` si la V3 n'est pas disponible localement, mais la V3 doit être privilégiée.
+
+## Commandes exactes
+
+```bash
+cd /home/bibi/deepforma
+source .venv/bin/activate
+python -m pip install -e .
+make cpf-inspect CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-prepare CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+make cpf-build-pairs CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet
+make cpf-train CPF_TRAIN=data/training/cpf_train.jsonl CPF_VALIDATION=data/training/cpf_validation.jsonl
+make cpf-evaluate CPF_TEST=data/training/cpf_test.jsonl
+make cpf-reindex CPF_MODEL_OUTPUT=models/cpf-recommender
+make cpf-training-pipeline CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 CPF_MODEL_OUTPUT=models/cpf-recommender
+```
+
 ## Pourquoi le catalogue CPF n'est pas directement supervisé
 
 Le catalogue Mon Compte Formation contient des formations, pas des couples explicites utilisateur/formation. Il faut donc construire un signal d'apprentissage à partir d'heuristiques contrôlées:
@@ -131,13 +151,13 @@ Il pourra aussi accueillir du retour utilisateur plus tard.
 Extraction des compétences:
 
 ```bash
-python scripts/extract_cpf_skills.py
+python scripts/extract_cpf_skills.py --input data/processed/cpf/formations_normalized.parquet --output data/processed/cpf/formations_with_skills.parquet
 ```
 
 Construction des paires:
 
 ```bash
-python scripts/build_cpf_training_pairs.py
+python scripts/build_cpf_training_pairs.py --formations data/processed/cpf/formations_with_skills.parquet --offers-dir data/france_travail/normalized
 ```
 
 Entraînement:
@@ -149,7 +169,7 @@ python scripts/train_cpf_recommender.py   --train data/training/cpf_train.jsonl 
 Évaluation:
 
 ```bash
-python scripts/evaluate_cpf_recommender.py
+python scripts/evaluate_cpf_recommender.py --test data/training/cpf_test.jsonl --formations data/processed/cpf/formations_with_skills.parquet
 ```
 
 Ré-indexation:

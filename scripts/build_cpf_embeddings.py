@@ -11,6 +11,7 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 
 from deepforma.cpf.embeddings import build_embeddings, choose_backend, compute_corpus_hash, make_manifest, manifest_to_dict
+from deepforma.training.cpf_trainer import resolve_device
 from deepforma.cpf.io import ensure_parent, json_dump
 
 
@@ -52,7 +53,9 @@ def main() -> None:
     records = metadata.to_dict(orient='records')
     corpus_hash = compute_corpus_hash(records)
     model_name = _model_identifier(args.model, args.model_name)
-    encoder = SentenceTransformer(model_name)
+    device = resolve_device()
+    LOGGER.info("Device retenu pour l'indexation: %s", device)
+    encoder = SentenceTransformer(model_name, device=device)
     backend = choose_backend(prefer_faiss=True)
     vectors, backend = build_embeddings(records, encoder, batch_size=args.batch_size, backend=backend)
     backend.save(args.index)

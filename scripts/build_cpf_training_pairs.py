@@ -39,6 +39,86 @@ class PairBuildError(RuntimeError):
     pass
 
 
+def _available_processed_files() -> list[str]:
+    processed_dir = Path('data/processed/cpf')
+    if not processed_dir.exists():
+        return []
+    return [str(path.resolve()) for path in sorted(processed_dir.glob('*')) if path.is_file()]
+
+
+
+def _missing_formations_error(path: Path, *, step: str) -> PairBuildError:
+    available = _available_processed_files()
+    return PairBuildError(
+        f"Catalogue CPF enrichi introuvable: {path.resolve()}\n"
+        f"Étape précédente à exécuter: {step}\n"
+        f"Cible Make correspondante: cpf-enrich-skills\n"
+        f"Fichiers présents dans data/processed/cpf: {available if available else ['(vide)']}"
+    )
+
+
+def _required_column_sets() -> list[set[str]]:
+    return [
+        {'formation_id', 'titre', 'texte_modele', 'competences_normalisees', 'source', 'source_version', 'record_type'},
+        {'formation_uid', 'title', 'search_text', 'skills_normalized'},
+    ]
+
+
+def _first_present(*values: Any) -> Any:
+    for value in values:
+        if value is None:
+            continue
+        if isinstance(value, str):
+            if clean_text(value):
+                return value
+            continue
+        if isinstance(value, (list, tuple, set, dict)):
+            if value:
+                return value
+            continue
+        size = getattr(value, 'size', None)
+        if isinstance(size, int) and size == 0:
+            continue
+        try:
+            if len(value) == 0:  # type: ignore[arg-type]
+                continue
+        except Exception:
+            pass
+        return value
+    return None
+
+
+
+def _adapt_formation_row(row: dict[str, Any]) -> dict[str, Any]:
+    adapted = dict(row)
+    adapted.setdefault('formation_uid', adapted.get('formation_id'))
+    adapted['title'] = clean_text(_first_present(adapted.get('title'), adapted.get('titre')))
+    adapted['search_text'] = clean_text(_first_present(adapted.get('search_text'), adapted.get('texte_modele'), adapted.get('title')))
+    adapted['description'] = clean_text(adapted.get('description'))
+    adapted['objectives'] = clean_text(adapted.get('objectives'))
+    adapted['certification_label'] = clean_text(_first_present(adapted.get('certification_label'), adapted.get('certification')))
+    adapted['certification'] = clean_text(_first_present(adapted.get('certification'), adapted.get('certification_label')))
+    adapted['certification_code'] = clean_text(_first_present(adapted.get('certification_code'), adapted.get('code_certification'), adapted.get('code_rncp'), adapted.get('code_rs')))
+    adapted['level'] = clean_text(_first_present(adapted.get('level'), adapted.get('niveau')))
+    adapted['nsf'] = clean_text(adapted.get('nsf'))
+    adapted['organization'] = clean_text(_first_present(adapted.get('organization'), adapted.get('organisme')))
+    adapted['siret'] = clean_text(adapted.get('siret'))
+    adapted['region'] = clean_text(adapted.get('region'))
+    adapted['region_code'] = clean_text(adapted.get('region_code'))
+    adapted['department'] = clean_text(adapted.get('department'))
+    adapted['department_code'] = clean_text(adapted.get('department_code'))
+    adapted['referential_type'] = clean_text(adapted.get('referential_type'))
+    adapted['distance_compatible'] = bool(adapted.get('distance_compatible')) if adapted.get('distance_compatible') not in (None, '') else False
+    adapted['remote'] = bool(adapted.get('remote')) if adapted.get('remote') not in (None, '') else adapted['distance_compatible']
+    adapted['skills_normalized'] = ensure_list(_first_present(adapted.get('skills_normalized'), adapted.get('competences_normalisees'), adapted.get('competences')))
+    adapted['skills_explicit'] = ensure_list(_first_present(adapted.get('skills_explicit'), adapted.get('competences')))
+    adapted['skills_inferred'] = ensure_list(adapted.get('skills_inferred'))
+    adapted['skills_confidence'] = adapted.get('skills_confidence') or {}
+    adapted['skills_evidence'] = adapted.get('skills_evidence') or {}
+    adapted['group_id'] = _first_present(adapted.get('group_id'), adapted.get('formation_group_id')) or build_group_id(adapted)
+    return adapted
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Construit les paires et triplets CPF pour l'entraînement")
     parser.add_argument('--formations', type=Path, default=DEFAULT_FORMATIONS)
@@ -49,9 +129,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--validation-output', type=Path, default=DEFAULT_SPLITS['validation'])
     parser.add_argument('--test-output', type=Path, default=DEFAULT_SPLITS['test'])
     parser.add_argument('--seed', type=int, default=42)
-    parser.add_argument('--max-queries', type=int, default=2000)
-    parser.add_argument('--min-skill-coverage', type=float, default=0.35)
-    parser.add_argument('--min-semantic-similarity', type=float, default=0.28)
+    parser.add_argument('--max-queries', type=int, default=100)
+    parser.add_argument('--min-skill-coverage', type=float, default=0.05)
+    parser.add_argument('--min-semantic-similarity', type=float, default=0.2)
     parser.add_argument('--hard-negative-similarity', type=float, default=0.55)
     parser.add_argument('--territorial-margin', type=float, default=0.55)
     return parser
@@ -59,9 +139,48 @@ def build_parser() -> argparse.ArgumentParser:
 
 def _load_formations(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
-        raise FileNotFoundError(f'Catalogue CPF enrichi introuvable: {path}')
-    df = pd.read_parquet(path)
-    return [canonicalize_formation_row(row) for row in df.fillna('').to_dict(orient='records')]
+        raise _missing_formations_error(path, step='make cpf-prepare puis make cpf-enrich-skills')
+    if path.stat().st_size <= 0:
+        raise PairBuildError(
+            f"Le catalogue CPF enrichi est vide: {path.resolve()}\n"
+            f"Étape précédente à exécuter: make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx\n"
+            f"Cible Make correspondante: cpf-enrich-skills\n"
+            f"Fichiers présents dans data/processed/cpf: {_available_processed_files() or ['(vide)']}"
+        )
+    try:
+        df = pd.read_parquet(path)
+    except Exception as exc:
+        raise PairBuildError(
+            f"Impossible de lire le catalogue CPF enrichi: {path.resolve()}\n"
+            f"Étape précédente à exécuter: make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx\n"
+            f"Cible Make correspondante: cpf-enrich-skills\n"
+            f"Fichiers présents dans data/processed/cpf: {_available_processed_files() or ['(vide)']}"
+        ) from exc
+    if df.empty:
+        raise PairBuildError(
+            f"Le catalogue CPF enrichi est vide: {path.resolve()}\n"
+            f"Étape précédente à exécuter: make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx\n"
+            f"Cible Make correspondante: cpf-enrich-skills\n"
+            f"Fichiers présents dans data/processed/cpf: {_available_processed_files() or ['(vide)']}"
+        )
+    columns = set(str(col) for col in df.columns)
+    if not any(required.issubset(columns) for required in _required_column_sets()):
+        raise PairBuildError(
+            f"Colonnes CPF enrichies insuffisantes dans {path.resolve()}: {sorted(columns)}\n"
+            f"Étape précédente à exécuter: make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx\n"
+            f"Cible Make correspondante: cpf-enrich-skills\n"
+            f"Fichiers présents dans data/processed/cpf: {_available_processed_files() or ['(vide)']}"
+        )
+    rows = [_adapt_formation_row(row) for row in df.fillna('').to_dict(orient='records')]
+    rows = [canonicalize_formation_row(row) for row in rows]
+    if not rows:
+        raise PairBuildError(
+            f"Aucune formation exploitable dans {path.resolve()}\n"
+            f"Étape précédente à exécuter: make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx\n"
+            f"Cible Make correspondante: cpf-enrich-skills\n"
+            f"Fichiers présents dans data/processed/cpf: {_available_processed_files() or ['(vide)']}"
+        )
+    return rows
 
 
 def _load_offers(offers_dir: Path) -> list[dict[str, Any]]:
@@ -269,7 +388,7 @@ def _positive_confidence(profile: dict[str, Any], positive: dict[str, Any]) -> f
     return min(0.99, round(overlap * 0.5 + semantic * 0.35 + territory * 0.15, 4))
 
 
-def generate_pairs(formations_path: Path, offers_dir: Path, *, seed: int = 42, max_queries: int = 2000, min_skill_coverage: float = 0.35, min_semantic_similarity: float = 0.28) -> list[dict[str, Any]]:
+def generate_pairs(formations_path: Path, offers_dir: Path, *, seed: int = 42, max_queries: int = 100, min_skill_coverage: float = 0.05, min_semantic_similarity: float = 0.2) -> list[dict[str, Any]]:
     formations = _load_formations(formations_path)
     offers = [_extract_offer_profile(offer) for offer in _load_offers(offers_dir)]
     rng = random.Random(seed)

@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import inspect
 import json
+import logging
 import random
+from contextlib import nullcontext
+from unittest.mock import patch
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -23,6 +27,9 @@ DEFAULT_EPOCHS = 3
 DEFAULT_MAX_SEQ_LENGTH = 256
 DEFAULT_LR = 2e-5
 DEFAULT_WARMUP_RATIO = 0.1
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -56,7 +63,15 @@ class TrainingMetrics:
 def resolve_device(requested: str | None = None) -> str:
     if requested:
         return requested
-    return 'cuda' if torch.cuda.is_available() else 'cpu'
+    if not torch.cuda.is_available():
+        return 'cpu'
+    try:
+        free_bytes, _total_bytes = torch.cuda.mem_get_info()
+        if free_bytes < 1_000_000_000:
+            return 'cpu'
+    except Exception:
+        pass
+    return 'cuda'
 
 
 def _seed_everything(seed: int) -> None:
@@ -113,7 +128,21 @@ class CPFRecommenderTrainer:
         self.final_dir = self.output_dir / 'final'
 
     def load_model(self) -> SentenceTransformer:
-        model = SentenceTransformer(self.config.base_model, device=self.device)
+        try:
+            model = SentenceTransformer(self.config.base_model, device=self.device)
+        except torch.OutOfMemoryError:
+            if self.device != 'cuda':
+                raise
+            torch.cuda.empty_cache()
+            self.device = 'cpu'
+            model = SentenceTransformer(self.config.base_model, device=self.device)
+        except RuntimeError as exc:
+            if self.device == 'cuda' and 'out of memory' in str(exc).lower():
+                torch.cuda.empty_cache()
+                self.device = 'cpu'
+                model = SentenceTransformer(self.config.base_model, device=self.device)
+            else:
+                raise
         model.max_seq_length = self.config.max_seq_length
         return model
 
@@ -175,24 +204,43 @@ class CPFRecommenderTrainer:
         model = self.load_model()
         train_loader = self._build_dataloader(train_rows)
         loss_cls = _infer_loss(self.config.loss)
-        train_loss = loss_cls(model)
         warmup_steps = max(1, int(len(train_loader) * self.config.epochs * self.config.warmup_ratio))
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.checkpoints_dir.mkdir(parents=True, exist_ok=True)
-        model.fit(
-            train_objectives=[(train_loader, train_loss)],
-            epochs=self.config.epochs,
-            warmup_steps=warmup_steps,
-            optimizer_params={'lr': self.config.learning_rate},
-            output_path=str(self.final_dir),
-            show_progress_bar=False,
-            use_amp=bool(self.config.mixed_precision and self.device == 'cuda'),
-            checkpoint_path=str(self.checkpoints_dir),
-            checkpoint_save_steps=max(1, len(train_loader)),
-            checkpoint_save_total_limit=3,
-            gradient_accumulation_steps=self.config.gradient_accumulation,
-            resume_from_checkpoint=str(resume_from_checkpoint) if resume_from_checkpoint else None,
-        )
+
+        def _fit(active_model: SentenceTransformer, *, active_device: str) -> None:
+            train_loss = loss_cls(active_model)
+            fit_kwargs = {
+                'train_objectives': [(train_loader, train_loss)],
+                'epochs': self.config.epochs,
+                'warmup_steps': warmup_steps,
+                'optimizer_params': {'lr': self.config.learning_rate},
+                'output_path': str(self.final_dir),
+                'show_progress_bar': False,
+                'use_amp': bool(self.config.mixed_precision and active_device == 'cuda'),
+                'checkpoint_path': str(self.checkpoints_dir),
+                'checkpoint_save_steps': max(1, len(train_loader)),
+                'checkpoint_save_total_limit': 3,
+                'resume_from_checkpoint': str(resume_from_checkpoint) if resume_from_checkpoint else None,
+            }
+            fit_signature = inspect.signature(active_model.fit)
+            if 'gradient_accumulation_steps' in fit_signature.parameters:
+                fit_kwargs['gradient_accumulation_steps'] = self.config.gradient_accumulation
+            device_context = patch.object(torch.cuda, 'is_available', lambda: False) if active_device == 'cpu' else nullcontext()
+            with device_context:
+                active_model.fit(**fit_kwargs)
+
+        try:
+            _fit(model, active_device=self.device)
+        except Exception as exc:
+            message = f'{type(exc).__name__}: {exc}'.lower()
+            if self.device != 'cuda' or 'out of memory' not in message:
+                raise
+            LOGGER.warning("Bascule vers CPU après OOM CUDA pendant l'entraînement.")
+            torch.cuda.empty_cache()
+            self.device = 'cpu'
+            model = self.load_model()
+            _fit(model, active_device='cpu')
         model.save(str(self.final_dir))
         metrics = self._validation_metrics(model, validation_rows, candidate_rows=train_rows + validation_rows)
         manifest = {
