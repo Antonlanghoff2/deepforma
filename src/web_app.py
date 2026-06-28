@@ -22,11 +22,13 @@ from france_travail.client import FranceTravailAuthError, FranceTravailClient, F
 from france_travail.normalizer import normalize_offer
 from inference.deepforma_predictor import DeepformaPredictor, get_predictor
 from models.analysis_result import (
-    AnalysisResult, CheckpointAuditInfo, ClassificationInfo, MarketComparisonItem,
-    MarketSkillInfo, ModelMetadata, QualityInfo, Recommendation,
-    SkillInfo, TerritorialMarketInfo,
+    AnalysisResult, CheckpointAuditInfo, ClassificationInfo, IAClassificationInfo,
+    MarketComparisonItem, MarketSkillInfo, ModelMetadata, OpenExtractedSkill,
+    QualityInfo, Recommendation, SkillExtractionInfo, SkillInfo,
+    TerritorialMarketInfo,
 )
 from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
+from skills.open_extractor import extract_skills as open_extract_skills
 from services.recommendation_service import RecommendationService
 
 logger = logging.getLogger(__name__)
@@ -120,7 +122,7 @@ def _skill_confidence(score: float) -> str:
     return THRESHOLDS.get_confidence_level(score)
 
 
-def _check_quality(skills_result: dict[str, Any]) -> QualityInfo:
+def _check_ia_classifier_quality(skills_result: dict[str, Any]) -> IAClassificationInfo:
     score_std = skills_result.get('score_std', 0.0)
     score_max = skills_result.get('score_max', 0.0)
     score_mean = skills_result.get('score_mean', 0.0)
@@ -129,26 +131,78 @@ def _check_quality(skills_result: dict[str, Any]) -> QualityInfo:
     warnings: list[str] = []
     if not discriminating:
         warnings.append(
-            'Les scores de competences sont tous regroupes autour de {:.3f} (ecart-type={:.4f}). '
-            'Le modele ne discrimine pas correctement.'.format(score_mean, score_std)
+            'Le modele specialise dans les 18 categories IA ne produit pas de scores '
+            'suffisamment discriminants (ecart-type={:.4f}, max={:.4f}). '
+            'Ses resultats sont desactives. '
+            'Cette anomalie n empeche pas l extraction directe des competences depuis le texte.'.format(
+                score_std, score_max
+            )
         )
     if score_max < 0.50:
-        warnings.append('Aucune competence ne depasse 50%% de probabilite.')
+        warnings.append('Aucune categorie IA ne depasse 50%% de probabilite.')
     if score_min > 0.40 and score_max < 0.60:
         warnings.append(
-            'Tous les scores sont compris entre {:.2f} et {:.2f}. '
-            'Les resultats ne sont pas fiables.'.format(score_min, score_max)
+            'Tous les scores sont compris entre {:.2f} et {:.2f}.'.format(score_min, score_max)
         )
-    return QualityInfo(
-        model_loaded=True,
-        skills_discriminating=discriminating,
+    predictions = skills_result.get('predictions', [])
+    categories = [
+        {'label': p['label'], 'probability': p['probability']}
+        for p in predictions if p['probability'] >= 0.35
+    ]
+    status = 'success' if discriminating and categories else (
+        'unreliable' if not discriminating else 'unavailable'
+    )
+    return IAClassificationInfo(
+        status=status,
+        categories=categories,
+        scores=skills_result.get('all_scores', []),
         score_min=score_min,
         score_max=score_max,
         score_mean=score_mean,
         score_std=score_std,
-        offers_sufficient=False,
+        discriminating=discriminating,
         warnings=warnings,
     )
+
+
+def _build_skill_extraction(text: str) -> SkillExtractionInfo:
+    extracted = open_extract_skills(text)
+    if not extracted:
+        return SkillExtractionInfo(
+            status='failed',
+            warnings=['Aucune competence extraite du texte avec les regles linguistiques.'],
+        )
+    skills = []
+    tools = []
+    knowledge = []
+    seen_labels: set[str] = set()
+    for e in extracted:
+        key = e.normalized_label.lower()
+        if key in seen_labels:
+            continue
+        seen_labels.add(key)
+        item = OpenExtractedSkill(
+            source_label=e.source_label,
+            normalized_label=e.normalized_label,
+            type=e.type,
+            source_text=e.source_text,
+            start=e.start,
+            end=e.end,
+            confidence=e.confidence,
+            method=e.method,
+            referential_id=e.referential_id,
+            referential_source=e.referential_source,
+        )
+        if e.type in ('tool', 'tool_with_context'):
+            tools.append(item)
+        elif e.type == 'knowledge':
+            knowledge.append(item)
+        else:
+            skills.append(item)
+    total = len(skills) + len(tools) + len(knowledge)
+    status = 'success' if total >= 3 else 'partial'
+    return SkillExtractionInfo(status=status, skills=skills, tools=tools,
+                                knowledge_items=knowledge)
 
 
 def _build_analysis_result(
@@ -158,13 +212,13 @@ def _build_analysis_result(
     territorial_stats: Any,
     departement: str,
     threshold: float,
+    skill_extraction: SkillExtractionInfo | None = None,
 ) -> AnalysisResult:
     result = AnalysisResult()
 
     binary = analysis['binary']
     skills_result = analysis['skills']
     predictions = skills_result.get('predictions', [])
-    all_scores = skills_result.get('all_scores', [])
 
     class_state = THRESHOLDS.get_classification_state(
         binary['probability_ia'], binary['probability_non_ia']
@@ -179,18 +233,31 @@ def _build_analysis_result(
         gap=class_state['gap'],
     )
 
-    result.quality = _check_quality(skills_result)
-    result.quality.offers_sufficient = len(normalized_offers) >= THRESHOLDS.min_offers_for_conclusion
+    # ---- IA classification (secondary, scoped) ----
+    result.ia_classification = _check_ia_classifier_quality(skills_result)
 
-    discriminating = result.quality.skills_discriminating
-    score_std = result.quality.score_std
-    score_max = result.quality.score_max
+    # ---- Skill extraction (primary) ----
+    result.skill_extraction = skill_extraction or _build_skill_extraction('')
 
-    # ---- Build skills ----
-    detected_skills: list[SkillInfo] = []
-    low_confidence_skills: list[SkillInfo] = []
-    rejected_skills: list[SkillInfo] = []
-    indeterminate_skills: list[SkillInfo] = []
+    extracted_labels_normalized = set(
+        normalize_skill_label(s.normalized_label)
+        for s in result.skill_extraction.skills
+    )
+    extracted_tools_normalized = set(
+        normalize_skill_label(s.normalized_label)
+        for s in result.skill_extraction.tools
+    )
+
+    skill_extraction_ok = result.skill_extraction.status in {'success', 'partial'}
+    has_extracted_skills = len(result.skill_extraction.skills) > 0 or len(result.skill_extraction.tools) > 0
+
+    # ---- Build IA-only skill lists (backward compat, secondary) ----
+    ia_detected_skills: list[SkillInfo] = []
+    ia_low_confidence_skills: list[SkillInfo] = []
+    ia_rejected_skills: list[SkillInfo] = []
+    ia_indeterminate_skills: list[SkillInfo] = []
+
+    discriminating = result.ia_classification.discriminating
 
     for p in predictions:
         prob = p['probability']
@@ -203,41 +270,40 @@ def _build_analysis_result(
             seuil_applique=threshold,
             methode_detection='camembert_multilabel',
         )
-
         if not discriminating:
             skill.presence = 'indeterminate'
             skill.statut = 'indetermine'
-            indeterminate_skills.append(skill)
+            ia_indeterminate_skills.append(skill)
         elif prob >= threshold and confidence in ('forte', 'moyenne'):
             skill.presence = 'present'
             skill.statut = 'central' if prob >= 0.70 else 'secondaire'
-            detected_skills.append(skill)
+            ia_detected_skills.append(skill)
         elif prob >= threshold * 0.5:
             skill.presence = 'indeterminate'
             skill.statut = 'a_verifier'
-            low_confidence_skills.append(skill)
+            ia_low_confidence_skills.append(skill)
         else:
             skill.presence = 'absent'
             skill.statut = 'rejete'
-            rejected_skills.append(skill)
+            ia_rejected_skills.append(skill)
 
-    detected_skills.sort(key=lambda s: s.score_brut, reverse=True)
-    low_confidence_skills.sort(key=lambda s: s.score_brut, reverse=True)
-    indeterminate_skills.sort(key=lambda s: s.score_brut, reverse=True)
+    ia_detected_skills.sort(key=lambda s: s.score_brut, reverse=True)
+    ia_low_confidence_skills.sort(key=lambda s: s.score_brut, reverse=True)
+    ia_indeterminate_skills.sort(key=lambda s: s.score_brut, reverse=True)
 
-    result.detected_skills = detected_skills
-    result.low_confidence_skills = low_confidence_skills
-    result.rejected_skills = rejected_skills
-    result.indeterminate_skills = indeterminate_skills
+    result.detected_skills = ia_detected_skills
+    result.low_confidence_skills = ia_low_confidence_skills
+    result.rejected_skills = ia_rejected_skills
+    result.indeterminate_skills = ia_indeterminate_skills
 
-    # ---- Formation analysis status ----
-    if not discriminating:
+    # ---- Formation analysis status (now driven by skill_extraction, NOT ia_classifier) ----
+    if not skill_extraction_ok:
         result.formation_analysis_status = 'unreliable'
         result.skills_presence = 'indeterminate'
         result.comparison_available = False
         result.recommendations_available = False
-        result.blocking_reasons = ['skill_scores_not_discriminant']
-    elif len(detected_skills) == 0:
+        result.blocking_reasons = ['skill_extraction_failed']
+    elif not has_extracted_skills:
         result.formation_analysis_status = 'no_skills_detected'
         result.skills_presence = 'indeterminate'
         result.comparison_available = False
@@ -293,6 +359,18 @@ def _build_analysis_result(
         },
     )
 
+    # ---- Quality info (scoped to model, no longer blocks extraction) ----
+    result.quality = QualityInfo(
+        model_loaded=True,
+        skills_discriminating=discriminating,
+        score_min=result.ia_classification.score_min,
+        score_max=result.ia_classification.score_max,
+        score_mean=result.ia_classification.score_mean,
+        score_std=result.ia_classification.score_std,
+        offers_sufficient=len(normalized_offers) >= THRESHOLDS.min_offers_for_conclusion,
+        warnings=result.ia_classification.warnings,
+    )
+
     # ---- Territorial market (independent) ----
     if territorial_stats:
         market_skills_sorted = sorted(
@@ -334,9 +412,9 @@ def _build_analysis_result(
             alert=alert,
         )
 
-    # ---- Comparison and recommendations (only if reliable) ----
+    # ---- Comparison and recommendations (uses skill_extraction, NOT ia_classifier) ----
     if recommendation and result.comparison_available:
-        formation_labels = set(normalize_skill_label(s.label) for s in detected_skills)
+        formation_labels = extracted_labels_normalized | extracted_tools_normalized
         market_lookup = {}
         for ms in recommendation.market_skills:
             market_lookup[normalize_skill_label(ms.label)] = ms
@@ -347,10 +425,15 @@ def _build_analysis_result(
         for skill_key, ms in market_lookup.items():
             in_formation = skill_key in formation_labels
             detection_conf = 0.0
-            for ds in detected_skills:
-                if normalize_skill_label(ds.label) == skill_key:
-                    detection_conf = ds.score_brut
+            for es in result.skill_extraction.skills:
+                if normalize_skill_label(es.normalized_label) == skill_key:
+                    detection_conf = es.confidence
                     break
+            if detection_conf == 0.0:
+                for es_t in result.skill_extraction.tools:
+                    if normalize_skill_label(es_t.normalized_label) == skill_key:
+                        detection_conf = es_t.confidence
+                        break
             coverage = 'complete' if in_formation else 'absente'
             priority = 'haute' if ms.offer_count >= 5 else 'moyenne'
             comparison_items.append(MarketComparisonItem(
@@ -383,7 +466,7 @@ def _build_analysis_result(
         ]
 
         sub_score_values = {}
-        if len(detected_skills) > 0 and len(market_lookup) > 0:
+        if len(result.skill_extraction.skills) > 0 and len(market_lookup) > 0:
             coverage_pct = len(covered) / max(len(market_lookup), 1)
             sub_score_values['couverture_competences'] = coverage_pct * 100
             sub_score_values['pertinence_metier'] = min(100.0, coverage_pct * 120)
@@ -413,16 +496,16 @@ def _build_analysis_result(
                     niveau_confiance='forte' if c.offer_count >= 10 else 'moyenne',
                 ))
 
-        for ds in detected_skills:
-            skill_key = normalize_skill_label(ds.label)
-            if skill_key not in market_lookup and ds.score_brut >= 0.70:
-                if ds.label not in seen_recs:
-                    seen_recs.add(ds.label)
+        for es in result.skill_extraction.skills:
+            skill_key = normalize_skill_label(es.normalized_label)
+            if skill_key not in market_lookup and es.confidence >= 0.70:
+                if es.normalized_label not in seen_recs:
+                    seen_recs.add(es.normalized_label)
                     recommendations.append(Recommendation(
                         type='competence_peu_utile_localement',
-                        skill=ds.label,
+                        skill=es.normalized_label,
                         justification=(
-                            f"Competence '{ds.label}' bien detectee dans la formation "
+                            f"Competence '{es.normalized_label}' bien detectee dans la formation "
                             "mais peu presente dans les offres locales."
                         ),
                         impact_estime='faible',
@@ -457,10 +540,16 @@ def _build_analysis_result(
     # ---- Summary ----
     result.summary = {
         'formation_analysis_status': result.formation_analysis_status,
-        'total_skills_detected': len(detected_skills),
-        'total_skills_low_confidence': len(low_confidence_skills),
-        'total_skills_indeterminate': len(indeterminate_skills),
-        'total_skills_rejected': len(rejected_skills),
+        'skill_extraction_status': result.skill_extraction.status,
+        'total_skills_extracted': len(result.skill_extraction.skills),
+        'total_tools_detected': len(result.skill_extraction.tools),
+        'total_ia_categories': len(result.ia_classification.categories),
+        'ia_classification_status': result.ia_classification.status,
+        'ia_classification_discriminating': result.ia_classification.discriminating,
+        'total_skills_detected': len(ia_detected_skills),
+        'total_skills_low_confidence': len(ia_low_confidence_skills),
+        'total_skills_indeterminate': len(ia_indeterminate_skills),
+        'total_skills_rejected': len(ia_rejected_skills),
         'total_offers_analyzed': len(normalized_offers),
         'classification_state': class_state['state'],
         'global_score': result.global_score.get('global_score') if result.global_score else None,
@@ -583,7 +672,12 @@ def create_app(
         if predictor_instance is None:
             raise RuntimeError(app.extensions.get('deepforma_predictor_error') or 'Les modeles ne sont pas disponibles.')
 
+        # 1. Run the model (binary + 18-label IA classifier)
         analysis = predictor_instance.analyze(text, threshold=threshold)
+
+        # 2. Run the open extractor (primary skill extraction)
+        skill_extraction = _build_skill_extraction(text)
+
         normalized_offers: list[dict[str, Any]] = []
         recommendation = None
         territorial_stats = None
@@ -611,13 +705,16 @@ def create_app(
                 raise RuntimeError("Erreur reseau lors de l'appel a France Travail.") from exc
 
             service: RecommendationService = app.extensions['recommendation_service']
-            recommendation = service.compare(analysis['skills']['predictions'], normalized_offers)
+            # Comparison uses open-extracted skills (normalized), NOT the 18 sigmoid outputs
+            extracted_labels = [s.normalized_label for s in skill_extraction.skills]
+            extracted_labels += [s.normalized_label for s in skill_extraction.tools]
+            recommendation = service.compare(extracted_labels, normalized_offers)
             territorial_stats = compute_territorial_stats(normalized_offers, territory_key=departement)
             market_status = 'ok'
 
         analysis_result = _build_analysis_result(
             analysis, normalized_offers, recommendation, territorial_stats,
-            departement, threshold,
+            departement, threshold, skill_extraction=skill_extraction,
         )
 
         return {

@@ -14,7 +14,16 @@
       <p class="eyebrow">Deepforma — Diagnostic de formation</p>
       <h1>Tableau de bord</h1>
       <p class="lead">{{ warning }}</p>
-      {% if result_dict.quality.warnings %}
+      {% if result_dict.quality.warnings and result_dict.skill_extraction.status in ('success', 'partial') %}
+      <div class="alert alert-warning" role="alert">
+        <strong>Avertissement sur la classification IA :</strong>
+        <ul>
+          {% for w in result_dict.ia_classification.warnings %}
+          <li>{{ w }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% elif result_dict.quality.warnings %}
       <div class="alert alert-warning" role="alert">
         <strong>Avertissement :</strong>
         <ul>
@@ -31,22 +40,28 @@
       <h2>Resume executif</h2>
       <div class="stat-grid">
         <div class="stat-block">
-          <span class="stat-value">{{ result_dict.summary.formation_analysis_status }}</span>
-          <span class="stat-label">Etat analyse competences</span>
+          <span class="stat-value">{{ result_dict.skill_extraction.status }}</span>
+          <span class="stat-label">Statut extraction competences</span>
         </div>
-        {% if result_dict.comparison_available %}
         <div class="stat-block">
-          <span class="stat-value">{{ result_dict.summary.total_skills_detected }}</span>
-          <span class="stat-label">Competences detectees</span>
+          <span class="stat-value">{{ result_dict.summary.total_skills_extracted }}</span>
+          <span class="stat-label">Competences extraites</span>
         </div>
-        {% endif %}
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.summary.total_tools_detected }}</span>
+          <span class="stat-label">Outils detectes</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-value">{{ result_dict.ia_classification.status }}</span>
+          <span class="stat-label">Classification IA</span>
+        </div>
         <div class="stat-block">
           <span class="stat-value">{{ result_dict.summary.total_offers_analyzed }}</span>
           <span class="stat-label">Offres analysees</span>
         </div>
         <div class="stat-block">
-          <span class="stat-value">{{ result_dict.summary.classification_state }}</span>
-          <span class="stat-label">Etat classification</span>
+          <span class="stat-value">{{ 'Oui' if result_dict.comparison_available else 'Non' }}</span>
+          <span class="stat-label">Comparaison disponible</span>
         </div>
         {% if result_dict.global_score %}
         <div class="stat-block">
@@ -63,7 +78,7 @@
 
     <section class="grid">
 
-      <!-- Classification -->
+      <!-- Classification binaire -->
       <article class="card accent" aria-label="Classification">
         <h2>Classification</h2>
         {% set cls = result_dict.classification %}
@@ -89,21 +104,82 @@
         <p class="meta-info">Ecart: {{ '%.2f'|format(cls.gap) }} | Seuil d'incertitude: 0.10</p>
       </article>
 
-      <!-- Skills detected -->
-      <article class="card" aria-label="Competences">
-        <h2>Competences</h2>
+      <!-- Skills extracted (primary) -->
+      <article class="card" aria-label="Competences extraites">
+        <h2>Competences extraites</h2>
 
-        {% if result_dict.formation_analysis_status == 'unreliable' %}
-        <div class="alert alert-warning" role="alert">
-          <strong>Analyse du programme non exploitable</strong>
-          <p>Le modele de competences ne produit pas de scores suffisamment discriminants.
-          La presence ou l'absence des competences dans la formation ne peut pas etre determinee.</p>
-          <p>Les donnees du marche territorial restent consultables, mais elles ne peuvent
-          pas etre comparees de maniere fiable au programme analyse.</p>
+        {% if result_dict.skill_extraction.skills or result_dict.skill_extraction.tools %}
+
+        {% if result_dict.skill_extraction.skills %}
+        <h3>Savoir-faire</h3>
+        <div class="chips">
+          {% for skill in result_dict.skill_extraction.skills %}
+          <div class="chip" tabindex="0" role="button"
+               aria-label="{{ skill.source_label }}: confiance {{ '%.0f'|format(skill.confidence * 100) }}%">
+            <span>{{ skill.source_label }}</span>
+            <small>{{ skill.method }}</small>
+            <span class="confidence-dot confidence-{{ 'forte' if skill.confidence >= 0.8 else 'moyenne' if skill.confidence >= 0.6 else 'faible' }}"
+                  title="Confiance {{ '%.0f'|format(skill.confidence * 100) }}%"></span>
+          </div>
+          {% endfor %}
         </div>
+        {% endif %}
+
+        {% if result_dict.skill_extraction.tools %}
+        <h3>Outils et technologies</h3>
+        <div class="chips">
+          {% for tool in result_dict.skill_extraction.tools %}
+          <div class="chip chip-tool" tabindex="0"
+               aria-label="{{ tool.source_label }}: confiance {{ '%.0f'|format(tool.confidence * 100) }}%">
+            <span>{{ tool.source_label }}</span>
+            <small>{{ '%.0f'|format(tool.confidence * 100) }}%</small>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="alert alert-warning" role="alert">
+          <strong>Extraction non disponible</strong>
+          <p>Aucune competence n'a pu etre extraite du texte par les regles linguistiques.</p>
+        </div>
+        {% endif %}
+
+        <p class="meta-info">Seuil extraction: automatique | Methode: regles linguistiques</p>
+      </article>
+
+      <!-- IA Categories (secondary, collapsible) -->
+      <article class="card" aria-label="Categories IA">
+        <h2>Categorisation IA <span class="badge badge-yellow">experimentale</span></h2>
+
+        {% if result_dict.ia_classification.status == 'success' %}
+        <p>Categories IA detectees dans la formation :</p>
+        {% if result_dict.ia_classification.categories %}
+        <div class="chips">
+          {% for cat in result_dict.ia_classification.categories %}
+          <div class="chip chip-ia" tabindex="0"
+               aria-label="{{ cat.label }}: {{ '%.0f'|format(cat.probability * 100) }}%">
+            <span>{{ cat.label }}</span>
+            <small>{{ '%.0f'|format(cat.probability * 100) }}%</small>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p>Aucune categorie IA depassant le seuil de confiance.</p>
+        {% endif %}
+
+        {% elif result_dict.ia_classification.status == 'unreliable' %}
+        <div class="alert alert-warning" role="alert">
+          <strong>Classification IA non disponible</strong>
+          <p>Le modele specialise dans les 18 categories IA ne produit pas de scores
+          suffisamment discriminants. Ses resultats sont desactives.</p>
+          <p>Cette anomalie n'empeche pas l'extraction directe des competences depuis
+          le texte de la formation.</p>
+        </div>
+
         {% if result_dict.indeterminate_skills %}
-        <details class="collapsible open" open>
-          <summary>Scores du modele ({{ result_dict.indeterminate_skills|length }})</summary>
+        <details class="collapsible">
+          <summary>Scores bruts du modele 18 labels ({{ result_dict.indeterminate_skills|length }})</summary>
           <p class="meta-info">Tous les scores sont proches de 0.50 — aucun n'est exploitable.</p>
           <div class="chips">
             {% for skill in result_dict.indeterminate_skills %}
@@ -117,39 +193,31 @@
         </details>
         {% endif %}
 
-        {% elif result_dict.detected_skills %}
-        <div class="chips">
-          {% for skill in result_dict.detected_skills %}
-          <div class="chip" tabindex="0" role="button" aria-label="{{ skill.label }}: {{ '%.1f'|format(skill.score_brut * 100) }}%">
-            <span>{{ skill.label }}</span>
-            <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
-            <span class="confidence-dot confidence-{{ skill.niveau_confiance }}" title="Confiance {{ skill.niveau_confiance }}"></span>
-          </div>
-          {% endfor %}
-        </div>
         {% else %}
-        <p>Aucune competence fiable detectee.</p>
+        <p>Categorisation IA indisponible.</p>
         {% endif %}
 
-        {% if result_dict.low_confidence_skills %}
         <details class="collapsible">
-          <summary>Competences a verifier ({{ result_dict.low_confidence_skills|length }})</summary>
+          <summary>Scores detailles du modele 18 labels</summary>
           <div class="chips">
-            {% for skill in result_dict.low_confidence_skills %}
+            {% for p in result_dict.ia_classification.scores %}
+            {% if loop.index0 < result_dict.model_metadata.labels|length %}
+            {% set label = result_dict.model_metadata.labels[loop.index0] %}
+            {% set prob = p %}
             <div class="chip chip-low" tabindex="0">
-              <span>{{ skill.label }}</span>
-              <small>{{ '%.1f'|format(skill.score_brut * 100) }}%</small>
-              <span class="confidence-dot confidence-faible" title="Confiance faible"></span>
+              <span>{{ label }}</span>
+              <small>{{ '%.1f'|format(prob * 100) }}%</small>
             </div>
+            {% endif %}
             {% endfor %}
           </div>
+          <p class="meta-info">
+            Min: {{ '%.4f'|format(result_dict.ia_classification.score_min) }} |
+            Max: {{ '%.4f'|format(result_dict.ia_classification.score_max) }} |
+            Moy: {{ '%.4f'|format(result_dict.ia_classification.score_mean) }} |
+            Std: {{ '%.4f'|format(result_dict.ia_classification.score_std) }}
+          </p>
         </details>
-        {% endif %}
-
-        <div class="flex-between">
-          <p class="meta-info">Seuil: {{ threshold }}</p>
-          <p class="meta-info">Ecart-type scores: {{ '%.4f'|format(result_dict.quality.score_std) }}</p>
-        </div>
       </article>
 
       <!-- Territorial Market -->
@@ -208,24 +276,13 @@
         {% endif %}
       </article>
 
-      {% if result_dict.formation_analysis_status == 'unreliable' %}
-      <!-- Comparison unavailable -->
+      {% if not result_dict.comparison_available %}
       <article class="card wide" aria-label="Comparaison indisponible">
         <h2>Comparaison formation / marche</h2>
         <div class="alert alert-warning" role="alert">
           <strong>Comparaison indisponible</strong>
-          <p>L'analyse des competences de la formation a echoue.
-          Aucune competence ne peut etre declaree presente ou absente.</p>
-        </div>
-      </article>
-
-      <!-- Recommendations suspended -->
-      <article class="card wide" aria-label="Recommandations suspendues">
-        <h2>Recommandations</h2>
-        <div class="alert alert-warning" role="alert">
-          <strong>Recommandations suspendues</strong>
-          <p>Le systeme ne peut pas produire de preconisations fiables tant que les
-          competences de la formation n'ont pas ete identifiees.</p>
+          <p>L'extraction des competences depuis la formation n'a pas reussi.
+          Aucune competence ne peut etre comparee au marche.</p>
         </div>
       </article>
       {% endif %}
@@ -254,7 +311,7 @@
       </article>
       {% endif %}
 
-      <!-- Comparison (reliable only) -->
+      <!-- Comparison (available) -->
       {% if result_dict.formation_market_comparison and result_dict.comparison_available %}
       <article class="card wide" aria-label="Comparaison formation marche">
         <h2>Comparaison formation / marche</h2>
@@ -327,7 +384,7 @@
       </article>
       {% endif %}
 
-      <!-- Recommendations (reliable only) -->
+      <!-- Recommendations -->
       {% if result_dict.recommendations and result_dict.recommendations_available %}
       <article class="card wide" aria-label="Recommandations">
         <h2>Recommandations</h2>
@@ -360,24 +417,36 @@
         <h2>Fiabilite et methodologie</h2>
         <div class="columns">
           <div>
-            <h3>Qualite des scores</h3>
+            <h3>Extraction ouverte</h3>
             <ul class="list">
-              <li>Modele charge: {{ 'Oui' if result_dict.quality.model_loaded else 'Non' }}</li>
-              <li>Scores discriminants: {{ 'Oui' if result_dict.quality.skills_discriminating else 'Non' }}</li>
-              <li>Min: {{ '%.4f'|format(result_dict.quality.score_min) }}</li>
-              <li>Max: {{ '%.4f'|format(result_dict.quality.score_max) }}</li>
-              <li>Moyenne: {{ '%.4f'|format(result_dict.quality.score_mean) }}</li>
-              <li>Ecart-type: {{ '%.4f'|format(result_dict.quality.score_std) }}</li>
-              <li>Seuil de preselection: {{ threshold }}</li>
-              <li>Seuil detection fiable: 0.60</li>
-              <li>Seuil forte confiance: 0.80</li>
-              <li>Regle d'invalidation globale: ecart-type &lt; 0.05 <strong>et</strong> max &lt; 0.70</li>
+              <li>Statut: {{ result_dict.skill_extraction.status }}</li>
+              <li>Competences extraites: {{ result_dict.skill_extraction.skills|length }}</li>
+              <li>Outils detectes: {{ result_dict.skill_extraction.tools|length }}</li>
+              <li>Methode: regles linguistiques (40+ patterns)</li>
             </ul>
-            {% if result_dict.quality.warnings %}
+            {% if result_dict.skill_extraction.warnings %}
             <div class="alert alert-warning" role="alert">
-              <strong>Alertes qualite :</strong>
               <ul>
-                {% for w in result_dict.quality.warnings %}
+                {% for w in result_dict.skill_extraction.warnings %}
+                <li>{{ w }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+            <h3>Classification IA (18 labels)</h3>
+            <ul class="list">
+              <li>Statut: {{ result_dict.ia_classification.status }}</li>
+              <li>Scores discriminants: {{ 'Oui' if result_dict.ia_classification.discriminating else 'Non' }}</li>
+              <li>Min: {{ '%.4f'|format(result_dict.ia_classification.score_min) }}</li>
+              <li>Max: {{ '%.4f'|format(result_dict.ia_classification.score_max) }}</li>
+              <li>Moyenne: {{ '%.4f'|format(result_dict.ia_classification.score_mean) }}</li>
+              <li>Ecart-type: {{ '%.4f'|format(result_dict.ia_classification.score_std) }}</li>
+            </ul>
+            {% if result_dict.ia_classification.warnings %}
+            <div class="alert alert-warning" role="alert">
+              <ul>
+                {% for w in result_dict.ia_classification.warnings %}
                 <li>{{ w }}</li>
                 {% endfor %}
               </ul>
@@ -421,39 +490,24 @@
         <details class="collapsible">
           <summary>Methode de detection</summary>
           <div class="method-doc">
-            <p>Les scores de competences sont produits par un modele <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette.</p>
-            <p>Pour chacune des {{ result_dict.model_metadata.num_labels }} competences du referentiel, le modele genere une valeur brute appelee <strong>logit</strong>. Cette valeur est transformee en score compris entre 0 et 1 par une fonction <strong>sigmoid</strong>. Contrairement a une classification avec softmax, plusieurs competences peuvent etre detectees simultanement, car elles ne sont pas mutuellement exclusives.</p>
-
-            <h4>Interpretation des scores</h4>
-            <p>Un score eleve indique que le modele a trouve dans le texte des elements associes a la competence.</p>
-            <p>Un score faible indique que la competence n'a pas ete detectee avec suffisamment de confiance dans le texte analyse.</p>
-            <p>Un score proche de 0,50 correspond a un logit proche de zero. Il traduit generalement une forte incertitude du modele. Sur un seul texte, ce resultat ne suffit pas a conclure que le modele n'est pas entraine. En revanche, lorsque presque tous les scores restent proches de 0,50 sur de nombreux textes, cela peut reveler un probleme d'entrainement, de chargement du checkpoint, de donnees ou de traitement des entrees.</p>
-            <p>Ces scores sont des scores internes du modele. Ils ne constituent pas des probabilites reelles ou calibrees.</p>
-
-            <h4>Non-detection, absence et resultat indetermine</h4>
-            <p>Une competence non detectee ne doit pas automatiquement etre consideree comme absente de la formation.</p>
-            <p>Le systeme distingue trois situations :</p>
+            <h4>Extraction ouverte de competences</h4>
+            <p>Les competences sont extraites par un moteur de <strong>regles linguistiques</strong> qui identifie les structures typiques d'expression de competences en francais :</p>
             <ul>
-              <li><strong>Detectee</strong> : le score depasse le seuil de confiance et l'analyse globale est consideree comme fiable.</li>
-              <li><strong>Non detectee dans le texte analyse</strong> : le score est inferieur au seuil, mais cela ne prouve pas que la competence est absente du programme complet.</li>
-              <li><strong>Indeterminee</strong> : les scores globaux ne sont pas suffisamment discriminants pour conclure.</li>
+              <li>Verbes d'action : maîtriser, savoir, être capable de, concevoir, développer, etc.</li>
+              <li>Expressions de connaissance : bonnes connaissances en, notions en, etc.</li>
+              <li>Outils et technologies : Python, Docker, SQL, etc.</li>
             </ul>
-            <p>Lorsque le modele est declare non fiable, aucune competence ne peut etre consideree comme presente ou absente, et la comparaison avec le marche ainsi que les recommandations sont suspendues.</p>
+            <p>Contrairement a l'ancien modele, cette methode peut detecter <strong>n'importe quelle competence</strong>, qu'elle soit liee ou non a l'intelligence artificielle.</p>
 
-            <h4>Classification IA / non-IA</h4>
-            <p>La classification IA / non-IA repose sur un modele binaire distinct. Il produit deux scores transformes par une fonction <strong>softmax</strong>.</p>
-            <p>La classe ayant le score le plus eleve est normalement retenue. Toutefois, lorsque l'ecart entre les deux classes est trop faible, le resultat est marque comme <strong>classification incertaine</strong>.</p>
+            <h4>Classification IA (secondaire)</h4>
+            <p>Les scores de categories IA sont produits par un modele <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette limitee a 18 categories IA.</p>
+            <p>Ce modele est <strong>uniquement</strong> utilise pour categoriser les competences extraites dans des familles IA. Il ne determine pas quelles competences sont presentes ou absentes.</p>
 
             <h4>Limites</h4>
             <ul>
-              <li>Le referentiel actuel est limite a {{ result_dict.model_metadata.num_labels }} competences liees a l'intelligence artificielle.</li>
-              <li>Les competences non-IA ne peuvent pas etre detectees par ce modele.</li>
-              <li>Les scores ne sont pas calibres et ne representent pas une frequence ou une probabilite reelle.</li>
-              <li>Une competence non detectee dans le texte ne peut pas etre consideree avec certitude comme absente de la formation.</li>
-              <li>Les resultats dependent de la qualite, de la longueur et de la precision du texte fourni.</li>
+              <li>L'extraction par regles linguistiques peut manquer certaines formulations implicites.</li>
+              <li>Le referentiel du modele 18 labels est limite aux competences liees a l'intelligence artificielle.</li>
               <li>Les donnees territoriales reposent sur les offres France Travail, dont la couverture, la qualite et la fraicheur peuvent varier.</li>
-              <li>Un faible nombre d'offres reduit la robustesse statistique des tendances territoriales.</li>
-              <li>Le modele specialise sur {{ result_dict.model_metadata.num_labels }} competences IA ne doit pas etre utilise comme extracteur generaliste pour les 27 694 formations CPF.</li>
             </ul>
           </div>
         </details>

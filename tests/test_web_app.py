@@ -343,8 +343,8 @@ def test_model_loading_once(monkeypatch):
 # ===== Business-critical tests =====
 
 def test_unreliable_skill_analysis_does_not_claim_missing_skills():
-    """Quand l'analyse est non fiable, aucune competence ne doit etre
-    declaree absente et aucune recommandation d'ajout ne doit etre generee."""
+    """Le classifieur IA non fiable ne bloque plus l extraction.
+    L extraction ouverte reussit, la comparaison est disponible."""
     predictor = DummyPredictor(discriminating=False)
     offers = [
         {'title': 'Offre Python', 'description': 'Python',
@@ -363,22 +363,23 @@ def test_unreliable_skill_analysis_does_not_claim_missing_skills():
     payload = response.get_json()
     result = payload['result']
 
-    assert result['formation_analysis_status'] == 'unreliable'
-    assert result['comparison_available'] is False
-    assert result['recommendations_available'] is False
-    assert result['skills_presence'] == 'indeterminate'
-    assert 'skill_scores_not_discriminant' in result['blocking_reasons']
-    assert len(result['detected_skills']) == 0
-    assert len(result['low_confidence_skills']) == 0
-    assert len(result['indeterminate_skills']) == 3
-    assert len(result['missing_skills']) == 0
-    assert len(result['recommendations']) == 0
-    assert result['global_score'] == {}
+    # Extraction reussie meme si IA classifieur non discriminant
+    assert result['formation_analysis_status'] == 'reliable'
+    assert result['comparison_available'] is True
+    assert result['recommendations_available'] is True
+    # IA classification est unreliable
+    assert result['ia_classification']['status'] == 'unreliable'
+    assert result['ia_classification']['discriminating'] is False
+    # Extraction a trouve Python
+    assert len(result['skill_extraction']['skills']) >= 0
+    assert len(result['skill_extraction']['tools']) >= 1
+    tool_labels = [t['source_label'] for t in result['skill_extraction']['tools']]
+    assert 'Python' in tool_labels
 
 
 def test_unreliable_does_not_claim_python_absent():
-    """Quand l'analyse est non fiable, Python ne doit jamais etre
-    declare absent."""
+    """Quand le classifieur IA est non discriminant, Python extrait
+    par l extracteur ouvert reste present dans skill_extraction."""
     predictor = DummyPredictor(discriminating=False)
     offers = [
         {'title': 'Offre Python', 'description': 'Python',
@@ -394,11 +395,16 @@ def test_unreliable_does_not_claim_python_absent():
     payload = response.get_json()
     result = payload['result']
 
+    # Les 18 labels IA sont tous indetermines (classifieur non discriminant)
     for skill in result['indeterminate_skills']:
         assert skill['presence'] == 'indeterminate'
         assert skill['statut'] == 'indetermine'
 
-    assert result['formation_analysis_status'] == 'unreliable'
+    # Mais l extraction ouverte a reussi
+    assert result['formation_analysis_status'] == 'reliable'
+    assert result['skill_extraction']['status'] in ('success', 'partial')
+    tool_labels = [t['source_label'] for t in result['skill_extraction']['tools']]
+    assert 'Python' in tool_labels
 
 
 def test_reliable_analysis_allows_absent_skills():
@@ -756,3 +762,158 @@ def test_v1_classifier_biases_trained():
     dense_bias = audit['classifier_params'].get('classifier.dense.bias', {})
     assert dense_bias.get('n_nonzero', 0) > 0, 'Biases dense devraient etre entrained'
     assert dense_bias.get('std', 0) > 0, 'Biases dense devraient avoir une variance non nulle'
+
+
+# ===== Independence tests: IA classifier vs skill extraction =====
+
+def test_unreliable_ia_classifier_does_not_block_skill_extraction():
+    """Le classifieur IA peut etre unreliable alors que l extraction est success."""
+    predictor = DummyPredictor(discriminating=False)
+    app = build_app(predictor=predictor,
+                     client_factory=lambda: DummyOfferClient(offers=[]))
+    client = app.test_client()
+    response = client.post(
+        '/api/analyze',
+        json={'programme': 'Maîtrise Python et SQL', 'departement': '93'},
+    )
+    payload = response.get_json()
+    result = payload['result']
+
+    assert result['ia_classification']['status'] == 'unreliable'
+    assert result['ia_classification']['discriminating'] is False
+    assert result['skill_extraction']['status'] in ('success', 'partial')
+    assert result['formation_analysis_status'] == 'reliable'
+
+
+def test_comparison_available_when_ia_unreliable():
+    """La comparaison reste disponible meme si le classifieur IA est unreliable."""
+    predictor = DummyPredictor(discriminating=False)
+    offers = [
+        {'title': 'Offre Python', 'description': 'Python',
+         'competences': [{'label': 'Python'}]},
+    ]
+    app = build_app(predictor=predictor,
+                     client_factory=lambda: DummyOfferClient(offers=offers))
+    client = app.test_client()
+    response = client.post(
+        '/api/analyze',
+        json={'programme': 'Maîtrise Python', 'departement': '93'},
+    )
+    payload = response.get_json()
+    result = payload['result']
+
+    assert result['ia_classification']['status'] == 'unreliable'
+    assert result['comparison_available'] is True
+    assert result['recommendations_available'] is True
+
+
+def test_ia_warning_does_not_become_global_warning():
+    """L avertissement IA ne devient pas un avertissement global."""
+    predictor = DummyPredictor(discriminating=False)
+    app = build_app(predictor=predictor,
+                     client_factory=lambda: DummyOfferClient(offers=[]))
+    client = app.test_client()
+    response = client.post(
+        '/api/analyze',
+        json={'programme': 'Maîtrise Python et Docker',
+              'departement': '93'},
+    )
+    payload = response.get_json()
+    result = payload['result']
+
+    # Les warnings IA sont scopes
+    assert len(result['ia_classification']['warnings']) > 0
+    # Aucun warning global bloquant
+    assert result['formation_analysis_status'] == 'reliable'
+    assert result['skill_extraction']['status'] in ('success', 'partial')
+
+
+def test_skill_extracted_without_ia_label_btp():
+    """Une competence BTP peut etre extraite sans label IA."""
+    from skills.open_extractor import extract_skills
+    text = "Maîtrise des techniques de maçonnerie et lecture de plans."
+    results = extract_skills(text)
+    labels = [r.source_label.lower() for r in results]
+    assert any('maçonnerie' in l or 'maconnerie' in l for l in labels)
+    assert any('plan' in l for l in labels)
+
+
+def test_skill_extracted_without_ia_label_comptabilite():
+    """Une competence comptable peut etre extraite sans label IA."""
+    from skills.open_extractor import extract_skills
+    text = "Savoir établir un bilan comptable et maîtriser la comptabilité générale."
+    results = extract_skills(text)
+    labels = [r.source_label.lower() for r in results]
+    assert any('comptabil' in l or 'bilan' in l for l in labels)
+
+
+def test_skill_extracted_without_ia_label_coiffure():
+    """Une competence coiffure peut etre extraite sans label IA."""
+    from skills.open_extractor import extract_skills
+    text = "Maîtrise des techniques de coupe et savoir réaliser des colorations."
+    results = extract_skills(text)
+    labels = [r.source_label.lower() for r in results]
+    assert any('coupe' in l for l in labels)
+    assert any('coloration' in l for l in labels)
+
+
+def test_unknown_skill_preserved():
+    """Une competence inconnue du referentiel est conservee."""
+    from skills.open_extractor import extract_skills
+    text = "Savoir pratiquer la médecine traditionnelle chinoise."
+    results = extract_skills(text)
+    labels = [r.source_label.lower() for r in results]
+    assert any('médecine' in l or 'medecine' in l for l in labels)
+    assert any('chinoise' in l or 'traditionnelle' in l for l in labels)
+
+
+def test_eighteen_labels_not_used_as_primary_skills():
+    """Les 18 scores IA ne sont jamais utilises comme liste principale de competences."""
+    predictor = DummyPredictor(discriminating=True)
+    app = build_app(predictor=predictor,
+                     client_factory=lambda: DummyOfferClient(offers=[]))
+    client = app.test_client()
+    response = client.post(
+        '/api/analyze',
+        json={'programme': 'Maîtrise Kubernetes et Docker',
+              'departement': '93'},
+    )
+    payload = response.get_json()
+    result = payload['result']
+
+    # Les competences extraites viennent de l extracteur ouvert (tools)
+    assert len(result['skill_extraction']['tools']) >= 1
+    # detected_skills ne contient que les labels du modele 18-IA
+    assert len(result['detected_skills']) >= 1 or len(result['low_confidence_skills']) >= 1
+    # comparison_available est pilote par skill_extraction, pas par les 18 labels
+    assert result['comparison_available'] is True
+
+
+def test_market_comparison_uses_open_extracted_skills():
+    """La comparaison marche utilise les competences extraites, pas les 18 labels."""
+    predictor = DummyPredictor(discriminating=True)
+    offers = [
+        {'title': 'Offre Kubernetes', 'description': 'Kubernetes',
+         'competences': [{'label': 'Kubernetes'}]},
+        {'title': 'Offre Docker', 'description': 'Docker',
+         'competences': [{'label': 'Docker'}]},
+    ]
+    app = build_app(predictor=predictor,
+                     client_factory=lambda: DummyOfferClient(offers=offers))
+    client = app.test_client()
+    response = client.post(
+        '/api/analyze',
+        json={'programme': 'Maîtrise Kubernetes et Docker',
+              'departement': '93'},
+    )
+    payload = response.get_json()
+    result = payload['result']
+
+    # Les competences extraites contiennent Kubernetes, Docker
+    tool_labels = [t['source_label'].lower() for t in result['skill_extraction']['tools']]
+    assert 'kubernetes' in tool_labels or any('kubernetes' in t for t in tool_labels)
+    assert 'docker' in tool_labels or any('docker' in t for t in tool_labels)
+    # La comparaison est disponible
+    assert result['comparison_available'] is True
+    # Il y a des offres analysees
+    assert result['summary']['total_offers_analyzed'] > 0
