@@ -12,6 +12,7 @@ from models.analysis_result import (
     AnalysisResult,
     IAClassificationInfo,
     ModelMetadata,
+    SkillInfo,
 )
 from web_app import create_app
 
@@ -114,6 +115,12 @@ def _make_result(
         "total_offers_analyzed": 50,
         "inference_time_ms": 150.0,
     }
+    result.low_confidence_skills = [
+        SkillInfo(label="Deep Learning", score_brut=0.48, niveau_confiance="faible", statut="a_verifier")
+    ]
+    result.rejected_skills = [
+        SkillInfo(label="Coiffure", score_brut=0.12, niveau_confiance="rejetée", statut="rejete")
+    ]
     return result
 
 
@@ -250,6 +257,11 @@ class TestTerminology:
     def test_scores_techniques_present(self, app):
         html = _render_result(app)
         assert "Scores techniques" in html
+
+    def test_low_confidence_block_present(self, app):
+        html = _render_result(app, status="success", discriminating=True)
+        assert "Competences a verifier" in html
+        assert "Deep Learning" in html
 
 
 class TestModelNameNotHardcoded:

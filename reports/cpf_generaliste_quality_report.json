@@ -1,0 +1,28 @@
+{
+  "source_file": "/tmp/pytest-of-bibi/pytest-146/test_output_files_exist0/test_single.xlsx",
+  "total_raw": 1,
+  "total_after_cleaning": 1,
+  "removed": {
+    "sans_titre": 0,
+    "sans_texte_ni_competences": 0,
+    "doublons_exacts": 0
+  },
+  "fields": {
+    "num_with_title": 1,
+    "num_with_source_text": 1,
+    "num_with_skills": 1,
+    "num_with_rome_codes": 1,
+    "num_with_tags": 1,
+    "num_with_price": 1
+  },
+  "unique_certification_codes": 1,
+  "unique_providers": 1,
+  "unique_sectors": 1,
+  "top_skills": {
+    "Python": 1
+  },
+  "output_files": {
+    "parquet": "/tmp/pytest-of-bibi/pytest-146/test_output_files_exist0/output/formations_generalistes.parquet",
+    "jsonl": "/tmp/pytest-of-bibi/pytest-146/test_output_files_exist0/output/formations_generalistes.jsonl"
+  }
+}

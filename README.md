@@ -1,223 +1,216 @@
 # DeepForma
 
-Pipeline de nettoyage et d'entraînement pour les formations IA et généralistes.
+Pipeline de nettoyage, classification et recommandation pour les formations IA et généralistes.
 
-## Pipeline CPF
+Trois pipelines principaux :
 
-Le dépôt contient maintenant un pipeline dédié au catalogue Mon Compte Formation:
-
-- téléchargement du catalogue brut;
-- inspection du schéma;
-- nettoyage et normalisation en streaming par chunks;
-- extraction et normalisation des compétences;
-- embeddings multilingues;
-- index vectoriel local;
-- moteur de recommandation territorialisé;
-- génération de paires d'entraînement heuristiques.
-
-Le guide détaillé est dans [docs/CPF_CATALOG_PIPELINE.md](docs/CPF_CATALOG_PIPELINE.md).
+- **Classifieur IA v2** (20 labels) — entraînement d'un CamemBERT pour la classification multilabel de compétences IA
+- **CPF généraliste** (v4) — préparation et entraînement d'un recommender Sentence-Transformers sur le catalogue CPF
+- **CPF V3** (historique) — pipeline existant avec enrichissement par offres France Travail
 
 ## Fichiers sources
 
 - `Dataset_V7_Anton_CSV - Dataset_V7_Anton_CSV.csv.csv` : dataset IA existant.
-- `Dataset_Generaliste_CPF_V3.xlsx` : source CPF généraliste principale, avec V2/V1 en secours.
+- `Dataset_Generaliste_CPF_V3.xlsx` : source CPF V3 (historique).
+- `Dataset_Generaliste_CPF_V4.xlsx` : source CPF généraliste (nouveau).
+- `Dataset_IA_V9_synth.xlsx` : dataset IA pour l'entraînement du classifieur 20 labels.
 - `entrainement_camembert_competences_ia.ipynb` : notebook historique conservé intact.
-
-## Nettoyage effectué
-
-Le script `scripts/clean_and_merge_datasets.py` applique les règles suivantes :
-
-- suppression des lignes entièrement vides dans les sources exploitées ;
-- normalisation Unicode et espaces ;
-- normalisation des retours ligne ;
-- correction des valeurs nulles textuelles ;
-- normalisation des intitulés, niveaux, modalités, durées et codes ROME ;
-- suppression des doublons exacts ;
-- détection heuristique des doublons proches via groupes de titres normalisés ;
-- construction d'un `formation_id` stable et d'un `formation_group_id` pour les séparations sans fuite ;
-- conservation des textes utiles dans `texte_modele` ;
-- ajout du fichier source et du numéro de ligne source ;
-- classification conservatrice en `ia_confirmee`, `non_ia_confirmee`, `a_verifier`.
-
-## Schéma final
-
-Colonnes principales générées :
-
-- `formation_id`
-- `intitule`
-- `description`
-- `objectifs`
-- `programme`
-- `public_cible`
-- `prerequis`
-- `niveau`
-- `modalite`
-- `duree`
-- `certification`
-- `codes_rome`
-- `organisme`
-- `source_dataset`
-- `texte_modele`
-- `competences_ia`
-- `competences_ia_suggerees`
-- `est_lie_ia`
-- `statut_annotation`
-- `source_file`
-- `source_row`
-- `formation_group_id`
-
-Des colonnes techniques supplémentaires sont conservées pour la traçabilité.
-
-## Catégories
-
-- `ia_confirmee` : formation clairement liée à l'IA avec compétences annotées.
-- `non_ia_confirmee` : formation clairement hors IA utilisable comme négatif.
-- `a_verifier` : formation ambiguë ou potentiellement liée à l'IA sans annotation fiable.
 
 ## Installation
 
 ```bash
 python -m pip install -r requirements.txt
+# ou
+python -m pip install -e .
 ```
 
-## Nettoyage et fusion
+---
+
+## Déploiement Ubuntu
+
+Le guide de production est disponible dans [docs/deployment_ubuntu.md](docs/deployment_ubuntu.md).
+Il décrit le premier déploiement, les mises à jour, les logs, le rollback et la configuration Nginx/systemd.
+
+## Pipeline : Classifieur IA (v2, 20 labels)
+
+Entraîne un `CamemBERTForSequenceClassification` en multilabel sur une taxonomie de 20 compétences IA.
+
+### 1. Préparation du dataset
 
 ```bash
-python scripts/clean_and_merge_datasets.py
+python scripts/prepare_ia_training_dataset.py \
+    --input data/raw/Dataset_IA_V9_synth.xlsx \
+    --output-dir data/processed \
+    --taxonomy config/ia_taxonomy_v2.json
 ```
 
-Sorties produites dans `data/processed` :
+Étapes : normalisation des labels via `config/alias_map.json` intégré, construction du texte (titre + description + objectifs + résultats), groupement par certification/organisme, `GroupShuffleSplit` anti-fuite, calcul des `pos_weights`, multi-hot encoding. Produit des fichiers JSONL (train/val/test).
 
-- `dataset_formations_nettoye.csv`
-- `dataset_entrainement.csv`
-- `dataset_a_verifier.csv`
-- `dataset_formations_nettoye.xlsx`
+### 2. Entraînement
 
-## Notebook v2
+```bash
+python scripts/train_ia_multilabel_classifier.py \
+    --input-dir data/processed \
+    --output-dir models/ia-classifier-v2 \
+    --base-model camembert-base \
+    --epochs 10 --batch-size 16 --lr 2e-5
+```
 
-Ouvrir et exécuter `entrainement_camembert_competences_ia_v2.ipynb`.
+Options : `--fp16` / `--no-fp16`, `--gradient-checkpointing` / `--no-gradient-checkpointing`, `--device cpu` / `--device cuda`. Early stopping (patience 3), sauvegarde du meilleur modèle + `thresholds.json` (seuils optimisés par label).
 
-Architecture :
+### 3. Évaluation
 
-1. modèle binaire `IA / non-IA` sur `texte_modele` ;
-2. modèle multi-étiquette sur `competences_ia`, entraîné uniquement sur les formations IA confirmées.
+```bash
+python scripts/evaluate_ia_multilabel_classifier.py \
+    --model-dir models/ia-classifier-v2/final \
+    --test-file data/processed/ia_multilabel_test.jsonl \
+    --output-dir reports \
+    --taxonomy config/ia_taxonomy_v2.json
+```
 
-Modèle de base recommandé : `camembert-base`.
+Produit : métriques globales et par label (F1, précision, rappel), matrice de cooccurrence, distribution des probabilités, erreurs d'inférence.
 
-## Fonction de prédiction
+### 4. Inférence (module Python)
 
-Le notebook v2 expose `predict_formation(formation_data)` qui :
+```python
+from src.models.ia_classifier import IAClassifier
 
-- calcule d'abord la probabilité IA ;
-- ne lance le modèle de compétences que si la probabilité dépasse le seuil retenu ;
-- renvoie une structure JSON-like avec la probabilité IA et les compétences prédites.
+clf = IAClassifier("models/ia-classifier-v2/final", top_k=5)
+result = clf.predict("Formation en Deep Learning avec PyTorch")
+# [{"label": "Deep Learning", "probability": 0.92, "selected": True}, ...]
+```
 
-## Limites
+### Makefile
 
-- Les formations ambiguës sont conservativement envoyées dans `a_verifier`.
-- L'absence d'annotation n'est jamais interprétée automatiquement comme un négatif.
-- La détection de doublons proches reste heuristique.
-- Le notebook n'entraîne pas un modèle depuis zéro : il affine un modèle français préentraîné.
+```bash
+make ia-prepare   # préparation du dataset
+make ia-train     # entraînement (dépend de ia-prepare)
+make ia-evaluate  # évaluation
+make ia-all       # pipeline complet
+```
 
-## Contrôles qualité
+Variables : `IA_DATASET`, `IA_TAXONOMY`, `IA_BASE_MODEL`, `IA_MODEL_OUTPUT`, `IA_EPOCHS`, `IA_BATCH_SIZE`, `IA_LEARNING_RATE`.
 
-Le pipeline vérifie notamment :
+---
 
-- absence de doublons exacts dans `dataset_entrainement.csv` ;
-- absence d'entrée vide dans `texte_modele` ;
-- absence de fuite des cibles dans `texte_modele` ;
-- absence de compétences IA vides pour les exemples IA confirmés ;
-- absence de compétences IA sur les exemples non-IA confirmés.
+## Pipeline : CPF généraliste (v4)
 
-## Résultats observés sur l'exécution courante
+Prépare le dataset CPF généraliste et génère des paires d'entraînement (positives et négatives) pour un Sentence-Transformer.
 
-- Lignes avant nettoyage : 1260
-- Lignes après nettoyage : 1208
-- Doublons exacts supprimés : 52
-- IA confirmées : 334
-- Non-IA confirmées : 441
-- À vérifier : 433
-- Compétences distinctes observées : 18
+### 1. Préparation du dataset
+
+```bash
+python scripts/prepare_general_cpf_dataset.py \
+    --input data/raw/Dataset_Generaliste_CPF_V4.xlsx \
+    --output-dir data/processed/cpf
+```
+
+Étapes : normalisation du texte, parsing des compétences structurées, construction des `formation_id` et `group_id` (par code certification), split anti-fuite, dédup. Produit `formations_generalistes.jsonl` + `.parquet`.
+
+### 2. Construction des paires d'entraînement
+
+```bash
+python scripts/build_cpf_training_pairs.py \
+    --input data/processed/cpf/formations_generalistes.jsonl \
+    --output-dir data/processed/cpf \
+    --output-pairs pairs_generalistes.jsonl
+```
+
+Types de paires :
+- **Positives** : même certification (`same_certification`), ou compétences similaires (`same_skills`, Jaccard ≥ 0.3)
+- **Négatives** : même secteur avec compétences différentes (`same_sector_diff_skills`), même code ROME avec compétences différentes (`same_rome_diff_skills`), titres lexicalement similaires avec compétences différentes (`similar_title_diff_skills`)
+
+### 3. Entraînement du recommender
+
+```bash
+python scripts/train_cpf_recommender.py \
+    --input-pairs data/processed/cpf/pairs_generalistes.jsonl \
+    --output-dir models/cpf-recommender \
+    --base-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 \
+    --epochs 3 --batch-size 16
+```
+
+### Makefile
+
+```bash
+make cpf-general-prepare   # préparation du dataset
+make cpf-pairs             # construction des paires (dépend de cpf-general-prepare)
+make cpf-train             # entraînement du recommender (dépend de cpf-pairs)
+make cpf-all               # pipeline complet
+```
+
+---
+
+## Pipeline : CPF V3 (historique)
+
+Pipeline existant pour le catalogue `Dataset_Generaliste_CPF_V3.xlsx` avec enrichissement par les offres France Travail.
+
+```bash
+make cpf-v3-all CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+```
+
+Étapes : inspection → préparation → extraction compétences → build pairs (avec offres) → train → evaluate → reindex.
+
+Le guide détaillé est dans [docs/CPF_CATALOG_PIPELINE.md](docs/CPF_CATALOG_PIPELINE.md).
 
 ## Application web Flask
 
 Lancement local:
 
 ```bash
-cd /home/bibi/deepforma
 source .venv/bin/activate
-pip install flask
 python -m src.web_app
 ```
 
-Puis ouvrir:
+Puis ouvrir `http://127.0.0.1:5000`.
 
-```text
-http://127.0.0.1:5000
-```
-
-Test API avec `curl`:
+Test API :
 
 ```bash
-curl -X POST http://127.0.0.1:5000/api/analyze   -H 'Content-Type: application/json'   -d '{
-    "programme": "Programme de formation en Python, data et IA",
-    "departement": "93",
-    "keywords": "python,data",
-    "threshold": 0.35,
-    "model_only": true
-  }'
+curl -X POST http://127.0.0.1:5000/api/analyze \
+  -H 'Content-Type: application/json' \
+  -d '{"programme": "Formation Python et IA", "departement": "93"}'
 ```
 
-Avertissement:
-
-> Résultat expérimental. Le modèle doit encore être validé avant utilisation opérationnelle.
-
-## Développement CPF
-
-Installation éditable:
+## Tests
 
 ```bash
-source .venv/bin/activate
-python -m pip install -e .
+make test
+# ou
+python -m pytest tests/
 ```
 
-Diagnostics et préparation:
+238 tests (15 fichiers).
 
-```bash
-make cpf-check-imports
-make cpf-test
-make cpf-inspect CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-make cpf-prepare CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
+## Notebooks
+
+- `entrainement_camembert_competences_ia.ipynb` : notebook historique (v1, pipeline binaire + multi-étiquette 18 labels)
+- `entrainement_camembert_competences_ia_v2.ipynb` : notebook v2 (binaire + multi-étiquette sur ancienne taxonomie)
+
+## Structure du dépôt
+
 ```
-
-## Entraînement CPF
-
-Installation éditable:
-
-```bash
-source .venv/bin/activate
-python -m pip install -e .
-```
-
-Commandes utiles:
-
-```bash
-make cpf-check-imports
-make cpf-test
-make cpf-inspect CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-make cpf-prepare CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-make cpf-enrich-skills CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-make cpf-build-pairs CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet
-make cpf-train CPF_TRAIN=data/training/cpf_train.jsonl CPF_VALIDATION=data/training/cpf_validation.jsonl
-make cpf-evaluate CPF_TEST=data/training/cpf_test.jsonl
-make cpf-reindex CPF_MODEL_OUTPUT=models/cpf-recommender
-make cpf-training-pipeline CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx CPF_FORMATIONS=data/processed/cpf/formations_with_skills.parquet CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 CPF_MODEL_OUTPUT=models/cpf-recommender
-make cpf-all CPF_SOURCE_FILE=data/raw/Dataset_Generaliste_CPF_V3.xlsx
-```
-
-Reprise après interruption:
-
-```bash
-python scripts/train_cpf_recommender.py   --train data/training/cpf_train.jsonl   --validation data/training/cpf_validation.jsonl   --base-model sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2   --output-dir models/cpf-recommender   --resume-from-checkpoint models/cpf-recommender/checkpoints
+config/
+  ia_taxonomy_v2.json       # Taxonomie 20 labels IA
+scripts/
+  prepare_ia_training_dataset.py
+  train_ia_multilabel_classifier.py
+  evaluate_ia_multilabel_classifier.py
+  prepare_general_cpf_dataset.py
+  build_cpf_training_pairs.py
+  train_cpf_recommender.py
+  evaluate_cpf_recommender.py
+  clean_and_merge_datasets.py
+  ...
+src/
+  models/
+    ia_classifier.py        # Module d'inférence IAClassifier
+  web_app.py                # Application Flask
+  deepforma/                # Module principal (CPF datasets, training)
+tests/
+  test_prepare_ia_training_dataset.py
+  test_ia_classifier.py
+  test_prepare_general_cpf_dataset.py
+  test_build_cpf_training_pairs.py
+  ...
 ```

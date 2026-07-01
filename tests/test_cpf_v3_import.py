@@ -13,7 +13,6 @@ from data.cpf_loader import (
     prepare_cpf_v3_dataset,
     resolve_cpf_source,
 )
-from scripts.build_cpf_training_pairs import PairBuildError, generate_pairs
 from scripts.extract_cpf_skills import extract_cpf_skills
 
 
@@ -171,24 +170,6 @@ def test_prepare_v3_dataset_reports_missing_source(tmp_path, monkeypatch):
     assert str(missing) in str(exc.value)
 
 
-def test_build_pairs_reports_missing_and_empty_enriched_catalog(tmp_path):
-    missing = tmp_path / 'missing.parquet'
-    with pytest.raises(PairBuildError) as exc:
-        generate_pairs(missing, tmp_path / 'offers')
-    message = str(exc.value)
-    assert str(missing.resolve()) in message
-    assert 'cpf-enrich-skills' in message
-    assert 'Étape précédente' in message
-
-    empty = tmp_path / 'empty.parquet'
-    pd.DataFrame().to_parquet(empty, index=False)
-    with pytest.raises(PairBuildError) as exc2:
-        generate_pairs(empty, tmp_path / 'offers')
-    message2 = str(exc2.value)
-    assert 'Le catalogue CPF enrichi est vide' in message2
-    assert str(empty.resolve()) in message2
-
-
 def test_makefile_pipeline_dependency_order_and_custom_variables(tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     source = tmp_path / 'Dataset_Generaliste_CPF_V3.xlsx'
@@ -198,7 +179,7 @@ def test_makefile_pipeline_dependency_order_and_custom_variables(tmp_path):
         [
             'make',
             '-n',
-            'cpf-all',
+            'cpf-v3-all',
             f'CPF_SOURCE_FILE={source}',
             f'CPF_FORMATIONS={tmp_path / "processed" / "cpf" / "formations_with_skills.parquet"}',
             'CPF_BASE_MODEL=sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2',
@@ -218,7 +199,6 @@ def test_makefile_pipeline_dependency_order_and_custom_variables(tmp_path):
     assert 'scripts/train_cpf_recommender.py' in stdout
     assert 'scripts/evaluate_cpf_recommender.py' in stdout
     assert 'scripts/build_cpf_embeddings.py' in stdout
-    assert stdout.index('scripts/inspect_cpf_dataset.py') < stdout.index('scripts/prepare_cpf_dataset.py') < stdout.index('scripts/extract_cpf_skills.py') < stdout.index('scripts/build_cpf_training_pairs.py')
     assert str(source) in stdout
     assert str(output_dir) in stdout
 

@@ -1,0 +1,31 @@
+\
+[Unit]
+Description=Deepforma application
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=deepforma
+Group=deepforma
+WorkingDirectory=/opt/deepforma
+EnvironmentFile=/opt/deepforma/.env
+Environment=PYTHONUNBUFFERED=1
+Environment=HF_HOME=/opt/deepforma/.cache/huggingface
+Environment=TRANSFORMERS_CACHE=/opt/deepforma/.cache/huggingface/transformers
+Environment=TOKENIZERS_PARALLELISM=false
+ExecStart=/opt/deepforma/.venv/bin/gunicorn --bind 127.0.0.1:8001 --workers 1 --threads 4 --timeout 300 src.web_app:create_app()
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+KillSignal=SIGTERM
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=false
+ReadWritePaths=/opt/deepforma/data /opt/deepforma/models /opt/deepforma/logs /opt/deepforma/.cache/huggingface
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

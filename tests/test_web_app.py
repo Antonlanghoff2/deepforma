@@ -503,9 +503,9 @@ def test_checkpoint_audit_handles_missing_checkpoint():
     assert isinstance(audit, dict)
 
 
-def test_audit_detects_untrained_checkpoint():
-    """Un checkpoint non entraine doit etre detecte: appears_random_init=True
-    et body_params_match_base=True."""
+def test_audit_detects_trained_checkpoint():
+    """Le checkpoint multilabel v2 a ete entraine: appears_random_init=False,
+    biasses non nuls."""
     from inference.deepforma_predictor import _audit_checkpoint
     from pathlib import Path
     model_dir = Path('models/multilabel_competences_v2/final')
@@ -513,8 +513,26 @@ def test_audit_detects_untrained_checkpoint():
         pytest.skip('Checkpoint non disponible')
 
     audit = _audit_checkpoint(model_dir)
+    assert audit['config_present'] is True
+    assert audit['weights_present'] is True
+    assert audit['appears_random_init'] is False, (
+        'Le checkpoint entraine ne devrait pas etre marque comme non entraine. '
+        'Verifiez que les biais du classifier sont non nuls.'
+    )
+    assert audit['biases_all_zero'] is False
+
+def test_audit_detects_untrained_checkpoint():
+    """Un checkpoint non entraine doit etre detecte: appears_random_init=True.
+    Utilise le backup final.untrained."""
+    from inference.deepforma_predictor import _audit_checkpoint
+    from pathlib import Path
+    model_dir = Path('models/multilabel_competences_v2/final.untrained')
+    if not model_dir.exists():
+        pytest.skip('Backup untrained non disponible')
+
+    audit = _audit_checkpoint(model_dir)
     assert audit['appears_random_init'] is True
-    assert audit['body_params_match_base'] is True
+    assert audit['biases_all_zero'] is True
 
 def test_checkpoint_detects_trained_v1():
     """Le checkpoint v1 (modele_camembert_competences_ia) a ete entraine:
@@ -541,9 +559,9 @@ def test_binary_checkpoint_also_untrained():
     assert audit['appears_random_init'] is True
     assert audit['body_params_match_base'] is True
 
-def test_v2_multilabel_config_has_generic_labels():
-    """Le config.json du v2 multilabel contient LABEL_0..LABEL_17
-    (pas les vrais noms), contrairement au v1."""
+def test_v2_multilabel_config_has_taxonomy_ids():
+    """Le config.json du v2 multilabel (retrained) contient des IDs de taxonomie
+    (ml.intro, dl.intro, etc.), pas LABEL_N."""
     from pathlib import Path
     import json
     cfg_path = Path('models/multilabel_competences_v2/final/config.json')
@@ -551,8 +569,14 @@ def test_v2_multilabel_config_has_generic_labels():
         pytest.skip('Checkpoint non disponible')
     cfg = json.loads(cfg_path.read_text())
     id2label = cfg.get('id2label', {})
-    for v in id2label.values():
-        assert v.startswith('LABEL_'), f'Label generique attendu, obtenu: {v}'
+    assert len(id2label) == 18
+    first_val = list(id2label.values())[0]
+    assert '.' in first_val, (
+        f'ID de taxonomie attendu (ex: ml.intro), obtenu: {first_val}'
+    )
+    assert not first_val.startswith('LABEL_'), (
+        f'Label generique incorrect apres entrainement: {first_val}'
+    )
 
 def test_v1_config_has_real_labels():
     """Le config.json du v1 contient les vrais noms de competences."""

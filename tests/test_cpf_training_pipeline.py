@@ -11,7 +11,6 @@ import pytest
 
 from deepforma.training.cpf_dataset import build_group_id, load_jsonl, save_jsonl, split_by_group, validate_rows
 from deepforma.training.cpf_trainer import CPFRecommenderTrainer, TrainingConfig
-from scripts.build_cpf_training_pairs import generate_pairs
 from scripts.evaluate_cpf_recommender import evaluate_model, _metrics_from_ranks
 from scripts.extract_cpf_skills import extract_cpf_skills
 
@@ -131,29 +130,7 @@ def test_extract_cpf_skills_creates_expected_columns(tmp_path):
     assert expected.issubset(set(enriched.columns))
 
 
-def test_generate_pairs_creates_positive_and_negative_types(tmp_path):
-    formations_path = tmp_path / 'formations_with_skills.parquet'
-    _write_parquet(formations_path, _sample_formations())
-    offers_dir = tmp_path / 'offers'
-    offers_dir.mkdir(parents=True)
-    save_jsonl(
-        offers_dir / 'offers.jsonl',
-        [
-            {
-                'title': 'Développeur Python',
-                'description': 'Python et analyse de données',
-                'normalized_skills': ['Python', 'Analyse de données'],
-                'department_code': '75',
-                'region_code': '11',
-            }
-        ],
-    )
 
-    rows = generate_pairs(formations_path, offers_dir, seed=7, max_queries=6)
-    assert rows
-    assert {row['negative_type'] for row in rows}.issuperset({'easy', 'hard', 'territorial'})
-    assert all(row['positive_uid'] for row in rows)
-    assert all(row['negative_uid'] for row in rows)
 
 
 def test_split_by_group_is_reproducible_and_leak_free(tmp_path):

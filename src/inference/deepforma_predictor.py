@@ -253,6 +253,17 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
     # -------- Determine appears_random_init --------
     out_proj_weight_stats = audit['classifier_params'].get('classifier.out_proj.weight', {})
     dense_weight_stats = audit['classifier_params'].get('classifier.dense.weight', {})
+    out_proj_bias_stats = audit['classifier_params'].get('classifier.out_proj.bias', {})
+    dense_bias_stats = audit['classifier_params'].get('classifier.dense.bias', {})
+
+    # Signal fort: les biais sont-ils non nuls ?
+    # Un Linear initialise a 0 a tous ses biais a zero.
+    # Des biais non nuls impliquent au moins une etape d'entrainement.
+    biases_all_zero = (
+        out_proj_bias_stats.get('n_nonzero', 0) == 0
+        and dense_bias_stats.get('n_nonzero', 0) == 0
+    )
+    audit['biases_all_zero'] = biases_all_zero
 
     weight_mean_close_to_zero = (
         abs(out_proj_weight_stats.get('mean', 0)) < 0.01
@@ -263,11 +274,11 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         and abs(dense_weight_stats.get('std', 0) - 0.02) < 0.005
     )
 
-    if weight_mean_close_to_zero and weight_std_near_002:
+    if biases_all_zero and weight_mean_close_to_zero and weight_std_near_002:
         audit['appears_random_init'] = True
         logger.warning(
             'Poids du classifier coherents avec une initialisation aleatoire '
-            '(out_proj.weight std=%.4f, dense.weight std=%.4f). '
+            '(out_proj.weight std=%.4f, dense.weight std=%.4f, biais tous a 0). '
             'Le checkpoint semble ne pas avoir ete entraine.',
             out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0)
         )
@@ -275,8 +286,10 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         audit['appears_random_init'] = False
         logger.info(
             'Poids du classifier coherents avec un entrainement: '
-            'out_proj.weight std=%.4f, dense.weight std=%.4f.',
-            out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0)
+            'out_proj.weight std=%.4f, dense.weight std=%.4f, '
+            'biais non nuls=%s.',
+            out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0),
+            not biases_all_zero
         )
 
     # -------- Check if body weights differ from pretrained base --------
@@ -503,13 +516,21 @@ class DeepformaPredictor:
         cleaned = clean_text(text)
         if not cleaned:
             raise ValueError('Le texte a analyser est vide.')
-        logger.debug('Entree binaire (tronquee, %d car.): %s ...', len(cleaned), cleaned[:200])
+        logger.info('=== Diagnostic inference binaire ===')
+        logger.info('Taille entree: %d caracteres', len(cleaned))
+        logger.info('Entree (debut): %s ...', cleaned[:200])
+        logger.info('Checkpoint: %s', self.binary_model_dir)
+        logger.info('Device: %s', self.device)
         encoded = self._encode(self.binary_tokenizer, cleaned)
+        t0 = time.time()
         with torch.inference_mode():
             logits = self.binary_model(**encoded).logits
-            logger.debug('Logits bruts (binaire): %s', logits.detach().cpu().tolist())
+            raw_logits = logits[0].detach().cpu().tolist() if hasattr(logits, 'detach') else logits
             probabilities = torch.softmax(logits, dim=-1)[0].detach().cpu().tolist()
-        logger.debug('Probabilites (softmax): non-IA=%.4f, IA=%.4f', probabilities[0], probabilities[1])
+        inference_time = (time.time() - t0) * 1000
+        logger.info('Logits bruts: %s', raw_logits)
+        logger.info('Probabilites (softmax): non-IA=%.4f, IA=%.4f', probabilities[0], probabilities[1])
+        logger.info('Temps inference: %.2f ms', inference_time)
         if len(probabilities) != 2:
             raise ValueError(
                 f'Sortie binaire invalide: 2 probabilites attendues, obtenu {len(probabilities)}.'

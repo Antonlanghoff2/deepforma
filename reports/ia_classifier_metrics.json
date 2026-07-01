@@ -1,0 +1,266 @@
+{
+  "model_path": "models/ia-classifier-v2/final",
+  "test_file": "data/processed/ia_multilabel_test.jsonl",
+  "num_samples": 117,
+  "num_labels": 20,
+  "metrics": {
+    "micro_f1": 0.5634,
+    "macro_f1": 0.563,
+    "weighted_f1": 0.6086,
+    "micro_precision": 0.4852,
+    "macro_precision": 0.5771,
+    "micro_recall": 0.6716,
+    "macro_recall": 0.704,
+    "micro_average_precision": 0.5776,
+    "macro_average_precision": 0.6902
+  },
+  "per_label_metrics": [
+    {
+      "label": "Automatisation",
+      "support": 18,
+      "f1": 0.5,
+      "precision": 1.0,
+      "recall": 0.3333,
+      "roc_auc": 0.8558,
+      "threshold": 0.52,
+      "n_predicted": 6
+    },
+    {
+      "label": "Big Data",
+      "support": 15,
+      "f1": 0.549,
+      "precision": 0.3889,
+      "recall": 0.9333,
+      "roc_auc": 0.9281,
+      "threshold": 0.59,
+      "n_predicted": 36
+    },
+    {
+      "label": "Computer Vision",
+      "support": 2,
+      "f1": 0.6667,
+      "precision": 0.5,
+      "recall": 1.0,
+      "roc_auc": 1.0,
+      "threshold": 0.59,
+      "n_predicted": 4
+    },
+    {
+      "label": "Data Engineering",
+      "support": 9,
+      "f1": 0.3051,
+      "precision": 0.18,
+      "recall": 1.0,
+      "roc_auc": 0.8416,
+      "threshold": 0.5,
+      "n_predicted": 50
+    },
+    {
+      "label": "Data Science",
+      "support": 23,
+      "f1": 0.5625,
+      "precision": 0.439,
+      "recall": 0.7826,
+      "roc_auc": 0.8256,
+      "threshold": 0.59,
+      "n_predicted": 41
+    },
+    {
+      "label": "Deep Learning",
+      "support": 8,
+      "f1": 0.2,
+      "precision": 0.5,
+      "recall": 0.125,
+      "roc_auc": 0.7454,
+      "threshold": 0.63,
+      "n_predicted": 2
+    },
+    {
+      "label": "Ethique IA & RGPD",
+      "support": 31,
+      "f1": 0.6939,
+      "precision": 0.9444,
+      "recall": 0.5484,
+      "roc_auc": 0.8732,
+      "threshold": 0.59,
+      "n_predicted": 18
+    },
+    {
+      "label": "Gestion de projet IA",
+      "support": 23,
+      "f1": 0.7895,
+      "precision": 1.0,
+      "recall": 0.6522,
+      "roc_auc": 0.8747,
+      "threshold": 0.6,
+      "n_predicted": 15
+    },
+    {
+      "label": "IA Generative",
+      "support": 51,
+      "f1": 0.7711,
+      "precision": 1.0,
+      "recall": 0.6275,
+      "roc_auc": 0.9352,
+      "threshold": 0.6,
+      "n_predicted": 32
+    },
+    {
+      "label": "LangChain / Agents RAG",
+      "support": 6,
+      "f1": 0.1176,
+      "precision": 0.0909,
+      "recall": 0.1667,
+      "roc_auc": 0.7958,
+      "threshold": 0.5,
+      "n_predicted": 11
+    },
+    {
+      "label": "Machine Learning",
+      "support": 17,
+      "f1": 0.3667,
+      "precision": 0.2558,
+      "recall": 0.6471,
+      "roc_auc": 0.7288,
+      "threshold": 0.56,
+      "n_predicted": 43
+    },
+    {
+      "label": "MLOps / Deploiement",
+      "support": 6,
+      "f1": 0.3571,
+      "precision": 0.2273,
+      "recall": 0.8333,
+      "roc_auc": 0.9174,
+      "threshold": 0.49,
+      "n_predicted": 22
+    },
+    {
+      "label": "NLP / Traitement du langage",
+      "support": 2,
+      "f1": 0.4,
+      "precision": 0.3333,
+      "recall": 0.5,
+      "roc_auc": 0.6435,
+      "threshold": 0.55,
+      "n_predicted": 3
+    },
+    {
+      "label": "No-code / Low-code",
+      "support": 4,
+      "f1": 0.6667,
+      "precision": 1.0,
+      "recall": 0.5,
+      "roc_auc": 0.9779,
+      "threshold": 0.53,
+      "n_predicted": 2
+    },
+    {
+      "label": "Prompt Engineering",
+      "support": 6,
+      "f1": 0.6667,
+      "precision": 0.5556,
+      "recall": 0.8333,
+      "roc_auc": 0.991,
+      "threshold": 0.57,
+      "n_predicted": 9
+    },
+    {
+      "label": "Python",
+      "support": 17,
+      "f1": 0.7692,
+      "precision": 0.6818,
+      "recall": 0.8824,
+      "roc_auc": 0.9706,
+      "threshold": 0.61,
+      "n_predicted": 22
+    },
+    {
+      "label": "Reinforcement Learning",
+      "support": 1,
+      "f1": 0.6667,
+      "precision": 0.5,
+      "recall": 1.0,
+      "roc_auc": 1.0,
+      "threshold": 0.56,
+      "n_predicted": 2
+    },
+    {
+      "label": "Series temporelles",
+      "support": 1,
+      "f1": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "roc_auc": 1.0,
+      "threshold": 0.57,
+      "n_predicted": 1
+    },
+    {
+      "label": "SQL / Data Engineering",
+      "support": 14,
+      "f1": 0.6667,
+      "precision": 0.5455,
+      "recall": 0.8571,
+      "roc_auc": 0.9071,
+      "threshold": 0.57,
+      "n_predicted": 22
+    },
+    {
+      "label": "Visualisation",
+      "support": 14,
+      "f1": 0.5455,
+      "precision": 0.4,
+      "recall": 0.8571,
+      "roc_auc": 0.9182,
+      "threshold": 0.54,
+      "n_predicted": 30
+    }
+  ],
+  "proba_distribution": {
+    "positive": {
+      "mean": 0.5772393345832825,
+      "std": 0.06542038917541504,
+      "min": 0.355716735124588,
+      "max": 0.672683596611023
+    },
+    "negative": {
+      "mean": 0.4489430785179138,
+      "std": 0.07735034078359604,
+      "min": 0.3226977586746216,
+      "max": 0.6583055257797241
+    }
+  },
+  "training_signal": {
+    "mean_proba_std": 0.0778,
+    "weak_signal_detected": false
+  },
+  "prediction_statistics": {
+    "empty_predictions": 15,
+    "empty_pct": 12.82,
+    "all_labels_predicted": 0,
+    "all_labels_pct": 0.0,
+    "per_label_predicted": [
+      6,
+      36,
+      4,
+      50,
+      41,
+      2,
+      18,
+      15,
+      32,
+      11,
+      43,
+      22,
+      3,
+      2,
+      9,
+      22,
+      2,
+      1,
+      22,
+      30
+    ]
+  },
+  "num_errors_analyzed": 74
+}

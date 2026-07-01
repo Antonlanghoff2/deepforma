@@ -1,0 +1,305 @@
+{
+  "model_path": "/home/bibi/deepforma/models/multilabel_competences_v2/retrained/final",
+  "audit_timestamp": "2026-06-29T09:24:12+0200",
+  "config": {
+    "config_present": true,
+    "architecture": "CamembertForSequenceClassification",
+    "num_labels": 0,
+    "problem_type": "multi_label_classification",
+    "id2label_count": 18,
+    "label2id_count": 18,
+    "id2label": {
+      "0": "ml.intro",
+      "1": "ml.reinforcement",
+      "10": "ds.time_series",
+      "11": "ds.big_data",
+      "12": "de.intro",
+      "13": "prog.python",
+      "14": "gov.ethics",
+      "15": "pm.intro",
+      "16": "auto.intro",
+      "17": "auto.nocode",
+      "2": "dl.intro",
+      "3": "nlp.intro",
+      "4": "nlp.generative_ai",
+      "5": "nlp.prompt_engineering",
+      "6": "nlp.rag",
+      "7": "cv.intro",
+      "8": "ds.intro",
+      "9": "ds.visualization"
+    },
+    "label2id": {
+      "auto.intro": 16,
+      "auto.nocode": 17,
+      "cv.intro": 7,
+      "de.intro": 12,
+      "dl.intro": 2,
+      "ds.big_data": 11,
+      "ds.intro": 8,
+      "ds.time_series": 10,
+      "ds.visualization": 9,
+      "gov.ethics": 14,
+      "ml.intro": 0,
+      "ml.reinforcement": 1,
+      "nlp.generative_ai": 4,
+      "nlp.intro": 3,
+      "nlp.prompt_engineering": 5,
+      "nlp.rag": 6,
+      "pm.intro": 15,
+      "prog.python": 13
+    },
+    "issues": [
+      "num_labels=0, attendu 18",
+      "id2label contient 18 entrees, num_labels=0",
+      "label2id contient 18 entrees, num_labels=0"
+    ]
+  },
+  "weights": {
+    "weights_present": true,
+    "weights_size_bytes": 442567320,
+    "files": [
+      {
+        "name": "model.safetensors",
+        "size_bytes": 442567320
+      }
+    ]
+  },
+  "strict_loading": {
+    "strict_load_success": false,
+    "issues": [
+      "name '_deepforma_audit' is not defined"
+    ],
+    "appears_random_init": true
+  },
+  "label_classes": {
+    "labels_file_present": false,
+    "num_labels": 0,
+    "labels": [],
+    "issues": [
+      "label_classes.json absent"
+    ]
+  },
+  "thresholds": {
+    "thresholds_file_present": false,
+    "thresholds": {},
+    "issues": [
+      "thresholds.json absent"
+    ]
+  },
+  "inference": {
+    "test_examples": [
+      {
+        "name": "Python pour IA",
+        "text": "Formation avancee en Python pour le Machine Learning et le Deep Learning",
+        "score_min": 0.3232,
+        "score_max": 0.6654,
+        "score_mean": 0.5149,
+        "score_std": 0.1037,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.6654
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.6408
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.63
+          }
+        ]
+      },
+      {
+        "name": "Non IA",
+        "text": "Formation en comptabilite et gestion d entreprise",
+        "score_min": 0.3781,
+        "score_max": 0.5691,
+        "score_mean": 0.4894,
+        "score_std": 0.0544,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.5691
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5535
+          },
+          {
+            "label": "LABEL_8",
+            "score": 0.542
+          }
+        ]
+      },
+      {
+        "name": "NLP",
+        "text": "Traitement automatique du langage naturel avec BERT et GPT",
+        "score_min": 0.3623,
+        "score_max": 0.6039,
+        "score_mean": 0.4926,
+        "score_std": 0.0693,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.6039
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5802
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.5663
+          }
+        ]
+      },
+      {
+        "name": "Computer Vision",
+        "text": "Vision par ordinateur avec CNN, YOLO et detection d objets",
+        "score_min": 0.3691,
+        "score_max": 0.5574,
+        "score_mean": 0.4827,
+        "score_std": 0.052,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.5574
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5534
+          },
+          {
+            "label": "LABEL_8",
+            "score": 0.5301
+          }
+        ]
+      },
+      {
+        "name": "Machine Learning",
+        "text": "Algorithmes de regression, classification et clustering",
+        "score_min": 0.3721,
+        "score_max": 0.6119,
+        "score_mean": 0.4996,
+        "score_std": 0.0745,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.6119
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5931
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.5864
+          }
+        ]
+      },
+      {
+        "name": "Deep Learning",
+        "text": "Reseaux de neurones, backpropagation, architectures transformer",
+        "score_min": 0.3649,
+        "score_max": 0.5537,
+        "score_mean": 0.4807,
+        "score_std": 0.0517,
+        "top3": [
+          {
+            "label": "LABEL_9",
+            "score": 0.5537
+          },
+          {
+            "label": "LABEL_13",
+            "score": 0.5427
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.525
+          }
+        ]
+      },
+      {
+        "name": "BTP",
+        "text": "Formation aux metiers du batiment et travaux publics",
+        "score_min": 0.3784,
+        "score_max": 0.615,
+        "score_mean": 0.5068,
+        "score_std": 0.0753,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.615
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.603
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5908
+          }
+        ]
+      },
+      {
+        "name": "Coiffure",
+        "text": "Formation en coiffure et soins capillaires",
+        "score_min": 0.3882,
+        "score_max": 0.5669,
+        "score_mean": 0.4905,
+        "score_std": 0.0496,
+        "top3": [
+          {
+            "label": "LABEL_13",
+            "score": 0.5669
+          },
+          {
+            "label": "LABEL_9",
+            "score": 0.5501
+          },
+          {
+            "label": "LABEL_0",
+            "score": 0.5418
+          }
+        ]
+      },
+      {
+        "name": "Vide",
+        "text": "(vide)",
+        "error": "texte vide"
+      },
+      {
+        "name": "Ambigu",
+        "text": "Techniques modernes appliquees aux processus",
+        "score_min": 0.3617,
+        "score_max": 0.5308,
+        "score_mean": 0.4666,
+        "score_std": 0.0529,
+        "top3": [
+          {
+            "label": "LABEL_4",
+            "score": 0.5308
+          },
+          {
+            "label": "LABEL_17",
+            "score": 0.5212
+          },
+          {
+            "label": "LABEL_14",
+            "score": 0.5141
+          }
+        ]
+      }
+    ],
+    "score_stats": {
+      "global_score_std_mean": 0.0648,
+      "global_score_std_min": 0.0496,
+      "global_score_std_max": 0.1037,
+      "global_score_max_mean": 0.586,
+      "global_score_max_min": 0.5308,
+      "global_score_max_max": 0.6654,
+      "any_discriminating": true
+    }
+  }
+}

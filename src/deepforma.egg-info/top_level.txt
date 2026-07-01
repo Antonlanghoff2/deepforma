@@ -1,9 +1,11 @@
 analytics
 common
+config
 data
 deepforma
 france_travail
 inference
 jobs
+models
 services
 skills

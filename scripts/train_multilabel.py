@@ -71,8 +71,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--gradient-accumulation", type=int, default=1)
     p.add_argument("--fp16", action="store_true", default=True,
                     help="Utiliser mixed precision (fp16)")
+    p.add_argument("--no-fp16", action="store_false", dest="fp16",
+                    help="Desactiver mixed precision")
     p.add_argument("--gradient-checkpointing", action="store_true", default=True,
                     help="Activer gradient checkpointing")
+    p.add_argument("--no-gradient-checkpointing", action="store_false",
+                    dest="gradient_checkpointing",
+                    help="Desactiver gradient checkpointing")
     p.add_argument("--pos-weight-cap", type=float, default=10.0,
                     help="Valeur max pour pos_weight")
     p.add_argument("--save-every-epoch", action="store_true", default=False)

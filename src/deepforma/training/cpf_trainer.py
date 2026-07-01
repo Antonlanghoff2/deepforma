@@ -17,7 +17,7 @@ from torch.utils.data import DataLoader
 from sentence_transformers import InputExample, SentenceTransformer, losses
 
 from common.text import clean_text
-from deepforma.training.cpf_dataset import CPFTrainingExample, load_jsonl, save_jsonl, timestamp_iso, validate_rows
+from deepforma.training.cpf_dataset import CPFTrainingExample, load_jsonl, normalize_training_row, save_jsonl, timestamp_iso, validate_rows
 
 
 DEFAULT_BASE_MODEL = 'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2'
@@ -90,9 +90,22 @@ def _infer_loss(name: str):
 
 
 def _example_to_input_example(example: dict[str, Any], loss_name: str) -> InputExample:
+    anchor = clean_text(example.get('anchor') or example.get('query') or example.get('anchor_text'))
+    positive = clean_text(example.get('positive') or example.get('positive_text') or example.get('candidate_text'))
+    negative = clean_text(example.get('negative') or example.get('negative_text'))
     if 'triplet' in clean_text(loss_name).lower():
-        return InputExample(texts=[example['query'], example['positive_text'], example['negative_text']])
-    return InputExample(texts=[example['query'], example['positive_text']])
+        return InputExample(texts=[anchor, positive, negative])
+    return InputExample(texts=[anchor, positive])
+
+
+def _is_positive_pair_row(row: dict[str, Any]) -> bool:
+    anchor = clean_text(row.get('anchor_text') or row.get('query') or row.get('text_a') or row.get('source_text') or row.get('anchor'))
+    positive = clean_text(row.get('positive_text') or row.get('candidate_text') or row.get('text_b') or row.get('target_text') or row.get('positive'))
+    return bool(anchor and positive)
+
+
+def _positive_pair_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [row for row in rows if _is_positive_pair_row(row)]
 
 
 def _read_examples(path: str | Path) -> list[dict[str, Any]]:
@@ -160,23 +173,55 @@ class CPFRecommenderTrainer:
         if not rows:
             raise ValueError("Le split de validation est vide.")
         candidates = candidate_rows or rows
-        candidate_texts = [row['positive_text'] for row in candidates]
-        candidate_ids = [row['positive_uid'] for row in candidates]
+        candidate_corpus: dict[str, dict[str, Any]] = {}
+        conflicts = 0
+        for row in candidates:
+            if not _is_positive_pair_row(row):
+                continue
+            normalized = normalize_training_row(row)
+            uid = normalized['positive_uid']
+            text = clean_text(normalized.get('positive'))
+            if not text:
+                continue
+            existing = candidate_corpus.get(uid)
+            if existing is None:
+                candidate_corpus[uid] = normalized
+                continue
+            existing_text = clean_text(existing.get('positive'))
+            if existing_text == text:
+                continue
+            conflicts += 1
+            if len(text) > len(existing_text):
+                candidate_corpus[uid] = normalized
+        normalized_rows = [normalize_training_row(row) for row in rows]
+        missing_positive_uids = [row['positive_uid'] for row in normalized_rows if row['positive_uid'] not in candidate_corpus]
+        if missing_positive_uids:
+            raise ValueError('Des positive_uid de validation sont absents du corpus candidat: ' + ', '.join(missing_positive_uids[:10]))
+        candidate_ids = list(candidate_corpus)
+        candidate_texts = [clean_text(candidate_corpus[uid].get('positive')) for uid in candidate_ids]
         candidate_embeddings = torch.as_tensor(model.encode(candidate_texts, convert_to_tensor=True, normalize_embeddings=True, show_progress_bar=False))
-        query_embeddings = torch.as_tensor(model.encode([row['query'] for row in rows], convert_to_tensor=True, normalize_embeddings=True, show_progress_bar=False))
+        query_embeddings = torch.as_tensor(model.encode([row['anchor'] for row in normalized_rows], convert_to_tensor=True, normalize_embeddings=True, show_progress_bar=False))
         positive_scores: list[float] = []
         negative_scores: list[float] = []
         ranks: list[int] = []
-        for idx, row in enumerate(rows):
+        candidate_index = {uid: idx for idx, uid in enumerate(candidate_ids)}
+        for idx, row in enumerate(normalized_rows):
             sims = torch.matmul(candidate_embeddings, query_embeddings[idx]).detach().cpu().numpy().tolist()
             ranking = sorted(zip(candidate_ids, sims), key=lambda item: item[1], reverse=True)
-            positive_rank = next((rank for rank, (uid, _) in enumerate(ranking, start=1) if uid == row['positive_uid']), len(ranking) + 1)
+            positive_uid = row['positive_uid']
+            positive_rank = next((rank for rank, (uid, _) in enumerate(ranking, start=1) if uid == positive_uid), len(ranking) + 1)
             ranks.append(positive_rank)
-            positive_scores.append(float(sims[candidate_ids.index(row['positive_uid'])]))
-            negative_uid = row.get('negative_uid')
-            if negative_uid in candidate_ids:
-                negative_scores.append(float(sims[candidate_ids.index(negative_uid)]))
+            positive_scores.append(float(sims[candidate_index[positive_uid]]))
+            negative_uid = clean_text(row.get('negative_uid'))
+            if negative_uid and negative_uid in candidate_index:
+                negative_scores.append(float(sims[candidate_index[negative_uid]]))
         ranking_metrics = _ranking_metrics(ranks)
+        LOGGER.info('Candidats bruts: %d', len(candidates))
+        LOGGER.info('Candidats uniques: %d', len(candidate_corpus))
+        LOGGER.info('Conflits uid/texte: %d', conflicts)
+        LOGGER.info('Positive_uid absents: %d', len(missing_positive_uids))
+        if candidate_ids:
+            LOGGER.info('Exemple candidat: %s -> %s', candidate_ids[0], clean_text(candidate_corpus[candidate_ids[0]].get('positive'))[:120])
         return TrainingMetrics(
             validation_examples=len(rows),
             recall_at_1=ranking_metrics['recall@1'],
@@ -195,8 +240,8 @@ class CPFRecommenderTrainer:
         *,
         resume_from_checkpoint: str | Path | None = None,
     ) -> dict[str, Any]:
-        train_rows = self._load_dataset(train_path)
-        validation_rows = self._load_dataset(validation_path)
+        train_rows = _positive_pair_rows(self._load_dataset(train_path))
+        validation_rows = _positive_pair_rows(self._load_dataset(validation_path))
         validation_result = validate_rows(train_rows + validation_rows)
         if not validation_result.ok:
             raise ValueError(' ; '.join(validation_result.errors))

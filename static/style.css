@@ -234,6 +234,11 @@ button:focus-visible,
   border-color: rgba(234, 88, 12, 0.18);
 }
 
+.chip-rejected {
+  background: rgba(100, 116, 139, 0.08);
+  border-color: rgba(100, 116, 139, 0.18);
+}
+
 .chip small { color: var(--muted); }
 
 .list {

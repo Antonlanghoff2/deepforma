@@ -19,3 +19,4 @@ charset-normalizer
 beautifulsoup4
 openpyxl
 pyyaml
+gunicorn

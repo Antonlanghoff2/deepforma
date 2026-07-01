@@ -197,6 +197,36 @@
         <p>Categorisation IA indisponible.</p>
         {% endif %}
 
+        {% if result_dict.low_confidence_skills %}
+        <details class="collapsible">
+          <summary>Competences a verifier ({{ result_dict.low_confidence_skills|length }})</summary>
+          <div class="chips">
+            {% for skill in result_dict.low_confidence_skills %}
+            <div class="chip chip-low" tabindex="0"
+                 title="{{ skill.label }}: {{ skill.score_brut|sigmoid_pct }}">
+              <span>{{ skill.label }}</span>
+              <small>{{ skill.score_brut|sigmoid_pct }}</small>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+        {% endif %}
+
+        {% if result_dict.rejected_skills %}
+        <details class="collapsible">
+          <summary>Competences rejetees ({{ result_dict.rejected_skills|length }})</summary>
+          <div class="chips">
+            {% for skill in result_dict.rejected_skills %}
+            <div class="chip chip-rejected" tabindex="0"
+                 title="{{ skill.label }}: {{ skill.score_brut|sigmoid_pct }}">
+              <span>{{ skill.label }}</span>
+              <small>{{ skill.score_brut|sigmoid_pct }}</small>
+            </div>
+            {% endfor %}
+          </div>
+        </details>
+        {% endif %}
+
         {# --- Technical scores block (single, collapsed by default, dynamic labels) --- #}
         {% set mm = result_dict.model_metadata %}
         {% set ic = result_dict.ia_classification %}

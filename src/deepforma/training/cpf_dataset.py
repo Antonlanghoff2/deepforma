@@ -176,6 +176,53 @@ def build_group_id(row: dict[str, Any]) -> str:
     return sha1(payload.encode('utf-8')).hexdigest()
 
 
+def _resolve_training_field(row: dict[str, Any], keys: tuple[str, ...], *, field_name: str) -> str:
+    for key in keys:
+        value = clean_text(row.get(key))
+        if value:
+            return value
+    available = sorted(key for key, value in row.items() if clean_text(value))
+    expected = ', '.join(keys)
+    raise ValueError(
+        f"Champ obligatoire manquant pour {field_name}. Cles disponibles: {available}. Cles attendues: {expected}."
+    )
+
+
+def normalize_training_row(row: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(row, dict):
+        raise TypeError(f"Chaque ligne doit etre un dictionnaire, recu: {type(row)!r}")
+    normalized = dict(row)
+    anchor = _resolve_training_field(
+        row,
+        ('anchor_text', 'query', 'text_a', 'source_text', 'anchor'),
+        field_name='anchor',
+    )
+    positive = _resolve_training_field(
+        row,
+        ('positive_text', 'candidate_text', 'text_b', 'target_text', 'positive'),
+        field_name='positive',
+    )
+    positive_uid = _resolve_training_field(
+        row,
+        ('positive_uid', 'positive_id', 'candidate_uid', 'candidate_id', 'target_uid', 'target_id', 'formation_id', 'uid'),
+        field_name='positive_uid',
+    )
+    normalized['anchor'] = anchor
+    normalized['positive'] = positive
+    normalized['positive_uid'] = positive_uid
+    group_id = clean_text(row.get('group_id'))
+    if group_id:
+        normalized['group_id'] = group_id
+    split = clean_text(row.get('split'))
+    if split:
+        normalized['split'] = split
+    return normalized
+
+
+def normalize_training_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [normalize_training_row(row) for row in rows]
+
+
 def canonicalize_formation_row(row: dict[str, Any], *, normalizer: SkillTaxonomyNormalizer | None = None) -> dict[str, Any]:
     normalizer = normalizer or SKILL_NORMALIZER
     skills_explicit = ensure_list(row.get('skills_explicit'))

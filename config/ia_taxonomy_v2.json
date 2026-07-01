@@ -1,0 +1,26 @@
+{
+  "taxonomy_version": "2.0",
+  "description": "Taxonomie des competences IA version 2.0 - 20 labels",
+  "labels": [
+    "Automatisation",
+    "Big Data",
+    "Computer Vision",
+    "Data Engineering",
+    "Data Science",
+    "Deep Learning",
+    "Ethique IA & RGPD",
+    "Gestion de projet IA",
+    "IA Generative",
+    "LangChain / Agents RAG",
+    "Machine Learning",
+    "MLOps / Deploiement",
+    "NLP / Traitement du langage",
+    "No-code / Low-code",
+    "Prompt Engineering",
+    "Python",
+    "Reinforcement Learning",
+    "Series temporelles",
+    "SQL / Data Engineering",
+    "Visualisation"
+  ]
+}

@@ -52,6 +52,11 @@ except ImportError:
 
 from common.text import clean_text
 
+try:
+    from inference.deepforma_predictor import _audit_checkpoint as _deepforma_audit
+except ImportError:
+    def _deepforma_audit(model_dir):  # type: ignore
+        return {'strict_load_success': False, 'issues': ['_audit_checkpoint non importable']}
 
 AUDIT_REPORT: dict = {}
 
