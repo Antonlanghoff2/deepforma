@@ -78,7 +78,7 @@ sudo APP_USER=deepforma \
   REPO_BRANCH=main \
   DOMAIN=deepforma.hephaestos.eu \
   ENABLE_SSL=true \
-  SSL_EMAIL=adresse@example.com \
+  SSL_EMAIL=antonlanghoff@gmail.com \
   bash scripts/deploy_ubuntu.sh
 ```
 
