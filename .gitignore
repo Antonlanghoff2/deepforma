@@ -30,5 +30,4 @@ data/raw/*.xls
 data/processed/*.parquet
 data/processed/*.csv
 data/processed/*.jsonl
-models/
 artifacts/
