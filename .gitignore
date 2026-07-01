@@ -17,7 +17,7 @@ data/training/*.npy
 *.npy
 
 # Modèles historiques et checkpoints
-models/
+/models/
 camembert_competences_ia_checkpoints/
 modele_camembert_competences_ia/
 Dataset_*
