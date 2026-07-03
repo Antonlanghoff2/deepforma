@@ -5,6 +5,8 @@ import io
 import json
 import logging
 import os
+import re
+import tempfile
 from collections import Counter
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -32,6 +34,7 @@ from continual_learning.auth import require_admin_auth
 from continual_learning.store import ContinualLearningStore
 from referential_import import ReferentialImportService
 from referential_import.import_service import analysis_from_export, build_export_payload
+from referential_import.pdf_loader import load_pdf_document
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.recommendation_service import RecommendationService
 
@@ -702,7 +705,146 @@ def create_app(
             raise ValueError('Le departement est obligatoire.')
         return text, departement, keywords, threshold, model_only
 
-    def _build_context(text: str, departement: str, keywords: str | None, threshold: float, model_only: bool) -> dict[str, Any]:
+
+    def _extract_referential_inputs(payload: dict[str, Any], files: Any) -> tuple[Path, str]:
+        departement = clean_text(payload.get('departement') or payload.get('department') or '')
+        uploaded = files.get('pdf') if files is not None else None
+        if not uploaded or not getattr(uploaded, 'filename', ''):
+            raise ValueError('Le PDF du référentiel est obligatoire.')
+        if not departement:
+            raise ValueError('Le departement est obligatoire.')
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+        temp_path = Path(temp_file.name)
+        temp_file.close()
+        uploaded.save(temp_path)
+        return temp_path, departement
+
+    def _normalize_referential_title_candidate(text: str) -> str:
+        candidate = clean_text(text)
+        if not candidate:
+            return ''
+        marker_re = re.compile(
+            r"(?:référentiel|referentiel|modalités d['’]?évaluation|modalites d evaluation|critères d['’]?évaluation|criteres d evaluation)",
+            flags=re.IGNORECASE,
+        )
+        match = marker_re.search(candidate)
+        if match:
+            candidate = candidate[: match.start()].strip()
+        candidate = re.sub(
+            r"^(?:référentiel|referentiel)(?:\s+(?:d['’]?activit(?:é|e)s?|de\s+compétences?|de\s+competences?|d['’]?évaluation|d['’]?evaluation))?(?:\s*[-:–—]\s*)?",
+            '',
+            candidate,
+            flags=re.IGNORECASE,
+        ).strip()
+        candidate = re.sub(r"^(?:référentiel|referentiel)\s+", '', candidate, flags=re.IGNORECASE).strip()
+        candidate = candidate.strip(' -:–—')
+        if not candidate:
+            return ''
+        if candidate.isupper() or sum(1 for char in candidate if char.isupper()) >= max(2, len(candidate) // 2):
+            candidate = candidate.lower()
+            candidate = candidate[:1].upper() + candidate[1:] if candidate else candidate
+        return candidate
+
+    def _infer_referential_title(page_texts: list[str], analysis: dict[str, Any]) -> str:
+        document = analysis.get('document')
+        document_title = _normalize_referential_title_candidate(getattr(document, 'title', '') or '') if document is not None else ''
+        if document_title:
+            return document_title
+
+        title_re = re.compile(r"^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9'’&(),./ -]{8,}$")
+        header_markers = (
+            "référentiel d'activités",
+            'référentiel de compétences',
+            'modalités d’évaluation',
+            'modalites d evaluation',
+            'critères d’évaluation',
+            'criteres d evaluation',
+        )
+        code_markers = (
+            'bloc ',
+            'activité ',
+            'activite ',
+            'a1.',
+            'c1.',
+            'ce1.',
+        )
+        for page_text in page_texts[:2]:
+            first_fallback = ''
+            for raw_line in page_text.splitlines():
+                line = clean_text(raw_line)
+                if not line:
+                    continue
+                if not first_fallback:
+                    first_fallback = line
+                normalized = line.lower()
+                if any(marker in normalized for marker in header_markers):
+                    parts = re.split(r"(?:référentiel d'activités|référentiel de compétences|modalités d’évaluation|modalites d evaluation|critères d’évaluation|criteres d evaluation)", line, maxsplit=1, flags=re.IGNORECASE)
+                    prefix = _normalize_referential_title_candidate(parts[0])
+                    suffix = _normalize_referential_title_candidate(parts[1]) if len(parts) > 1 else ''
+                    for candidate in (prefix, suffix):
+                        if candidate and len(candidate.split()) >= 2 and title_re.match(candidate):
+                            return candidate
+                    continue
+                if any(normalized.startswith(marker) for marker in code_markers):
+                    continue
+                normalized_line = _normalize_referential_title_candidate(line)
+                if line.isupper() and len(line) >= 10 and normalized_line:
+                    return normalized_line
+                if title_re.match(normalized_line) and len(normalized_line.split()) >= 2:
+                    return normalized_line
+            if first_fallback:
+                normalized_fallback = _normalize_referential_title_candidate(first_fallback)
+                if normalized_fallback and len(normalized_fallback.split()) >= 2:
+                    return normalized_fallback
+        return ''
+
+    def _build_referential_keywords_candidates(analysis: dict[str, Any], page_texts: list[str]) -> list[str]:
+        title = _infer_referential_title(page_texts, analysis)
+        if not title:
+            document = analysis.get('document')
+            title = clean_text(getattr(document, 'title', '') or '') if document is not None else ''
+
+        candidates: list[str] = []
+        seen: set[str] = set()
+
+        def add(label: str) -> None:
+            normalized = clean_text(label)
+            if not normalized:
+                return
+            normalized = re.sub(r'^référentiel\s+', '', normalized, flags=re.IGNORECASE).strip()
+            normalized = re.sub(r'^referentiel\s+', '', normalized, flags=re.IGNORECASE).strip()
+            key = normalized.lower()
+            if key in seen:
+                return
+            seen.add(key)
+            candidates.append(normalized)
+
+        add(title)
+        if title:
+            stripped = re.sub(r'\(.*?\)', '', title).strip()
+            if stripped:
+                add(stripped)
+        return candidates[:3]
+
+    def _build_referential_extraction_overview(analysis: dict[str, Any], keyword_candidates: list[str], *, page_texts: list[str]) -> dict[str, Any]:
+        competencies = analysis.get('competencies', [])
+        criteria = analysis.get('criteria', [])
+        derived_skills = analysis.get('derived_skills', [])
+        tools_methods = analysis.get('tools_methods', [])
+        inferred_title = _infer_referential_title(page_texts, analysis)
+
+        return {
+            'job_title': inferred_title,
+            'job_title_source': 'first_page_text' if inferred_title else 'document_metadata',
+            'keywords': [candidate for candidate in keyword_candidates if candidate],
+            'keywords_source': 'job_title_for_france_travail',
+            'competency_labels': [clean_text(getattr(item, 'official_label', '') or '') for item in competencies if clean_text(getattr(item, 'official_label', '') or '')],
+            'derived_skill_labels': [clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '') for item in derived_skills if clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '')],
+            'tool_labels': [clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '') for item in tools_methods if clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '')],
+            'criterion_labels': [clean_text(getattr(item, 'criterion_label', '') or '') for item in criteria if clean_text(getattr(item, 'criterion_label', '') or '')],
+        }
+
+    def _build_context(text: str, departement: str, keywords: str | None, threshold: float, model_only: bool, allow_market_failure: bool = False, market_keyword_candidates: list[str | None] | None = None) -> dict[str, Any]:
         predictor_instance = get_predictor_instance()
         if predictor_instance is None:
             raise RuntimeError(app.extensions.get('deepforma_predictor_error') or 'Les modeles ne sont pas disponibles.')
@@ -716,36 +858,77 @@ def create_app(
         normalized_offers: list[dict[str, Any]] = []
         recommendation = None
         territorial_stats = None
+        market_error = None
         market_status = 'skipped' if model_only else 'not_requested'
 
         if not model_only:
-            try:
-                normalized_offers, _ = analyze_market(departement, keywords)
-            except ValueError as exc:
-                raise RuntimeError('Configuration France Travail absente ou invalide.') from exc
-            except FranceTravailRateLimitError as exc:
-                raise RuntimeError('France Travail a repondu avec une limite de debit (429).') from exc
-            except FranceTravailTimeoutError as exc:
-                raise RuntimeError("Le delai d'attente France Travail a expire.") from exc
-            except FranceTravailAuthError as exc:
-                raise RuntimeError('Authentification France Travail invalide ou expiree.') from exc
-            except FranceTravailError as exc:
-                message = str(exc)
-                if '429' in message:
-                    raise RuntimeError('France Travail a repondu avec une limite de debit (429).') from exc
-                raise RuntimeError('Erreur France Travail lors de la recuperation des offres.') from exc
-            except requests.Timeout as exc:
-                raise RuntimeError("Le delai d'attente France Travail a expire.") from exc
-            except requests.RequestException as exc:
-                raise RuntimeError("Erreur reseau lors de l'appel a France Travail.") from exc
+            keyword_candidates = market_keyword_candidates or ([keywords] if keywords else [None])
+            for candidate in keyword_candidates:
+                try:
+                    normalized_offers, _ = analyze_market(departement, candidate)
+                except ValueError as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError('Configuration France Travail absente ou invalide.') from exc
+                    market_error = 'Configuration France Travail absente ou invalide.'
+                    market_status = 'error'
+                    break
+                except FranceTravailRateLimitError as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError('France Travail a repondu avec une limite de debit (429).') from exc
+                    market_error = 'France Travail a repondu avec une limite de debit (429).'
+                    market_status = 'error'
+                    break
+                except FranceTravailTimeoutError as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError("Le delai d'attente France Travail a expire.") from exc
+                    market_error = "Le delai d'attente France Travail a expire."
+                    market_status = 'error'
+                    break
+                except FranceTravailAuthError as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError('Authentification France Travail invalide ou expiree.') from exc
+                    market_error = 'Authentification France Travail invalide ou expiree.'
+                    market_status = 'error'
+                    break
+                except FranceTravailError as exc:
+                    message = str(exc)
+                    if '429' in message:
+                        if not allow_market_failure:
+                            raise RuntimeError('France Travail a repondu avec une limite de debit (429).') from exc
+                        market_error = 'France Travail a repondu avec une limite de debit (429).'
+                    else:
+                        if not allow_market_failure:
+                            raise RuntimeError('Erreur France Travail lors de la recuperation des offres.') from exc
+                        market_error = 'Erreur France Travail lors de la recuperation des offres.'
+                    market_status = 'error'
+                    break
+                except requests.Timeout as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError("Le delai d'attente France Travail a expire.") from exc
+                    market_error = "Le delai d'attente France Travail a expire."
+                    market_status = 'error'
+                    break
+                except requests.RequestException as exc:
+                    if not allow_market_failure:
+                        raise RuntimeError("Erreur reseau lors de l'appel a France Travail.") from exc
+                    market_error = "Erreur reseau lors de l'appel a France Travail."
+                    market_status = 'error'
+                    break
 
-            service: RecommendationService = app.extensions['recommendation_service']
-            # Comparison uses open-extracted skills (normalized), NOT the 18 sigmoid outputs
-            extracted_labels = [s.normalized_label for s in skill_extraction.skills]
-            extracted_labels += [s.normalized_label for s in skill_extraction.tools]
-            recommendation = service.compare(extracted_labels, normalized_offers)
-            territorial_stats = compute_territorial_stats(normalized_offers, territory_key=departement)
-            market_status = 'ok'
+                if not normalized_offers:
+                    continue
+
+                service: RecommendationService = app.extensions['recommendation_service']
+                # Comparison uses open-extracted skills (normalized), NOT the 18 sigmoid outputs
+                extracted_labels = [s.normalized_label for s in skill_extraction.skills]
+                extracted_labels += [s.normalized_label for s in skill_extraction.tools]
+                recommendation = service.compare(extracted_labels, normalized_offers)
+                territorial_stats = compute_territorial_stats(normalized_offers, territory_key=departement)
+                market_status = 'ok'
+                break
+
+            if not normalized_offers and market_error is None:
+                market_status = 'empty'
 
         analysis_result = _build_analysis_result(
             analysis, normalized_offers, recommendation, territorial_stats,
@@ -759,6 +942,7 @@ def create_app(
                 'territorial_stats': territorial_stats,
                 'recommendation': recommendation,
                 'market_status': market_status,
+                'market_error': market_error,
             },
             'analysis_result': analysis_result,
             'department': departement,
@@ -773,20 +957,82 @@ def create_app(
             return jsonify({'ok': False, 'error': message}), status_code
         return render_template('index.html', error=message, department_options=DEPARTMENT_CODES, default_threshold=app.config['DEFAULT_THRESHOLD']), status_code
 
-    @app.get('/')
-    def index():
+    def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None):
         return render_template(
             'index.html',
-            error=None,
+            error=error,
             department_options=DEPARTMENT_CODES,
             default_threshold=app.config['DEFAULT_THRESHOLD'],
+            referential_analysis=referential_analysis,
+            referential_error=referential_error,
+            referential_success=referential_success,
         )
+
+    def _render_referential_analysis(analysis: dict[str, Any], *, source_path: str, referential_success: str | None = None, referential_error: str | None = None):
+        return _render_home_page(
+            referential_analysis={
+                'document': analysis['document'],
+                'report': analysis['report'],
+                'blocks': analysis['blocks'],
+                'activities': analysis['activities'],
+                'competencies': analysis['competencies'],
+                'criteria': analysis['criteria'],
+                'derived_skills': analysis['derived_skills'],
+                'tools_methods': analysis['tools_methods'],
+                'analysis_json': json.dumps(build_export_payload(analysis), ensure_ascii=False, indent=2),
+                'source_path': source_path,
+            },
+            referential_success=referential_success,
+            referential_error=referential_error,
+        )
+
+    @app.get('/')
+    def index():
+        return _render_home_page()
+
+    @app.post('/referential/import')
+    def referential_import_preview():
+        uploaded = request.files.get('pdf')
+        if not uploaded or not uploaded.filename:
+            return _render_home_page(referential_error='Fichier PDF manquant.'), 400
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+        temp_path = Path(temp_file.name)
+        temp_file.close()
+        uploaded.save(temp_path)
+        analysis = referential_import_service.analyze(temp_path)
+        return _render_referential_analysis(analysis, source_path=str(temp_path))
 
     @app.post('/analyze')
     def analyze():
         try:
-            text, departement, keywords, threshold, model_only = _extract_inputs(_parse_request_payload())
-            context = _build_context(text, departement, keywords, threshold, model_only)
+            payload = _parse_request_payload()
+            if request.files.get('pdf') and request.files.get('pdf').filename:
+                pdf_path, departement = _extract_referential_inputs(payload, request.files)
+                referential_analysis = referential_import_service.analyze(pdf_path)
+                document_loader = load_pdf_document(pdf_path)
+                text = "\n".join(page.text for page in document_loader.pages if getattr(page, 'text', ''))
+                keyword_candidates = _build_referential_keywords_candidates(referential_analysis, [page.text for page in document_loader.pages if getattr(page, 'text', '')])
+                keywords = next((candidate for candidate in keyword_candidates if candidate), None)
+                context = _build_context(
+                    text,
+                    departement,
+                    keywords,
+                    app.config['DEFAULT_THRESHOLD'],
+                    False,
+                    allow_market_failure=True,
+                    market_keyword_candidates=keyword_candidates + ([None] if None not in keyword_candidates else []),
+                )
+                context['referential_analysis'] = referential_analysis
+                context['referential_overview'] = _build_referential_extraction_overview(
+                    referential_analysis,
+                    keyword_candidates,
+                    page_texts=[page.text for page in document_loader.pages if getattr(page, 'text', '')],
+                )
+                if context['context'].get('market_error'):
+                    context['warning'] = context['warning'] + ' Analyse territoriale partielle: ' + context['context']['market_error']
+            else:
+                text, departement, keywords, threshold, model_only = _extract_inputs(payload)
+                context = _build_context(text, departement, keywords, threshold, model_only, allow_market_failure=False)
         except ValueError as exc:
             return _render_error(str(exc), 400)
         except RuntimeError as exc:

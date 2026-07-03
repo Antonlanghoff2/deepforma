@@ -14,6 +14,7 @@ COMPETENCY_RE = re.compile(r"\bC(\d+\.\d+)(?!\.\d)\b", re.IGNORECASE)
 CRITERION_RE = re.compile(r"\bCE(\d+\.\d+\.\d+)\b", re.IGNORECASE)
 HEADER_RE = re.compile(r"\b(r[eé]f[eé]rentiel|modalit[eé]s?|crit[eè]res?)\b", re.IGNORECASE)
 
+SPLIT_BOUNDARY_RE = re.compile(r"(?=\b(?:Bloc\s+\d+|Activit[eé]\s+\d+|A\d+\.\d+|C\d+\.\d+(?!\.\d)|CE\d+\.\d+\.\d+)\b)", re.IGNORECASE)
 
 @dataclass(slots=True)
 class FallbackLine:
@@ -22,10 +23,24 @@ class FallbackLine:
     text: str
 
 
+def _segment_page_text(page_text: str) -> list[str]:
+    text = clean_text(page_text)
+    if not text:
+        return []
+    if "\n" in text:
+        chunks = [clean_text(line) for line in text.splitlines() if clean_text(line)]
+        if chunks:
+            return chunks
+    segments = [clean_text(chunk) for chunk in SPLIT_BOUNDARY_RE.split(text) if clean_text(chunk)]
+    if segments:
+        return segments
+    return [text]
+
+
 def iter_fallback_lines(pages: list[str]) -> list[FallbackLine]:
     lines: list[FallbackLine] = []
     for page_number, page_text in enumerate(pages, start=1):
-        for line_number, raw_line in enumerate(page_text.splitlines(), start=1):
+        for line_number, raw_line in enumerate(_segment_page_text(page_text), start=1):
             text = clean_text(raw_line)
             if text:
                 lines.append(FallbackLine(page_number=page_number, line_number=line_number, text=text))

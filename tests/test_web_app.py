@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from io import BytesIO
 
 import pytest
 
+from referential_import.models import DerivedSkill, EvaluationCriterion, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
 from services.recommendation_service import RecommendationService
 from web_app import create_app
 
@@ -163,7 +165,10 @@ def test_home_page():
     client = app.test_client()
     response = client.get('/')
     assert response.status_code == 200
-    assert 'Diagnostic territorial' in response.get_data(as_text=True)
+    html = response.get_data(as_text=True)
+    assert "Analyse d'un référentiel RNCP" in html
+    assert 'PDF du référentiel' in html
+    assert 'Département' in html
 
 
 def test_empty_form_returns_error():
@@ -172,6 +177,273 @@ def test_empty_form_returns_error():
     response = client.post('/analyze', data={'programme': '', 'departement': ''})
     assert response.status_code == 400
     assert 'obligatoire' in response.get_data(as_text=True)
+
+
+def test_referential_analysis_route_uses_pdf_upload(monkeypatch):
+    from referential_import.import_service import ReferentialImportService
+    import web_app as web_app_module
+
+    document = ReferentialDocument(
+        id='doc-2',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='def456',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Organiser la coordination',
+        normalized_label='organiser la coordination',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    derived = DerivedSkill(
+        label='Coordination',
+        canonical_label='Coordination',
+        category='action',
+        source_code='C1.1',
+        source_type='competency',
+        surface_form='coordination',
+        normalized_surface='coordination',
+        confidence=0.9,
+        explicit=True,
+        page_start=1,
+        page_end=1,
+        context='Organiser la coordination',
+    )
+    competency.derived_skills = [derived]
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-2',
+            source_hash='def456',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=1,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.8,
+            coverage_score=1.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [ReferentialBlock(code='BLOC_1', label='Bloc 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'activities': [ReferentialActivity(code='A1.1', block_code='BLOC_1', label='Activité 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [derived],
+        'tools_methods': [derived],
+    }
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage("Responsable commercial\nRéférentiel d'activités\nC1.1 Organiser la coordination")]))
+
+    app = build_app(client_factory=lambda: DummyOfferClient(offers=[]))
+    client = app.test_client()
+    response = client.post(
+        '/analyze',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '93',
+        },
+        content_type='multipart/form-data',
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Tableau de bord' in html
+    assert 'Contenu extrait du PDF' in html
+    assert 'Intitulé détecté' in html
+    assert 'Intitulé utilisé pour France Travail' in html
+    assert 'Compétences officielles' in html
+
+
+def test_referential_analysis_falls_back_to_broader_market_queries(monkeypatch):
+    from referential_import.import_service import ReferentialImportService
+    import web_app as web_app_module
+
+    document = ReferentialDocument(
+        id='doc-4',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='jkl012',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Organiser la coordination',
+        normalized_label='organiser la coordination',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-4',
+            source_hash='jkl012',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=0,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.0,
+            coverage_score=0.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [],
+        'activities': [],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [],
+        'tools_methods': [],
+    }
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    class QueryAwareClient:
+        def __init__(self):
+            self.seen_keywords = []
+
+        def iter_offers(self, criteria, **kwargs):
+            self.seen_keywords.append(criteria.keywords)
+            if criteria.keywords and 'Responsable commercial' in criteria.keywords:
+                yield {
+                    'id': 'offer-1',
+                    'title': 'Responsable commercial',
+                    'description': 'Pilotage commercial',
+                    'competences': [{'label': 'Négociation'}],
+                }
+
+    tracking_client = QueryAwareClient()
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage("Responsable commercial\nRéférentiel d'activités\nC1.1 Organiser la coordination")]))
+
+    app = build_app(client_factory=lambda: tracking_client)
+    client = app.test_client()
+    response = client.post(
+        '/analyze',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '93',
+        },
+        content_type='multipart/form-data',
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Intitulé utilisé pour France Travail' in html
+    assert tracking_client.seen_keywords[0] == 'Responsable commercial'
+
+def test_referential_analysis_continues_if_france_travail_fails(monkeypatch):
+    from france_travail.client import FranceTravailRateLimitError
+    from referential_import.import_service import ReferentialImportService
+    import web_app as web_app_module
+
+    document = ReferentialDocument(
+        id='doc-3',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='ghi789',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+    )
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-3',
+            source_hash='ghi789',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=0,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.0,
+            coverage_score=0.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [],
+        'activities': [],
+        'competencies': [],
+        'criteria': [],
+        'derived_skills': [],
+        'tools_methods': [],
+    }
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage('C1.1 Organiser la coordination')]))
+
+    app = build_app(client_factory=lambda: DummyOfferClient(error=FranceTravailRateLimitError('429')))
+    client = app.test_client()
+    response = client.post(
+        '/analyze',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '93',
+        },
+        content_type='multipart/form-data',
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'France Travail a repondu avec une limite de debit (429).' in html
+    assert 'Analyse du referentiel reste disponible' in html or 'Analyse territoriale partielle' in html
 
 
 def test_api_analysis_with_mocks():
@@ -209,6 +481,101 @@ def test_health_check():
     payload = response.get_json()
     assert payload['status'] == 'ok'
     assert payload['models_available'] is True
+
+
+def test_referential_import_preview_on_home_page(monkeypatch):
+    from referential_import.import_service import ReferentialImportService
+
+    document = ReferentialDocument(
+        id='doc-1',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='abc123',
+        page_count=2,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+    )
+    report = ImportReport(
+        schema_version='1.0',
+        importer_version='0.1.0',
+        document_id='doc-1',
+        source_hash='abc123',
+        pages=2,
+        blocks=1,
+        activities=1,
+        competencies=1,
+        criteria=1,
+        derived_skills=1,
+        tools_methods=1,
+        errors=[],
+        warnings=[],
+        review_items=[],
+        score_global=0.9,
+        coverage_score=1.0,
+        duplicate_document=False,
+        extraction_mode='pdftotext-layout',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Déployer Excel',
+        normalized_label='deployer excel',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.9,
+        source_pages=[1],
+    )
+    criterion = EvaluationCriterion(
+        code='CE1.1.1',
+        competency_code='C1.1',
+        criterion_label='Mobiliser Excel',
+        normalized_label='mobiliser excel',
+        page_start=1,
+        page_end=1,
+        confidence=0.9,
+        source_pages=[1],
+    )
+    competency.evaluation_criteria = [criterion]
+    derived = DerivedSkill(
+        label='Excel',
+        canonical_label='Excel',
+        category='tool',
+        source_code='C1.1',
+        source_type='competency',
+        surface_form='Excel',
+        normalized_surface='excel',
+        confidence=0.95,
+        explicit=True,
+        page_start=1,
+        page_end=1,
+        context='Déployer Excel',
+    )
+    competency.derived_skills = [derived]
+    analysis = {
+        'document': document,
+        'report': report,
+        'blocks': [ReferentialBlock(code='BLOC_1', label='Bloc 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'activities': [ReferentialActivity(code='A1.1', block_code='BLOC_1', label='Activité 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'competencies': [competency],
+        'criteria': [criterion],
+        'derived_skills': [derived],
+        'tools_methods': [derived],
+    }
+
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    app = build_app()
+    client = app.test_client()
+    response = client.post(
+        '/referential/import',
+        data={'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf')},
+        content_type='multipart/form-data',
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert "Rapport d'extraction référentiel" in html
+    assert 'Déployer Excel' in html
+    assert "Rapport d'extraction référentiel" in html
 
 
 def test_france_travail_error():

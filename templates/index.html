@@ -10,8 +10,8 @@
   <main class="shell">
     <section class="hero">
       <p class="eyebrow">Deepforma</p>
-      <h1>Diagnostic territorial des compétences de formation</h1>
-      <p class="lead">Collez un programme, choisissez un département, ajoutez des mots-clés si besoin, puis comparez la formation au marché local.</p>
+      <h1>Analyse d'un référentiel RNCP</h1>
+      <p class="lead">Chargez le PDF du référentiel, choisissez le département et laissez l'application extraire les compétences officielles avant de comparer au marché local.</p>
     </section>
 
     <section class="card">
@@ -19,10 +19,10 @@
       <div class="alert alert-error">{{ error }}</div>
       {% endif %}
 
-      <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
+      <form method="post" action="{{ url_for('analyze') }}" enctype="multipart/form-data" class="form-grid">
         <label class="field field-full">
-          <span>Programme de formation</span>
-          <textarea name="programme" rows="10" placeholder="Collez ici le programme complet..." required></textarea>
+          <span>PDF du référentiel</span>
+          <input type="file" name="pdf" accept="application/pdf" required>
         </label>
 
         <label class="field">
@@ -35,26 +35,59 @@
           </select>
         </label>
 
-        <label class="field">
-          <span>Mots-clés</span>
-          <input type="text" name="keywords" placeholder="ex. data, python, IA">
-        </label>
-
-        <label class="field">
-          <span>Seuil multi-étiquette</span>
-          <input type="number" name="threshold" min="0" max="1" step="0.01" value="{{ default_threshold }}">
-        </label>
-
-        <label class="field field-inline field-full">
-          <input type="checkbox" name="model_only" value="1">
-          <span>Tester uniquement les modèles sans appeler France Travail</span>
-        </label>
+        <p class="field field-full hint">Le programme de formation est le référentiel PDF. Les mots-clés marché sont déduits automatiquement à partir des intitulés de compétences et des sous-compétences extraites.</p>
 
         <div class="actions field-full">
           <button type="submit">Lancer l’analyse</button>
         </div>
       </form>
     </section>
+
+    {% if referential_analysis %}
+    <section class="card wide summary-cards" aria-label="Résumé du référentiel">
+      <h2>Rapport d'extraction référentiel</h2>
+      <div class="stat-grid">
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.pages }}</span><span class="stat-label">Pages</span></div>
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.blocks }}</span><span class="stat-label">Blocs</span></div>
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.activities }}</span><span class="stat-label">Activités</span></div>
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.competencies }}</span><span class="stat-label">Compétences</span></div>
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.criteria }}</span><span class="stat-label">Critères</span></div>
+        <div class="stat-block"><span class="stat-value">{{ referential_analysis.report.derived_skills }}</span><span class="stat-label">Sous-compétences</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(referential_analysis.report.score_global) }}</span><span class="stat-label">Score global</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(referential_analysis.report.coverage_score) }}</span><span class="stat-label">Couverture</span></div>
+      </div>
+      <p class="meta-info">{{ referential_analysis.document.file_name }} · {{ referential_analysis.document.text_extraction_method }} · {{ referential_analysis.document.sha256 }}</p>
+    </section>
+
+    <section class="card">
+      <h2>Compétences officielles détectées</h2>
+      <div class="chips">
+        {% for item in referential_analysis.competencies %}
+        <div class="chip" tabindex="0">
+          <span>{{ item.code }}</span>
+          <small>{{ item.official_label }}</small>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Critères détectés</h2>
+      <div class="chips">
+        {% for item in referential_analysis.criteria %}
+        <div class="chip chip-tool" tabindex="0">
+          <span>{{ item.code }}</span>
+          <small>{{ item.criterion_label }}</small>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Export JSON</h2>
+      <pre>{{ referential_analysis.analysis_json }}</pre>
+    </section>
+    {% endif %}
   </main>
 </body>
 </html>

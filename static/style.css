@@ -203,6 +203,12 @@ button:focus-visible,
   border-color: #fcd34d;
 }
 
+.alert-success {
+  background: #ecfdf5;
+  color: #065f46;
+  border-color: #86efac;
+}
+
 .alert ul {
   margin: 8px 0 0;
   padding-left: 20px;

@@ -61,6 +61,88 @@ def _build_table_page(page_number: int, activity_text: str, competency_text: str
     return ExtractedTablePage(page_number=page_number, columns=columns, header_detected=True, layout_quality=0.9)
 
 
+def test_import_service_infers_title_from_pdf_text(tmp_path, monkeypatch):
+    from referential_import import import_service as import_module
+
+    pdf_path = tmp_path / "tmp1nsno2if.pdf"
+    pdf_path.write_bytes(b"%PDF-1.4 title infer")
+
+    fake_document = PdfDocument(
+        path=pdf_path,
+        extraction_method="pdftotext-layout",
+        pages=[
+            PdfPage(
+                number=1,
+                text=(
+                    "Manager d'affaires REFERENTIEL D'ACTIVITES décrit les situations de travail et les activités exercées, les métiers ou emplois visés\n"
+                    "C1.1 Organiser la coordination"
+                ),
+                blocks=[],
+            )
+        ],
+    )
+    fake_tables = [
+        ExtractedTablePage(page_number=1, columns={"full_text": [ExtractedCell("full_text", fake_document.pages[0].text, 1)]}, header_detected=False, layout_quality=0.2),
+    ]
+
+    monkeypatch.setattr(import_module, "load_pdf_document", lambda path: fake_document)
+    monkeypatch.setattr(import_module, "detect_tables", lambda document: fake_tables)
+
+    service = ReferentialImportService(store=ReferentialImportStore(tmp_path / "imports.sqlite3"), output_dir=tmp_path / "out")
+    analysis = service.analyze(pdf_path)
+
+    assert analysis["document"].title == "Manager d'affaires"
+    assert "tmp1nsno2if" not in analysis["document"].title
+
+
+def test_import_service_text_fallback_without_columns(tmp_path, monkeypatch):
+    from referential_import import import_service as import_module
+
+    pdf_path = tmp_path / "referentiel_fallback.pdf"
+    pdf_path.write_bytes(b"%PDF-1.4 fallback referential")
+
+    fake_document = PdfDocument(
+        path=pdf_path,
+        extraction_method="pdftotext-layout",
+        pages=[
+            PdfPage(
+                number=1,
+                text=(
+                    "Bloc 1\n"
+                    "Activité 1\n"
+                    "A1.1\n"
+                    "C1.1 Organiser la coordination et la coopération des différents intervenants internes et externes en utilisant la méthode du Lean Management pour améliorer la performance de l'entreprise\n"
+                    "CE1.1.1 La coordination est structurée\n"
+                    "CE1.1.2 La performance est améliorée"
+                ),
+                blocks=[],
+            ),
+            PdfPage(
+                number=2,
+                text=(
+                    "C1.2 Déployer Excel pour suivre le pilotage des actions\n"
+                    "CE1.2.1 L'outil Excel est mobilisé"
+                ),
+                blocks=[],
+            ),
+        ],
+    )
+    fake_tables = [
+        ExtractedTablePage(page_number=1, columns={"full_text": [ExtractedCell("full_text", fake_document.pages[0].text, 1)]}, header_detected=False, layout_quality=0.2),
+        ExtractedTablePage(page_number=2, columns={"full_text": [ExtractedCell("full_text", fake_document.pages[1].text, 2)]}, header_detected=False, layout_quality=0.2),
+    ]
+
+    monkeypatch.setattr(import_module, "load_pdf_document", lambda path: fake_document)
+    monkeypatch.setattr(import_module, "detect_tables", lambda document: fake_tables)
+
+    service = ReferentialImportService(store=ReferentialImportStore(tmp_path / "imports.sqlite3"), output_dir=tmp_path / "out")
+    analysis = service.analyze(pdf_path)
+
+    assert analysis["report"].competencies == 2
+    assert any(item.code == "C1.1" for item in analysis["competencies"])
+    assert any(item.canonical_label == "Excel" for item in analysis["derived_skills"])
+
+
 def test_import_service_synthetic_analysis_and_dedup(tmp_path, monkeypatch):
     from referential_import import import_service as import_module
 

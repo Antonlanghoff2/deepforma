@@ -144,6 +144,8 @@ def detect_tables(document: PdfDocument) -> list[ExtractedTablePage]:
                     order=block.order,
                 )
             )
+        if page.text and "full_text" not in columns:
+            columns["full_text"] = [ExtractedCell("full_text", page.text, page.number, None, len(columns.get("full_text", [])))]
         pages.append(
             ExtractedTablePage(
                 page_number=page.number,

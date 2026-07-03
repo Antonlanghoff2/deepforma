@@ -76,6 +76,80 @@
       </div>
     </section>
 
+    {% if referential_overview %}
+    <section class="card wide" aria-label="Contenu extrait du PDF">
+      <h2>Contenu extrait du PDF</h2>
+      <div class="stat-grid">
+        <div class="stat-block small">
+          <span class="stat-value">{{ referential_overview.job_title or 'Non détecté' }}</span>
+          <span class="stat-label">Intitulé de poste / référentiel</span>
+        </div>
+        <div class="stat-block small">
+          <span class="stat-value">{{ referential_overview.keywords|length }}</span>
+          <span class="stat-label">Mots-clés déduits</span>
+        </div>
+        <div class="stat-block small">
+          <span class="stat-value">{{ referential_analysis.report.competencies }}</span>
+          <span class="stat-label">Compétences officielles</span>
+        </div>
+        <div class="stat-block small">
+          <span class="stat-value">{{ referential_analysis.report.derived_skills }}</span>
+          <span class="stat-label">Sous-compétences</span>
+        </div>
+        <div class="stat-block small">
+          <span class="stat-value">{{ referential_analysis.report.criteria }}</span>
+          <span class="stat-label">Critères</span>
+        </div>
+      </div>
+
+      <div class="meta-info">Le PDF alimente l'analyse; la recherche France Travail utilise l'intitulé détecté comme requête principale.</div>
+
+      <h3>Intitulé détecté</h3>
+      <p>{{ referential_overview.job_title or 'Aucun intitulé explicite détecté' }}</p>
+      <p class="meta-info">Source: {{ referential_overview.job_title_source }}</p>
+
+      <h3>Intitulé utilisé pour France Travail</h3>
+      <p class="meta-info">Source: {{ referential_overview.keywords_source }}</p>
+      {% if referential_overview.keywords %}
+      <div class="chips">
+        {% for item in referential_overview.keywords %}
+        <div class="chip chip-tool" tabindex="0"><span>{{ item }}</span></div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>Aucun mot-clé déduit.</p>
+      {% endif %}
+
+      <h3>Compétences officielles</h3>
+      {% if referential_overview.competency_labels %}
+      <div class="chips">
+        {% for item in referential_overview.competency_labels %}
+        <div class="chip" tabindex="0"><span>{{ item }}</span></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <h3>Sous-compétences et outils</h3>
+      <div class="chips">
+        {% for item in referential_overview.derived_skill_labels %}
+        <div class="chip chip-tool" tabindex="0"><span>{{ item }}</span></div>
+        {% endfor %}
+        {% for item in referential_overview.tool_labels %}
+        <div class="chip chip-tool" tabindex="0"><span>{{ item }}</span></div>
+        {% endfor %}
+      </div>
+
+      <h3>Critères</h3>
+      {% if referential_overview.criterion_labels %}
+      <div class="chips">
+        {% for item in referential_overview.criterion_labels %}
+        <div class="chip chip-low" tabindex="0"><span>{{ item }}</span></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </section>
+    {% endif %}
+
     <section class="grid">
 
       <!-- Classification binaire -->
@@ -358,6 +432,9 @@
         <h2>Marche territorial</h2>
         {% if model_only %}
         <p>Analyse modele uniquement. Aucun appel a France Travail n'a ete effectue.</p>
+        {% elif context.market_status == 'error' %}
+        <div class="alert alert-warning" role="alert">{{ context.market_error or 'France Travail est indisponible pour le moment.' }}</div>
+        <p>L'analyse du referentiel reste disponible, mais la partie marche est incomplete.</p>
         {% elif context.market_status == 'ok' %}
         {% set tm = result_dict.territorial_market %}
         <div class="stat-grid">
