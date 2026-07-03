@@ -539,6 +539,38 @@ button:focus-visible,
 .rec-card.rec-moyenne { border-left-color: var(--yellow); }
 .rec-card.rec-basse { border-left-color: var(--green); }
 
+.market-offer-toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0 0 16px;
+}
+
+.market-filter-button {
+  padding: 10px 14px;
+  font-size: 0.92rem;
+}
+
+.market-filter-button.is-active {
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+}
+
+.market-offer-link {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  margin-left: auto;
+}
+
+.market-skill-groups {
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.market-skill-group.is-hidden {
+  display: none;
+}
+
 .rec-header {
   display: flex;
   align-items: center;

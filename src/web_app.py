@@ -17,7 +17,7 @@ import requests
 from flask import Flask, jsonify, render_template, request, Response, redirect, url_for
 
 from analytics.territorial_skills import compute_territorial_stats
-from common.text import clean_text
+from common.text import clean_text, normalize_for_match
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
 from france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
@@ -844,6 +844,34 @@ def create_app(
             'criterion_labels': [clean_text(getattr(item, 'criterion_label', '') or '') for item in criteria if clean_text(getattr(item, 'criterion_label', '') or '')],
         }
 
+    def _market_offer_score(offer: dict[str, Any], focus_labels: list[str]) -> tuple[int, int, int, int, str]:
+        focus = {normalize_for_match(label) for label in focus_labels if normalize_for_match(label)}
+        focus_tokens = {token for label in focus for token in label.split() if token}
+        normalized_skills = offer.get('normalized_skills') or []
+        structured_skills = offer.get('structured_skills') or []
+        skill_labels: list[str] = []
+        for label in normalized_skills:
+            skill_labels.append(clean_text(label))
+        for item in structured_skills:
+            if isinstance(item, dict):
+                candidate = item.get('canonical_label') or item.get('canonical_name') or item.get('label')
+            else:
+                candidate = item
+            candidate = clean_text(candidate)
+            if candidate:
+                skill_labels.append(candidate)
+        title = clean_text(offer.get('title') or '')
+        title_key = normalize_for_match(title)
+        title_tokens = set(title_key.split())
+        skill_tokens = set()
+        for label in skill_labels:
+            skill_tokens.update(normalize_for_match(label).split())
+        token_overlap = len(skill_tokens & focus_tokens)
+        exact_count = sum(1 for label in normalized_skills if normalize_for_match(label) in focus)
+        structured_count = sum(1 for item in structured_skills if normalize_for_match((item.get('canonical_label') or item.get('canonical_name') or item.get('label')) if isinstance(item, dict) else item) in focus)
+        title_match = len(title_tokens & focus_tokens)
+        return (token_overlap, exact_count, structured_count, title_match, title_key)
+
     def _build_context(text: str, departement: str, keywords: str | None, threshold: float, model_only: bool, allow_market_failure: bool = False, market_keyword_candidates: list[str | None] | None = None) -> dict[str, Any]:
         predictor_instance = get_predictor_instance()
         if predictor_instance is None:
@@ -860,6 +888,9 @@ def create_app(
         territorial_stats = None
         market_error = None
         market_status = 'skipped' if model_only else 'not_requested'
+        market_offers_used: list[dict[str, Any]] = []
+        market_offers_preview: list[dict[str, Any]] = []
+        market_offers_more_count = 0
 
         if not model_only:
             keyword_candidates = market_keyword_candidates or ([keywords] if keywords else [None])
@@ -925,6 +956,9 @@ def create_app(
                 recommendation = service.compare(extracted_labels, normalized_offers)
                 territorial_stats = compute_territorial_stats(normalized_offers, territory_key=departement)
                 market_status = 'ok'
+                market_offers_used = normalized_offers
+                market_offers_preview = normalized_offers[:10]
+                market_offers_more_count = max(len(normalized_offers) - len(market_offers_preview), 0)
                 break
 
             if not normalized_offers and market_error is None:
@@ -939,6 +973,9 @@ def create_app(
             'analysis': analysis,
             'context': {
                 'normalized_offers': normalized_offers,
+                'market_offers_used': market_offers_used,
+                'market_offers_preview': market_offers_preview,
+                'market_offers_more_count': market_offers_more_count,
                 'territorial_stats': territorial_stats,
                 'recommendation': recommendation,
                 'market_status': market_status,
@@ -1028,6 +1065,18 @@ def create_app(
                     keyword_candidates,
                     page_texts=[page.text for page in document_loader.pages if getattr(page, 'text', '')],
                 )
+                focus_labels = [
+                    *context['referential_overview'].get('derived_skill_labels', []),
+                    *context['referential_overview'].get('competency_labels', []),
+                    *context['referential_overview'].get('tool_labels', []),
+                ]
+                market_offers = list(context['context'].get('market_offers_used', []))
+                if market_offers:
+                    market_offers = sorted(market_offers, key=lambda offer: _market_offer_score(offer, focus_labels), reverse=True)
+                    context['context']['normalized_offers'] = market_offers
+                    context['context']['market_offers_used'] = market_offers
+                    context['context']['market_offers_preview'] = market_offers[:10]
+                    context['context']['market_offers_more_count'] = max(len(market_offers) - 10, 0)
                 if context['context'].get('market_error'):
                     context['warning'] = context['warning'] + ' Analyse territoriale partielle: ' + context['context']['market_error']
             else:

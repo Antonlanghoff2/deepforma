@@ -23,6 +23,7 @@ class NormalizedOffer:
     longitude: float | None
     contract_type: str | None
     contract_label: str | None
+    offer_url: str | None
     creation_date: str | None
     update_date: str | None
     structured_skills: list
@@ -110,6 +111,22 @@ def normalize_offer(raw_offer: dict[str, Any], *, model_skills: list[dict[str, A
         contract_type = clean_text(raw_offer.get("contractType"))
         contract_label = clean_text(raw_offer.get("contractLabel"))
 
+    offer_url = clean_text(
+        _pick(
+            raw_offer,
+            "url",
+            "urlAnnonce",
+            "urlOffre",
+            "offerUrl",
+            "lien",
+            "link",
+        )
+    ) or None
+    if not offer_url:
+        origine = raw_offer.get("origineOffre") or raw_offer.get("originOffer") or {}
+        if isinstance(origine, dict):
+            offer_url = clean_text(_pick(origine, "url", "urlOrigine", "urlAnnonce", "lien")) or None
+
     offer_id = clean_text(_pick(raw_offer, "id", "idOffre", "reference")) or stable_hash(title, description, rome_code, location_label)
     department_code = clean_text(_pick(raw_offer, "departmentCode", "codeDepartement", "departement"))
 
@@ -128,6 +145,7 @@ def normalize_offer(raw_offer: dict[str, Any], *, model_skills: list[dict[str, A
         longitude=longitude,
         contract_type=contract_type or None,
         contract_label=contract_label or None,
+        offer_url=offer_url,
         creation_date=clean_text(_pick(raw_offer, "creationDate", "dateCreation")) or None,
         update_date=clean_text(_pick(raw_offer, "updateDate", "dateMiseAJour")) or None,
         structured_skills=structured_skills,

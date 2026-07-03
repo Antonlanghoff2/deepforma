@@ -180,8 +180,40 @@
 
       <!-- Skills extracted (primary) -->
       <article class="card" aria-label="Competences extraites">
-        <h2>Competences extraites</h2>
-
+        {% if referential_overview %}
+        <h2>Compétences officielles du référentiel</h2>
+        <p class="meta-info">Cette vue affiche les compétences, sous-compétences et outils réellement issus du PDF RNCP.</p>
+        {% if referential_overview.competency_labels %}
+        <h3>Compétences officielles</h3>
+        <div class="chips">
+          {% for item in referential_overview.competency_labels %}
+          <div class="chip" tabindex="0"><span>{{ item }}</span></div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p>Aucune compétence officielle n'a été détectée dans le référentiel.</p>
+        {% endif %}
+        {% if referential_overview.derived_skill_labels or referential_overview.tool_labels %}
+        <h3>Sous-compétences et outils</h3>
+        <div class="chips">
+          {% for item in referential_overview.derived_skill_labels %}
+          <div class="chip chip-tool" tabindex="0"><span>{{ item }}</span></div>
+          {% endfor %}
+          {% for item in referential_overview.tool_labels %}
+          <div class="chip chip-tool" tabindex="0"><span>{{ item }}</span></div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if referential_overview.criterion_labels %}
+        <h3>Critères associés</h3>
+        <div class="chips">
+          {% for item in referential_overview.criterion_labels %}
+          <div class="chip chip-low" tabindex="0"><span>{{ item }}</span></div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <p class="meta-info">Les compétences officielles sont distinctes des compétences déduites pour le matching marché.</p>
+        {% else %}
         {% if result_dict.skill_extraction.skills or result_dict.skill_extraction.tools %}
 
         {% if result_dict.skill_extraction.skills %}
@@ -220,6 +252,7 @@
         {% endif %}
 
         <p class="meta-info">Seuil extraction: automatique | Methode: regles linguistiques</p>
+        {% endif %}
       </article>
 
       <!-- IA Categories (secondary, technical, collapsible) -->
@@ -470,14 +503,120 @@
         {% else %}
         <p>Aucune competence identifiee dans les offres.</p>
         {% endif %}
-        {% if tm.contract_types %}
-        <details class="collapsible">
-          <summary>Types de contrats</summary>
-          <ul class="list">
-            {% for type, count in tm.contract_types.items() %}
-            <li>{{ type }}: {{ count }} offres</li>
+        {% if context.market_offers_used %}
+        <details class="collapsible open" open>
+          <summary>Offres utilisées pour l'étude de marché ({{ context.market_offers_used|length }})</summary>
+          {% set preview_offers = context.market_offers_preview or context.market_offers_used[:10] %}
+          <div class="market-offer-toolbar" data-market-offer-toolbar>
+            <button type="button" class="button-link market-filter-button is-active" data-market-filter="all">Tous</button>
+            <button type="button" class="button-link market-filter-button" data-market-filter="exact">Compétences exactes</button>
+            <button type="button" class="button-link market-filter-button" data-market-filter="structured">Compétences structurées</button>
+          </div>
+          <div class="rec-list" data-market-offer-list>
+            {% for offer in preview_offers %}
+            <details class="rec-card market-offer-card" open data-market-offer-card>
+              <summary class="rec-header" style="cursor:pointer; list-style:none;">
+                <span class="badge badge-green">Offre</span>
+                <span class="rec-skill">{{ offer.title or 'Sans titre' }}</span>
+              </summary>
+              <div class="rec-meta" style="margin-top:0.75rem;">
+                <span>ID: {{ offer.offer_id }}</span>
+                <span>{{ offer.location_label or offer.department_code or 'Non renseigné' }}</span>
+                <span>{{ offer.contract_label or offer.contract_type or 'Non renseigné' }}</span>
+                {% if offer.offer_url %}
+                <a class="button-link market-offer-link" href="{{ offer.offer_url }}" target="_blank" rel="noopener">Ouvrir l'offre</a>
+                {% endif %}
+              </div>
+              <div class="market-skill-groups">
+                <div class="market-skill-group market-skill-group-exact" data-market-skill-group="exact">
+                  <h3>Compétences exactes utilisées</h3>
+                  {% if offer.normalized_skills %}
+                  <div class="chips">
+                    {% for skill in offer.normalized_skills[:8] %}
+                    <div class="chip chip-tool" tabindex="0"><span>{{ skill }}</span></div>
+                    {% endfor %}
+                  </div>
+                  {% else %}
+                  <p>Aucune compétence exacte.</p>
+                  {% endif %}
+                </div>
+                <div class="market-skill-group market-skill-group-structured" data-market-skill-group="structured">
+                  <h3>Compétences structurées</h3>
+                  {% if offer.structured_skills %}
+                  <div class="chips">
+                    {% for skill in offer.structured_skills[:6] %}
+                    <div class="chip" tabindex="0">
+                      <span>{{ skill.canonical_label or skill.label or skill.source_label or 'Compétence' }}</span>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  {% else %}
+                  <p>Aucune compétence structurée.</p>
+                  {% endif %}
+                </div>
+              </div>
+              {% if offer.description or offer.offer_text or offer.raw_offer.description %}
+              <details class="collapsible" style="margin-top:1rem;">
+                <summary>Description complète</summary>
+                <p>{{ offer.description or offer.offer_text or offer.raw_offer.description or 'Aucune description disponible.' }}</p>
+              </details>
+              {% endif %}
+            </details>
             {% endfor %}
-          </ul>
+          </div>
+          {% if context.market_offers_more_count and context.market_offers_more_count > 0 %}
+          <details class="collapsible">
+            <summary>Voir plus ({{ context.market_offers_more_count }} offres supplémentaires)</summary>
+            <div class="rec-list">
+              {% for offer in context.market_offers_used[10:] %}
+              <details class="rec-card market-offer-card">
+                <summary class="rec-header" style="cursor:pointer; list-style:none;">
+                  <span class="badge badge-yellow">Offre</span>
+                  <span class="rec-skill">{{ offer.title or 'Sans titre' }}</span>
+                </summary>
+                <div class="rec-meta" style="margin-top:0.75rem;">
+                  <span>ID: {{ offer.offer_id }}</span>
+                  <span>{{ offer.location_label or offer.department_code or 'Non renseigné' }}</span>
+                  <span>{{ offer.contract_label or offer.contract_type or 'Non renseigné' }}</span>
+                  {% if offer.offer_url %}
+                  <a class="button-link market-offer-link" href="{{ offer.offer_url }}" target="_blank" rel="noopener">Ouvrir l'offre</a>
+                  {% endif %}
+                </div>
+                <div class="market-skill-groups">
+                  <div class="market-skill-group market-skill-group-exact" data-market-skill-group="exact">
+                    {% if offer.normalized_skills %}
+                    <div class="chips">
+                      {% for skill in offer.normalized_skills[:6] %}
+                      <div class="chip chip-tool" tabindex="0"><span>{{ skill }}</span></div>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="market-skill-group market-skill-group-structured" data-market-skill-group="structured">
+                    {% if offer.structured_skills %}
+                    <div class="chips">
+                      {% for skill in offer.structured_skills[:6] %}
+                      <div class="chip" tabindex="0"><span>{{ skill.canonical_label or skill.label or skill.source_label or 'Compétence' }}</span></div>
+                      {% endfor %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </details>
+              {% endfor %}
+            </div>
+          </details>
+          {% endif %}
+          {% if tm.contract_types %}
+          <details class="collapsible">
+            <summary>Types de contrats</summary>
+            <ul class="list">
+              {% for type, count in tm.contract_types.items() %}
+              <li>{{ type }}: {{ count }} offres</li>
+              {% endfor %}
+            </ul>
+          </details>
+          {% endif %}
         </details>
         {% endif %}
         <p class="meta-info">Territoire: {{ department }} | Periode: {{ tm.period }}</p>
@@ -777,6 +916,29 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
+    // Market offer filters
+    function setMarketOfferFilter(mode) {
+      const toolbar = document.querySelector('[data-market-offer-toolbar]');
+      if (!toolbar) return;
+      toolbar.querySelectorAll('[data-market-filter]').forEach(function(button) {
+        button.classList.toggle('is-active', button.dataset.marketFilter === mode);
+      });
+      document.querySelectorAll('[data-market-offer-card]').forEach(function(card) {
+        card.querySelectorAll('[data-market-skill-group]').forEach(function(group) {
+          const groupMode = group.dataset.marketSkillGroup;
+          group.classList.toggle('is-hidden', mode !== 'all' && groupMode !== mode);
+        });
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      const button = e.target.closest('[data-market-filter]');
+      if (!button) return;
+      e.preventDefault();
+      setMarketOfferFilter(button.dataset.marketFilter || 'all');
+    });
+    setMarketOfferFilter('all');
 
     // Live search for IA labels
     document.addEventListener('input', function(e) {

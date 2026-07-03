@@ -276,7 +276,118 @@ def test_referential_analysis_route_uses_pdf_upload(monkeypatch):
     assert 'Contenu extrait du PDF' in html
     assert 'Intitulé détecté' in html
     assert 'Intitulé utilisé pour France Travail' in html
-    assert 'Compétences officielles' in html
+    assert 'Compétences officielles du référentiel' in html
+    assert 'Organiser la coordination' in html
+
+
+def test_market_offers_are_listed_with_preview_and_details(monkeypatch):
+    from referential_import.import_service import ReferentialImportService
+    import web_app as web_app_module
+
+    document = ReferentialDocument(
+        id='doc-5',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='mno345',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Organiser la coordination',
+        normalized_label='organiser la coordination',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-5',
+            source_hash='mno345',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=0,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.0,
+            coverage_score=0.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [],
+        'activities': [],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [],
+        'tools_methods': [],
+    }
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    class QueryAwareClient:
+        def __init__(self):
+            self.seen_keywords = []
+
+        def iter_offers(self, criteria, **kwargs):
+            self.seen_keywords.append(criteria.keywords)
+            if criteria.keywords and 'Responsable commercial' in criteria.keywords:
+                for i in range(11):
+                    yield {
+                        'id': f'offer-{i + 1}',
+                        'title': f'Responsable commercial {i + 1}',
+                        'description': 'Pilotage commercial et coordination des equipes',
+                        'competences': [
+                            {'label': 'Coordination'} if i == 0 else {'label': 'Négociation'},
+                            {'label': 'Commerce'} if i == 0 else {'label': 'Relation client'},
+                        ],
+                        'location': {'label': 'Paris'},
+                        'contract': {'label': 'CDI'},
+                        'url': f'https://example.com/offer-{i + 1}',
+                    }
+
+    tracking_client = QueryAwareClient()
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage("Responsable commercial\nRéférentiel d'activités\nC1.1 Organiser la coordination")]))
+
+    app = build_app(client_factory=lambda: tracking_client)
+    client = app.test_client()
+    response = client.post(
+        '/analyze',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '93',
+        },
+        content_type='multipart/form-data',
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert "Offres utilisées pour l'étude de marché (11)" in html
+    assert 'Voir plus (1 offres supplémentaires)' in html
+    assert 'Compétences exactes utilisées' in html
+    assert 'data-market-filter="exact"' in html
+    assert 'data-market-filter="structured"' in html
+    assert 'https://example.com/offer-1' in html
+    assert html.index('Responsable commercial 1') < html.index('Responsable commercial 2')
+    assert tracking_client.seen_keywords[0] == 'Responsable commercial'
 
 
 def test_referential_analysis_falls_back_to_broader_market_queries(monkeypatch):
@@ -373,6 +484,8 @@ def test_referential_analysis_falls_back_to_broader_market_queries(monkeypatch):
     assert response.status_code == 200
     html = response.get_data(as_text=True)
     assert 'Intitulé utilisé pour France Travail' in html
+    assert "Offres utilisées pour l'étude de marché" in html
+    assert 'Responsable commercial' in html
     assert tracking_client.seen_keywords[0] == 'Responsable commercial'
 
 def test_referential_analysis_continues_if_france_travail_fails(monkeypatch):
@@ -734,6 +847,7 @@ def test_unreliable_skill_analysis_does_not_claim_missing_skills():
     assert result['formation_analysis_status'] == 'reliable'
     assert result['comparison_available'] is True
     assert result['recommendations_available'] is True
+    assert payload['result']['territorial_market']['offer_count'] == 1
     # IA classification est unreliable
     assert result['ia_classification']['status'] == 'unreliable'
     assert result['ia_classification']['discriminating'] is False
