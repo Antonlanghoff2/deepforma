@@ -1,7 +1,7 @@
 \
 # Déploiement Ubuntu Deepforma
 
-Ce guide décrit un déploiement reproductible sur Ubuntu 22.04 ou 24.04 avec Git, Python 3, `.venv`, Gunicorn, systemd et Nginx.
+Ce guide décrit un déploiement reproductible sur Ubuntu 22.04 ou 24.04 avec Git, Python 3, `.venv`, Gunicorn, systemd et Apache. Le déploiement est compatible avec Virtualmin quand Apache est géré par Virtualmin.
 
 ## Pré-requis serveur
 
@@ -12,12 +12,13 @@ Ce guide décrit un déploiement reproductible sur Ubuntu 22.04 ou 24.04 avec Gi
 - `python3-pip`
 - `python3-dev`
 - `build-essential`
-- `nginx`
+- `apache2`
+- `apache2-utils`
 - `curl`
 - `ca-certificates`
 - `openssh-client`
 
-Le projet ne dépend pas d'une base de données relationnelle. Aucun `DATABASE_URL` n'est requis par le code actuel.
+Le projet utilise désormais un stockage SQLite local pour l'apprentissage continu. Aucun `DATABASE_URL` n'est requis par le code actuel.
 
 ## Utilisateur système
 
@@ -64,7 +65,9 @@ Variables actuellement utilisées par le code :
 - `TRANSFORMERS_CACHE`
 - `TOKENIZERS_PARALLELISM`
 
-Variables non utilisées par le code actuel et donc non imposées ici : `SECRET_KEY`, `DATABASE_URL`, `MODEL_PATH`, `CPF_MODEL_PATH`, `IA_MODEL_PATH`.
+Variables de déploiement utiles : `WEB_SERVER=apache` et `VIRTUALMIN_MODE=true` si Apache est géré par Virtualmin.
+
+Variables non utilisées par le code actuel et donc non imposées ici : `SECRET_KEY`, `DATABASE_URL`, `MODEL_PATH`, `CPF_MODEL_PATH`, `IA_MODEL_PATH`. Le stockage continu ajoute aussi `CONTINUAL_DB_PATH`, `DEEPFORMA_ADMIN_USER`, `DEEPFORMA_ADMIN_PASSWORD` et `CONTINUAL_MIN_APPROVED_SAMPLES`.
 
 ## Premier déploiement
 
@@ -128,13 +131,13 @@ sudo bash scripts/rollback_production.sh
 
 ## HTTPS
 
-Si `ENABLE_SSL=true`, le script tente l'installation de Certbot puis la configuration du certificat via Nginx.
+Si `ENABLE_SSL=true`, le script tente l'installation de Certbot puis la configuration du certificat via Apache. Si Virtualmin gère déjà les certificats du vhost, il est préférable de laisser Virtualmin piloter cette partie.
 
 Points à vérifier :
 
 - le domaine doit pointer vers le serveur
 - `SSL_EMAIL` doit être renseigné
-- le certificat peut être installé après validation de la configuration Nginx
+- le certificat peut être installé après validation de la configuration Apache
 - si Certbot échoue, le service HTTP reste disponible
 
 ## Permissions
@@ -158,4 +161,4 @@ Les modèles lourds ne sont pas téléchargés automatiquement pendant le déplo
 - dépôt local modifié avant pull `--ff-only`
 - variables France Travail manquantes lors de l'analyse marché
 - DNS du domaine non propagé avant Certbot
-- Nginx en erreur de configuration
+- Apache en erreur de configuration

@@ -274,7 +274,13 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         and abs(dense_weight_stats.get('std', 0) - 0.02) < 0.005
     )
 
-    if biases_all_zero and weight_mean_close_to_zero and weight_std_near_002:
+    body_params_match_base = _check_body_against_base(model)
+    audit['body_params_match_base'] = body_params_match_base
+    trained_metadata_present = (model_dir / 'taxonomy_info.json').exists() or (model_dir / 'training_report.json').exists()
+    audit['biases_all_zero'] = biases_all_zero and not trained_metadata_present
+    random_like = biases_all_zero and weight_mean_close_to_zero and weight_std_near_002
+
+    if random_like and body_params_match_base is True and not trained_metadata_present:
         audit['appears_random_init'] = True
         logger.warning(
             'Poids du classifier coherents avec une initialisation aleatoire '
@@ -287,14 +293,12 @@ def _audit_checkpoint(model_dir: Path) -> dict[str, Any]:
         logger.info(
             'Poids du classifier coherents avec un entrainement: '
             'out_proj.weight std=%.4f, dense.weight std=%.4f, '
-            'biais non nuls=%s.',
+            'biais non nuls=%s, body_params_match_base=%s, trained_metadata_present=%s.',
             out_proj_weight_stats.get('std', 0), dense_weight_stats.get('std', 0),
-            not biases_all_zero
+            not biases_all_zero,
+            body_params_match_base,
+            trained_metadata_present,
         )
-
-    # -------- Check if body weights differ from pretrained base --------
-    # A truly trained model will have body differences from camembert-base
-    audit['body_params_match_base'] = _check_body_against_base(model)
 
     model.to('cpu')
     return audit

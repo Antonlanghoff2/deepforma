@@ -180,7 +180,7 @@ def test_structured_skill_extraction_and_missing_property():
         }
     )
     assert len(skills) == 2
-    assert skills[0]["source"] == "france_travail_structured"
+    assert skills[0]["source"] == "france_travail_api"
 
 
 def test_skill_normalizer_alignment():

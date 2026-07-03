@@ -16,15 +16,26 @@ GUNICORN_THREADS="${GUNICORN_THREADS:-4}"
 GUNICORN_TIMEOUT="${GUNICORN_TIMEOUT:-300}"
 ENABLE_SSL="${ENABLE_SSL:-false}"
 SSL_EMAIL="${SSL_EMAIL:-}"
+WEB_SERVER="${WEB_SERVER:-apache}"
+VIRTUALMIN_MODE="${VIRTUALMIN_MODE:-false}"
 INSTALL_SYSTEM_PACKAGES="${INSTALL_SYSTEM_PACKAGES:-true}"
+DEPLOY_SERVER_MODE="${WEB_SERVER:-apache}"
+if [[ "${DEPLOY_SERVER_MODE,,}" == "virtualmin" ]]; then
+  VIRTUALMIN_MODE=true
+  DEPLOY_SERVER_MODE=apache
+fi
+if [[ "${DEPLOY_SERVER_MODE,,}" != "apache" ]]; then
+  die "WEB_SERVER doit valoir apache ou virtualmin."
+fi
 RUN_TESTS="${RUN_TESTS:-true}"
 RUN_MIGRATIONS="${RUN_MIGRATIONS:-true}"
 DOWNLOAD_MODELS="${DOWNLOAD_MODELS:-false}"
 DRY_RUN="${DRY_RUN:-false}"
 
 SYSTEMD_UNIT_PATH="/etc/systemd/system/${APP_NAME}.service"
-NGINX_AVAILABLE_PATH="/etc/nginx/sites-available/${APP_NAME}.conf"
-NGINX_ENABLED_PATH="/etc/nginx/sites-enabled/${APP_NAME}.conf"
+APACHE_AVAILABLE_PATH="/etc/apache2/sites-available/${APP_NAME}.conf"
+APACHE_ENABLED_PATH="/etc/apache2/sites-enabled/${APP_NAME}.conf"
+APACHE_LOG_DIR="/var/log/apache2"
 DEPLOY_STATE_DIR="${APP_DIR}/.deploy"
 LAST_COMMIT_FILE="${DEPLOY_STATE_DIR}/last_deployed_commit"
 PREVIOUS_COMMIT_FILE="${DEPLOY_STATE_DIR}/previous_deployed_commit"
@@ -126,9 +137,18 @@ ensure_system_packages() {
   fi
   log "Installation des paquets système nécessaires"
   run apt-get update
-  run env DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl git nginx openssh-client python3 python3-dev python3-pip python3-venv build-essential
+  run env DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl git apache2 openssh-client python3 python3-dev python3-pip python3-venv build-essential
   if is_true "$ENABLE_SSL"; then
-    run env DEBIAN_FRONTEND=noninteractive apt-get install -y certbot python3-certbot-nginx
+    run env DEBIAN_FRONTEND=noninteractive apt-get install -y certbot python3-certbot-apache
+  fi
+}
+
+ensure_apache_modules() {
+  if command -v a2enmod >/dev/null 2>&1; then
+    run a2enmod proxy proxy_http headers rewrite
+    if is_true "$ENABLE_SSL"; then
+      run a2enmod ssl
+    fi
   fi
 }
 
@@ -290,57 +310,60 @@ EOF
   chmod 0644 "$SYSTEMD_UNIT_PATH"
 }
 
-write_nginx_config() {
-  log "Mise à jour de la configuration Nginx"
+write_apache_config() {
+  log "Mise à jour de la configuration Apache"
   if is_true "$DRY_RUN"; then
-    printf '+ write %s\n' "$NGINX_AVAILABLE_PATH"
+    printf '+ write %s
+' "$APACHE_AVAILABLE_PATH"
     return
   fi
   local static_block=""
   if [[ -d "$APP_DIR/static" ]]; then
     static_block=$(cat <<'EOF_STATIC'
-    location /static/ {
-        alias /opt/deepforma/static/;
-        access_log off;
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000";
-    }
+    Alias /static/ /opt/deepforma/static/
+    <Directory /opt/deepforma/static/>
+        Require all granted
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
 
 EOF_STATIC
 )
   fi
-  cat > "$NGINX_AVAILABLE_PATH" <<EOF
-server {
-    listen 80;
-    server_name ${DOMAIN:-_};
+  cat > "$APACHE_AVAILABLE_PATH" <<EOF
+<VirtualHost *:80>
+    ServerName ${DOMAIN:-_}
+    ServerAdmin webmaster@localhost
 
-    client_max_body_size 50M;
+    ErrorLog ${APACHE_LOG_DIR}/${APP_NAME}_error.log
+    CustomLog ${APACHE_LOG_DIR}/${APP_NAME}_access.log combined
 
-${static_block}    location / {
-        proxy_pass http://127.0.0.1:8001;
-        proxy_http_version 1.1;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_set_header Connection "";
-        proxy_connect_timeout 300;
-        proxy_send_timeout 300;
-        proxy_read_timeout 300;
-        proxy_buffering off;
-    }
-}
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyPass /static/ !
+${static_block}    ProxyPass / http://127.0.0.1:8001/
+    ProxyPassReverse / http://127.0.0.1:8001/
+    ProxyTimeout 300
+    RequestHeader set X-Forwarded-Proto "http"
+    RequestHeader set X-Forwarded-Port "80"
+    <Location />
+        Require all granted
+    </Location>
+    LimitRequestBody 52428800
+</VirtualHost>
 EOF
-  chmod 0644 "$NGINX_AVAILABLE_PATH"
-  ln -sfn "$NGINX_AVAILABLE_PATH" "$NGINX_ENABLED_PATH"
+  chmod 0644 "$APACHE_AVAILABLE_PATH"
+  if ! is_true "$VIRTUALMIN_MODE"; then
+    ln -sfn "$APACHE_AVAILABLE_PATH" "$APACHE_ENABLED_PATH"
+  fi
 }
 
 reload_system_services() {
   run systemctl daemon-reload
   run systemctl enable "$APP_NAME"
   run systemctl restart "$APP_NAME"
-  run nginx -t
-  run systemctl restart nginx
+  run apache2ctl configtest
+  run systemctl restart apache2
 }
 
 check_health() {
@@ -352,8 +375,8 @@ show_failure_logs() {
   warn "Affichage des journaux de diagnostic"
   systemctl status "$APP_NAME" --no-pager || true
   journalctl -u "$APP_NAME" -n 100 --no-pager || true
-  if [[ -f /var/log/nginx/error.log ]]; then
-    tail -n 100 /var/log/nginx/error.log || true
+  if [[ -f /var/log/apache2/error.log ]]; then
+    tail -n 100 /var/log/apache2/error.log || true
   fi
 }
 
@@ -370,12 +393,12 @@ enable_https_if_requested() {
   log "DNS $DOMAIN -> ${resolved:-inconnu}"
   if [[ -n "$resolved" && -n "$public_ip" && "$resolved" != "$public_ip" ]]; then
     warn "Le domaine ne pointe pas encore clairement vers l'IP publique du serveur ($public_ip)."
-    warn "Certbot est ignoré pour le moment; Nginx HTTP reste actif."
+    warn "Certbot est ignoré pour le moment; Apache HTTP reste actif."
     return
   fi
 
   if command -v certbot >/dev/null 2>&1; then
-    if ! certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos --email "$SSL_EMAIL" --redirect; then
+    if ! certbot --apache -d "$DOMAIN" --non-interactive --agree-tos --email "$SSL_EMAIL" --redirect; then
       warn "Certbot a échoué; le service HTTP reste disponible."
     fi
   else
@@ -415,12 +438,13 @@ main_deploy() {
   ensure_git_access
   ensure_repo
   ensure_env_file
+  ensure_apache_modules
   ensure_venv
   maybe_download_models
   run_tests_if_requested
   run_migrations_if_requested
   write_systemd_unit
-  write_nginx_config
+  write_apache_config
   reload_system_services
   check_health
   enable_https_if_requested
@@ -435,6 +459,7 @@ main_update() {
   ensure_dirs
   ensure_git_access
   ensure_repo
+  ensure_apache_modules
   local previous_commit current_commit
   previous_commit="$(git -C "$APP_DIR" rev-parse HEAD)"
   if is_true "$DRY_RUN"; then
@@ -453,7 +478,7 @@ main_update() {
   run_tests_if_requested
   run_migrations_if_requested
   write_systemd_unit
-  write_nginx_config
+  write_apache_config
   reload_system_services
   if ! check_health; then
     show_failure_logs
@@ -476,6 +501,7 @@ main_rollback() {
   ensure_user
   ensure_dirs
   ensure_repo
+  ensure_apache_modules
   local commit="${1:-}"
   if [[ -z "$commit" ]]; then
     if [[ -f "$LAST_COMMIT_FILE" ]]; then
@@ -492,7 +518,7 @@ main_rollback() {
   run_tests_if_requested
   run_migrations_if_requested
   write_systemd_unit
-  write_nginx_config
+  write_apache_config
   reload_system_services
   if ! check_health; then
     show_failure_logs

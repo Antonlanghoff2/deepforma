@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import requests
-from flask import Flask, jsonify, render_template, request, Response
+from flask import Flask, jsonify, render_template, request, Response, redirect, url_for
 
 from analytics.territorial_skills import compute_territorial_stats
 from common.text import clean_text
@@ -28,6 +28,10 @@ from models.analysis_result import (
     TerritorialMarketInfo,
 )
 from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
+from continual_learning.auth import require_admin_auth
+from continual_learning.store import ContinualLearningStore
+from referential_import import ReferentialImportService
+from referential_import.import_service import analysis_from_export, build_export_payload
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.recommendation_service import RecommendationService
 
@@ -885,6 +889,315 @@ def create_app(
             headers={'Content-Disposition': 'attachment; filename=deepforma_comparison.csv'},
         )
 
+    referential_import_service = ReferentialImportService()
+    app.extensions['referential_import_service'] = referential_import_service
+
+    @app.get('/admin/referential-import')
+    @require_admin_auth
+    def admin_referential_import():
+        return render_template(
+            'admin_referential_import.html',
+            analysis=None,
+            report=None,
+            document=None,
+            competencies=[],
+            criteria=[],
+            derived_skills=[],
+            blocks=[],
+            activities=[],
+            analysis_json='',
+            source_path='',
+        )
+
+    def _render_referential_import_context(analysis: dict[str, Any], *, source_path: str, success: str | None = None, error: str | None = None):
+        analysis_json = json.dumps(build_export_payload(analysis), ensure_ascii=False, indent=2)
+        return render_template(
+            'admin_referential_import.html',
+            analysis=analysis,
+            report=analysis['report'],
+            document=analysis['document'],
+            competencies=analysis['competencies'],
+            criteria=analysis['criteria'],
+            derived_skills=analysis['derived_skills'],
+            blocks=analysis['blocks'],
+            activities=analysis['activities'],
+            analysis_json=analysis_json,
+            source_path=source_path,
+            success=success,
+            error=error,
+        )
+
+    def _apply_manual_corrections(analysis: dict[str, Any]) -> dict[str, Any]:
+        for competency in analysis.get('competencies', []):
+            label_key = f'competency_label__{competency.code}'
+            status_key = f'competency_status__{competency.code}'
+            if label_key in request.form:
+                competency.official_label = clean_text(request.form.get(label_key)) or competency.official_label
+                competency.normalized_label = clean_text(request.form.get(label_key)) or competency.normalized_label
+            if status_key in request.form:
+                competency.review_status = clean_text(request.form.get(status_key)) or competency.review_status
+        for criterion in analysis.get('criteria', []):
+            label_key = f'criterion_label__{criterion.code}'
+            status_key = f'criterion_status__{criterion.code}'
+            if label_key in request.form:
+                criterion.criterion_label = clean_text(request.form.get(label_key)) or criterion.criterion_label
+                criterion.normalized_label = clean_text(request.form.get(label_key)) or criterion.normalized_label
+            if status_key in request.form:
+                criterion.review_status = clean_text(request.form.get(status_key)) or criterion.review_status
+        return analysis
+
+    @app.post('/admin/referential-import')
+    @require_admin_auth
+    def admin_referential_import_post():
+        action = clean_text(request.form.get('action') or 'analyze')
+        if action == 'approve':
+            payload = request.form.get('analysis_json')
+            if not payload:
+                return render_template('admin_referential_import.html', analysis=None, report=None, document=None, competencies=[], criteria=[], derived_skills=[], blocks=[], activities=[], analysis_json='', source_path='', error='Analyse manquante.'), 400
+            try:
+                export = json.loads(payload)
+            except Exception:
+                return render_template('admin_referential_import.html', analysis=None, report=None, document=None, competencies=[], criteria=[], derived_skills=[], blocks=[], activities=[], analysis_json='', source_path='', error='JSON d analyse invalide.'), 400
+            analysis = analysis_from_export(export)
+            analysis = _apply_manual_corrections(analysis)
+            analysis['export'] = build_export_payload(analysis)
+            validated_by = clean_text(request.form.get('validated_by') or 'human_review') or 'human_review'
+            output_path = referential_import_service.approve(analysis, validated_by=validated_by)
+            return _render_referential_import_context(analysis, source_path=clean_text(request.form.get('source_path')), success=f'Import approuve: {output_path}')
+
+        uploaded = request.files.get('pdf')
+        if not uploaded or not uploaded.filename:
+            return render_template('admin_referential_import.html', analysis=None, report=None, document=None, competencies=[], criteria=[], derived_skills=[], blocks=[], activities=[], analysis_json='', source_path='', error='Fichier PDF manquant.'), 400
+        import tempfile
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+        temp_path = Path(temp_file.name)
+        temp_file.close()
+        uploaded.save(temp_path)
+        analysis = referential_import_service.analyze(temp_path)
+        return _render_referential_import_context(analysis, source_path=str(temp_path))
+
+    continual_store = ContinualLearningStore(PROJECT_ROOT / 'data' / 'continual_learning' / 'continual_learning.sqlite3')
+    app.extensions['continual_learning_store'] = continual_store
+
+    def _parse_float(value: str | None) -> float | None:
+        if value in (None, ''):
+            return None
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def _json_list(value: str | None) -> list[dict[str, Any]]:
+        if not value:
+            return []
+        try:
+            parsed = json.loads(value)
+            return parsed if isinstance(parsed, list) else []
+        except Exception:
+            return []
+
+    def _offer_confidence(offer: dict[str, Any]) -> float:
+        confidence = _json_list(offer.get('confidence_json'))
+        if isinstance(offer.get('confidence_json'), str):
+            try:
+                payload = json.loads(offer['confidence_json'])
+                if isinstance(payload, dict):
+                    values = [float(v) for v in payload.values() if isinstance(v, (int, float))]
+                    return max(values) if values else 0.0
+            except Exception:
+                return 0.0
+        return 0.0
+
+    def _offer_structured_labels(offer: dict[str, Any]) -> set[str]:
+        labels = set()
+        for item in _json_list(offer.get('structured_skills_json')):
+            label = normalize_skill_label(item.get('canonical_name') or item.get('label') or '')
+            if label:
+                labels.add(label)
+        return labels
+
+    def _offer_predicted_labels(offer: dict[str, Any]) -> set[str]:
+        labels = set()
+        for item in _json_list(offer.get('predicted_skills_json')):
+            label = normalize_skill_label(item.get('canonical_name') or item.get('label') or '')
+            if label:
+                labels.add(label)
+        return labels
+
+    def _offer_disagreement(offer: dict[str, Any]) -> bool:
+        structured = _offer_structured_labels(offer)
+        predicted = _offer_predicted_labels(offer)
+        if not structured or not predicted:
+            return False
+        return structured != predicted
+
+    def _filter_admin_offers(all_offers: list[dict[str, Any]], filters: dict[str, str]) -> list[dict[str, Any]]:
+        min_conf = _parse_float(filters.get('min_confidence'))
+        max_conf = _parse_float(filters.get('max_confidence'))
+        status = clean_text(filters.get('status'))
+        territory = clean_text(filters.get('territory'))
+        job_family = clean_text(filters.get('job_family'))
+        source = clean_text(filters.get('source'))
+        model_version = clean_text(filters.get('model_version'))
+        disagreement = filters.get('disagreement') in {'1', 'true', 'yes', 'on'}
+        result = []
+        for offer in all_offers:
+            offer_status = clean_text(offer.get('validation_status'))
+            offer_territory = clean_text(offer.get('territory'))
+            offer_job_family = clean_text(offer.get('job_family'))
+            offer_model_version = clean_text(offer.get('model_version'))
+            confidence = _offer_confidence(offer)
+            annotations = continual_store.list_annotations('offer_row_id = ?', (offer['id'],))
+            sources = {clean_text(item.get('source')) for item in annotations}
+            if status and offer_status != status:
+                continue
+            if territory and territory not in offer_territory:
+                continue
+            if job_family and job_family not in offer_job_family:
+                continue
+            if model_version and model_version not in offer_model_version:
+                continue
+            if source and source not in sources:
+                continue
+            if min_conf is not None and confidence < min_conf:
+                continue
+            if max_conf is not None and confidence > max_conf:
+                continue
+            if disagreement and not _offer_disagreement(offer):
+                continue
+            result.append({**offer, 'annotations': annotations, 'confidence_value': confidence, 'disagreement': _offer_disagreement(offer)})
+        return result
+
+    @app.get('/admin/continual-learning')
+    @require_admin_auth
+    def admin_continual_learning():
+        filters = {
+            'status': request.args.get('status', ''),
+            'territory': request.args.get('territory', ''),
+            'job_family': request.args.get('job_family', ''),
+            'min_confidence': request.args.get('min_confidence', ''),
+            'max_confidence': request.args.get('max_confidence', ''),
+            'source': request.args.get('source', ''),
+            'model_version': request.args.get('model_version', ''),
+            'disagreement': request.args.get('disagreement', ''),
+        }
+        all_offers = continual_store.list_offers(limit=500)
+        filtered_offers = _filter_admin_offers(all_offers, filters)
+        selected_id = request.args.get('offer_row_id')
+        selected_offer = None
+        if selected_id:
+            try:
+                selected_offer = continual_store.get_offer_with_annotations(int(selected_id))
+            except ValueError:
+                selected_offer = None
+        if selected_offer is None and filtered_offers:
+            selected_offer = continual_store.get_offer_with_annotations(int(filtered_offers[0]['id']))
+        next_offer_id = None
+        if selected_offer:
+            ids = [int(offer['id']) for offer in filtered_offers]
+            if selected_offer['id'] in ids:
+                idx = ids.index(selected_offer['id'])
+                if idx + 1 < len(ids):
+                    next_offer_id = ids[idx + 1]
+        validation_counts = Counter(item.get('validation_status', 'pending') for item in all_offers)
+        return render_template(
+            'admin_continual_learning.html',
+            offers=filtered_offers,
+            selected_offer=selected_offer,
+            next_offer_id=next_offer_id,
+            filters=filters,
+            validation_counts=dict(validation_counts),
+            admin_enabled=True,
+        )
+
+    @app.post('/admin/continual-learning/action')
+    @require_admin_auth
+    def admin_continual_learning_action():
+        form = request.form
+        action = clean_text(form.get('action'))
+        offer_row_id = int(form.get('offer_row_id') or 0)
+        annotation_id = form.get('annotation_id')
+        validated_by = clean_text(form.get('validated_by') or os.getenv('DEEPFORMA_ADMIN_USER') or 'admin')
+        note = clean_text(form.get('note')) or None
+        redirect_offer = form.get('redirect_offer_row_id') or offer_row_id
+        selected_filters = {key: form.get(key, '') for key in ['status', 'territory', 'job_family', 'min_confidence', 'max_confidence', 'source', 'model_version', 'disagreement']}
+        if action == 'mark_offer_approved':
+            continual_store.mark_offer_status(offer_row_id, 'approved', validation_actor=validated_by, validation_note=note)
+            continual_store.add_validation_event(offer_row_id, validated_by, 'offer_approved', {'note': note})
+        elif action in {'approve_annotation', 'reject_annotation', 'correct_annotation'}:
+            if not annotation_id:
+                raise ValueError('annotation_id requis.')
+            annotation = continual_store.get_annotation(int(annotation_id))
+            if not annotation:
+                raise ValueError('Annotation introuvable.')
+            if action == 'approve_annotation':
+                continual_store.update_annotation_fields(
+                    int(annotation_id),
+                    validation_status='approved',
+                    validated_at=datetime.now(timezone.utc).isoformat(),
+                    validated_by=validated_by,
+                )
+            elif action == 'reject_annotation':
+                continual_store.update_annotation_fields(
+                    int(annotation_id),
+                    validation_status='rejected',
+                    rejected_reason=note,
+                    validated_at=datetime.now(timezone.utc).isoformat(),
+                    validated_by=validated_by,
+                )
+            else:
+                corrected_name = clean_text(form.get('corrected_name') or annotation['canonical_name'])
+                corrected_surface = clean_text(form.get('corrected_surface') or annotation['surface_form'])
+                normalized = normalize_skill_label(corrected_name)
+                continual_store.update_annotation_fields(
+                    int(annotation_id),
+                    canonical_name=corrected_name,
+                    surface_form=corrected_surface,
+                    normalized_name=normalized,
+                    validation_status='corrected',
+                    correction_json={'corrected_name': corrected_name, 'corrected_surface': corrected_surface, 'note': note},
+                    validated_at=datetime.now(timezone.utc).isoformat(),
+                    validated_by=validated_by,
+                )
+        elif action == 'add_annotation':
+            canonical_name = clean_text(form.get('canonical_name') or '')
+            if not canonical_name:
+                raise ValueError('canonical_name requis.')
+            surface_form = clean_text(form.get('surface_form') or canonical_name)
+            start = form.get('start')
+            end = form.get('end')
+            start_i = int(start) if start not in (None, '') else None
+            end_i = int(end) if end not in (None, '') else None
+            offer = continual_store.get_offer(offer_row_id)
+            if not offer:
+                raise ValueError('Offre introuvable.')
+            continual_store.upsert_annotation(
+                offer_row_id=offer_row_id,
+                offer_id=offer['offer_id'],
+                content_version=offer['content_version'],
+                canonical_name=canonical_name,
+                surface_form=surface_form,
+                normalized_name=normalize_skill_label(canonical_name),
+                label='SKILL',
+                start=start_i,
+                end=end_i,
+                confidence=1.0,
+                source='human_review',
+                provenance='human_review',
+                is_explicit=start_i is not None and end_i is not None,
+                text_sentence=clean_text(form.get('text_sentence')) or offer['description_original'],
+                validation_status='approved',
+                validated_at=datetime.now(timezone.utc).isoformat(),
+                validated_by=validated_by,
+            )
+        elif action == 'exclude_offer':
+            continual_store.mark_offer_status(offer_row_id, 'excluded', validation_actor=validated_by, validation_note=note)
+        else:
+            raise ValueError(f"Action inconnue: {action}")
+
+        if redirect_offer in (None, '', '0'):
+            return redirect(url_for('admin_continual_learning', **selected_filters))
+        return redirect(url_for('admin_continual_learning', offer_row_id=int(redirect_offer), **selected_filters))
     return app
 
 

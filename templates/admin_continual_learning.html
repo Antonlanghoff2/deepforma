@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Continual Learning Admin</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; }
+    .wrap { display: grid; grid-template-columns: 320px 1fr; gap: 20px; padding: 20px; }
+    .panel { background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 16px; padding: 16px; }
+    .card { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+    .meta { color: #94a3b8; font-size: 0.9rem; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; background: #1e293b; color: #cbd5e1; margin-right: 6px; font-size: 12px; }
+    .badge.ok { background: #064e3b; color: #bbf7d0; }
+    .badge.warn { background: #78350f; color: #fde68a; }
+    .offer-list { max-height: 72vh; overflow: auto; }
+    .offer-item { display: block; color: inherit; text-decoration: none; padding: 10px; border-radius: 10px; margin-bottom: 8px; background: rgba(30, 41, 59, 0.6); }
+    .offer-item.active { outline: 2px solid #22c55e; }
+    textarea, input, select { width: 100%; background: #0f172a; color: #e2e8f0; border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 10px; padding: 8px 10px; }
+    textarea { min-height: 120px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    button { border: 0; border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+    .primary { background: #22c55e; color: #052e16; }
+    .danger { background: #ef4444; color: white; }
+    .ghost { background: #334155; color: #e2e8f0; }
+    .muted { color: #94a3b8; }
+    .annotation { border-top: 1px solid rgba(148, 163, 184, 0.18); padding-top: 12px; margin-top: 12px; }
+    .skill-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .nowrap { white-space: nowrap; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #020617; border-radius: 12px; padding: 12px; border: 1px solid rgba(148, 163, 184, 0.15); }
+    @media (max-width: 1100px) { .wrap { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="panel">
+      <h1>Continual learning</h1>
+      <p class="muted">Validation humaine des offres France Travail et des annotations.</p>
+      <div class="card">
+        <div><span class="badge ok">pending {{ validation_counts.get('pending', 0) }}</span><span class="badge">approved {{ validation_counts.get('approved', 0) }}</span></div>
+        <div style="margin-top:8px"><span class="badge">corrected {{ validation_counts.get('corrected', 0) }}</span><span class="badge">rejected {{ validation_counts.get('rejected', 0) }}</span></div>
+        <div style="margin-top:8px"><span class="badge">excluded {{ validation_counts.get('excluded', 0) }}</span><span class="badge">used_for_training {{ validation_counts.get('used_for_training', 0) }}</span></div>
+      </div>
+
+      <form method="get" class="card">
+        <h3>Filtres</h3>
+        <label>Status <input name="status" value="{{ filters.status }}"></label><br><br>
+        <label>Territoire <input name="territory" value="{{ filters.territory }}"></label><br><br>
+        <label>Métier <input name="job_family" value="{{ filters.job_family }}"></label><br><br>
+        <label>Confiance min <input name="min_confidence" value="{{ filters.min_confidence }}"></label><br><br>
+        <label>Confiance max <input name="max_confidence" value="{{ filters.max_confidence }}"></label><br><br>
+        <label>Source <input name="source" value="{{ filters.source }}"></label><br><br>
+        <label>Version modèle <input name="model_version" value="{{ filters.model_version }}"></label><br><br>
+        <label>Désaccord FT/modèle <input name="disagreement" value="{{ filters.disagreement }}" placeholder="1"></label><br><br>
+        <button class="primary" type="submit">Appliquer</button>
+      </form>
+
+      <div class="offer-list">
+        {% for offer in offers %}
+        <a class="offer-item {% if selected_offer and offer.id == selected_offer.id %}active{% endif %}" href="?offer_row_id={{ offer.id }}{% for k, v in filters.items() %}{% if v %}&{{ k }}={{ v|urlencode }}{% endif %}{% endfor %}">
+          <div><strong>{{ offer.title }}</strong></div>
+          <div class="meta">#{{ offer.offer_id }} · {{ offer.territory or 'territoire inconnu' }}</div>
+          <div class="meta">{{ offer.validation_status }} · {{ '%.2f'|format(offer.confidence_value or 0) }} · {% if offer.disagreement %}désaccord{% else %}aligné{% endif %}</div>
+        </a>
+        {% endfor %}
+      </div>
+    </aside>
+
+    <main class="panel">
+      {% if selected_offer %}
+      <div class="card">
+        <div class="grid-2">
+          <div>
+            <h2>{{ selected_offer.title }}</h2>
+            <div class="meta">Offer ID {{ selected_offer.offer_id }} · contenu {{ selected_offer.content_version }}</div>
+            <div class="meta">Territoire {{ selected_offer.territory or 'n/a' }} · Métier {{ selected_offer.job_family or 'n/a' }} · Modèle {{ selected_offer.model_version or 'n/a' }}</div>
+            <div class="meta">Statut {{ selected_offer.validation_status }} · Collected {{ selected_offer.collected_at }}</div>
+          </div>
+          <div>
+            <form method="post" action="/admin/continual-learning/action" class="actions" style="justify-content:flex-end;">
+              <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+              {% for k, v in filters.items() %}
+              <input type="hidden" name="{{ k }}" value="{{ v }}">
+              {% endfor %}
+              <input type="hidden" name="validated_by" value="admin">
+              <input type="hidden" name="action" value="mark_offer_approved">
+              <button class="primary" type="submit">Marquer l'offre validée</button>
+            </form>
+            {% if next_offer_id %}
+            <p class="muted"><a href="?offer_row_id={{ next_offer_id }}{% for k, v in filters.items() %}{% if v %}&{{ k }}={{ v|urlencode }}{% endif %}{% endfor %}">Passer à l'exemple suivant</a></p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Texte de l'offre</h3>
+          <pre>{{ selected_offer.description_original }}</pre>
+        </div>
+        <div class="card">
+          <h3>Compétences structurées France Travail</h3>
+          {% for item in selected_offer.annotations if item.provenance == 'france_travail_api' %}
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name }}</strong>
+                <div class="meta">code {{ item.referential_code or 'n/a' }} · {{ item.referential_label or 'n/a' }}</div>
+              </div>
+              <div class="nowrap">{{ item.provenance }}</div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+            </div>
+          {% else %}
+            <p class="muted">Aucune compétence structurée enregistrée.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Compétences prédites / extraites</h3>
+        {% for item in selected_offer.annotations if item.provenance != 'france_travail_api' %}
+        <div class="annotation">
+          <div class="skill-row">
+            <div>
+              <strong>{{ item.canonical_name }}</strong>
+              <div class="meta">surface: {{ item.surface_form or 'n/a' }} · offsets: {{ item.start if item.start is not none else 'n/a' }}-{{ item.end if item.end is not none else 'n/a' }}</div>
+              <div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div>
+            </div>
+            <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+          </div>
+          <div class="actions">
+            <form method="post" action="/admin/continual-learning/action">
+              <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+              <input type="hidden" name="annotation_id" value="{{ item.id }}">
+              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+              <input type="hidden" name="action" value="approve_annotation">
+              <input type="hidden" name="validated_by" value="admin">
+              <button class="primary" type="submit">Accepter</button>
+            </form>
+            <form method="post" action="/admin/continual-learning/action">
+              <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+              <input type="hidden" name="annotation_id" value="{{ item.id }}">
+              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+              <input type="hidden" name="action" value="reject_annotation">
+              <input type="hidden" name="validated_by" value="admin">
+              <input type="hidden" name="note" value="Rejet manuel">
+              <button class="danger" type="submit">Rejeter</button>
+            </form>
+          </div>
+          <form method="post" action="/admin/continual-learning/action" class="grid-3" style="margin-top:10px;">
+            <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+            <input type="hidden" name="annotation_id" value="{{ item.id }}">
+            <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+            {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+            <input type="hidden" name="action" value="correct_annotation">
+            <input type="hidden" name="validated_by" value="admin">
+            <label>Nom canonique<input name="corrected_name" value="{{ item.canonical_name }}"></label>
+            <label>Forme texte<input name="corrected_surface" value="{{ item.surface_form or item.canonical_name }}"></label>
+            <label>Justification<input name="note" value="{{ item.text_sentence or '' }}"></label>
+            <div></div><button class="ghost" type="submit">Corriger</button><div></div>
+          </form>
+        </div>
+        {% else %}
+          <p class="muted">Aucune compétence à valider.</p>
+        {% endfor %}
+      </div>
+
+      <div class="card">
+        <h3>Ajouter une compétence manquante</h3>
+        <form method="post" action="/admin/continual-learning/action" class="grid-3">
+          <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+          <input type="hidden" name="action" value="add_annotation">
+          <input type="hidden" name="validated_by" value="admin">
+          <label>Compétence canonique<input name="canonical_name"></label>
+          <label>Forme texte<input name="surface_form"></label>
+          <label>Offsets start<input name="start"></label>
+          <label>Offsets end<input name="end"></label>
+          <label>Phrase justificative<input name="text_sentence"></label>
+          <div><button class="primary" type="submit">Ajouter</button></div>
+        </form>
+      </div>
+      {% else %}
+      <div class="card"><p>Aucune offre ne correspond aux filtres.</p></div>
+      {% endif %}
+    </main>
+  </div>
+</body>
+</html>

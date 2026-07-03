@@ -58,7 +58,7 @@ CPF_GENERAL_PAIRS ?= data/processed/cpf/pairs_generalistes.jsonl
 CPF_BASE_MODEL ?= sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 CPF_MODEL_OUTPUT ?= models/cpf-recommender
 
-.PHONY: install-dev collect-france-travail cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-nginx-test
+.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import
 
 install-dev:
 	$(PYTHON) -m pip install -e .
@@ -154,6 +154,28 @@ cpf-train: cpf-pairs
 
 cpf-general-all: cpf-train
 
+# ----- Referential Import -----
+REFERENTIAL_INPUT ?=
+REFERENTIAL_REPORT ?= reports/referential_import.json
+REFERENTIAL_OUTPUT ?= data/referentials/imported/
+REFERENTIAL_DB ?= data/referentials/referential_imports.sqlite3
+
+import-referential-preview:
+	@if [ -z "$(strip $(REFERENTIAL_INPUT))" ]; then \
+		echo "Set REFERENTIAL_INPUT before running import-referential-preview"; \
+		exit 1; \
+	fi
+	$(PYTHON) scripts/import_referential.py --input "$(REFERENTIAL_INPUT)" --dry-run --report "$(REFERENTIAL_REPORT)" --output "$(REFERENTIAL_OUTPUT)" --store-path "$(REFERENTIAL_DB)"
+
+validate-referential-import: import-referential-preview
+
+approve-referential-import:
+	@if [ -z "$(strip $(REFERENTIAL_INPUT))" ]; then \
+		echo "Set REFERENTIAL_INPUT before running approve-referential-import"; \
+		exit 1; \
+	fi
+	$(PYTHON) scripts/import_referential.py --input "$(REFERENTIAL_INPUT)" --approve --report "$(REFERENTIAL_REPORT)" --output "$(REFERENTIAL_OUTPUT)" --store-path "$(REFERENTIAL_DB)"
+
 test:
 	$(PYTHON) -m pytest -q
 DEPLOY_SCRIPTS := scripts/deploy_ubuntu.sh scripts/update_production.sh scripts/rollback_production.sh
@@ -178,6 +200,53 @@ deploy-status:
 deploy-logs:
 	$(DEPLOY_SUDO) journalctl -u $(DEPLOY_SERVICE) -f
 
-deploy-nginx-test:
-	$(DEPLOY_SUDO) nginx -t
+deploy-apache-test:
+	apache2ctl configtest
 
+deploy-nginx-test:
+	apache2ctl configtest
+
+
+# ----- Continual Learning -----
+CONTINUAL_DB ?= data/continual_learning/continual_learning.sqlite3
+CONTINUAL_REVIEW_QUEUE ?= data/continual_learning/review_queue.jsonl
+CONTINUAL_APPROVED_EXPORT ?= data/continual_learning/approved_training.jsonl
+CONTINUAL_BASE_DATASET ?= $(CONTINUAL_APPROVED_EXPORT)
+CONTINUAL_INCREMENTAL_DATASET ?= $(CONTINUAL_APPROVED_EXPORT)
+CONTINUAL_VALIDATION_DATASET ?= data/continual_learning/validation.jsonl
+CONTINUAL_TEST_DATASET ?= data/continual_learning/test_fixed.jsonl
+CONTINUAL_OUTPUT_DIR ?= models/skill-extractor/candidates/latest
+CONTINUAL_VERSION ?= latest
+CONTINUAL_BASE_MODEL ?= camembert-base
+CONTINUAL_RESUME_FROM_MODEL ?=
+CONTINUAL_MAX_SAMPLES ?=
+CONTINUAL_SEED ?= 42
+CONTINUAL_DEVICE ?=
+CONTINUAL_FP16 ?= true
+CONTINUAL_BATCH_SIZE ?= 8
+CONTINUAL_EPOCHS ?= 3
+CONTINUAL_MIN_APPROVED_SAMPLES ?= 500
+CONTINUAL_PRODUCTION_LINK ?= models/skill-extractor/production
+CONTINUAL_SERVICE_NAME ?= deepforma
+CONTINUAL_HEALTH_URL ?= http://127.0.0.1:8001/health
+
+build-review-queue:
+	$(PYTHON) scripts/build_review_queue.py --limit 200 --output "$(CONTINUAL_REVIEW_QUEUE)" --db-path "$(CONTINUAL_DB)"
+
+export-approved-training-data:
+	$(PYTHON) scripts/export_continual_training_dataset.py --output "$(CONTINUAL_APPROVED_EXPORT)" --db-path "$(CONTINUAL_DB)" --minimum-provenance semantic_match --include-human-reviewed --include-france-travail-api --exclude-model-only
+
+train-continual: export-approved-training-data
+	$(PYTHON) scripts/train_continual_skill_extractor.py --base-dataset "$(CONTINUAL_BASE_DATASET)" --incremental-dataset "$(CONTINUAL_INCREMENTAL_DATASET)" --validation-dataset "$(CONTINUAL_VALIDATION_DATASET)" --test-dataset "$(CONTINUAL_TEST_DATASET)" --base-model "$(CONTINUAL_BASE_MODEL)" --output-dir "$(CONTINUAL_OUTPUT_DIR)" $(if $(strip $(CONTINUAL_RESUME_FROM_MODEL)),--resume-from-model "$(CONTINUAL_RESUME_FROM_MODEL)",) $(if $(strip $(CONTINUAL_MAX_SAMPLES)),--max-samples $(CONTINUAL_MAX_SAMPLES),) $(if $(strip $(CONTINUAL_DEVICE)),--device "$(CONTINUAL_DEVICE)",) $(if $(filter true,$(CONTINUAL_FP16)),--fp16,) --batch-size $(CONTINUAL_BATCH_SIZE) --epochs $(CONTINUAL_EPOCHS) --seed $(CONTINUAL_SEED)
+
+evaluate-candidate:
+	$(PYTHON) scripts/compare_model_versions.py --candidate-model "$(CONTINUAL_OUTPUT_DIR)" --production-model "$(CONTINUAL_PRODUCTION_LINK)" --base-dataset "$(CONTINUAL_BASE_DATASET)" --test-dataset "$(CONTINUAL_TEST_DATASET)" --output-dir reports $(if $(strip $(CONTINUAL_DEVICE)),--device "$(CONTINUAL_DEVICE)",)
+
+promote-candidate:
+	$(PYTHON) scripts/promote_continual_model.py --model-dir "$(CONTINUAL_OUTPUT_DIR)" --version "$(CONTINUAL_VERSION)" --registry-path models/skill-extractor/registry.json --production-link "$(CONTINUAL_PRODUCTION_LINK)"
+
+deploy-candidate:
+	$(PYTHON) scripts/deploy_continual_model.py --model-dir "$(CONTINUAL_OUTPUT_DIR)" --production-link "$(CONTINUAL_PRODUCTION_LINK)" --service-name "$(CONTINUAL_SERVICE_NAME)" --health-url "$(CONTINUAL_HEALTH_URL)"
+
+rollback-model:
+	$(PYTHON) scripts/rollback_continual_model.py --registry-path models/skill-extractor/registry.json --production-link "$(CONTINUAL_PRODUCTION_LINK)" --service-name "$(CONTINUAL_SERVICE_NAME)" --health-url "$(CONTINUAL_HEALTH_URL)"

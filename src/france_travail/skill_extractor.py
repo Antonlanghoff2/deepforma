@@ -34,7 +34,7 @@ def extract_structured_skills(raw_offer: dict[str, Any]) -> list[dict[str, str |
                     "code": code or None,
                     "label": label,
                     "requirement": requirement or None,
-                    "source": "france_travail_structured",
+                    "source": "france_travail_api",
                 }
             )
         else:
@@ -47,7 +47,7 @@ def extract_structured_skills(raw_offer: dict[str, Any]) -> list[dict[str, str |
                                 "code": None,
                                 "label": clean_text(part),
                                 "requirement": None,
-                                "source": "france_travail_structured",
+                                "source": "france_travail_api",
                             }
                         )
             else:
@@ -56,7 +56,7 @@ def extract_structured_skills(raw_offer: dict[str, Any]) -> list[dict[str, str |
                         "code": None,
                         "label": label,
                         "requirement": None,
-                        "source": "france_travail_structured",
+                        "source": "france_travail_api",
                     }
                 )
     return items

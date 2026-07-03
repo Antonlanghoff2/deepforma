@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_deployment_artifacts_exist():
     assert (ROOT / 'deploy' / 'deepforma.env.example').exists()
     assert (ROOT / 'deploy' / 'systemd' / 'deepforma.service').exists()
-    assert (ROOT / 'deploy' / 'nginx' / 'deepforma.conf').exists()
+    assert (ROOT / 'deploy' / 'apache' / 'deepforma.conf').exists()
     assert (ROOT / 'docs' / 'deployment_ubuntu.md').exists()
 
 
@@ -20,12 +20,12 @@ def test_systemd_unit_uses_real_entrypoint():
     assert '127.0.0.1:8001' in text
 
 
-def test_nginx_config_proxies_to_local_gunicorn():
-    text = (ROOT / 'deploy' / 'nginx' / 'deepforma.conf').read_text(encoding='utf-8')
-    assert 'proxy_pass http://127.0.0.1:8001;' in text
-    assert 'proxy_set_header Host $host;' in text
-    assert 'client_max_body_size 50M;' in text
-    assert 'location /static/' in text
+def test_apache_config_proxies_to_local_gunicorn():
+    text = (ROOT / 'deploy' / 'apache' / 'deepforma.conf').read_text(encoding='utf-8')
+    assert 'ProxyPass / http://127.0.0.1:8001/' in text
+    assert 'ProxyPreserveHost On' in text
+    assert 'LimitRequestBody 52428800' in text
+    assert 'Alias /static/ /opt/deepforma/static/' in text
 
 
 def test_env_example_contains_used_variables():
