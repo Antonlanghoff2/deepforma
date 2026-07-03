@@ -31,3 +31,27 @@ data/processed/*.parquet
 data/processed/*.csv
 data/processed/*.jsonl
 artifacts/
+
+# Caches de modèles et bibliothèques ML
+.cache/
+**/.cache/
+huggingface/
+**/huggingface/
+
+# Modèles entraînés et checkpoints
+models/
+checkpoints/
+outputs/
+runs/
+wandb/
+
+# Poids ML
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+pytorch_model.bin
+
+# Archives de modèles
+*.tar.gz
+*.zip
