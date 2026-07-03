@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import base64
 from dataclasses import dataclass
 from io import BytesIO
 
 import pytest
 
 from referential_import.models import DerivedSkill, EvaluationCriterion, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
+from continual_learning.store import ContinualLearningStore
 from services.recommendation_service import RecommendationService
 from web_app import create_app
 
@@ -1422,3 +1424,475 @@ def test_market_comparison_uses_open_extracted_skills():
     assert result['comparison_available'] is True
     # Il y a des offres analysees
     assert result['summary']['total_offers_analyzed'] > 0
+
+
+
+def _admin_auth_headers(username: str = 'anton', password: str = 'deepforma') -> dict[str, str]:
+    token = base64.b64encode(f'{username}:{password}'.encode('utf-8')).decode('ascii')
+    return {'Authorization': f'Basic {token}'}
+
+
+def _seed_continual_learning_offer(
+    store: ContinualLearningStore,
+    *,
+    offer_id: str,
+    title: str,
+    description: str,
+    territory: str = '93',
+    job_family: str = 'Commerce',
+    model_scores: list[tuple[str, float]] | None = None,
+    ft_skills: list[dict[str, object]] | None = None,
+    text_skills: list[dict[str, object]] | None = None,
+    rejected_skills: list[dict[str, object]] | None = None,
+    corrected_skills: list[dict[str, object]] | None = None,
+    human_additions: list[dict[str, object]] | None = None,
+) -> int:
+    structured_skills = [
+        {
+            'canonical_name': str(item['canonical_name']),
+            'label': str(item.get('label', item['canonical_name'])),
+            'referential_code': str(item.get('referential_code', f'FT-{index}')),
+            'referential_label': str(item.get('referential_label', item['canonical_name'])),
+        }
+        for index, item in enumerate(ft_skills or [], start=1)
+    ]
+    predicted_skills = [
+        {
+            'label': label,
+            'canonical_name': label,
+            'confidence': confidence,
+            'source': 'camembert_multilabel',
+            'provenance': 'model_prediction',
+        }
+        for label, confidence in (model_scores or [])
+    ]
+    offer = store.upsert_offer(
+        offer_id=offer_id,
+        title=title,
+        description_original=description,
+        collected_at='2026-07-03T00:00:00+00:00',
+        location_label='Paris',
+        territory=territory,
+        job_family=job_family,
+        structured_skills=structured_skills,
+        predicted_skills=predicted_skills,
+        detected_forms=[],
+        offsets=[],
+        confidence={'score': 0.5},
+        sources=[{'source': 'unit-test'}],
+        model_version='camembert_multilabel:v-test',
+        validation_status='pending',
+    )
+    for item in ft_skills or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=str(item['canonical_name']),
+            surface_form=str(item.get('surface_form', item['canonical_name'])),
+            normalized_name=str(item['canonical_name']),
+            label='SKILL',
+            start=int(item['start']) if item.get('start') is not None else None,
+            end=int(item['end']) if item.get('end') is not None else None,
+            confidence=float(item.get('confidence', 0.95)),
+            source='france_travail_api',
+            provenance='france_travail_api',
+            is_explicit=False,
+            text_sentence=str(item.get('text_sentence', description)),
+            referential_code=str(item.get('referential_code', 'FT-1')),
+            referential_label=str(item.get('referential_label', item['canonical_name'])),
+            validation_status=str(item.get('validation_status', 'approved')),
+        )
+    for item in text_skills or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=str(item['canonical_name']),
+            surface_form=str(item.get('surface_form', item['canonical_name'])),
+            normalized_name=str(item['canonical_name']),
+            label='SKILL',
+            start=int(item['start']) if item.get('start') is not None else None,
+            end=int(item['end']) if item.get('end') is not None else None,
+            confidence=float(item.get('confidence', 0.9)),
+            source=str(item.get('source', 'text_explicit')),
+            provenance=str(item.get('provenance', 'exact_reference_match')),
+            is_explicit=bool(item.get('is_explicit', True)),
+            text_sentence=str(item.get('text_sentence', description)),
+            referential_code=str(item.get('referential_code')) if item.get('referential_code') is not None else None,
+            referential_label=str(item.get('referential_label')) if item.get('referential_label') is not None else None,
+            validation_status=str(item.get('validation_status', 'pending')),
+        )
+    for item in rejected_skills or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=str(item['canonical_name']),
+            surface_form=str(item.get('surface_form', item['canonical_name'])),
+            normalized_name=str(item['canonical_name']),
+            label='SKILL',
+            start=int(item['start']) if item.get('start') is not None else None,
+            end=int(item['end']) if item.get('end') is not None else None,
+            confidence=float(item.get('confidence', 0.1)),
+            source=str(item.get('source', 'text_explicit')),
+            provenance=str(item.get('provenance', 'semantic_match')),
+            is_explicit=bool(item.get('is_explicit', True)),
+            text_sentence=str(item.get('text_sentence', description)),
+            validation_status='rejected',
+            rejected_reason=str(item.get('rejected_reason', 'absent')),
+        )
+    for item in corrected_skills or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=str(item['canonical_name']),
+            surface_form=str(item.get('surface_form', item['canonical_name'])),
+            normalized_name=str(item['canonical_name']),
+            label='SKILL',
+            start=int(item['start']) if item.get('start') is not None else None,
+            end=int(item['end']) if item.get('end') is not None else None,
+            confidence=float(item.get('confidence', 0.8)),
+            source=str(item.get('source', 'text_explicit')),
+            provenance=str(item.get('provenance', 'exact_reference_match')),
+            is_explicit=bool(item.get('is_explicit', True)),
+            text_sentence=str(item.get('text_sentence', description)),
+            validation_status='corrected',
+            correction={
+                'corrected_name': str(item.get('corrected_name', item['canonical_name'])),
+                'corrected_surface': str(item.get('corrected_surface', item.get('surface_form', item['canonical_name']))),
+            },
+        )
+    for item in human_additions or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=str(item['canonical_name']),
+            surface_form=str(item.get('surface_form', item['canonical_name'])),
+            normalized_name=str(item['canonical_name']),
+            label='SKILL',
+            start=int(item['start']) if item.get('start') is not None else None,
+            end=int(item['end']) if item.get('end') is not None else None,
+            confidence=float(item.get('confidence', 1.0)),
+            source='human_review',
+            provenance='human_review',
+            is_explicit=bool(item.get('is_explicit', True)),
+            text_sentence=str(item.get('text_sentence', description)),
+            validation_status='approved',
+            validated_at='2026-07-03T00:00:00+00:00',
+            validated_by='admin',
+        )
+    for label, confidence in model_scores or []:
+        store.upsert_annotation(
+            offer_row_id=offer.offer_row_id,
+            offer_id=offer_id,
+            content_version=offer.content_version,
+            canonical_name=label,
+            surface_form=label,
+            normalized_name=label,
+            label='SKILL',
+            start=None,
+            end=None,
+            confidence=confidence,
+            source='camembert_multilabel',
+            provenance='model_prediction',
+            is_explicit=False,
+            text_sentence=None,
+            validation_status='pending',
+        )
+    return offer.offer_row_id
+
+
+def _build_admin_app(monkeypatch, tmp_path, predictor=None):
+    import web_app as web_app_module
+
+    store = ContinualLearningStore(tmp_path / 'continual_learning.sqlite3')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    monkeypatch.setattr(web_app_module, 'ContinualLearningStore', lambda *args, **kwargs: store)
+    app = build_app(
+        predictor=predictor or DummyPredictor(discriminating=True),
+        client_factory=lambda: DummyOfferClient(offers=[]),
+    )
+    app.testing = True
+    return app, store
+
+
+def test_admin_continual_learning_separates_text_ft_and_model_categories(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path, predictor=DummyPredictor(discriminating=False))
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-1',
+        title='Bid Manager (H/F)',
+        description="Gestion des appels d'offres, rédaction de propositions commerciales, coordination d'équipes et négociation en anglais professionnel.",
+        model_scores=[
+            ('Big Data', 0.48),
+            ("Python pour l'IA", 0.48),
+            ('Data Science', 0.49),
+            ('No-code / Low-code', 0.49),
+            ('RAG', 0.49),
+        ],
+        ft_skills=[
+            {'canonical_name': 'Gestion de projet', 'surface_form': 'gestion de projet', 'referential_code': 'FT-1', 'referential_label': 'Gestion de projet', 'confidence': 0.94},
+        ],
+        text_skills=[
+            {
+                'canonical_name': "Gestion des appels d'offres",
+                'surface_form': "Gestion des appels d'offres",
+                'start': 0,
+                'end': 27,
+                'confidence': 0.96,
+                'provenance': 'exact_reference_match',
+                'source': 'text_explicit',
+                'text_sentence': "Gestion des appels d'offres et rédaction de propositions commerciales.",
+                'validation_status': 'approved',
+            },
+            {
+                'canonical_name': 'Rédaction de propositions commerciales',
+                'surface_form': 'rédaction de propositions commerciales',
+                'start': 29,
+                'end': 69,
+                'confidence': 0.95,
+                'provenance': 'semantic_match',
+                'source': 'text_explicit',
+                'text_sentence': "Gestion des appels d'offres et rédaction de propositions commerciales.",
+                'validation_status': 'pending',
+            },
+        ],
+        rejected_skills=[
+            {
+                'canonical_name': 'Marketing',
+                'surface_form': 'marketing',
+                'start': 71,
+                'end': 80,
+                'rejected_reason': 'Absente du texte.',
+            },
+        ],
+        corrected_skills=[
+            {
+                'canonical_name': 'Communication',
+                'surface_form': 'communication client',
+                'start': 82,
+                'end': 102,
+                'corrected_name': 'Communication',
+                'corrected_surface': 'communication client',
+            },
+        ],
+        human_additions=[
+            {
+                'canonical_name': 'Anglais professionnel',
+                'surface_form': 'anglais professionnel',
+                'start': 104,
+                'end': 125,
+                'text_sentence': 'Anglais professionnel pour les échanges clients.',
+            },
+        ],
+    )
+
+    client = app.test_client()
+    response = client.get(
+        f'/admin/continual-learning?offer_row_id={offer_row_id}',
+        headers=_admin_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'A. Offre' in html
+    assert 'B. Compétences France Travail' in html
+    assert 'C. Compétences trouvées dans le texte' in html
+    assert 'D. Catégories générales suggérées par le modèle' in html
+    assert 'E. Compétences rejetées' in html
+    assert 'F. Compétences ajoutées manuellement' in html
+    assert 'G. Décision globale' in html
+    assert 'Classifieur non fiable' in html
+    assert 'Catégorie IA' in html
+    assert "Gestion des appels d&#39;offres" in html
+    assert 'Rédaction de propositions commerciales' in html
+    assert 'Gestion de projet' in html
+    assert 'Aucune compétence France Travail enregistrée' not in html
+    assert 'model-category-actions' not in html
+    assert 'data-validate-button' in html and 'disabled' in html
+    assert 'Prédictions ignorées' in html
+    assert 'Prédiction du modèle' not in html
+
+
+def test_admin_continual_learning_requires_explicit_confirmation(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path)
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-2',
+        title='Bid Manager (H/F)',
+        description="Rédaction de propositions commerciales et gestion de projet.",
+        model_scores=[('Data Science', 0.49), ('RAG', 0.48)],
+        text_skills=[
+            {
+                'canonical_name': 'Rédaction de propositions commerciales',
+                'surface_form': 'rédaction de propositions commerciales',
+                'start': 0,
+                'end': 38,
+                'confidence': 0.95,
+                'provenance': 'exact_reference_match',
+                'source': 'text_explicit',
+                'validation_status': 'pending',
+            },
+        ],
+    )
+    client = app.test_client()
+    with pytest.raises(ValueError, match='validation explicite'):
+        client.post(
+            '/admin/continual-learning/action',
+            data={
+                'offer_row_id': offer_row_id,
+                'action': 'mark_offer_approved',
+                'validated_by': 'admin',
+            },
+            headers=_admin_auth_headers(),
+        )
+    response = client.post(
+        '/admin/continual-learning/action',
+        data={
+            'offer_row_id': offer_row_id,
+            'action': 'mark_offer_approved',
+            'validated_by': 'admin',
+            'confirm_pending': '1',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    assert store.get_offer(offer_row_id)['validation_status'] == 'approved'
+
+
+def test_admin_continual_learning_actions_update_annotation_statuses(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path)
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-3',
+        title='Bid Manager (H/F)',
+        description="Gestion de projet, communication et négociation.",
+        model_scores=[('Big Data', 0.48), ('RAG', 0.49)],
+        text_skills=[
+            {
+                'canonical_name': 'Gestion de projet',
+                'surface_form': 'gestion de projet',
+                'start': 0,
+                'end': 16,
+                'confidence': 0.96,
+                'provenance': 'exact_reference_match',
+                'source': 'text_explicit',
+                'validation_status': 'pending',
+            },
+            {
+                'canonical_name': 'Négociation',
+                'surface_form': 'négociation',
+                'start': 18,
+                'end': 29,
+                'confidence': 0.91,
+                'provenance': 'semantic_match',
+                'source': 'text_explicit',
+                'validation_status': 'pending',
+            },
+        ],
+    )
+    text_annotations = [
+        row for row in store.list_annotations('offer_row_id = ?', (offer_row_id,))
+        if row['provenance'] != 'model_prediction'
+    ]
+    text_annotations.sort(key=lambda row: row['id'])
+    first_annotation_id = text_annotations[0]['id']
+    second_annotation_id = text_annotations[1]['id']
+
+    client = app.test_client()
+    response = client.post(
+        '/admin/continual-learning/action',
+        data={
+            'offer_row_id': offer_row_id,
+            'annotation_id': first_annotation_id,
+            'action': 'approve_annotation',
+            'validated_by': 'admin',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    assert store.get_annotation(first_annotation_id)['validation_status'] == 'approved'
+
+    response = client.post(
+        '/admin/continual-learning/action',
+        data={
+            'offer_row_id': offer_row_id,
+            'annotation_id': second_annotation_id,
+            'action': 'reject_annotation',
+            'validated_by': 'admin',
+            'note': 'Absente du texte',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    assert store.get_annotation(second_annotation_id)['validation_status'] == 'rejected'
+
+    corrected_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-4',
+        title='Bid Manager (H/F)',
+        description='Relation client.',
+        model_scores=[('Data Science', 0.48)],
+        corrected_skills=[
+            {
+                'canonical_name': 'Relation client',
+                'surface_form': 'relation client',
+                'start': 0,
+                'end': 15,
+                'corrected_name': 'Relation client',
+                'corrected_surface': 'relation client',
+            },
+        ],
+    )
+    corrected_annotation = [
+        row for row in store.list_annotations('offer_row_id = ?', (corrected_id,))
+        if row['validation_status'] == 'corrected'
+    ][0]
+    response = client.post(
+        '/admin/continual-learning/action',
+        data={
+            'offer_row_id': corrected_id,
+            'annotation_id': corrected_annotation['id'],
+            'action': 'correct_annotation',
+            'validated_by': 'admin',
+            'corrected_name': 'Relation client',
+            'corrected_surface': 'relation client',
+            'note': 'Formulation normalisée',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    updated = store.get_annotation(corrected_annotation['id'])
+    assert updated['validation_status'] == 'corrected'
+    assert 'Relation client' in updated['canonical_name']
+
+
+def test_admin_continual_learning_reliable_model_categories_and_empty_sections(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path, predictor=DummyPredictor(discriminating=True))
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-5',
+        title='Bid Manager (H/F)',
+        description='Gestion de projet et coordination.',
+        model_scores=[('Python', 0.91), ('Machine Learning', 0.72), ('Deep Learning', 0.48)],
+        ft_skills=[],
+        text_skills=[],
+    )
+    client = app.test_client()
+    response = client.get(
+        f'/admin/continual-learning?offer_row_id={offer_row_id}',
+        headers=_admin_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Oui' in html
+    assert 'model-category-actions' in html
+    assert 'Aucune compétence France Travail enregistrée.' in html
+    assert "Aucune compétence n'a été extraite du texte pour cette offre." in html

@@ -48,6 +48,9 @@ DEFAULT_MAX_OFFERS = int(os.getenv('DEEPFORMA_MAX_OFFERS', '25'))
 DEFAULT_PAGE_SIZE = int(os.getenv('DEEPFORMA_PAGE_SIZE', '10'))
 DEFAULT_MAX_PAGES = int(os.getenv('DEEPFORMA_MAX_PAGES', '3'))
 DEFAULT_THRESHOLD = float(os.getenv('DEEPFORMA_DEFAULT_THRESHOLD', str(THRESHOLDS.medium_confidence)))
+MODEL_SCORE_STD_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_STD_MIN', '0.05'))
+MODEL_SCORE_MAX_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_MAX_MIN', '0.70'))
+MODEL_SCORE_GAP_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_GAP_MIN', '0.05'))
 
 DEPARTMENT_CODES = [
     f'{code:02d}' for code in range(1, 96)
@@ -1326,6 +1329,149 @@ def create_app(
             return False
         return structured != predicted
 
+    def _continual_learning_model_diagnostics(offer: dict[str, Any]) -> dict[str, Any]:
+        predictions = [
+            item for item in _json_list(offer.get('predicted_skills_json'))
+            if isinstance(item, dict) and (clean_text(item.get('source')) == 'camembert_multilabel' or clean_text(item.get('provenance')) == 'model_prediction')
+        ]
+        scores = [float(item.get('confidence', 0.0)) for item in predictions if isinstance(item.get('confidence', 0.0), (int, float)) or str(item.get('confidence', '')).strip()]
+        if not scores:
+            return {
+                'reliable': False,
+                'reason': 'Aucune catégorie du classifieur multilabel.',
+                'score_min': 0.0,
+                'score_max': 0.0,
+                'score_mean': 0.0,
+                'score_std': 0.0,
+                'score_gap': 0.0,
+                'scores': [],
+                'top_predictions': predictions,
+                'ignored_predictions_count': 0,
+            }
+        scores_sorted = sorted(scores, reverse=True)
+        score_min = min(scores)
+        score_max = max(scores)
+        score_mean = sum(scores) / len(scores)
+        variance = sum((score - score_mean) ** 2 for score in scores) / len(scores)
+        score_std = variance ** 0.5
+        score_gap = scores_sorted[0] - scores_sorted[1] if len(scores_sorted) > 1 else scores_sorted[0]
+        all_close_to_mid = all(0.40 <= score <= 0.60 for score in scores)
+        reliable = not (
+            score_std < MODEL_SCORE_STD_MIN
+            or score_max < MODEL_SCORE_MAX_MIN
+            or all_close_to_mid
+            or score_gap < MODEL_SCORE_GAP_MIN
+        )
+        if reliable:
+            reason = 'Scores suffisamment discriminants.'
+        elif score_std < MODEL_SCORE_STD_MIN:
+            reason = 'Écart-type trop faible.'
+        elif score_max < MODEL_SCORE_MAX_MIN:
+            reason = 'Aucun score ne dépasse le seuil de confiance.'
+        elif all_close_to_mid:
+            reason = 'Tous les scores sont proches de 0.5.'
+        else:
+            reason = 'Les deux meilleurs scores sont trop proches.'
+        return {
+            'reliable': reliable,
+            'reason': reason,
+            'score_min': round(score_min, 4),
+            'score_max': round(score_max, 4),
+            'score_mean': round(score_mean, 4),
+            'score_std': round(score_std, 4),
+            'score_gap': round(score_gap, 4),
+            'scores': scores,
+            'top_predictions': predictions,
+            'ignored_predictions_count': len(predictions) if not reliable else 0,
+        }
+
+    def _build_continual_learning_offer_view(offer: dict[str, Any]) -> dict[str, Any]:
+        annotations = list(offer.get('annotations') or [])
+        diagnostics = _continual_learning_model_diagnostics(offer)
+        france_travail_skills = [
+            item for item in annotations
+            if clean_text(item.get('provenance')) == 'france_travail_api'
+        ]
+        text_skills = [
+            item for item in annotations
+            if clean_text(item.get('provenance')) in {'exact_reference_match', 'semantic_match'}
+            or clean_text(item.get('source')) in {'text_explicit', 'text_fallback'}
+        ]
+        model_categories = [
+            item for item in annotations
+            if clean_text(item.get('provenance')) == 'model_prediction'
+        ]
+        if diagnostics['top_predictions']:
+            existing_signatures = {
+                (
+                    clean_text(item.get('canonical_name') or item.get('label')),
+                    round(float(item.get('confidence') or 0.0), 4),
+                )
+                for item in model_categories
+            }
+            for index, item in enumerate(diagnostics['top_predictions'], start=1):
+                signature = (
+                    clean_text(item.get('canonical_name') or item.get('label')),
+                    round(float(item.get('confidence') or 0.0), 4),
+                )
+                if signature in existing_signatures:
+                    continue
+                model_categories.append({
+                    'id': None,
+                    'offer_row_id': offer.get('id'),
+                    'canonical_name': clean_text(item.get('canonical_name') or item.get('label')),
+                    'canonical_label': clean_text(item.get('canonical_label') or item.get('label')),
+                    'surface_form': clean_text(item.get('surface_form')) or None,
+                    'confidence': float(item.get('confidence', 0.0)),
+                    'source': clean_text(item.get('source') or 'camembert_multilabel'),
+                    'provenance': clean_text(item.get('provenance') or 'model_prediction'),
+                    'validation_status': 'pending',
+                    'text_sentence': clean_text(item.get('text_sentence')) or None,
+                    'referential_code': clean_text(item.get('referential_code')) or None,
+                    'referential_label': clean_text(item.get('referential_label')) or None,
+                    'start': item.get('start'),
+                    'end': item.get('end'),
+                    'is_explicit': bool(item.get('is_explicit', False)),
+                    'model_rank': index,
+                })
+                existing_signatures.add(signature)
+        human_additions = [
+            item for item in annotations
+            if clean_text(item.get('provenance')) == 'human_review'
+        ]
+        rejected_annotations = [item for item in annotations if clean_text(item.get('validation_status')) == 'rejected']
+        corrected_annotations = [item for item in annotations if clean_text(item.get('validation_status')) == 'corrected']
+        approved_annotations = [item for item in annotations if clean_text(item.get('validation_status')) == 'approved']
+        pending_model_predictions = [item for item in model_categories if clean_text(item.get('validation_status')) == 'pending']
+        reviewable_pending = [
+            item for item in annotations
+            if clean_text(item.get('validation_status')) == 'pending'
+            and (clean_text(item.get('provenance')) != 'model_prediction' or diagnostics['reliable'])
+        ]
+        ignored_predictions = [item for item in model_categories if not diagnostics['reliable']]
+        return {
+            'annotations': annotations,
+            'france_travail_skills': france_travail_skills,
+            'text_skills': text_skills,
+            'model_categories': model_categories,
+            'human_additions': human_additions,
+            'rejected_annotations': rejected_annotations,
+            'corrected_annotations': corrected_annotations,
+            'approved_annotations': approved_annotations,
+            'pending_model_predictions': pending_model_predictions,
+            'reviewable_pending': reviewable_pending,
+            'ignored_predictions': ignored_predictions,
+            'model_diagnostics': diagnostics,
+            'pending_review_count': len(reviewable_pending),
+            'validation_summary': {
+                'accepted': len(approved_annotations),
+                'corrected': len(corrected_annotations),
+                'rejected': len(rejected_annotations),
+                'added': len(human_additions),
+                'ignored': len(ignored_predictions),
+            },
+        }
+
     def _filter_admin_offers(all_offers: list[dict[str, Any]], filters: dict[str, str]) -> list[dict[str, Any]]:
         min_conf = _parse_float(filters.get('min_confidence'))
         max_conf = _parse_float(filters.get('max_confidence'))
@@ -1387,6 +1533,7 @@ def create_app(
                 selected_offer = None
         if selected_offer is None and filtered_offers:
             selected_offer = continual_store.get_offer_with_annotations(int(filtered_offers[0]['id']))
+        selected_offer_view = _build_continual_learning_offer_view(selected_offer) if selected_offer else None
         next_offer_id = None
         if selected_offer:
             ids = [int(offer['id']) for offer in filtered_offers]
@@ -1399,6 +1546,7 @@ def create_app(
             'admin_continual_learning.html',
             offers=filtered_offers,
             selected_offer=selected_offer,
+            selected_offer_view=selected_offer_view,
             next_offer_id=next_offer_id,
             filters=filters,
             validation_counts=dict(validation_counts),
@@ -1417,8 +1565,14 @@ def create_app(
         redirect_offer = form.get('redirect_offer_row_id') or offer_row_id
         selected_filters = {key: form.get(key, '') for key in ['status', 'territory', 'job_family', 'min_confidence', 'max_confidence', 'source', 'model_version', 'disagreement']}
         if action == 'mark_offer_approved':
+            offer = continual_store.get_offer_with_annotations(offer_row_id)
+            if not offer:
+                raise ValueError('Offre introuvable.')
+            offer_view = _build_continual_learning_offer_view(offer)
+            if offer_view['pending_review_count'] > 0 and clean_text(form.get('confirm_pending')) not in {'1', 'true', 'yes', 'on'}:
+                raise ValueError('Des propositions sont encore en attente. Confirmez la validation explicite avant de valider l’offre.')
             continual_store.mark_offer_status(offer_row_id, 'approved', validation_actor=validated_by, validation_note=note)
-            continual_store.add_validation_event(offer_row_id, validated_by, 'offer_approved', {'note': note})
+            continual_store.add_validation_event(offer_row_id, validated_by, 'offer_approved', {'note': note, 'pending_review_count': offer_view['pending_review_count']})
         elif action in {'approve_annotation', 'reject_annotation', 'correct_annotation'}:
             if not annotation_id:
                 raise ValueError('annotation_id requis.')

@@ -70,121 +70,286 @@
     </aside>
 
     <main class="panel">
-      {% if selected_offer %}
+      {% if selected_offer_view %}
+      {% set summary = selected_offer_view.validation_summary %}
+      {% set diagnostics = selected_offer_view.model_diagnostics %}
+      {% macro review_actions(item, allow_correct=True, allow_accept=True, allow_reject=True) %}
+      <div class="actions">
+        {% if allow_accept %}
+        <form method="post" action="/admin/continual-learning/action">
+          <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+          <input type="hidden" name="annotation_id" value="{{ item.id }}">
+          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+          <input type="hidden" name="action" value="approve_annotation">
+          <input type="hidden" name="validated_by" value="admin">
+          <button class="primary" type="submit">Accepter</button>
+        </form>
+        {% endif %}
+        {% if allow_reject %}
+        <form method="post" action="/admin/continual-learning/action">
+          <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+          <input type="hidden" name="annotation_id" value="{{ item.id }}">
+          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+          <input type="hidden" name="action" value="reject_annotation">
+          <input type="hidden" name="validated_by" value="admin">
+          <input type="hidden" name="note" value="Rejet manuel">
+          <button class="danger" type="submit">Rejeter</button>
+        </form>
+        {% endif %}
+      </div>
+      {% if allow_correct %}
+      <form method="post" action="/admin/continual-learning/action" class="grid-3" style="margin-top:10px;">
+        <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+        <input type="hidden" name="annotation_id" value="{{ item.id }}">
+        <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+        {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+        <input type="hidden" name="action" value="correct_annotation">
+        <input type="hidden" name="validated_by" value="admin">
+        <label>Nom canonique<input name="corrected_name" value="{{ item.canonical_name }}"></label>
+        <label>Forme texte<input name="corrected_surface" value="{{ item.surface_form or item.canonical_name }}"></label>
+        <label>Justification<input name="note" value="{{ item.text_sentence or '' }}"></label>
+        <div></div><button class="ghost" type="submit">Corriger</button><div></div>
+      </form>
+      {% endif %}
+      {% endmacro %}
+
       <div class="card">
         <div class="grid-2">
           <div>
             <h2>{{ selected_offer.title }}</h2>
             <div class="meta">Offer ID {{ selected_offer.offer_id }} · contenu {{ selected_offer.content_version }}</div>
             <div class="meta">Territoire {{ selected_offer.territory or 'n/a' }} · Métier {{ selected_offer.job_family or 'n/a' }} · Modèle {{ selected_offer.model_version or 'n/a' }}</div>
-            <div class="meta">Statut {{ selected_offer.validation_status }} · Collected {{ selected_offer.collected_at }}</div>
+            <div class="meta">Statut {{ selected_offer.validation_status }} · Collectée {{ selected_offer.collected_at }}</div>
+          </div>
+          <div class="decision-summary">
+            <div><span class="badge ok">{{ selected_offer.validation_status }}</span> <span class="badge">{{ selected_offer.territory or 'territoire inconnu' }}</span></div>
+            <div style="margin-top:10px"><span class="badge">{{ '%.2f'|format(selected_offer.confidence_value or 0) }}</span><span class="badge {% if selected_offer.disagreement %}warn{% else %}ok{% endif %}">{% if selected_offer.disagreement %}désaccord FT/modèle{% else %}aligné{% endif %}</span></div>
+            <p class="muted" style="margin-top:10px; margin-bottom:0;">Accepter : la compétence est réellement présente dans l’offre.<br>Rejeter : la compétence est absente ou incorrecte.<br>Corriger : la compétence est présente mais son nom ou sa formulation doit être modifié.<br>Valider l’offre : terminer la revue après avoir traité toutes les propositions.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>A. Offre</h3>
+        <pre>{{ selected_offer.description_original }}</pre>
+      </div>
+
+      <div class="card">
+        <h3>B. Compétences France Travail</h3>
+        <p class="muted">Compétences structurées fournies par l'API France Travail. Elles peuvent être incomplètes et ne sont pas exhaustives.</p>
+        {% if selected_offer_view.france_travail_skills %}
+        <div class="annotation-list">
+          {% for item in selected_offer_view.france_travail_skills %}
+          <div class="card annotation-card">
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name }}</strong>
+                <div class="meta">Code {{ item.referential_code or 'n/a' }} · {{ item.referential_label or 'n/a' }}</div>
+              </div>
+              <div class="nowrap"><span class="badge ok">Compétence FT</span></div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+            </div>
+            <details class="collapsible">
+              <summary>Détails techniques</summary>
+              <div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div>
+            </details>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune compétence France Travail enregistrée.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>C. Compétences trouvées dans le texte</h3>
+        <p class="muted">Extraites par l'extracteur principal à partir des phrases du texte. Ce sont les compétences réellement présentes dans l'offre.</p>
+        {% if selected_offer_view.text_skills %}
+        <div class="annotation-list">
+          {% for item in selected_offer_view.text_skills %}
+          <div class="card annotation-card">
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name }}</strong>
+                <div class="meta">Forme exacte: {{ item.surface_form or 'n/a' }}</div>
+                <div class="meta">Phrase source: {{ item.text_sentence or 'n/a' }}</div>
+                <div class="meta">Offsets: {{ item.start if item.start is not none else 'n/a' }}-{{ item.end if item.end is not none else 'n/a' }}</div>
+              </div>
+              <div class="nowrap"><span class="badge">Compétence texte</span></div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+            </div>
+            <div class="actions">
+              <span class="badge">{{ item.source }}</span>
+              <span class="badge">{{ item.provenance }}</span>
+            </div>
+            <details class="collapsible">
+              <summary>Détails techniques</summary>
+              <div class="meta">méthode {{ item.source }} · statut {{ item.validation_status }} · code référentiel {{ item.referential_code or 'n/a' }}</div>
+            </details>
+            {{ review_actions(item, allow_correct=True, allow_accept=True, allow_reject=True) }}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune compétence n'a été extraite du texte pour cette offre.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>D. Catégories générales suggérées par le modèle</h3>
+        <p class="muted">Ces catégories sont des suggestions générales du classifieur Camembert. Elles ne sont pas des compétences précises et ne servent pas à l'entraînement lorsqu'elles sont jugées non fiables.</p>
+        <div class="stat-grid" style="margin-bottom: 16px;">
+          <div class="stat-block small"><span class="stat-value">{{ 'Oui' if diagnostics.reliable else 'Non' }}</span><span class="stat-label">Modèle fiable</span></div>
+          <div class="stat-block small"><span class="stat-value">{{ '%.2f'|format(diagnostics.score_min) }}</span><span class="stat-label">Score min</span></div>
+          <div class="stat-block small"><span class="stat-value">{{ '%.2f'|format(diagnostics.score_max) }}</span><span class="stat-label">Score max</span></div>
+          <div class="stat-block small"><span class="stat-value">{{ '%.2f'|format(diagnostics.score_std) }}</span><span class="stat-label">Écart-type</span></div>
+        </div>
+        {% if not diagnostics.reliable %}
+        <div class="alert alert-warning" role="alert">
+          <strong>Classifieur non fiable</strong>
+          <p>{{ diagnostics.reason }}</p>
+          <p>Les catégories ci-dessous sont affichées à titre indicatif, ne pas les valider ni les utiliser pour l'entraînement.</p>
+        </div>
+        {% endif %}
+        {% if selected_offer_view.model_categories %}
+        <div class="annotation-list">
+          {% for item in selected_offer_view.model_categories %}
+          <div class="card annotation-card">
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name or item.canonical_label or item.surface_form or item.label }}</strong>
+                <div class="meta">Probabilité {{ '%.2f'|format(item.confidence or 0) }}</div>
+              </div>
+              <div class="nowrap"><span class="badge warn">Catégorie IA</span></div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+            </div>
+            <details class="collapsible">
+              <summary>Détails techniques</summary>
+              <div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div>
+            </details>
+            {% if diagnostics.reliable and item.id %}
+            <div class="actions model-category-actions">
+              <form method="post" action="/admin/continual-learning/action">
+                <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+                <input type="hidden" name="annotation_id" value="{{ item.id }}">
+                <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+                {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+                <input type="hidden" name="action" value="approve_annotation">
+                <input type="hidden" name="validated_by" value="admin">
+                <button class="primary" type="submit">Accepter</button>
+              </form>
+              <form method="post" action="/admin/continual-learning/action">
+                <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
+                <input type="hidden" name="annotation_id" value="{{ item.id }}">
+                <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
+                {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+                <input type="hidden" name="action" value="reject_annotation">
+                <input type="hidden" name="validated_by" value="admin">
+                <input type="hidden" name="note" value="Prédiction IA rejetée">
+                <button class="danger" type="submit">Rejeter</button>
+              </form>
+            </div>
+            {% elif diagnostics.reliable %}
+            <p class="muted">Prédiction technique sans identifiant persistant, affichée en lecture seule.</p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune catégorie générale n'a été suggérée par le modèle.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>E. Compétences rejetées</h3>
+        {% if selected_offer_view.rejected_annotations %}
+        <div class="annotation-list">
+          {% for item in selected_offer_view.rejected_annotations %}
+          <div class="card annotation-card">
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name }}</strong>
+                <div class="meta">{{ item.surface_form or 'n/a' }} · {{ item.text_sentence or 'n/a' }}</div>
+              </div>
+              <div class="nowrap"><span class="badge warn">Rejetée</span></div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
+            </div>
+            <details class="collapsible"><summary>Détails techniques</summary><div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div></details>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune compétence rejetée.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>F. Compétences ajoutées manuellement</h3>
+        {% if selected_offer_view.human_additions %}
+        <div class="annotation-list">
+          {% for item in selected_offer_view.human_additions %}
+          <div class="card annotation-card">
+            <div class="skill-row">
+              <div>
+                <strong>{{ item.canonical_name }}</strong>
+                <div class="meta">{{ item.surface_form or 'n/a' }} · {{ item.text_sentence or 'n/a' }}</div>
+              </div>
+              <div class="nowrap"><span class="badge ok">Ajout manuel</span></div>
+              <div class="nowrap">{{ '%.2f'|format(item.confidence or 1) }}</div>
+            </div>
+            <details class="collapsible"><summary>Détails techniques</summary><div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div></details>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune compétence ajoutée manuellement.</p>
+        {% endif %}
+      </div>
+
+      <div class="card">
+        <h3>G. Décision globale</h3>
+        <div class="grid-2">
+          <div>
+            <div class="stat-grid" style="grid-template-columns:repeat(2, minmax(0, 1fr)); margin-bottom: 12px;">
+              <div class="stat-block small"><span class="stat-value">{{ summary.accepted }}</span><span class="stat-label">Compétences acceptées</span></div>
+              <div class="stat-block small"><span class="stat-value">{{ summary.corrected }}</span><span class="stat-label">Compétences corrigées</span></div>
+              <div class="stat-block small"><span class="stat-value">{{ summary.rejected }}</span><span class="stat-label">Compétences rejetées</span></div>
+              <div class="stat-block small"><span class="stat-value">{{ summary.added }}</span><span class="stat-label">Compétences ajoutées</span></div>
+              <div class="stat-block small"><span class="stat-value">{{ summary.ignored }}</span><span class="stat-label">Prédictions ignorées</span></div>
+              <div class="stat-block small"><span class="stat-value">{{ selected_offer_view.pending_review_count }}</span><span class="stat-label">En attente</span></div>
+            </div>
+            <div class="alert alert-warning" role="alert">
+              <strong>Aide contextuelle</strong>
+              <p>Accepter : la compétence est réellement présente dans l'offre.</p>
+              <p>Rejeter : la compétence est absente ou incorrecte.</p>
+              <p>Corriger : la compétence est présente mais son nom ou sa formulation doit être modifié.</p>
+              <p>Valider l'offre : terminer la revue après avoir traité toutes les propositions.</p>
+            </div>
           </div>
           <div>
-            <form method="post" action="/admin/continual-learning/action" class="actions" style="justify-content:flex-end;">
+            <form method="post" action="/admin/continual-learning/action" class="card" style="margin:0;">
               <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
               <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-              {% for k, v in filters.items() %}
-              <input type="hidden" name="{{ k }}" value="{{ v }}">
-              {% endfor %}
+              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
               <input type="hidden" name="validated_by" value="admin">
               <input type="hidden" name="action" value="mark_offer_approved">
-              <button class="primary" type="submit">Marquer l'offre validée</button>
+              <label class="field-inline" style="margin-bottom:12px;">
+                <input type="checkbox" name="confirm_pending" value="1" {% if selected_offer_view.pending_review_count == 0 %}checked{% endif %} {% if selected_offer_view.pending_review_count > 0 %}data-confirm-validation{% endif %}>
+                <span>Je confirme valider malgré les propositions en attente.</span>
+              </label>
+              {% if selected_offer_view.pending_review_count > 0 %}
+              <div class="alert alert-warning" role="alert">Validation bloquée tant que des propositions utiles restent à traiter.</div>
+              {% endif %}
+              <button class="primary" type="submit" {% if selected_offer_view.pending_review_count > 0 %}disabled{% endif %} data-validate-button>Marquer l'offre validée</button>
             </form>
+            <p class="muted" style="margin-top:10px;">Les prédictions ignorées ne sont pas utilisées pour l'entraînement.</p>
             {% if next_offer_id %}
             <p class="muted"><a href="?offer_row_id={{ next_offer_id }}{% for k, v in filters.items() %}{% if v %}&{{ k }}={{ v|urlencode }}{% endif %}{% endfor %}">Passer à l'exemple suivant</a></p>
             {% endif %}
           </div>
         </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card">
-          <h3>Texte de l'offre</h3>
-          <pre>{{ selected_offer.description_original }}</pre>
-        </div>
-        <div class="card">
-          <h3>Compétences structurées France Travail</h3>
-          {% for item in selected_offer.annotations if item.provenance == 'france_travail_api' %}
-            <div class="skill-row">
-              <div>
-                <strong>{{ item.canonical_name }}</strong>
-                <div class="meta">code {{ item.referential_code or 'n/a' }} · {{ item.referential_label or 'n/a' }}</div>
-              </div>
-              <div class="nowrap">{{ item.provenance }}</div>
-              <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
-            </div>
-          {% else %}
-            <p class="muted">Aucune compétence structurée enregistrée.</p>
-          {% endfor %}
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Compétences prédites / extraites</h3>
-        {% for item in selected_offer.annotations if item.provenance != 'france_travail_api' %}
-        <div class="annotation">
-          <div class="skill-row">
-            <div>
-              <strong>{{ item.canonical_name }}</strong>
-              <div class="meta">surface: {{ item.surface_form or 'n/a' }} · offsets: {{ item.start if item.start is not none else 'n/a' }}-{{ item.end if item.end is not none else 'n/a' }}</div>
-              <div class="meta">source {{ item.source }} · provenance {{ item.provenance }} · statut {{ item.validation_status }}</div>
-            </div>
-            <div class="nowrap">{{ '%.2f'|format(item.confidence or 0) }}</div>
-          </div>
-          <div class="actions">
-            <form method="post" action="/admin/continual-learning/action">
-              <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
-              <input type="hidden" name="annotation_id" value="{{ item.id }}">
-              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-              <input type="hidden" name="action" value="approve_annotation">
-              <input type="hidden" name="validated_by" value="admin">
-              <button class="primary" type="submit">Accepter</button>
-            </form>
-            <form method="post" action="/admin/continual-learning/action">
-              <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
-              <input type="hidden" name="annotation_id" value="{{ item.id }}">
-              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-              <input type="hidden" name="action" value="reject_annotation">
-              <input type="hidden" name="validated_by" value="admin">
-              <input type="hidden" name="note" value="Rejet manuel">
-              <button class="danger" type="submit">Rejeter</button>
-            </form>
-          </div>
-          <form method="post" action="/admin/continual-learning/action" class="grid-3" style="margin-top:10px;">
-            <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
-            <input type="hidden" name="annotation_id" value="{{ item.id }}">
-            <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-            {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-            <input type="hidden" name="action" value="correct_annotation">
-            <input type="hidden" name="validated_by" value="admin">
-            <label>Nom canonique<input name="corrected_name" value="{{ item.canonical_name }}"></label>
-            <label>Forme texte<input name="corrected_surface" value="{{ item.surface_form or item.canonical_name }}"></label>
-            <label>Justification<input name="note" value="{{ item.text_sentence or '' }}"></label>
-            <div></div><button class="ghost" type="submit">Corriger</button><div></div>
-          </form>
-        </div>
-        {% else %}
-          <p class="muted">Aucune compétence à valider.</p>
-        {% endfor %}
-      </div>
-
-      <div class="card">
-        <h3>Ajouter une compétence manquante</h3>
-        <form method="post" action="/admin/continual-learning/action" class="grid-3">
-          <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
-          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-          <input type="hidden" name="action" value="add_annotation">
-          <input type="hidden" name="validated_by" value="admin">
-          <label>Compétence canonique<input name="canonical_name"></label>
-          <label>Forme texte<input name="surface_form"></label>
-          <label>Offsets start<input name="start"></label>
-          <label>Offsets end<input name="end"></label>
-          <label>Phrase justificative<input name="text_sentence"></label>
-          <div><button class="primary" type="submit">Ajouter</button></div>
-        </form>
       </div>
       {% else %}
       <div class="card"><p>Aucune offre ne correspond aux filtres.</p></div>
