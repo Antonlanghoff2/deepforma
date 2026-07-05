@@ -42,6 +42,10 @@ class ReferentialDocument(Serializable):
     importer_version: str = "0.1.0"
     page_count: int = 0
     title: str = ""
+    provider: str = ""
+    reference: str = ""
+    duration_hours: int | None = None
+    cpf_eligible: bool | None = None
     source_type: str = "pdf"
     text_extraction_method: str = "pdftotext"
     review_status: ReviewStatus = "pending"
@@ -159,4 +163,5 @@ class ImportReport(Serializable):
     duplicate_document: bool = False
     extraction_mode: str = "layout"
     notes: str = ""
+    status: str = "review_required"
 

@@ -36,9 +36,17 @@ def validate_import(
     if pages <= 0:
         errors.append(_issue("error", "no_pages", "Aucune page détectée."))
     if not blocks:
-        errors.append(_issue("error", "no_block", "Au moins un bloc doit être détecté."))
+        warnings.append(_issue("warning", "no_block", "Aucun bloc structuré détecté; le document reste exploitable en revue."))
+        review_items.append({
+            "type": "missing_blocks",
+            "message": "Aucun bloc structuré détecté.",
+        })
     if not competencies:
-        errors.append(_issue("error", "no_competency", "Au moins une compétence officielle doit être détectée."))
+        warnings.append(_issue("warning", "no_competency", "Aucune compétence officielle détectée; revue humaine requise."))
+        review_items.append({
+            "type": "missing_competencies",
+            "message": "Aucune compétence officielle détectée.",
+        })
 
     block_codes = [getattr(item, "code", "") for item in blocks]
     if len(block_codes) != len(set(block_codes)):
@@ -128,6 +136,12 @@ def validate_import(
             )
 
     score_global = max(0.0, min(1.0, 0.4 + (coverage_score * 0.6) - (0.1 if warnings else 0.0) - (0.2 if errors else 0.0)))
+    if errors:
+        status = "failed"
+    elif warnings:
+        status = "review_required"
+    else:
+        status = "success"
     report = ImportReport(
         schema_version="1.0",
         importer_version=importer_version,
@@ -148,6 +162,7 @@ def validate_import(
         duplicate_document=duplicate_document,
         extraction_mode=extraction_mode,
         notes=notes,
+        status=status,
     )
     return report
 

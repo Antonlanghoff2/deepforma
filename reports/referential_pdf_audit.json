@@ -1,0 +1,3037 @@
+{
+  "summary": {
+    "input_dir": "data/raw/referentiel",
+    "pdf_count": 26,
+    "text_layer_count": 26,
+    "needs_ocr_count": 0,
+    "average_pages": 1.54
+  },
+  "documents": [
+    {
+      "source_file": "01_DataScientest_Data_Scientist__Machine_Learning__Deep_Learning.pdf",
+      "path": "data/raw/referentiel/01_DataScientest_Data_Scientist__Machine_Learning__Deep_Learning.pdf",
+      "document_id": "4883f1f316de88cd1d3e44bc",
+      "sha256": "dd8b2802391e0ebf593af6feab3c1c16201b2500b4ca5b898acac6b9c948d403",
+      "file_size": 4078,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1879,
+      "mean_density": 0.00374933,
+      "needs_ocr": false,
+      "title_detected": "Data Scientist — Machine Learning & Deep",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification : Titre RNCP Niveau 7 — Data Scientist (co-certifié Mines ParisTech)",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Bac+2 minimum, notions de Python et statistiques",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Objectifs pédagogiques",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu du programme",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 1 — Fondamentaux",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 2 — Machine Learning",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 3 — Machine Learning",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 4 — Deep Learning",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 5 — NLP —",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 6 — MLOps &",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module 7 — Projet final",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences visées",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1879,
+          "density": 0.00374933,
+          "block_count": 48
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "02_DataScientest_Data_Analyst__Analyse__Visualisation_de_données.pdf",
+      "path": "data/raw/referentiel/02_DataScientest_Data_Analyst__Analyse__Visualisation_de_données.pdf",
+      "document_id": "52c10bd645fbdf160cf5d860",
+      "sha256": "8bdd648587679f6fb580e1b4c9782a11accead80b8e459552102a59f21812c2a",
+      "file_size": 3513,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1379,
+      "mean_density": 0.00275164,
+      "needs_ocr": false,
+      "title_detected": "Data Analyst — Analyse & Visualisation de données",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Éligible CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public cible",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis",
+          "label": "PREREQUISITES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Titre RNCP Niveau 6 — Data Analyst (co-certifié La Sorbonne)",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module",
+          "label": "MODULE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Contenu",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES VISÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1379,
+          "density": 0.00275164,
+          "block_count": 48
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "03_DataScientest_Machine_Learning_Engineer.pdf",
+      "path": "data/raw/referentiel/03_DataScientest_Machine_Learning_Engineer.pdf",
+      "document_id": "e7befcaf026d285bf11ca0fd",
+      "sha256": "89dd96139db68fdc301d62d467e5943c7d2cf15dd859a254c64abb79b9c0ee3a",
+      "file_size": 4009,
+      "page_count": 2,
+      "text_layer_present": true,
+      "text_characters": 1330,
+      "mean_density": 0.00132693,
+      "needs_ocr": false,
+      "title_detected": "DataScientest",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Référence — DST-MLE",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau — Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée — 560 heures",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format — Online / Alternance",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix — 6 900 € TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification — Titre RNCP Niveau 7 — Machine Learning Engineer",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PUBLIC ET PRÉREQUIS",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Public cible : Développeurs, ingénieurs logiciels souhaitant se spécialiser en IA",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Prérequis : Maîtrise de Python, notions d'algorithmique, Bac+3 minimum",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Éligible CPF : Oui",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "COMPÉTENCES ACQUISES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Programme détaillé — DataScientest — Réf. DST-MLE — Compilation à fins de recherche",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 216,
+          "density": 0.000431,
+          "block_count": 8
+        },
+        {
+          "page": 2,
+          "text_length": 1114,
+          "density": 0.00222286,
+          "block_count": 31
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "04_DataScientest_MLOps_Engineer__Ingénierie_des_opérations_ML.pdf",
+      "path": "data/raw/referentiel/04_DataScientest_MLOps_Engineer__Ingénierie_des_opérations_ML.pdf",
+      "document_id": "1f1870753148597c22b03d2c",
+      "sha256": "a41a2fde7c7c5d8e217243d0ff9a79914b05be707dd032c57a992ac10deb3f70",
+      "file_size": 3440,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1317,
+      "mean_density": 0.00262792,
+      "needs_ocr": false,
+      "title_detected": "DATASCIENTEST",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Réf. : DST-MLOPS",
+          "label": "FOOTER",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau : Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 480 heures",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Modalité : Online",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : 6 500 € TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CPF : Oui",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Public : Data Scientists, Ingénieurs DevOps souhaitant se spécialiser en IA",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Expérience en développement Python, connaissances ML de base",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Titre RNCP Niveau 7",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1317,
+          "density": 0.00262792,
+          "block_count": 37
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "05_DataScientest_Data_Engineer__Architecture__Pipelines_de_donnée.pdf",
+      "path": "data/raw/referentiel/05_DataScientest_Data_Engineer__Architecture__Pipelines_de_donnée.pdf",
+      "document_id": "3da2db8064da65025b8f8fd9",
+      "sha256": "80140e2ef7b51cac48982831d79a7323a817daadab7cb6f4223e9ceb42df0f05",
+      "file_size": 3193,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 865,
+      "mean_density": 0.00172601,
+      "needs_ocr": false,
+      "title_detected": "Data Engineer — Architecture & Pipelines de",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Online / Alternance",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Titre RNCP Niveau 7 — Data",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Public : Développeurs, administrateurs de bases de données, analystes",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Python intermédiaire, SQL maîtrisé, Bac+3",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES",
+          "label": "SKILLS",
+          "confidence": 0.98
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 865,
+          "density": 0.00172601,
+          "block_count": 35
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "06_Jedha_Bootcamp_Bootcamp_Fullstack__Data_Scientist_Niveau_Expert.pdf",
+      "path": "data/raw/referentiel/06_Jedha_Bootcamp_Bootcamp_Fullstack__Data_Scientist_Niveau_Expert.pdf",
+      "document_id": "1703f643837914daed32680a",
+      "sha256": "a8b2df54a2bd4977f9034f38e8f1f20227604d7ea5408482a107a6657f213eb5",
+      "file_size": 3949,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1668,
+      "mean_density": 0.0033283,
+      "needs_ocr": false,
+      "title_detected": "Guide Apprenant",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Public : Reconversions vers les métiers de la data, ingénieurs, chefs de projet",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Prépwork obligatoire (Python, SQL, stats) — 40h en ligne",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 450 heures — 11 semaines full-time ou 6 mois part-time | Format : Full-time / Part-time / On Demand",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : 10 500 € TTC | CPF : Oui",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : RNCP Niveau 7 — Expert en Machine Learning (co-certifié RNCP40158)",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 1",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 2",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 3",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 4",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 5",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 6",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 7",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences que vous développerez",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1668,
+          "density": 0.0033283,
+          "block_count": 45
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "07_Jedha_Bootcamp_Data_Analyst__Essentials_Niveau_Débutant.pdf",
+      "path": "data/raw/referentiel/07_Jedha_Bootcamp_Data_Analyst__Essentials_Niveau_Débutant.pdf",
+      "document_id": "22ef8f1c0408ef46db777bc6",
+      "sha256": "3f794e5a8edcc55379ef11cc7dd70eb51bdc7c4ea1889e15cc949481a734c4e9",
+      "file_size": 3874,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1195,
+      "mean_density": 0.00238449,
+      "needs_ocr": false,
+      "title_detected": "FORMATION ENTREPRISE Jedha Bootcamp",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "FORMATION ENTREPRISE Jedha Bootcamp",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Formation",
+          "label": "TITLE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Tarif",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "ENJEUX BUSINESS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PARTICIPANTS",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Profil : Toute personne souhaitant s'initier à la data, débutants complets",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Aucun prérequis technique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat de compétences Jedha — Data Essentials",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CONTENU DE LA FORMATION",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu clé",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES DÉVELOPPÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1195,
+          "density": 0.00238449,
+          "block_count": 49
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "08_Jedha_Bootcamp_Lead_Data_Scientist__Management__IA_avancée.pdf",
+      "path": "data/raw/referentiel/08_Jedha_Bootcamp_Lead_Data_Scientist__Management__IA_avancée.pdf",
+      "document_id": "4871e79ebb12bb79991936a3",
+      "sha256": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+      "file_size": 3578,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1252,
+      "mean_density": 0.00249822,
+      "needs_ocr": false,
+      "title_detected": "Lead Data Scientist — Management & IA",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Bac+5+ (Expert)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat Lead Data Scientist Jedha",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Maîtrise Python, ML, 2 ans d'expérience minimum en data",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Objectifs pédagogiques",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu du programme",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences visées",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1252,
+          "density": 0.00249822,
+          "block_count": 37
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "09_Jedha_Bootcamp_Machine_Learning_Engineer__Production__Industria.pdf",
+      "path": "data/raw/referentiel/09_Jedha_Bootcamp_Machine_Learning_Engineer__Production__Industria.pdf",
+      "document_id": "10e9cb5afd52cd0255bdf17e",
+      "sha256": "4da92441e0ab3bdb46157e29c554fd7b9fbf8d7850f7eaa0e4459e0359081a71",
+      "file_size": 3424,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1250,
+      "mean_density": 0.00249423,
+      "needs_ocr": false,
+      "title_detected": "Machine Learning Engineer — Production &",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Éligible CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public cible",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis",
+          "label": "PREREQUISITES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module",
+          "label": "MODULE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Contenu",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES VISÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1250,
+          "density": 0.00249423,
+          "block_count": 48
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "10_Le_Wagon_Data_Science__AI_Bootcamp__Formation_intensive_9.pdf",
+      "path": "data/raw/referentiel/10_Le_Wagon_Data_Science__AI_Bootcamp__Formation_intensive_9.pdf",
+      "document_id": "2a2b561bd9753ac0364a5c61",
+      "sha256": "ce82fad36b45eaa8b1adb680749ce28787219c748ce90611445a7c56ecdda3b8",
+      "file_size": 3466,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1572,
+      "mean_density": 0.00313675,
+      "needs_ocr": false,
+      "title_detected": "LE WAGON",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Réf. : LW-DS-FT",
+          "label": "FOOTER",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau : Bac+3 à Bac+5",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 400 heures — 9 semaines full-time",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Modalité : Full-time (présentiel Paris ou en ligne)",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : 8 000 € TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CPF : Non (financement CPF en cours d'obtention)",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Public : Reconversions professionnelles, développeurs, ingénieurs toutes disciplines",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Prépwork 30h inclus (Python, maths de base)",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat Le Wagon Data Science & AI — non-certifiant RNCP",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1572,
+          "density": 0.00313675,
+          "block_count": 41
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "11_Le_Wagon_Data_Science__AI__Formation_part-time_6_mois.pdf",
+      "path": "data/raw/referentiel/11_Le_Wagon_Data_Science__AI__Formation_part-time_6_mois.pdf",
+      "document_id": "7ac9d2cc688082115df3996e",
+      "sha256": "38f2f100a9ef06490c6a0f451feadae84b72577ddf021e59a1111483208cb9ee",
+      "file_size": 3135,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 884,
+      "mean_density": 0.00176392,
+      "needs_ocr": false,
+      "title_detected": "Data Science & AI — Formation part-time (6 mois)",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public : Professionnels en activité souhaitant se reconvertir sans quitter leur emploi",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Prépwork 30h inclus",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES",
+          "label": "SKILLS",
+          "confidence": 0.98
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 884,
+          "density": 0.00176392,
+          "block_count": 31
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "12_Le_Wagon_Data_Analytics__Maîtriser_lanalyse_de_données_bu.pdf",
+      "path": "data/raw/referentiel/12_Le_Wagon_Data_Analytics__Maîtriser_lanalyse_de_données_bu.pdf",
+      "document_id": "f9c7b7dc6c769adf77bc5707",
+      "sha256": "3120fbe0193b12eabe28c49be2b9d3f9399eac11fe906bb48e858d0b89a2a46e",
+      "file_size": 3704,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1080,
+      "mean_density": 0.00215502,
+      "needs_ocr": false,
+      "title_detected": "FORMATION ENTREPRISE Le Wagon",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "FORMATION ENTREPRISE Le Wagon",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Tarif",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "ENJEUX BUSINESS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PARTICIPANTS",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Profil : Business analysts, consultants, chefs de projet, marketeurs",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Aucun prérequis technique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat Le Wagon Data Analytics",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CONTENU DE LA FORMATION",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu clé",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES DÉVELOPPÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1080,
+          "density": 0.00215502,
+          "block_count": 46
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "13_Le_Wagon_AI__Data_Academy__Programme_intra-entreprise.pdf",
+      "path": "data/raw/referentiel/13_Le_Wagon_AI__Data_Academy__Programme_intra-entreprise.pdf",
+      "document_id": "219a0aecf50deec78d18818d",
+      "sha256": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
+      "file_size": 3857,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1200,
+      "mean_density": 0.00239446,
+      "needs_ocr": false,
+      "title_detected": "FORMATION ENTREPRISE Le Wagon",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "FORMATION ENTREPRISE Le Wagon",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Tarif",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Présentiel en entreprise",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Sur devis (à partir de",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "ENJEUX BUSINESS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PARTICIPANTS",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Profil : Équipes métier, managers, développeurs internes",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Adaptés au niveau de l'équipe",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat de participation Le Wagon",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CONTENU DE LA FORMATION",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu clé",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES DÉVELOPPÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1200,
+          "density": 0.00239446,
+          "block_count": 47
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "14_Wild_Code_School_Formation_Data_Analyst__5_mois_intensifs.pdf",
+      "path": "data/raw/referentiel/14_Wild_Code_School_Formation_Data_Analyst__5_mois_intensifs.pdf",
+      "document_id": "7968a40bd43b76557637de55",
+      "sha256": "b2ca3c430e1126b44a65d85c7d40749602da60c85257ec8ce82ee1fd2fcfddb3",
+      "file_size": 3907,
+      "page_count": 2,
+      "text_layer_present": true,
+      "text_characters": 1306,
+      "mean_density": 0.00130299,
+      "needs_ocr": false,
+      "title_detected": "Wild Code School",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Formation Data Analyst — 5 mois intensifs",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Référence — WCS-DA",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau — Bac+3 (Niveau 6)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée — 5 mois — 800 heures",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format — Présentiel / Distanciel / Hybride",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix — 5 800 € TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification — Titre RNCP Niveau 6 — Data Analyst",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PUBLIC ET PRÉREQUIS",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Public cible : Personnes en reconversion, demandeurs d'emploi, actifs en poste",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Prérequis : Baccalauréat, logique mathématique, pas de prérequis technique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Éligible CPF : Oui",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "COMPÉTENCES ACQUISES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Programme détaillé — Wild Code School — Réf. WCS-DA — Compilation à fins de recherche",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 244,
+          "density": 0.00048687,
+          "block_count": 8
+        },
+        {
+          "page": 2,
+          "text_length": 1062,
+          "density": 0.0021191,
+          "block_count": 28
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "15_Wild_Code_School_Data_Scientist_en_Alternance__15_mois.pdf",
+      "path": "data/raw/referentiel/15_Wild_Code_School_Data_Scientist_en_Alternance__15_mois.pdf",
+      "document_id": "d95c51ebe5b061d06877d771",
+      "sha256": "46d227d0e39e75060e5f2a1fb9acc0f15734228c32cddc5ca5a3b8c6c3dea3ac",
+      "file_size": 3661,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1490,
+      "mean_density": 0.00297312,
+      "needs_ocr": false,
+      "title_detected": "Guide Apprenant",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Public : Titulaires d'un Bac+3 en informatique, data ou mathématiques",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Bac+3, Python intermédiaire, statistiques de base",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 15 mois en alternance (3 jours école / 2 jours entreprise) | Format : Alternance — Présentiel ou distanciel",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : Pris en charge par l'OPCO de l'entreprise | CPF : Non (alternance)",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Titre RNCP Niveau 7 — Data Scientist",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 1",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 2",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 3",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 4",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 5",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 6",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 7",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences que vous développerez",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1490,
+          "density": 0.00297312,
+          "block_count": 43
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "16_Wild_Code_School_IA__Big_Data__Parcours_de_spécialisation.pdf",
+      "path": "data/raw/referentiel/16_Wild_Code_School_IA__Big_Data__Parcours_de_spécialisation.pdf",
+      "document_id": "38bf9bcabed1811193af934b",
+      "sha256": "1b1112bb542877bd5d2b64328160fac74ae757e96e8cef749df159f59ec040d6",
+      "file_size": 3341,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1071,
+      "mean_density": 0.00213706,
+      "needs_ocr": false,
+      "title_detected": "IA & Big Data — Parcours de spécialisation",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat Wild Code School IA & Big Data",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Maîtrise Python et SQL, expérience en analyse de données",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Objectifs pédagogiques",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu du programme",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences visées",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1071,
+          "density": 0.00213706,
+          "block_count": 34
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "17_Simplonco_Développeur_en_Intelligence_Artificielle__Titre_P.pdf",
+      "path": "data/raw/referentiel/17_Simplonco_Développeur_en_Intelligence_Artificielle__Titre_P.pdf",
+      "document_id": "d25053c4e0d8911eb13b1a8b",
+      "sha256": "59035245c3dcde09f1a67ea5d7a469d826f590ac0c16cd69f36f247e05bfab88",
+      "file_size": 3517,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1516,
+      "mean_density": 0.003025,
+      "needs_ocr": false,
+      "title_detected": "Développeur en Intelligence Artificielle — Titre",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Présentiel — Formation en",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Éligible CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public cible",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis",
+          "label": "PREREQUISITES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Titre Professionnel RNCP34757 — Développeur en Intelligence Artificielle",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module",
+          "label": "MODULE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Contenu",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certifications Microsoft",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES VISÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1516,
+          "density": 0.003025,
+          "block_count": 47
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "18_Simplonco_Data_Analyst__Formation_qualifiante.pdf",
+      "path": "data/raw/referentiel/18_Simplonco_Data_Analyst__Formation_qualifiante.pdf",
+      "document_id": "e359bde846f46189fc2fd763",
+      "sha256": "2244c00fbd365de1423fcd97c277c283179212721f96cf5a6ebc4ff43b9750da",
+      "file_size": 3175,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1202,
+      "mean_density": 0.00239845,
+      "needs_ocr": false,
+      "title_detected": "SIMPLON.CO",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Réf. : SIMPLON-DA",
+          "label": "FOOTER",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau : Bac+2/3 (Niveau 5/6)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 700 heures — 5 mois",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Modalité : Présentiel / Distanciel selon campus",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : Gratuit pour les apprenants (financement public)",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CPF : Oui",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Public : Demandeurs d'emploi, personnes en insertion professionnelle",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Bac, aisance avec les chiffres et l'informatique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Certificat de compétences Data Analyst Simplon — RS",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1202,
+          "density": 0.00239845,
+          "block_count": 35
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "19_Simplonco_IA_Génératives__Gagner_en_productivité.pdf",
+      "path": "data/raw/referentiel/19_Simplonco_IA_Génératives__Gagner_en_productivité.pdf",
+      "document_id": "edcede90f8db797e7dbb1d77",
+      "sha256": "2a4299af0bef77a1a5561a6b71c93963e4a6e009dbc86331d3ae0a5763c121fc",
+      "file_size": 3807,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1263,
+      "mean_density": 0.00252017,
+      "needs_ocr": false,
+      "title_detected": "FORMATION ENTREPRISE Simplon.co",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "FORMATION ENTREPRISE Simplon.co",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Formation",
+          "label": "TITLE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Tarif",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Présentiel ou distanciel",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "ENJEUX BUSINESS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PARTICIPANTS",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Profil : Tous professionnels souhaitant intégrer l'IA générative dans leur quotidien",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Aucun prérequis technique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Attestation de formation Simplon",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CONTENU DE LA FORMATION",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu clé",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Outils IA par métier",
+          "label": "TOOLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES DÉVELOPPÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1263,
+          "density": 0.00252017,
+          "block_count": 47
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "20_Simplonco_Concevoir_et_Implémenter_une_Solution_IA__Pour_Ex.pdf",
+      "path": "data/raw/referentiel/20_Simplonco_Concevoir_et_Implémenter_une_Solution_IA__Pour_Ex.pdf",
+      "document_id": "07937d5cc8873ac72c0c48bc",
+      "sha256": "68a761c853a60d1edc37f0ed99a6a417056cdf0e42dba96629176c9fa989d46c",
+      "file_size": 3899,
+      "page_count": 2,
+      "text_layer_present": true,
+      "text_characters": 1202,
+      "mean_density": 0.00119923,
+      "needs_ocr": false,
+      "title_detected": "Simplon.co",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Référence — SIMPLON-SOL-IA",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau — Bac+4/5",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée — 35 heures — 5 jours",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format — Présentiel",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix — 3 500 € TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification — Attestation de compétences Simplon",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PUBLIC ET PRÉREQUIS",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Public cible : Ingénieurs et développeurs expérimentés souhaitant intégrer l'IA dans leurs solutions",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Prérequis : Python avancé, développement web/backend, expérience IT",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Éligible CPF : Oui",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "COMPÉTENCES ACQUISES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Programme détaillé — Simplon.co — Réf. SIMPLON-SOL-IA — Compilation à fins de recherche",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 230,
+          "density": 0.00045894,
+          "block_count": 9
+        },
+        {
+          "page": 2,
+          "text_length": 972,
+          "density": 0.00193951,
+          "block_count": 28
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "21_OpenClassrooms_Data_Scientist_Machine_Learning__Parcours_certifi.pdf",
+      "path": "data/raw/referentiel/21_OpenClassrooms_Data_Scientist_Machine_Learning__Parcours_certifi.pdf",
+      "document_id": "ad5175abca363725451894cd",
+      "sha256": "f0d4ccbb0ec6a5e24f50b0b232ca0e65ca10eb75451364c855c2fc6936f74f78",
+      "file_size": 3716,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1507,
+      "mean_density": 0.00300705,
+      "needs_ocr": false,
+      "title_detected": "Guide Apprenant",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Public : Professionnels en reconversion, développeurs, ingénieurs",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Bac+2, notions Python ou programmation",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée : 12 mois à temps plein ou 24 mois à temps partiel | Format : 100% en ligne avec mentorat individuel",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Tarif : 4 800 € / an TTC | CPF : Oui",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : RNCP — Expert en Ingénierie et Science des Données (niveau 7)",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 1",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 2",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 3",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 4",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 5",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 6",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Étape 7",
+          "label": "MODULE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Compétences que vous développerez",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1507,
+          "density": 0.00300705,
+          "block_count": 46
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "22_OpenClassrooms_Ingénieur_Machine_Learning__Parcours_certifiant.pdf",
+      "path": "data/raw/referentiel/22_OpenClassrooms_Ingénieur_Machine_Learning__Parcours_certifiant.pdf",
+      "document_id": "94d08e81860cf7d5a75a7229",
+      "sha256": "c36e2d3be3e190d234fc901997f01abd1fddf98f1bc46b92bf19099ff3e1bc52",
+      "file_size": 3197,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 832,
+      "mean_density": 0.00166016,
+      "needs_ocr": false,
+      "title_detected": "Ingénieur Machine Learning — Parcours certifiant",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Bac+5 (Niveau 7)",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Prix",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "RNCP Niveau 7 — Ingénieur",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Public : Développeurs logiciels, data analysts expérimentés",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Python, algorithmique, Bac+3 minimum",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES",
+          "label": "SKILLS",
+          "confidence": 0.98
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 832,
+          "density": 0.00166016,
+          "block_count": 34
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "23_OpenClassrooms_Data_Analyst__Parcours_certifiant.pdf",
+      "path": "data/raw/referentiel/23_OpenClassrooms_Data_Analyst__Parcours_certifiant.pdf",
+      "document_id": "17ecc405b8d103625da357d3",
+      "sha256": "385655dc3c94279d693675dbcc4fe7d57b3bb5b8f8131bc31fecdf2f39d84d23",
+      "file_size": 3670,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1055,
+      "mean_density": 0.00210513,
+      "needs_ocr": false,
+      "title_detected": "FORMATION ENTREPRISE OpenClassrooms",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "FORMATION ENTREPRISE OpenClassrooms",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Tarif",
+          "label": "PRICE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "ENJEUX BUSINESS",
+          "label": "OBJECTIVES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "PARTICIPANTS",
+          "label": "PUBLIC",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Profil : Reconversions, chargés d'études, comptables, RH",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis : Bac, aisance numérique",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification : Titre RNCP Niveau 6 — Data Analyst",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CONTENU DE LA FORMATION",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Contenu clé",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES DÉVELOPPÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1055,
+          "density": 0.00210513,
+          "block_count": 44
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "24_M2i_Formation_IA__Traitement_du_Langage_Naturel_NLP.pdf",
+      "path": "data/raw/referentiel/24_M2i_Formation_IA__Traitement_du_Langage_Naturel_NLP.pdf",
+      "document_id": "033ceb27cda71b5ace924d96",
+      "sha256": "98d39ec207c1a7da076a6d88130b4c1a97888cc5cb0d8ef86311f7b4cc41cb54",
+      "file_size": 3344,
+      "page_count": 1,
+      "text_layer_present": true,
+      "text_characters": 1185,
+      "mean_density": 0.00236453,
+      "needs_ocr": false,
+      "title_detected": "IA — Traitement du Langage Naturel (NLP)",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Niveau",
+          "label": "LEVEL",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Durée",
+          "label": "DURATION",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Format",
+          "label": "FORMAT",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Présentiel Paris / Distancie",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix TTC",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Éligible CPF",
+          "label": "CPF",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Public cible",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prérequis",
+          "label": "PREREQUISITES",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Module",
+          "label": "MODULE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "Contenu",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "COMPÉTENCES VISÉES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1185,
+          "density": 0.00236453,
+          "block_count": 46
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "25_M2i_Formation_IA__Génération_de_modèles_IA_Générative.pdf",
+      "path": "data/raw/referentiel/25_M2i_Formation_IA__Génération_de_modèles_IA_Générative.pdf",
+      "document_id": "e5d15e34f6a299be0cdc1d45",
+      "sha256": "9f1a9b77a9bff9d1d40ef2d124092fe96a61beaf5fcb5abad63de52373b96637",
+      "file_size": 3942,
+      "page_count": 2,
+      "text_layer_present": true,
+      "text_characters": 1299,
+      "mean_density": 0.001296,
+      "needs_ocr": false,
+      "title_detected": "M2i Formation",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "Référence — M2I-IA-GENMOD",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau — Expert",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Durée — 14 heures — 2 jours",
+          "label": "DURATION",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Format — Distanciel",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Prix — 1 720 € HT",
+          "label": "PRICE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification — Attestation de formation M2i",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PUBLIC ET PRÉREQUIS",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Public cible : Développeurs, Data Scientists expérimentés",
+          "label": "PUBLIC",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Prérequis : Deep Learning maîtrisé, Python avancé",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Éligible CPF : Non",
+          "label": "CPF",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "OBJECTIFS PÉDAGOGIQUES",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "PROGRAMME DÉTAILLÉ",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "COMPÉTENCES ACQUISES",
+          "label": "SKILLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Programme détaillé — M2i Formation — Réf. M2I-IA-GENMOD — Compilation à fins de recherche",
+          "label": "PROGRAM",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 209,
+          "density": 0.00041704,
+          "block_count": 9
+        },
+        {
+          "page": 2,
+          "text_length": 1090,
+          "density": 0.00217497,
+          "block_count": 30
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    },
+    {
+      "source_file": "Boulanger.pdf",
+      "path": "data/raw/referentiel/Boulanger.pdf",
+      "document_id": "34503916d8f74c12f8577629",
+      "sha256": "c3c2d07a144a995203717ccf3512072714cae7af8567bda5bd48e3af19485dac",
+      "file_size": 115093,
+      "page_count": 11,
+      "text_layer_present": true,
+      "text_characters": 27604,
+      "mean_density": 0.00500059,
+      "needs_ocr": false,
+      "title_detected": "Accueil",
+      "section_candidates": [
+        {
+          "page": 1,
+          "text": "RNCP37537",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Objectifs et contexte de la certification :",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "CERTIFICATION PROFESSIONNELLE",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Certification",
+          "label": "REFERENCE",
+          "confidence": 0.98
+        },
+        {
+          "page": 1,
+          "text": "RNCP42115 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "Niveau 3",
+          "label": "LEVEL",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "Compétences attestées :",
+          "label": "SKILLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 3,
+          "text": "Reformuler, à l’écrit ou à l’oral, un message lu ou entendu",
+          "label": "FOOTER",
+          "confidence": 0.84
+        },
+        {
+          "page": 3,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Modalités d'évaluation :",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "RNCP37537BC01 - Approvisionnement, communication, sécurité alimentaire et hygiène en boulangerie",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Formation (CCF)",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "RNCP37537BC02 - Production et présentation de produits de panification et de boulangerie",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Blocs de compétences",
+          "label": "PROGRAM",
+          "confidence": 0.72
+        },
+        {
+          "page": 4,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "RNCP37537BC03 - Français et histoire-géographie-enseignement moral et civique",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "Reformuler, à l’écrit ou à l’oral, un message lu ou entendu",
+          "label": "FOOTER",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "programme",
+          "label": "PROGRAM",
+          "confidence": 0.98
+        },
+        {
+          "page": 5,
+          "text": "formation théorique) et formation professionnelle continue",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "Formation (CCF)",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "RNCP37537BC04 - Mathématiques et physique-chimie",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "outils et un langage appropriés",
+          "label": "TOOLS",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "RNCP37537BC05 - Langue vivante étrangère",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "RNCP37537BC06 - Éducation physique et sportive",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle en",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "RNCP37537BC07 - Prévention-santé-environnement",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "RNCP37537BC08 - Mobilité (bloc facultatif)",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "formation professionnelle continue (établissement public au CCF intégral) : Pratique, oral",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 6,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "RNCP37537BC09 - Langue vivante (Bloc facultatif)",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "blocs de compétences peut être dispensé des épreuves correspondantes.",
+          "label": "PROGRAM",
+          "confidence": 0.72
+        },
+        {
+          "page": 7,
+          "text": "Secteurs d’activités :",
+          "label": "DOMAINS",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "Références juridiques des règlementations d’activité :",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 7,
+          "text": "RNCP37537 - CAP - Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        }
+      ],
+      "page_summaries": [
+        {
+          "page": 1,
+          "text_length": 1080,
+          "density": 0.00215211,
+          "block_count": 46
+        },
+        {
+          "page": 2,
+          "text_length": 2462,
+          "density": 0.00490602,
+          "block_count": 47
+        },
+        {
+          "page": 3,
+          "text_length": 3409,
+          "density": 0.00679311,
+          "block_count": 50
+        },
+        {
+          "page": 4,
+          "text_length": 2914,
+          "density": 0.00580672,
+          "block_count": 73
+        },
+        {
+          "page": 5,
+          "text_length": 3394,
+          "density": 0.00676322,
+          "block_count": 86
+        },
+        {
+          "page": 6,
+          "text_length": 3575,
+          "density": 0.0071239,
+          "block_count": 83
+        },
+        {
+          "page": 7,
+          "text_length": 3124,
+          "density": 0.00622519,
+          "block_count": 64
+        },
+        {
+          "page": 8,
+          "text_length": 2764,
+          "density": 0.00550782,
+          "block_count": 78
+        },
+        {
+          "page": 9,
+          "text_length": 2472,
+          "density": 0.00492595,
+          "block_count": 74
+        },
+        {
+          "page": 10,
+          "text_length": 1888,
+          "density": 0.00376222,
+          "block_count": 57
+        },
+        {
+          "page": 11,
+          "text_length": 522,
+          "density": 0.00104019,
+          "block_count": 17
+        }
+      ],
+      "warnings": [],
+      "errors": []
+    }
+  ]
+}

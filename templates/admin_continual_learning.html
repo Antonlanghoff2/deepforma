@@ -76,40 +76,33 @@
       {% macro review_actions(item, allow_correct=True, allow_accept=True, allow_reject=True) %}
       <div class="actions">
         {% if allow_accept %}
-        <form method="post" action="/admin/continual-learning/action">
+        <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}">
           <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
           <input type="hidden" name="annotation_id" value="{{ item.id }}">
-          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="action" value="approve_annotation">
-          <input type="hidden" name="validated_by" value="admin">
           <button class="primary" type="submit">Accepter</button>
         </form>
         {% endif %}
         {% if allow_reject %}
-        <form method="post" action="/admin/continual-learning/action">
+        <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}">
           <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
           <input type="hidden" name="annotation_id" value="{{ item.id }}">
-          <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-          {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="action" value="reject_annotation">
-          <input type="hidden" name="validated_by" value="admin">
-          <input type="hidden" name="note" value="Rejet manuel">
           <button class="danger" type="submit">Rejeter</button>
         </form>
         {% endif %}
       </div>
       {% if allow_correct %}
-      <form method="post" action="/admin/continual-learning/action" class="grid-3" style="margin-top:10px;">
+      <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}" class="grid-3" style="margin-top:10px;">
         <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
         <input type="hidden" name="annotation_id" value="{{ item.id }}">
-        <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-        {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <input type="hidden" name="action" value="correct_annotation">
-        <input type="hidden" name="validated_by" value="admin">
         <label>Nom canonique<input name="corrected_name" value="{{ item.canonical_name }}"></label>
         <label>Forme texte<input name="corrected_surface" value="{{ item.surface_form or item.canonical_name }}"></label>
-        <label>Justification<input name="note" value="{{ item.text_sentence or '' }}"></label>
+        <label>Preuve ou phrase source<input name="evidence" value="{{ item.text_sentence or '' }}"></label>
         <div></div><button class="ghost" type="submit">Corriger</button><div></div>
       </form>
       {% endif %}
@@ -231,23 +224,18 @@
             </details>
             {% if diagnostics.reliable and item.id %}
             <div class="actions model-category-actions">
-              <form method="post" action="/admin/continual-learning/action">
+              <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}">
                 <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
                 <input type="hidden" name="annotation_id" value="{{ item.id }}">
-                <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-                {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="action" value="approve_annotation">
-                <input type="hidden" name="validated_by" value="admin">
                 <button class="primary" type="submit">Accepter</button>
               </form>
-              <form method="post" action="/admin/continual-learning/action">
+              <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}">
                 <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
                 <input type="hidden" name="annotation_id" value="{{ item.id }}">
-                <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-                {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="action" value="reject_annotation">
-                <input type="hidden" name="validated_by" value="admin">
-                <input type="hidden" name="note" value="Prédiction IA rejetée">
                 <button class="danger" type="submit">Rejeter</button>
               </form>
             </div>
@@ -329,11 +317,9 @@
             </div>
           </div>
           <div>
-            <form method="post" action="/admin/continual-learning/action" class="card" style="margin:0;">
+            <form method="post" action="{{ url_for('admin_continual_learning_action') }}{% if filters_query %}?{{ filters_query }}{% endif %}" class="card" style="margin:0;">
               <input type="hidden" name="offer_row_id" value="{{ selected_offer.id }}">
-              <input type="hidden" name="redirect_offer_row_id" value="{{ next_offer_id or selected_offer.id }}">
-              {% for k, v in filters.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-              <input type="hidden" name="validated_by" value="admin">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="action" value="mark_offer_approved">
               <label class="field-inline" style="margin-bottom:12px;">
                 <input type="checkbox" name="confirm_pending" value="1" {% if selected_offer_view.pending_review_count == 0 %}checked{% endif %} {% if selected_offer_view.pending_review_count > 0 %}data-confirm-validation{% endif %}>

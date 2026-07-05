@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import hashlib
+import logging
+import os
 import json
 import re
 from datetime import datetime, timezone
@@ -20,6 +22,7 @@ from .validators import validate_import
 
 
 IMPORTER_VERSION = "0.1.0"
+LOGGER = logging.getLogger(__name__)
 
 
 def _block_from_dict(payload: dict[str, Any]) -> ReferentialBlock:
@@ -107,6 +110,196 @@ def build_export_payload(analysis: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+
+
+def _maybe_apply_referential_ml_enrichment(analysis: dict[str, Any]) -> dict[str, Any]:
+    enabled = os.getenv('REFERENTIAL_ML_IMPORT_ENABLED', 'false').lower() in {'1', 'true', 'yes', 'on'}
+    if not enabled:
+        return analysis
+    try:
+        from referential_learning.pdf_loader import load_pdf_document as ml_load_pdf_document
+        from referential_learning.pipeline import build_annotation_document, enrich_with_ml_predictions
+
+        pdf_path = Path(analysis['document'].source_path)
+        ml_document = ml_load_pdf_document(pdf_path)
+        enriched = enrich_with_ml_predictions(build_annotation_document(ml_document))
+        analysis['ml_enrichment'] = enriched.to_dict()
+    except Exception as exc:
+        analysis['ml_enrichment_error'] = str(exc)
+    return analysis
+
+
+def _infer_document_title_from_pages(pages: list[Any]) -> str:
+    title_re = re.compile(r"^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9'’&(),./ -]{8,}$")
+    excluded_prefixes = (
+        "bloc ",
+        "activite ",
+        "activité ",
+        "a1.",
+        "c1.",
+        "ce1.",
+    )
+    excluded_markers = (
+        "référentiel d'activités",
+        "referentiel d'activites",
+        "référentiel de compétences",
+        "referentiel de competences",
+        "modalités d’évaluation",
+        "modalites d evaluation",
+        "critères d’évaluation",
+        "criteres d evaluation",
+    )
+    marker_patterns = [re.escape(marker) for marker in excluded_markers]
+    marker_split_re = re.compile(r"(?:" + "|".join(marker_patterns) + r")", flags=re.IGNORECASE)
+    fallback_candidate = ""
+
+    for page in pages[:2]:
+        raw_text = getattr(page, "text", "") or ""
+        if not raw_text:
+            continue
+        lines = [clean_text(line) for line in raw_text.splitlines() if clean_text(line)]
+        if len(lines) >= 2:
+            first, second = lines[0], lines[1]
+            second_normalized = normalize_for_match(second)
+            if len(first) <= 40 and len(second.split()) >= 2 and not any(
+                second_normalized.startswith(prefix)
+                for prefix in ("referentiel", "bloc", "activite", "a1", "c1", "ce1")
+            ):
+                return second
+        for line in lines:
+            normalized = line.lower()
+            if any(normalized.startswith(prefix) for prefix in excluded_prefixes):
+                continue
+            if any(marker in normalized for marker in excluded_markers):
+                parts = marker_split_re.split(line, maxsplit=1)
+                prefix = clean_text(parts[0])
+                suffix = clean_text(parts[1]) if len(parts) > 1 else ""
+                for candidate in (prefix, suffix):
+                    normalized_candidate = clean_text(candidate)
+                    if normalized_candidate and len(normalized_candidate.split()) >= 2 and title_re.match(normalized_candidate):
+                        return normalized_candidate
+                continue
+            if line.isupper() and len(line) >= 10 and title_re.match(line):
+                return line
+            if title_re.match(line) and len(line.split()) >= 2:
+                fallback_candidate = line
+    return fallback_candidate
+
+
+def _extract_document_metadata(pages: list[Any]) -> dict[str, Any]:
+    raw_page_texts = [getattr(page, "text", "") or "" for page in pages if clean_text(getattr(page, "text", "") or "")]
+    full_text = "\n".join(clean_text(text) for text in raw_page_texts if clean_text(text))
+    first_page_lines = [clean_text(line) for line in (raw_page_texts[0].splitlines() if raw_page_texts else []) if clean_text(line)]
+
+    provider = ""
+    title = _infer_document_title_from_pages(pages)
+    if len(first_page_lines) >= 2:
+        provider_candidate = first_page_lines[0]
+        title_candidate = first_page_lines[1]
+        if len(provider_candidate) <= 40 and len(title_candidate.split()) >= 2:
+            provider = provider_candidate
+            if not title:
+                title = title_candidate
+    if not title and first_page_lines:
+        title = first_page_lines[0]
+
+    reference = ""
+    reference_match = re.search(r"\bRéférence\s*(?:[:\-–—])\s*([^\n\r]+)", full_text, flags=re.IGNORECASE)
+    if reference_match:
+        reference = clean_text(reference_match.group(1)).split(" ")[0]
+
+    duration_hours = None
+    duration_match = re.search(r"\bDurée\s*(?:[:\-–—])\s*(\d+)\s*heures?", full_text, flags=re.IGNORECASE)
+    if duration_match:
+        try:
+            duration_hours = int(duration_match.group(1))
+        except Exception:
+            duration_hours = None
+
+    cpf_eligible: bool | None = None
+    cpf_match = re.search(r"\b(?:Éligible\s+CPF|CPF)\s*(?:[:\-–—])\s*(oui|non)", full_text, flags=re.IGNORECASE)
+    if cpf_match:
+        cpf_eligible = clean_text(cpf_match.group(1)).lower() == "oui"
+
+    level = ""
+    level_match = re.search(r"\bNiveau\s*(?:[:\-–—])\s*([^\n\r]+)", full_text, flags=re.IGNORECASE)
+    if level_match:
+        level = clean_text(level_match.group(1))
+
+    format_value = ""
+    format_match = re.search(r"\bFormat\s*(?:[:\-–—])\s*([^\n\r]+)", full_text, flags=re.IGNORECASE)
+    if format_match:
+        format_value = clean_text(format_match.group(1))
+
+    return {
+        "provider": provider,
+        "title": title,
+        "reference": reference,
+        "duration_hours": duration_hours,
+        "cpf_eligible": cpf_eligible,
+        "level": level,
+        "format": format_value,
+        "full_text": full_text,
+    }
+
+
+def _semantic_derived_skills_from_document(document_loader: Any) -> tuple[list[DerivedSkill], dict[str, Any]]:
+    try:
+        from referential_learning.pipeline import build_annotation_document
+    except Exception as exc:
+        LOGGER.warning("Semantic referential fallback unavailable: %s", exc)
+        return [], {"error": str(exc)}
+
+    try:
+        from referential_learning.pdf_loader import load_pdf_document as semantic_load_pdf_document
+        semantic_document = semantic_load_pdf_document(document_loader.path)
+        annotation = build_annotation_document(semantic_document)
+    except Exception as exc:
+        LOGGER.warning("Semantic referential annotation failed: %s", exc)
+        return [], {"error": str(exc)}
+
+    semantic_skills: list[DerivedSkill] = []
+    seen: set[tuple[str, str, int]] = set()
+    label_to_category = {
+        "SKILL": "skill",
+        "SOFT_SKILL": "soft_skill",
+        "TOOL": "tool",
+        "METHOD": "method",
+        "KNOWLEDGE": "knowledge",
+        "DOMAIN": "domain",
+    }
+    for entity in annotation.entities:
+        category = label_to_category.get(entity.predicted_label)
+        if not category:
+            continue
+        canonical = clean_text(entity.canonical_name or entity.text)
+        if not canonical:
+            continue
+        page_number = int(entity.page or 1)
+        key = (normalize_for_match(canonical), category, page_number)
+        if key in seen:
+            continue
+        seen.add(key)
+        semantic_skills.append(
+            DerivedSkill(
+                label=clean_text(entity.text or canonical),
+                canonical_label=canonical,
+                category=category,
+                source_code=f"SEMANTIC:{page_number}",
+                source_type="semantic_entity",
+                surface_form=clean_text(entity.text or canonical),
+                normalized_surface=normalize_for_match(entity.text or canonical),
+                provenance="semantic_match",
+                confidence=float(entity.confidence or 0.0),
+                explicit=bool(entity.predicted_label in {"SKILL", "TOOL"}),
+                page_start=page_number,
+                page_end=page_number,
+                context=clean_text(entity.evidence or "referential_learning"),
+            )
+        )
+    return semantic_skills, annotation.to_dict()
+
+
 class ReferentialImportService:
     def __init__(self, *, store: ReferentialImportStore | None = None, output_dir: str | Path | None = None) -> None:
         self.store = store or ReferentialImportStore()
@@ -159,62 +352,23 @@ class ReferentialImportService:
 
     @staticmethod
     def _infer_document_title(pages: list[Any]) -> str:
-        title_re = re.compile(r"^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9'’&(),./ -]{8,}$")
-        excluded_prefixes = (
-            "bloc ",
-            "activite ",
-            "activité ",
-            "a1.",
-            "c1.",
-            "ce1.",
-        )
-        excluded_markers = (
-            "référentiel d'activités",
-            "referentiel d'activites",
-            "référentiel de compétences",
-            "referentiel de competences",
-            "modalités d’évaluation",
-            "modalites d evaluation",
-            "critères d’évaluation",
-            "criteres d evaluation",
-        )
-        marker_patterns = [re.escape(marker) for marker in excluded_markers]
-        marker_split_re = re.compile(r"(?:" + "|".join(marker_patterns) + r")", flags=re.IGNORECASE)
-        for page in pages[:2]:
-            page_text = clean_text(getattr(page, "text", "") or "")
-            if not page_text:
-                continue
-            for raw_line in page_text.splitlines():
-                line = clean_text(raw_line)
-                if not line:
-                    continue
-                normalized = line.lower()
-                if any(normalized.startswith(prefix) for prefix in excluded_prefixes):
-                    continue
-                if any(marker in normalized for marker in excluded_markers):
-                    parts = marker_split_re.split(line, maxsplit=1)
-                    prefix = clean_text(parts[0])
-                    suffix = clean_text(parts[1]) if len(parts) > 1 else ""
-                    for candidate in (prefix, suffix):
-                        normalized_candidate = ReferentialImportService._normalize_title_candidate(candidate)
-                        if normalized_candidate and len(normalized_candidate.split()) >= 2 and title_re.match(normalized_candidate):
-                            return normalized_candidate
-                    continue
-                normalized_line = ReferentialImportService._normalize_title_candidate(line)
-                if line.isupper() and len(line) >= 10 and normalized_line:
-                    return normalized_line
-                if title_re.match(normalized_line) and len(normalized_line.split()) >= 2:
-                    return normalized_line
-        return ""
+        return _infer_document_title_from_pages(pages)
 
     def analyze(self, input_path: str | Path) -> dict[str, Any]:
         pdf_path = Path(input_path)
+        LOGGER.info("[referential-import] loading pdf=%s", pdf_path)
         document_loader = load_pdf_document(pdf_path)
+        page_count = len(document_loader.pages)
+        total_chars = sum(len(clean_text(getattr(page, "text", "") or "")) for page in document_loader.pages)
+        total_blocks = sum(len(getattr(page, "blocks", []) or []) for page in document_loader.pages)
+        LOGGER.info("[referential-import] loaded pages=%s chars=%s blocks=%s method=%s", page_count, total_chars, total_blocks, document_loader.extraction_method)
         raw_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
         document_id = self._document_id(pdf_path, raw_hash)
         duplicate_document = self.store.has_document(raw_hash, IMPORTER_VERSION)
+        metadata = _extract_document_metadata(document_loader.pages)
+        inferred_title = metadata.get("title") or self._infer_document_title(document_loader.pages)
         table_pages = detect_tables(document_loader)
-        inferred_title = self._infer_document_title(document_loader.pages)
+        LOGGER.info("[referential-import] table pages=%s", len(table_pages))
 
         blocks: list[ReferentialBlock] = []
         activities: list[ReferentialActivity] = []
@@ -347,6 +501,16 @@ class ReferentialImportService:
             competency.derived_skills = decompose_competency(competency, competency.evaluation_criteria)
             derived_skills.extend(competency.derived_skills)
 
+        semantic_annotation: dict[str, Any] | None = None
+        if not competencies:
+            LOGGER.info("[referential-import] no codified competencies detected; running semantic fallback")
+            semantic_skills, semantic_annotation = _semantic_derived_skills_from_document(document_loader)
+            if semantic_skills:
+                derived_skills.extend(semantic_skills)
+                LOGGER.info("[referential-import] semantic fallback extracted skills=%s", len(semantic_skills))
+            else:
+                LOGGER.info("[referential-import] semantic fallback produced no skills")
+
         tools_methods = [item for item in derived_skills if item.category in {"tool", "method", "regulatory"}]
         report = validate_import(
             document_id=document_id,
@@ -372,6 +536,10 @@ class ReferentialImportService:
             importer_version=IMPORTER_VERSION,
             page_count=len(document_loader.pages),
             title=inferred_title,
+            provider=metadata.get("provider", ""),
+            reference=metadata.get("reference", ""),
+            duration_hours=metadata.get("duration_hours"),
+            cpf_eligible=metadata.get("cpf_eligible"),
             source_type="pdf",
             text_extraction_method=document_loader.extraction_method,
             review_status="pending",
@@ -391,7 +559,7 @@ class ReferentialImportService:
             "warnings": [item.to_dict() for item in report.warnings],
             "errors": [item.to_dict() for item in report.errors],
         }
-        return {
+        analysis = {
             "document": document,
             "blocks": blocks,
             "activities": activities,
@@ -403,7 +571,19 @@ class ReferentialImportService:
             "export": export_payload,
             "duplicate_document": duplicate_document,
             "source_document": document_loader,
+            "metadata": metadata,
+            "semantic_annotation": semantic_annotation,
         }
+        LOGGER.info(
+            "[referential-import] validation status=%s blocks=%s activities=%s competencies=%s criteria=%s derived=%s",
+            report.status,
+            report.blocks,
+            report.activities,
+            report.competencies,
+            report.criteria,
+            report.derived_skills,
+        )
+        return _maybe_apply_referential_ml_enrichment(analysis)
 
     def approve(self, analysis: dict[str, Any], *, validated_by: str = "human_review") -> Path:
         document: ReferentialDocument = analysis["document"]

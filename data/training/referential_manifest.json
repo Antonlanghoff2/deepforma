@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "train": [],
+    "validation": [],
+    "test": []
+  },
+  "ner": {
+    "train": [],
+    "validation": [],
+    "test": []
+  }
+}

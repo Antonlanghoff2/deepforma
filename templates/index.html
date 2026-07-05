@@ -19,7 +19,7 @@
       <div class="alert alert-error">{{ error }}</div>
       {% endif %}
 
-      <form method="post" action="{{ url_for('analyze') }}" enctype="multipart/form-data" class="form-grid">
+      <form method="post" action="{{ url_for('referential_import_preview') }}" enctype="multipart/form-data" class="form-grid">
         <label class="field field-full">
           <span>PDF du référentiel</span>
           <input type="file" name="pdf" accept="application/pdf" required>
@@ -35,13 +35,71 @@
           </select>
         </label>
 
-        <p class="field field-full hint">Le programme de formation est le référentiel PDF. Les mots-clés marché sont déduits automatiquement à partir des intitulés de compétences et des sous-compétences extraites.</p>
+        <p class="field field-full hint">Le programme de formation est le référentiel PDF. Une validation humaine intervient avant l’analyse marché pour confirmer ou corriger l’intitulé retenu. Les mots-clés marché sont ensuite générés à partir de cette version validée.</p>
 
         <div class="actions field-full">
-          <button type="submit">Lancer l’analyse</button>
+          <button type="submit">Prévisualiser le référentiel</button>
         </div>
       </form>
     </section>
+
+    {% if referential_validation %}
+    <section class="card">
+      <h2>Validation humaine</h2>
+      <p>Confirmez ou corrigez l’intitulé du référentiel et les compétences détectées avant de lancer l’analyse marché. Cette validation est enregistrée comme donnée approuvée et réutilisée pour les prochains exports.</p>
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
+        <input type="hidden" name="action" value="validate_referential">
+        <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+        <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+        <label class="field field-full">
+          <span>Intitulé validé</span>
+          <input type="text" name="validated_title" value="{{ referential_validation.validated_title }}" required>
+        </label>
+        <label class="field field-full">
+          <span>Note de validation</span>
+          <input type="text" name="validation_note" value="" placeholder="Ex: intitulé confirmé par lecture humaine">
+        </label>
+        <div class="field field-full">
+          <h3>Compétences à corriger</h3>
+          <p class="muted">Modifiez ici les libellés avant validation. Les changements seront enregistrés dans la version approuvée.</p>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Libellé</th>
+                  <th>Bloc</th>
+                  <th>Activité</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in referential_validation.competencies %}
+                <tr>
+                  <td>{{ item.code }}</td>
+                  <td><input type="text" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"></td>
+                  <td>{{ item.block_code }}</td>
+                  <td>{{ item.activity_code }}</td>
+                  <td>
+                    <select name="competency_status__{{ item.code }}">
+                      {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
+                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="actions field-full">
+          <button type="submit">Valider le référentiel et lancer l’analyse</button>
+        </div>
+      </form>
+    </section>
+    {% endif %}
 
     {% if referential_analysis %}
     <section class="card wide summary-cards" aria-label="Résumé du référentiel">

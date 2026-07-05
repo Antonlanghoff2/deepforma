@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Validation des annotations référentielles</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f1ea; color: #1f2937; }
+    .wrap { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+    aside { padding: 20px; background: #102a43; color: #f8fafc; }
+    main { padding: 20px; }
+    .card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); }
+    .muted { color: #64748b; font-size: 0.95rem; }
+    .list { list-style: none; padding: 0; margin: 0; }
+    .list li { margin-bottom: 10px; }
+    .list a { color: #cbd5e1; text-decoration: none; }
+    .list a strong { color: #fff; display: block; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .item { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; background: #fff; }
+    .item.pending { border-color: #f59e0b; }
+    .item.approved { border-color: #10b981; }
+    .item.rejected { border-color: #ef4444; }
+    input, select, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1; }
+    button { cursor: pointer; font-weight: 600; }
+    .actions { display: flex; gap: 8px; }
+    .actions form { flex: 1; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #e2e8f0; text-align: left; padding: 8px; vertical-align: top; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 12px; border-radius: 12px; overflow:auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside>
+      <h1>Annotations référentielles</h1>
+      <p class="muted">Labels sections: {{ section_labels | join(', ') }}</p>
+      <p class="muted">Labels entités: {{ entity_labels | join(', ') }}</p>
+      {% if error %}<div class="card" style="background:#fee2e2;color:#991b1b;">{{ error }}</div>{% endif %}
+      {% if success %}<div class="card" style="background:#dcfce7;color:#166534;">{{ success }}</div>{% endif %}
+      <ul class="list">
+        {% for record in records %}
+        <li>
+          <a href="{{ url_for('admin_referential_annotation', document_id=record.document_id) }}">
+            <strong>{{ record.source_file }}</strong>
+            <span class="muted">{{ record.document_id }} | {{ record.status }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <main>
+      {% if selected %}
+      <section class="card">
+        <h2>{{ selected.source_file }}</h2>
+        <p class="muted">Document: {{ selected.document_id }} | Statut: {{ selected.status }} | pages: {{ selected.page_count }}</p>
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="grid">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
+          <label>
+            Ajouter une section
+            <input type="text" name="text" placeholder="Texte de section ou bloc">
+          </label>
+          <label>
+            Label section
+            <select name="section_label">
+              {% for label in section_labels %}
+              <option value="{{ label }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <button type="submit" name="action" value="add_section">Ajouter la section</button>
+        </form>
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="grid" style="margin-top:12px;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
+          <label>
+            Ajouter une compétence
+            <input type="text" name="text" placeholder="Python, Lean Management, etc.">
+          </label>
+          <label>
+            Type entité
+            <select name="entity_label">
+              {% for label in entity_labels %}
+              <option value="{{ label }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <button type="submit" name="action" value="add_entity">Ajouter la compétence</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h3>Pages</h3>
+        {% for page in selected.pages %}
+        <div class="item">
+          <h4>Page {{ page.number }}</h4>
+          <pre>{{ page.text }}</pre>
+        </div>
+        {% endfor %}
+      </section>
+
+      <section class="card">
+        <h3>Blocs</h3>
+        <div class="grid">
+          {% for block in selected.blocks %}
+          <div class="item {{ block.status }}">
+            <strong>{{ block.text }}</strong>
+            <div class="muted">{{ block.block_id }} | page {{ block.page }} | {{ block.predicted_section }} | {{ block.status }}</div>
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="document_id" value="{{ selected.document_id }}">
+              <input type="hidden" name="block_id" value="{{ block.block_id }}">
+              <label>
+                Label validé
+                <select name="approved_section">
+                  <option value="">--</option>
+                  {% for label in section_labels %}
+                  <option value="{{ label }}" {% if block.approved_section == label %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+              <div class="actions">
+                <button type="submit" name="action" value="approve_block">Valider</button>
+                <button type="submit" name="action" value="reject_block">Rejeter</button>
+              </div>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Entités</h3>
+        <div class="grid">
+          {% for page in selected.pages %}
+            {% for entity in page.entities %}
+            <div class="item {{ entity.status }}">
+              <strong>{{ entity.text }}</strong>
+              <div class="muted">{{ entity.entity_id }} | page {{ entity.page }} | {{ entity.predicted_label }} | {{ entity.status }}</div>
+              <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="document_id" value="{{ selected.document_id }}">
+                <input type="hidden" name="entity_id" value="{{ entity.entity_id }}">
+                <label>
+                  Label validé
+                  <select name="approved_label">
+                    <option value="">--</option>
+                    {% for label in entity_labels %}
+                    <option value="{{ label }}" {% if entity.approved_label == label %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+                <label>
+                  Nom canonique
+                  <input type="text" name="canonical_name" value="{{ entity.canonical_name }}">
+                </label>
+                <label>
+                  Référentiel
+                  <input type="text" name="referential_id" value="{{ entity.referential_id }}">
+                </label>
+                <div class="actions">
+                  <button type="submit" name="action" value="approve_entity">Valider</button>
+                  <button type="submit" name="action" value="reject_entity">Rejeter</button>
+                </div>
+              </form>
+            </div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="card">
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
+          <button type="submit" name="action" value="validate_document">Marquer le document validé</button>
+        </form>
+      </section>
+      {% else %}
+      <div class="card">Aucun document à valider.</div>
+      {% endif %}
+    </main>
+  </div>
+</body>
+</html>

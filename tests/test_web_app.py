@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 from dataclasses import dataclass
 from io import BytesIO
+from urllib.parse import urlencode
 
 import pytest
 
@@ -691,6 +692,141 @@ def test_referential_import_preview_on_home_page(monkeypatch):
     assert "Rapport d'extraction référentiel" in html
     assert 'Déployer Excel' in html
     assert "Rapport d'extraction référentiel" in html
+
+
+
+
+def test_referential_import_validation_step_then_analysis_uses_corrected_title(monkeypatch, tmp_path):
+    import json
+    from referential_import.import_service import ReferentialImportService, build_export_payload
+    from referential_import.store import ReferentialImportStore
+    import web_app as web_app_module
+
+    store = ReferentialImportStore(tmp_path / 'imports.sqlite3')
+    service = ReferentialImportService(store=store, output_dir=tmp_path / 'out')
+    monkeypatch.setattr(web_app_module, 'ReferentialImportService', lambda *args, **kwargs: service)
+
+    document = ReferentialDocument(
+        id='doc-validation',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='val123',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='Manager d’affaires REFERENTIEL D’ACTIVITES décrit les situations de travail et les activités exercées, les métiers ou emplois visés',
+    )
+    report = ImportReport(
+        schema_version='1.0',
+        importer_version='0.1.0',
+        document_id='doc-validation',
+        source_hash='val123',
+        pages=1,
+        blocks=1,
+        activities=1,
+        competencies=1,
+        criteria=0,
+        derived_skills=1,
+        tools_methods=1,
+        errors=[],
+        warnings=[],
+        review_items=[],
+        score_global=0.9,
+        coverage_score=1.0,
+        duplicate_document=False,
+        extraction_mode='pdftotext-layout',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Organiser la coordination',
+        normalized_label='organiser la coordination',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    analysis = {
+        'document': document,
+        'report': report,
+        'blocks': [ReferentialBlock(code='BLOC_1', label='Bloc 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'activities': [ReferentialActivity(code='A1.1', block_code='BLOC_1', label='Activité 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [DerivedSkill(label='Coordination', canonical_label='Coordination', category='action', source_code='C1.1', source_type='competency', surface_form='coordination', normalized_surface='coordination', confidence=0.9, explicit=True, page_start=1, page_end=1, context='coordination')],
+        'tools_methods': [],
+    }
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    class QueryAwareClient:
+        def __init__(self):
+            self.seen_keywords = []
+
+        def iter_offers(self, criteria, **kwargs):
+            self.seen_keywords.append(criteria.keywords)
+            if criteria.keywords and "Manager d'affaires" in criteria.keywords:
+                yield {
+                    'id': 'offer-1',
+                    'title': 'Manager d’affaires',
+                    'description': 'Gestion commerciale',
+                    'competences': [{'label': 'Gestion de projet'}],
+                }
+
+    tracking_client = QueryAwareClient()
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage("Manager d’affaires REFERENTIEL D’ACTIVITES décrit les situations de travail et les activités exercées, les métiers ou emplois visés\nC1.1 Organiser la coordination")]))
+
+    app = build_app(client_factory=lambda: tracking_client)
+    client = app.test_client()
+    preview = client.post(
+        '/referential/import',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '93',
+        },
+        content_type='multipart/form-data',
+    )
+    assert preview.status_code == 200
+    preview_html = preview.get_data(as_text=True)
+    assert 'Validation humaine' in preview_html
+    assert 'Compétences à corriger' in preview_html
+    assert 'Valider le référentiel et lancer l’analyse' in preview_html
+
+    validation_payload = {
+        'action': 'validate_referential',
+        'analysis_json': json.dumps(build_export_payload(analysis), ensure_ascii=False),
+        'source_path': '/tmp/referentiel.pdf',
+        'departement': '93',
+        'validated_title': "Manager d'affaires",
+        'validation_note': 'Titre confirmé par lecture humaine',
+        'competency_label__C1.1': 'Coordonner les parties prenantes',
+        'competency_status__C1.1': 'corrected',
+    }
+    response = client.post(
+        '/analyze',
+        data=validation_payload,
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Tableau de bord' in html
+    assert tracking_client.seen_keywords[0] == "Manager d'affaires"
+    validated_competencies = store.list_annotations('code = ?', ('C1.1',))
+    assert validated_competencies
+    import json as _json
+    competency_payload = _json.loads(validated_competencies[0]['payload_json'])
+    assert competency_payload['official_label'] == 'Coordonner les parties prenantes'
+    assert competency_payload['review_status'] == 'corrected'
+    approved_imports = store.list_imports(status='approved')
+    assert len(approved_imports) == 1
+    assert approved_imports[0]['review_status'] == 'approved'
 
 
 def test_france_travail_error():
@@ -1432,6 +1568,16 @@ def _admin_auth_headers(username: str = 'anton', password: str = 'deepforma') ->
     return {'Authorization': f'Basic {token}'}
 
 
+def _admin_csrf_token(client, offer_row_id: int | None = None) -> str:
+    url = '/admin/continual-learning'
+    if offer_row_id is not None:
+        url = f'{url}?offer_row_id={offer_row_id}'
+    response = client.get(url, headers=_admin_auth_headers())
+    assert response.status_code == 200
+    with client.session_transaction() as session_data:
+        return session_data['_csrf_token']
+
+
 def _seed_continual_learning_offer(
     store: ContinualLearningStore,
     *,
@@ -1739,13 +1885,14 @@ def test_admin_continual_learning_requires_explicit_confirmation(monkeypatch, tm
         ],
     )
     client = app.test_client()
+    csrf_token = _admin_csrf_token(client, offer_row_id)
     with pytest.raises(ValueError, match='validation explicite'):
         client.post(
             '/admin/continual-learning/action',
             data={
                 'offer_row_id': offer_row_id,
                 'action': 'mark_offer_approved',
-                'validated_by': 'admin',
+                'csrf_token': csrf_token,
             },
             headers=_admin_auth_headers(),
         )
@@ -1754,7 +1901,7 @@ def test_admin_continual_learning_requires_explicit_confirmation(monkeypatch, tm
         data={
             'offer_row_id': offer_row_id,
             'action': 'mark_offer_approved',
-            'validated_by': 'admin',
+            'csrf_token': csrf_token,
             'confirm_pending': '1',
         },
         headers=_admin_auth_headers(),
@@ -1804,13 +1951,14 @@ def test_admin_continual_learning_actions_update_annotation_statuses(monkeypatch
     second_annotation_id = text_annotations[1]['id']
 
     client = app.test_client()
+    csrf_token = _admin_csrf_token(client, offer_row_id)
     response = client.post(
         '/admin/continual-learning/action',
         data={
             'offer_row_id': offer_row_id,
             'annotation_id': first_annotation_id,
             'action': 'approve_annotation',
-            'validated_by': 'admin',
+            'csrf_token': csrf_token,
         },
         headers=_admin_auth_headers(),
         follow_redirects=False,
@@ -1824,7 +1972,7 @@ def test_admin_continual_learning_actions_update_annotation_statuses(monkeypatch
             'offer_row_id': offer_row_id,
             'annotation_id': second_annotation_id,
             'action': 'reject_annotation',
-            'validated_by': 'admin',
+            'csrf_token': csrf_token,
             'note': 'Absente du texte',
         },
         headers=_admin_auth_headers(),
@@ -1860,10 +2008,10 @@ def test_admin_continual_learning_actions_update_annotation_statuses(monkeypatch
             'offer_row_id': corrected_id,
             'annotation_id': corrected_annotation['id'],
             'action': 'correct_annotation',
-            'validated_by': 'admin',
+            'csrf_token': csrf_token,
             'corrected_name': 'Relation client',
             'corrected_surface': 'relation client',
-            'note': 'Formulation normalisée',
+            'evidence': 'Formulation normalisée',
         },
         headers=_admin_auth_headers(),
         follow_redirects=False,
@@ -1872,6 +2020,93 @@ def test_admin_continual_learning_actions_update_annotation_statuses(monkeypatch
     updated = store.get_annotation(corrected_annotation['id'])
     assert updated['validation_status'] == 'corrected'
     assert 'Relation client' in updated['canonical_name']
+
+
+def test_admin_continual_learning_action_payload_remains_small(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path)
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-6',
+        title='Bid Manager (H/F)',
+        description='Gestion de projet et communication.',
+        model_scores=[('Python', 0.91)],
+        text_skills=[
+            {
+                'canonical_name': 'Gestion de projet',
+                'surface_form': 'gestion de projet',
+                'start': 0,
+                'end': 16,
+                'confidence': 0.96,
+                'provenance': 'exact_reference_match',
+                'source': 'text_explicit',
+                'validation_status': 'pending',
+            },
+        ],
+    )
+    client = app.test_client()
+    csrf_token = _admin_csrf_token(client, offer_row_id)
+    text_annotations = [
+        row for row in store.list_annotations('offer_row_id = ?', (offer_row_id,))
+        if row['provenance'] != 'model_prediction'
+    ]
+    payload = {
+        'offer_row_id': offer_row_id,
+        'annotation_id': text_annotations[0]['id'],
+        'action': 'approve_annotation',
+        'csrf_token': csrf_token,
+    }
+    assert len(urlencode(payload)) < 512
+    response = client.post(
+        '/admin/continual-learning/action',
+        data=payload,
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+
+
+def test_admin_continual_learning_returns_readable_413(monkeypatch, tmp_path):
+    app, store = _build_admin_app(monkeypatch, tmp_path)
+    app.config['MAX_FORM_MEMORY_SIZE'] = 64
+    app.config['MAX_CONTENT_LENGTH'] = 128
+    offer_row_id = _seed_continual_learning_offer(
+        store,
+        offer_id='offer-bid-7',
+        title='Bid Manager (H/F)',
+        description='Gestion de projet.',
+        model_scores=[('Python', 0.91)],
+        text_skills=[
+            {
+                'canonical_name': 'Gestion de projet',
+                'surface_form': 'gestion de projet',
+                'start': 0,
+                'end': 16,
+                'confidence': 0.96,
+                'provenance': 'exact_reference_match',
+                'source': 'text_explicit',
+                'validation_status': 'pending',
+            },
+        ],
+    )
+    client = app.test_client()
+    csrf_token = _admin_csrf_token(client, offer_row_id)
+    annotations = [row for row in store.list_annotations('offer_row_id = ?', (offer_row_id,)) if row['provenance'] != 'model_prediction']
+    response = client.post(
+        '/admin/continual-learning/action',
+        data={
+            'offer_row_id': offer_row_id,
+            'annotation_id': annotations[0]['id'],
+            'action': 'correct_annotation',
+            'csrf_token': csrf_token,
+            'corrected_name': 'X' * 5000,
+            'corrected_surface': 'Y',
+            'evidence': 'Z',
+        },
+        headers=_admin_auth_headers(),
+    )
+    assert response.status_code == 413
+    body = response.get_data(as_text=True)
+    assert 'trop volumineuse' in body
 
 
 def test_admin_continual_learning_reliable_model_categories_and_empty_sections(monkeypatch, tmp_path):

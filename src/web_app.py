@@ -6,15 +6,18 @@ import json
 import logging
 import os
 import re
+import secrets
 import tempfile
 from collections import Counter
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlencode
 from typing import Any
 
 import requests
-from flask import Flask, jsonify, render_template, request, Response, redirect, url_for
+from flask import Flask, jsonify, render_template, request, Response, redirect, url_for, session
+from werkzeug.exceptions import RequestEntityTooLarge
 
 from analytics.territorial_skills import compute_territorial_stats
 from common.text import clean_text, normalize_for_match
@@ -33,6 +36,7 @@ from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skil
 from continual_learning.auth import require_admin_auth
 from continual_learning.store import ContinualLearningStore
 from referential_import import ReferentialImportService
+from referential_learning.store import AnnotationStore
 from referential_import.import_service import analysis_from_export, build_export_payload
 from referential_import.pdf_loader import load_pdf_document
 from skills.open_extractor import extract_skills as open_extract_skills
@@ -48,6 +52,9 @@ DEFAULT_MAX_OFFERS = int(os.getenv('DEEPFORMA_MAX_OFFERS', '25'))
 DEFAULT_PAGE_SIZE = int(os.getenv('DEEPFORMA_PAGE_SIZE', '10'))
 DEFAULT_MAX_PAGES = int(os.getenv('DEEPFORMA_MAX_PAGES', '3'))
 DEFAULT_THRESHOLD = float(os.getenv('DEEPFORMA_DEFAULT_THRESHOLD', str(THRESHOLDS.medium_confidence)))
+DEFAULT_MAX_CONTENT_LENGTH = int(os.getenv('DEEPFORMA_MAX_CONTENT_LENGTH', '10485760'))
+DEFAULT_MAX_FORM_MEMORY_SIZE = int(os.getenv('DEEPFORMA_MAX_FORM_MEMORY_SIZE', '2097152'))
+DEFAULT_MAX_FORM_PARTS = int(os.getenv('DEEPFORMA_MAX_FORM_PARTS', '2000'))
 MODEL_SCORE_STD_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_STD_MIN', '0.05'))
 MODEL_SCORE_MAX_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_MAX_MIN', '0.70'))
 MODEL_SCORE_GAP_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_GAP_MIN', '0.05'))
@@ -96,6 +103,50 @@ class DiagnosticLogger:
 def _make_cache_key(departement: str, keywords: str | None) -> str:
     normalized_keywords = (keywords or '').strip().lower()
     return f"{departement.strip()}::{normalized_keywords}"
+
+def _format_request_payload_log(req: Any) -> str:
+    content_length = req.content_length if req.content_length is not None else req.headers.get('Content-Length', 'unknown')
+    if req.method in {'POST', 'PUT', 'PATCH'}:
+        try:
+            field_names = sorted(req.form.keys())
+        except Exception:
+            field_names = []
+        names = ', '.join(field_names[:20])
+        return f'{req.method} {req.path} | Content-Length={content_length} | Fields={len(field_names)} | Names={names}'
+    return f'{req.method} {req.path} | Content-Length={content_length}'
+
+
+def _ensure_csrf_token() -> str:
+    token = session.get('_csrf_token')
+    if not token:
+        token = secrets.token_urlsafe(32)
+        session['_csrf_token'] = token
+    return token
+
+
+def _validate_csrf_token() -> None:
+    submitted = clean_text(request.form.get('csrf_token') or request.headers.get('X-CSRF-Token') or '')
+    expected = session.get('_csrf_token') or ''
+    if not submitted or not expected or submitted != expected:
+        raise ValueError('Jeton CSRF invalide.')
+
+
+def _admin_filters_from_request() -> dict[str, str]:
+    keys = ['status', 'territory', 'job_family', 'min_confidence', 'max_confidence', 'source', 'model_version', 'disagreement']
+    return {key: clean_text(request.args.get(key) or request.form.get(key) or '') for key in keys}
+
+
+def _admin_redirect_url(*, offer_row_id: int | None = None, filters: dict[str, str] | None = None) -> str:
+    filters = filters or {}
+    query: dict[str, Any] = {key: value for key, value in filters.items() if value}
+    if offer_row_id not in (None, '', 0):
+        query['offer_row_id'] = int(offer_row_id)
+    return url_for('admin_continual_learning', **query)
+
+
+def _admin_validation_log(message: str) -> None:
+    logger.info('[ADMIN_CONTINUAL_LEARNING] %s', message)
+
 
 
 def _build_france_travail_client() -> FranceTravailClient:
@@ -606,6 +657,7 @@ def create_app(
     france_travail_client_factory: Any | None = None,
 ) -> Flask:
     app = Flask(__name__, template_folder=str(TEMPLATE_DIR), static_folder=str(STATIC_DIR))
+    app.secret_key = os.getenv('DEEPFORMA_SECRET_KEY', 'deepforma-dev-secret')
 
     @app.template_filter('sigmoid_pct')
     def _fmt_sigmoid_pct(value):
@@ -618,6 +670,9 @@ def create_app(
         PAGE_SIZE=DEFAULT_PAGE_SIZE,
         MAX_PAGES=DEFAULT_MAX_PAGES,
         DEFAULT_THRESHOLD=DEFAULT_THRESHOLD,
+        MAX_CONTENT_LENGTH=DEFAULT_MAX_CONTENT_LENGTH,
+        MAX_FORM_MEMORY_SIZE=DEFAULT_MAX_FORM_MEMORY_SIZE,
+        MAX_FORM_PARTS=DEFAULT_MAX_FORM_PARTS,
     )
 
     predictor_error = None
@@ -629,6 +684,25 @@ def create_app(
     app.extensions['market_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
     app.extensions['france_travail_client_factory'] = france_travail_client_factory or _build_france_travail_client
 
+    @app.context_processor
+    def _inject_csrf_token() -> dict[str, Any]:
+        return {'csrf_token': _ensure_csrf_token}
+
+    @app.errorhandler(RequestEntityTooLarge)
+    def _handle_request_too_large(exc: RequestEntityTooLarge):
+        content_length = request.headers.get('Content-Length', request.content_length or 'unknown')
+        logger.warning('[ADMIN_CONTINUAL_LEARNING] %s %s | Content-Length=%s', request.method, request.path, content_length)
+        message = 'La requête est trop volumineuse. Réduisez la taille du formulaire et réessayez.'
+        if request.is_json:
+            return jsonify({'error': message, 'status': 413}), 413
+        return Response(f'<h1>413 Request Entity Too Large</h1><p>{message}</p>', 413, {'Content-Type': 'text/html; charset=utf-8'})
+
+    def _require_valid_csrf() -> None:
+        _validate_csrf_token()
+
+    def _log_admin_request() -> None:
+        _admin_validation_log(_format_request_payload_log(request))
+
     def get_predictor_instance() -> DeepformaPredictor | None:
         return app.extensions.get('deepforma_predictor')
 
@@ -636,9 +710,43 @@ def create_app(
         factory = app.extensions['france_travail_client_factory']
         return factory()
 
-    def analyze_market(departement: str, keywords: str | None) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    def _offer_matches_focus_terms(offer: dict[str, Any], focus_terms: list[str]) -> bool:
+        if not focus_terms:
+            return True
+        title = normalize_for_match(clean_text(offer.get('title') or ''))
+        description = normalize_for_match(clean_text(offer.get('description') or ''))
+        normalized_skills = {normalize_for_match(clean_text(label)) for label in (offer.get('normalized_skills') or []) if clean_text(label)}
+        structured_skills = set()
+        for item in offer.get('structured_skills') or []:
+            if isinstance(item, dict):
+                candidate = item.get('canonical_label') or item.get('canonical_name') or item.get('label')
+            else:
+                candidate = item
+            candidate = clean_text(candidate)
+            if candidate:
+                structured_skills.add(normalize_for_match(candidate))
+
+        haystacks = [title, description, *normalized_skills, *structured_skills]
+        haystack_tokens = set()
+        for item in haystacks:
+            if item:
+                haystack_tokens.update(item.split())
+
+        for term in focus_terms:
+            normalized_term = normalize_for_match(term)
+            if not normalized_term:
+                continue
+            if any(normalized_term in haystack for haystack in haystacks if haystack):
+                return True
+            term_tokens = set(normalized_term.split())
+            if term_tokens and term_tokens.issubset(haystack_tokens):
+                return True
+        return False
+
+    def analyze_market(departement: str, keywords: str | None, focus_terms: list[str] | None = None) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         cache = app.extensions['market_cache']
-        cache_key = _make_cache_key(departement, keywords)
+        focus_signature = '::'.join(sorted({normalize_for_match(term) for term in (focus_terms or []) if normalize_for_match(term)}))
+        cache_key = _make_cache_key(departement, keywords) + (f'::{focus_signature}' if focus_signature else '')
         cached = cache.get(cache_key)
         if cached is not None:
             return cached
@@ -670,7 +778,8 @@ def create_app(
             normalized_dict = normalized.to_dict()
             normalized_dict['merged_skills'] = merged_skills
             normalized_dict['normalized_skills'] = [item['canonical_label'] for item in merged_skills]
-            normalized_offers.append(normalized_dict)
+            if _offer_matches_focus_terms(normalized_dict, focus_terms or ([] if keywords is None else [keywords])):
+                normalized_offers.append(normalized_dict)
 
         result = {
             'raw_offers': raw_offers,
@@ -899,7 +1008,18 @@ def create_app(
             keyword_candidates = market_keyword_candidates or ([keywords] if keywords else [None])
             for candidate in keyword_candidates:
                 try:
-                    normalized_offers, _ = analyze_market(departement, candidate)
+                    normalized_offers, _ = analyze_market(
+                        departement,
+                        candidate,
+                        focus_terms=(
+                            [candidate]
+                            if candidate
+                            else [
+                                *[item.normalized_label for item in skill_extraction.skills if getattr(item, 'normalized_label', '')],
+                                *[item.normalized_label for item in skill_extraction.tools if getattr(item, 'normalized_label', '')],
+                            ]
+                        ),
+                    )
                 except ValueError as exc:
                     if not allow_market_failure:
                         raise RuntimeError('Configuration France Travail absente ou invalide.') from exc
@@ -997,30 +1117,51 @@ def create_app(
             return jsonify({'ok': False, 'error': message}), status_code
         return render_template('index.html', error=message, department_options=DEPARTMENT_CODES, default_threshold=app.config['DEFAULT_THRESHOLD']), status_code
 
-    def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None):
+    def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_validation: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None):
         return render_template(
             'index.html',
             error=error,
             department_options=DEPARTMENT_CODES,
             default_threshold=app.config['DEFAULT_THRESHOLD'],
             referential_analysis=referential_analysis,
+            referential_validation=referential_validation,
             referential_error=referential_error,
             referential_success=referential_success,
         )
 
-    def _render_referential_analysis(analysis: dict[str, Any], *, source_path: str, referential_success: str | None = None, referential_error: str | None = None):
+    def _build_referential_preview_payload(analysis: dict[str, Any], *, source_path: str) -> dict[str, Any]:
+        return {
+            'document': analysis['document'],
+            'report': analysis['report'],
+            'blocks': analysis['blocks'],
+            'activities': analysis['activities'],
+            'competencies': analysis['competencies'],
+            'criteria': analysis['criteria'],
+            'derived_skills': analysis['derived_skills'],
+            'tools_methods': analysis['tools_methods'],
+            'analysis_json': json.dumps(build_export_payload(analysis), ensure_ascii=False, indent=2),
+            'source_path': source_path,
+        }
+
+    def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, referential_success: str | None = None, referential_error: str | None = None):
+        preview = _build_referential_preview_payload(analysis, source_path=source_path)
         return _render_home_page(
-            referential_analysis={
-                'document': analysis['document'],
-                'report': analysis['report'],
-                'blocks': analysis['blocks'],
-                'activities': analysis['activities'],
-                'competencies': analysis['competencies'],
-                'criteria': analysis['criteria'],
-                'derived_skills': analysis['derived_skills'],
-                'tools_methods': analysis['tools_methods'],
-                'analysis_json': json.dumps(build_export_payload(analysis), ensure_ascii=False, indent=2),
+            referential_analysis=preview,
+            referential_validation={
+                'analysis_json': preview['analysis_json'],
                 'source_path': source_path,
+                'departement': departement,
+                'validated_title': getattr(analysis['document'], 'title', '') or '',
+                'competencies': [
+                    {
+                        'code': competency.code,
+                        'official_label': competency.official_label,
+                        'review_status': competency.review_status,
+                        'block_code': competency.block_code,
+                        'activity_code': competency.activity_code,
+                    }
+                    for competency in analysis.get('competencies', [])
+                ],
             },
             referential_success=referential_success,
             referential_error=referential_error,
@@ -1040,48 +1181,150 @@ def create_app(
         temp_file.close()
         uploaded.save(temp_path)
         analysis = referential_import_service.analyze(temp_path)
-        return _render_referential_analysis(analysis, source_path=str(temp_path))
+        return _render_referential_validation(analysis, source_path=str(temp_path), departement=clean_text(request.form.get('departement') or ''))
+
+    def _apply_referential_validation_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
+        title = clean_text(form.get('validated_title') or '')
+        if title:
+            analysis['document'].title = title
+        note = clean_text(form.get('validation_note') or '')
+        if note:
+            analysis['document'].notes = note
+
+        original_competencies = list(analysis.get('competencies', []))
+        anchor = original_competencies[0] if original_competencies else None
+        removed_codes: set[str] = set()
+        updated_competencies: list[Any] = []
+
+        for competency in original_competencies:
+            label_key = f'competency_label__{competency.code}'
+            status_key = f'competency_status__{competency.code}'
+            remove_key = f'remove_competency__{competency.code}'
+            if str(form.get(remove_key) or '').strip() in {'1', 'true', 'yes', 'on'}:
+                removed_codes.add(competency.code)
+                continue
+            if label_key in form:
+                corrected = clean_text(form.get(label_key))
+                if corrected:
+                    competency.official_label = corrected
+                    competency.normalized_label = corrected
+            if status_key in form:
+                status = clean_text(form.get(status_key))
+                if status:
+                    competency.review_status = status
+            updated_competencies.append(competency)
+
+        manual_labels = []
+        seen_manual: set[str] = set()
+        for raw_line in clean_text(form.get('new_competency_labels') or '').splitlines():
+            label = clean_text(raw_line)
+            if not label:
+                continue
+            key = normalize_for_match(label)
+            if key in seen_manual:
+                continue
+            seen_manual.add(key)
+            manual_labels.append(label)
+
+        for index, label in enumerate(manual_labels, start=1):
+            code = f'MANUAL_{index}'
+            if any(normalize_for_match(getattr(item, 'official_label', '') or '') == normalize_for_match(label) for item in updated_competencies):
+                continue
+            updated_competencies.append(
+                OfficialCompetency(
+                    code=code,
+                    official_label=label,
+                    normalized_label=label,
+                    block_code=getattr(anchor, 'block_code', 'MANUAL') if anchor else 'MANUAL',
+                    activity_code=getattr(anchor, 'activity_code', 'MANUAL') if anchor else 'MANUAL',
+                    page_start=getattr(anchor, 'page_start', 1) if anchor else 1,
+                    page_end=getattr(anchor, 'page_end', 1) if anchor else 1,
+                    confidence=1.0,
+                    review_status='approved',
+                    source_pages=list(getattr(anchor, 'source_pages', []) or [1]) if anchor else [1],
+                    source_text=label,
+                    provenance='human_review',
+                )
+            )
+
+        kept_codes = {competency.code for competency in updated_competencies}
+        analysis['competencies'] = updated_competencies
+        analysis['criteria'] = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code in kept_codes]
+        analysis['derived_skills'] = [skill for skill in analysis.get('derived_skills', []) if getattr(skill, 'source_code', '') not in removed_codes]
+        analysis['tools_methods'] = [skill for skill in analysis.get('tools_methods', []) if getattr(skill, 'source_code', '') not in removed_codes]
+        if analysis.get('report') is not None:
+            analysis['report'].competencies = len(analysis.get('competencies', []))
+            analysis['report'].criteria = len(analysis.get('criteria', []))
+            analysis['report'].derived_skills = len(analysis.get('derived_skills', []))
+            analysis['report'].tools_methods = len(analysis.get('tools_methods', []))
+        for competency in analysis.get('competencies', []):
+            competency.evaluation_criteria = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code == competency.code]
+        return analysis
+
+    def _build_referential_market_context(referential_analysis: dict[str, Any], pdf_path: Path, departement: str) -> dict[str, Any]:
+        document_loader = load_pdf_document(pdf_path)
+        page_texts = [page.text for page in document_loader.pages if getattr(page, 'text', '')]
+        text = "\n".join(page_text for page_text in page_texts)
+        keyword_candidates = _build_referential_keywords_candidates(referential_analysis, page_texts)
+        keywords = next((candidate for candidate in keyword_candidates if candidate), None)
+        context = _build_context(
+            text,
+            departement,
+            keywords,
+            app.config['DEFAULT_THRESHOLD'],
+            False,
+            allow_market_failure=True,
+            market_keyword_candidates=keyword_candidates + ([None] if None not in keyword_candidates else []),
+        )
+        context['referential_analysis'] = referential_analysis
+        context['referential_overview'] = _build_referential_extraction_overview(
+            referential_analysis,
+            keyword_candidates,
+            page_texts=page_texts,
+        )
+        focus_labels = [
+            *context['referential_overview'].get('derived_skill_labels', []),
+            *context['referential_overview'].get('competency_labels', []),
+            *context['referential_overview'].get('tool_labels', []),
+        ]
+        market_offers = list(context['context'].get('market_offers_used', []))
+        if market_offers:
+            market_offers = sorted(market_offers, key=lambda offer: _market_offer_score(offer, focus_labels), reverse=True)
+            context['context']['normalized_offers'] = market_offers
+            context['context']['market_offers_used'] = market_offers
+            context['context']['market_offers_preview'] = market_offers[:10]
+            context['context']['market_offers_more_count'] = max(len(market_offers) - 10, 0)
+        if context['context'].get('market_error'):
+            context['warning'] = context['warning'] + ' Analyse territoriale partielle: ' + context['context']['market_error']
+        return context
 
     @app.post('/analyze')
     def analyze():
         try:
             payload = _parse_request_payload()
-            if request.files.get('pdf') and request.files.get('pdf').filename:
+            action = clean_text(payload.get('action'))
+            if action == 'validate_referential':
+                export_raw = payload.get('analysis_json')
+                if not export_raw:
+                    raise ValueError('Analyse du référentiel manquante.')
+                try:
+                    export = json.loads(export_raw)
+                except Exception:
+                    raise ValueError('JSON du référentiel invalide.')
+                referential_analysis = analysis_from_export(export)
+                referential_analysis = _apply_referential_validation_edits(referential_analysis, payload)
+                validated_by = clean_text(payload.get('validated_by') or 'human_review') or 'human_review'
+                referential_import_service.approve(referential_analysis, validated_by=validated_by)
+                source_path = clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
+                pdf_path = Path(source_path)
+                departement = clean_text(payload.get('departement') or '')
+                if not departement:
+                    raise ValueError('Le departement est obligatoire.')
+                context = _build_referential_market_context(referential_analysis, pdf_path, departement)
+            elif request.files.get('pdf') and request.files.get('pdf').filename:
                 pdf_path, departement = _extract_referential_inputs(payload, request.files)
                 referential_analysis = referential_import_service.analyze(pdf_path)
-                document_loader = load_pdf_document(pdf_path)
-                text = "\n".join(page.text for page in document_loader.pages if getattr(page, 'text', ''))
-                keyword_candidates = _build_referential_keywords_candidates(referential_analysis, [page.text for page in document_loader.pages if getattr(page, 'text', '')])
-                keywords = next((candidate for candidate in keyword_candidates if candidate), None)
-                context = _build_context(
-                    text,
-                    departement,
-                    keywords,
-                    app.config['DEFAULT_THRESHOLD'],
-                    False,
-                    allow_market_failure=True,
-                    market_keyword_candidates=keyword_candidates + ([None] if None not in keyword_candidates else []),
-                )
-                context['referential_analysis'] = referential_analysis
-                context['referential_overview'] = _build_referential_extraction_overview(
-                    referential_analysis,
-                    keyword_candidates,
-                    page_texts=[page.text for page in document_loader.pages if getattr(page, 'text', '')],
-                )
-                focus_labels = [
-                    *context['referential_overview'].get('derived_skill_labels', []),
-                    *context['referential_overview'].get('competency_labels', []),
-                    *context['referential_overview'].get('tool_labels', []),
-                ]
-                market_offers = list(context['context'].get('market_offers_used', []))
-                if market_offers:
-                    market_offers = sorted(market_offers, key=lambda offer: _market_offer_score(offer, focus_labels), reverse=True)
-                    context['context']['normalized_offers'] = market_offers
-                    context['context']['market_offers_used'] = market_offers
-                    context['context']['market_offers_preview'] = market_offers[:10]
-                    context['context']['market_offers_more_count'] = max(len(market_offers) - 10, 0)
-                if context['context'].get('market_error'):
-                    context['warning'] = context['warning'] + ' Analyse territoriale partielle: ' + context['context']['market_error']
+                context = _build_referential_market_context(referential_analysis, pdf_path, departement)
             else:
                 text, departement, keywords, threshold, model_only = _extract_inputs(payload)
                 context = _build_context(text, departement, keywords, threshold, model_only, allow_market_failure=False)
@@ -1273,6 +1516,125 @@ def create_app(
         uploaded.save(temp_path)
         analysis = referential_import_service.analyze(temp_path)
         return _render_referential_import_context(analysis, source_path=str(temp_path))
+
+    annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_candidates.jsonl')
+    app.extensions['referential_annotation_store'] = annotation_store
+
+    def _render_referential_annotation_index(*, selected_document_id: str | None = None, success: str | None = None, error: str | None = None):
+        records = annotation_store.load()
+        selected = None
+        if selected_document_id:
+            selected = next((record for record in records if record.get('document_id') == selected_document_id), None)
+        if selected is None and records:
+            selected = records[0]
+        return render_template(
+            'admin_referential_annotation.html',
+            records=records,
+            selected=selected,
+            success=success,
+            error=error,
+            section_labels=['TITLE', 'PROVIDER', 'REFERENCE', 'DURATION', 'LEVEL', 'FORMAT', 'PRICE', 'CPF', 'CERTIFICATION', 'PUBLIC', 'PREREQUISITES', 'OBJECTIVES', 'PROGRAM', 'MODULE', 'SKILLS', 'TOOLS', 'DOMAINS', 'FOOTER', 'OTHER'],
+            entity_labels=['SKILL', 'SOFT_SKILL', 'TOOL', 'METHOD', 'KNOWLEDGE', 'DOMAIN', 'DEGREE', 'CERTIFICATION', 'DURATION', 'PRICE', 'REFERENCE', 'PROVIDER', 'OTHER'],
+        )
+
+    @app.get('/admin/referential-annotation')
+    @require_admin_auth
+    def admin_referential_annotation():
+        return _render_referential_annotation_index(selected_document_id=request.args.get('document_id'))
+
+    def _update_annotation_status(record: dict[str, Any], *, document_id: str, action: str, form: Any) -> None:
+        if action == 'approve_block':
+            block_id = clean_text(form.get('block_id') or '')
+            approved_section = clean_text(form.get('approved_section') or '')
+            for block in record.get('blocks', []):
+                if block.get('block_id') == block_id:
+                    block['approved_section'] = approved_section or block.get('predicted_section')
+                    block['status'] = 'approved'
+        elif action == 'reject_block':
+            block_id = clean_text(form.get('block_id') or '')
+            for block in record.get('blocks', []):
+                if block.get('block_id') == block_id:
+                    block['status'] = 'rejected'
+        elif action == 'approve_entity':
+            entity_id = clean_text(form.get('entity_id') or '')
+            approved_label = clean_text(form.get('approved_label') or '')
+            canonical_name = clean_text(form.get('canonical_name') or '')
+            referential_id = clean_text(form.get('referential_id') or '')
+            for page in record.get('pages', []):
+                for entity in page.get('entities', []):
+                    if entity.get('entity_id') == entity_id:
+                        entity['approved_label'] = approved_label or entity.get('predicted_label')
+                        entity['canonical_name'] = canonical_name or entity.get('canonical_name')
+                        entity['referential_id'] = referential_id or entity.get('referential_id')
+                        entity['status'] = 'approved'
+        elif action == 'reject_entity':
+            entity_id = clean_text(form.get('entity_id') or '')
+            for page in record.get('pages', []):
+                for entity in page.get('entities', []):
+                    if entity.get('entity_id') == entity_id:
+                        entity['status'] = 'rejected'
+        elif action == 'add_section':
+            text_value = clean_text(form.get('text') or '')
+            label = clean_text(form.get('section_label') or 'OTHER') or 'OTHER'
+            if text_value:
+                record.setdefault('blocks', []).append({
+                    'block_id': f'manual-block-{len(record.get("blocks", [])) + 1}',
+                    'page': int(form.get('page') or 1),
+                    'bbox': None,
+                    'text': text_value,
+                    'predicted_section': label,
+                    'confidence': 1.0,
+                    'approved_section': label,
+                    'status': 'approved',
+                    'order': len(record.get('blocks', [])) + 1,
+                    'source_file': record.get('source_file', ''),
+                    'document_id': document_id,
+                })
+        elif action == 'add_entity':
+            text_value = clean_text(form.get('text') or '')
+            if text_value:
+                record.setdefault('pages', [])
+                if not record['pages']:
+                    record['pages'].append({'number': 1, 'text': '', 'blocks': [], 'entities': []})
+                page = record['pages'][0]
+                page.setdefault('entities', []).append({
+                    'entity_id': f'manual-entity-{len(page.get("entities", [])) + 1}',
+                    'start': int(form.get('start') or 0),
+                    'end': int(form.get('end') or len(text_value)),
+                    'text': text_value,
+                    'predicted_label': clean_text(form.get('entity_label') or 'SKILL') or 'SKILL',
+                    'approved_label': clean_text(form.get('entity_label') or 'SKILL') or 'SKILL',
+                    'canonical_name': clean_text(form.get('canonical_name') or text_value) or text_value,
+                    'confidence': 1.0,
+                    'page': int(form.get('page') or 1),
+                    'block_id': clean_text(form.get('block_id') or ''),
+                    'source_file': record.get('source_file', ''),
+                    'document_id': document_id,
+                    'status': 'approved',
+                    'referential_id': clean_text(form.get('referential_id') or ''),
+                    'evidence': clean_text(form.get('evidence') or ''),
+                })
+        elif action == 'validate_document':
+            record['status'] = 'validated'
+        else:
+            raise ValueError(f'Action inconnue: {action}')
+
+    @app.post('/admin/referential-annotation/action')
+    @require_admin_auth
+    def admin_referential_annotation_action():
+        _require_valid_csrf()
+        document_id = clean_text(request.form.get('document_id') or '')
+        action = clean_text(request.form.get('action') or '')
+        if not document_id:
+            raise ValueError('document_id requis.')
+        records = annotation_store.load()
+        record = next((item for item in records if item.get('document_id') == document_id), None)
+        if record is None:
+            raise ValueError('Document introuvable.')
+        _update_annotation_status(record, document_id=document_id, action=action, form=request.form)
+        annotation_store.save(records)
+        return redirect(url_for('admin_referential_annotation', document_id=document_id))
+
 
     continual_store = ContinualLearningStore(PROJECT_ROOT / 'data' / 'continual_learning' / 'continual_learning.sqlite3')
     app.extensions['continual_learning_store'] = continual_store
@@ -1542,6 +1904,7 @@ def create_app(
                 if idx + 1 < len(ids):
                     next_offer_id = ids[idx + 1]
         validation_counts = Counter(item.get('validation_status', 'pending') for item in all_offers)
+        filters_query = urlencode({key: value for key, value in filters.items() if value})
         return render_template(
             'admin_continual_learning.html',
             offers=filtered_offers,
@@ -1549,6 +1912,7 @@ def create_app(
             selected_offer_view=selected_offer_view,
             next_offer_id=next_offer_id,
             filters=filters,
+            filters_query=filters_query,
             validation_counts=dict(validation_counts),
             admin_enabled=True,
         )
@@ -1556,6 +1920,8 @@ def create_app(
     @app.post('/admin/continual-learning/action')
     @require_admin_auth
     def admin_continual_learning_action():
+        _log_admin_request()
+        _require_valid_csrf()
         form = request.form
         action = clean_text(form.get('action'))
         offer_row_id = int(form.get('offer_row_id') or 0)
@@ -1563,7 +1929,7 @@ def create_app(
         validated_by = clean_text(form.get('validated_by') or os.getenv('DEEPFORMA_ADMIN_USER') or 'admin')
         note = clean_text(form.get('note')) or None
         redirect_offer = form.get('redirect_offer_row_id') or offer_row_id
-        selected_filters = {key: form.get(key, '') for key in ['status', 'territory', 'job_family', 'min_confidence', 'max_confidence', 'source', 'model_version', 'disagreement']}
+        selected_filters = _admin_filters_from_request()
         if action == 'mark_offer_approved':
             offer = continual_store.get_offer_with_annotations(offer_row_id)
             if not offer:
@@ -1645,8 +2011,8 @@ def create_app(
             raise ValueError(f"Action inconnue: {action}")
 
         if redirect_offer in (None, '', '0'):
-            return redirect(url_for('admin_continual_learning', **selected_filters))
-        return redirect(url_for('admin_continual_learning', offer_row_id=int(redirect_offer), **selected_filters))
+            return redirect(_admin_redirect_url(filters=selected_filters))
+        return redirect(_admin_redirect_url(offer_row_id=int(redirect_offer), filters=selected_filters))
     return app
 
 

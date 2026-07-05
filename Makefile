@@ -58,7 +58,7 @@ CPF_GENERAL_PAIRS ?= data/processed/cpf/pairs_generalistes.jsonl
 CPF_BASE_MODEL ?= sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 CPF_MODEL_OUTPUT ?= models/cpf-recommender
 
-.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import
+.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import audit-referential-pdfs build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner evaluate-referential-models test-referential-import deploy-referential-models
 
 install-dev:
 	$(PYTHON) -m pip install -e .
@@ -159,6 +159,43 @@ REFERENTIAL_INPUT ?=
 REFERENTIAL_REPORT ?= reports/referential_import.json
 REFERENTIAL_OUTPUT ?= data/referentials/imported/
 REFERENTIAL_DB ?= data/referentials/referential_imports.sqlite3
+REFERENTIAL_PDF_DIR ?= data/raw/referentiel
+REFERENTIAL_AUDIT_REPORT ?= reports/referential_pdf_audit.json
+REFERENTIAL_CANDIDATES ?= data/annotation/referential_candidates.jsonl
+REFERENTIAL_TRAIN_DIR ?= data/training
+REFERENTIAL_SECTION_MODEL_OUTPUT ?= models/referential-section-classifier
+REFERENTIAL_NER_MODEL_OUTPUT ?= models/referential-skill-ner
+REFERENTIAL_SECTION_BASE_MODEL ?= camembert-base
+REFERENTIAL_NER_BASE_MODEL ?= camembert-base
+REFERENTIAL_SECTION_BATCH_SIZE ?= 8
+REFERENTIAL_SECTION_EPOCHS ?= 5
+REFERENTIAL_SECTION_LEARNING_RATE ?= 2e-5
+REFERENTIAL_SECTION_DEVICE ?=
+REFERENTIAL_SECTION_FP16 ?= true
+REFERENTIAL_NER_BATCH_SIZE ?= 4
+REFERENTIAL_NER_GRADIENT_ACCUMULATION ?= 4
+REFERENTIAL_NER_EPOCHS ?= 5
+REFERENTIAL_NER_LEARNING_RATE ?= 2e-5
+REFERENTIAL_NER_DEVICE ?=
+REFERENTIAL_NER_FP16 ?= true
+
+audit-referential-pdfs:
+	$(PYTHON) scripts/audit_referential_pdfs.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output-report "$(REFERENTIAL_AUDIT_REPORT)"
+
+build-referential-annotations: audit-referential-pdfs
+	$(PYTHON) scripts/build_referential_annotation_candidates.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output "$(REFERENTIAL_CANDIDATES)"
+
+export-referential-training-data:
+	$(PYTHON) scripts/export_approved_referential_annotations.py --input "$(REFERENTIAL_CANDIDATES)" --output-dir "$(REFERENTIAL_TRAIN_DIR)"
+
+train-referential-section-model: export-referential-training-data
+	$(PYTHON) scripts/train_referential_section_classifier.py --train "$(REFERENTIAL_TRAIN_DIR)/referential_sections_train.jsonl" --validation "$(REFERENTIAL_TRAIN_DIR)/referential_sections_validation.jsonl" --test "$(REFERENTIAL_TRAIN_DIR)/referential_sections_test.jsonl" --base-model "$(REFERENTIAL_SECTION_BASE_MODEL)" --output-dir "$(REFERENTIAL_SECTION_MODEL_OUTPUT)" --batch-size $(REFERENTIAL_SECTION_BATCH_SIZE) --epochs $(REFERENTIAL_SECTION_EPOCHS) --learning-rate $(REFERENTIAL_SECTION_LEARNING_RATE) $(if $(strip $(REFERENTIAL_SECTION_DEVICE)),--device "$(REFERENTIAL_SECTION_DEVICE)",) $(if $(filter true,$(REFERENTIAL_SECTION_FP16)),--fp16,)
+
+train-referential-ner: export-referential-training-data
+	$(PYTHON) scripts/train_referential_skill_ner.py --train "$(REFERENTIAL_TRAIN_DIR)/referential_ner_train.jsonl" --validation "$(REFERENTIAL_TRAIN_DIR)/referential_ner_validation.jsonl" --test "$(REFERENTIAL_TRAIN_DIR)/referential_ner_test.jsonl" --base-model "$(REFERENTIAL_NER_BASE_MODEL)" --output-dir "$(REFERENTIAL_NER_MODEL_OUTPUT)" --batch-size $(REFERENTIAL_NER_BATCH_SIZE) --gradient-accumulation-steps $(REFERENTIAL_NER_GRADIENT_ACCUMULATION) --epochs $(REFERENTIAL_NER_EPOCHS) --learning-rate $(REFERENTIAL_NER_LEARNING_RATE) $(if $(strip $(REFERENTIAL_NER_DEVICE)),--device "$(REFERENTIAL_NER_DEVICE)",) $(if $(filter true,$(REFERENTIAL_NER_FP16)),--fp16,)
+
+evaluate-referential-models: export-referential-training-data
+	$(PYTHON) scripts/evaluate_referential_models.py --sections-test "$(REFERENTIAL_TRAIN_DIR)/referential_sections_test.jsonl" --ner-test "$(REFERENTIAL_TRAIN_DIR)/referential_ner_test.jsonl" --output-dir reports
 
 import-referential-preview:
 	@if [ -z "$(strip $(REFERENTIAL_INPUT))" ]; then \
@@ -176,8 +213,16 @@ approve-referential-import:
 	fi
 	$(PYTHON) scripts/import_referential.py --input "$(REFERENTIAL_INPUT)" --approve --report "$(REFERENTIAL_REPORT)" --output "$(REFERENTIAL_OUTPUT)" --store-path "$(REFERENTIAL_DB)"
 
+
+
 test:
 	$(PYTHON) -m pytest -q
+
+test-referential-import:
+	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
+
+deploy-referential-models:
+	$(PYTHON) scripts/deploy_referential_models.py --source-root "$(REFERENTIAL_SECTION_MODEL_OUTPUT)/.." --target-root "$(DEPLOY_ROOT)/models"
 DEPLOY_SCRIPTS := scripts/deploy_ubuntu.sh scripts/update_production.sh scripts/rollback_production.sh
 
 deploy-check:
