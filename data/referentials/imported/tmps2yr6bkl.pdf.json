@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "777f7b43557e5903ea9eccd1",
+    "source_path": "/tmp/tmps2yr6bkl.pdf",
+    "file_name": "tmps2yr6bkl.pdf",
+    "sha256": "3f794e5a8edcc55379ef11cc7dd70eb51bdc7c4ea1889e15cc949481a734c4e9",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 1,
+    "title": "FORMATION ENTREPRISE Jedha Bootcamp",
+    "provider": "JEDHA-DA-ESS Réf. Formation",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": true,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-06T13:22:06.129461+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Python",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Python",
+      "normalized_surface": "python",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern"
+    },
+    {
+      "label": "SQL",
+      "canonical_label": "SQL",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "SQL",
+      "normalized_surface": "sql",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "Python",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Python",
+      "normalized_surface": "python",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern"
+    },
+    {
+      "label": "SQL",
+      "canonical_label": "SQL",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "SQL",
+      "normalized_surface": "sql",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "777f7b43557e5903ea9eccd1",
+    "source_hash": "3f794e5a8edcc55379ef11cc7dd70eb51bdc7c4ea1889e15cc949481a734c4e9",
+    "pages": 1,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 2,
+    "tools_methods": 2,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": true,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

@@ -22,6 +22,7 @@ for path in (ROOT, SRC):
 import fitz  # type: ignore
 
 from common.text import clean_text, normalize_for_match
+from referential_learning.ai_certification_taxonomy import infer_skill_taxonomy
 
 
 DEFAULT_INPUT = ROOT / "data" / "raw" / "Referentiel de certification - Ingenieur en intelligence artificelle janvier 2025.pdf"
@@ -181,14 +182,20 @@ def _parse_competency_chunk(chunk: str, *, block: str, source_page: int) -> dict
     normalized_label = normalize_for_match(label)
     skill_id = f"{block}-{code}" if block else code
     aliases = _aliases_for_skill(skill_id, label, description, block, activity)
+    taxonomy = infer_skill_taxonomy(label, description, aliases, block=block, activity=activity, origin_document=DEFAULT_INPUT.name)
     return {
         "id": skill_id,
         "block": block,
+        "block_name": f"Bloc {block[1:]}" if block.startswith('B') else block,
         "activity": activity,
         "code": code,
         "label": label,
         "official_description": description,
         "normalized_label": normalized_label,
+        "category": taxonomy.category,
+        "subcategory": taxonomy.subcategory,
+        "technical_keywords": taxonomy.technical_keywords,
+        "origin_document": DEFAULT_INPUT.name,
         "aliases": aliases,
         "source_page": source_page,
         "active": True,
@@ -261,15 +268,30 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def _write_csv(path: Path, skills: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "id",
+        "block",
+        "block_name",
+        "activity",
+        "code",
+        "label",
+        "official_description",
+        "normalized_label",
+        "category",
+        "subcategory",
+        "technical_keywords",
+        "origin_document",
+        "aliases",
+        "source_page",
+        "active",
+    ]
     with path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(
-            fh,
-            fieldnames=["id", "block", "activity", "code", "label", "official_description", "normalized_label", "aliases", "source_page", "active"],
-        )
+        writer = csv.DictWriter(fh, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for skill in skills:
             row = dict(skill)
             row["aliases"] = json.dumps(row.get("aliases", []), ensure_ascii=False)
+            row["technical_keywords"] = json.dumps(row.get("technical_keywords", []), ensure_ascii=False)
             writer.writerow(row)
 
 

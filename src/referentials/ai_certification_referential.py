@@ -106,6 +106,13 @@ class AICertificationReferential:
             skill['aliases'] = _normalize_aliases(skill.get('aliases') or [])
             skill['source_page'] = int(skill.get('source_page') or 0)
             skill['active'] = bool(skill.get('active', True))
+            skill['category'] = clean_text(skill.get('category') or '')
+            skill['subcategory'] = clean_text(skill.get('subcategory') or '')
+            technical_keywords = skill.get('technical_keywords') or skill.get('keywords') or []
+            if isinstance(technical_keywords, str):
+                technical_keywords = [technical_keywords]
+            skill['technical_keywords'] = _normalize_aliases(technical_keywords)
+            skill['origin_document'] = clean_text(skill.get('origin_document') or payload.get('metadata', {}).get('source_pdf', '') or '')
             if not skill['id']:
                 continue
             normalized_skills.append(skill)

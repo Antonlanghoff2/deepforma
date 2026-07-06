@@ -20,7 +20,6 @@ from flask import Flask, jsonify, render_template, request, Response, redirect, 
 from markupsafe import Markup, escape
 from werkzeug.exceptions import RequestEntityTooLarge
 
-from analytics.territorial_skills import compute_territorial_stats
 from common.text import clean_text, normalize_for_match, stable_hash
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
@@ -42,6 +41,9 @@ from referential_learning.store import AnnotationStore
 from referential_import.import_service import analysis_from_export, build_export_payload
 from referential_import.pdf_loader import load_pdf_document
 from skills.open_extractor import extract_skills as open_extract_skills
+from services.analysis_result_builder import build_analysis_result
+from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
+from services.market_context import build_market_context
 from services.recommendation_service import RecommendationService
 
 logger = logging.getLogger(__name__)
@@ -153,6 +155,7 @@ def _admin_validation_log(message: str) -> None:
 
 def _build_france_travail_client() -> FranceTravailClient:
     return FranceTravailClient(timeout=int(os.getenv('FRANCE_TRAVAIL_TIMEOUT', '20')))
+
 
 
 def _load_predictor() -> tuple[DeepformaPredictor | None, str | None]:
@@ -280,372 +283,15 @@ def _build_analysis_result(
     threshold: float,
     skill_extraction: SkillExtractionInfo | None = None,
 ) -> AnalysisResult:
-    result = AnalysisResult()
-
-    binary = analysis['binary']
-    skills_result = analysis['skills']
-    predictions = skills_result.get('predictions', [])
-
-    class_state = THRESHOLDS.get_classification_state(
-        binary['probability_ia'], binary['probability_non_ia']
+    return build_analysis_result(
+        analysis=analysis,
+        normalized_offers=normalized_offers,
+        recommendation=recommendation,
+        territorial_stats=territorial_stats,
+        departement=departement,
+        threshold=threshold,
+        skill_extraction=skill_extraction,
     )
-    result.classification = ClassificationInfo(
-        is_ia=binary['is_ia'],
-        predicted_class=binary['predicted_class'],
-        probability_ia=binary['probability_ia'],
-        probability_non_ia=binary['probability_non_ia'],
-        state=class_state['state'],
-        state_description=class_state['description'],
-        gap=class_state['gap'],
-    )
-
-    # ---- IA classification (secondary, scoped) ----
-    result.ia_classification = _check_ia_classifier_quality(skills_result)
-
-    # ---- Skill extraction (primary) ----
-    result.skill_extraction = skill_extraction or _build_skill_extraction('')
-
-    extracted_labels_normalized = set(
-        normalize_skill_label(s.normalized_label)
-        for s in result.skill_extraction.skills
-    )
-    extracted_tools_normalized = set(
-        normalize_skill_label(s.normalized_label)
-        for s in result.skill_extraction.tools
-    )
-
-    skill_extraction_ok = result.skill_extraction.status in {'success', 'partial'}
-    has_extracted_skills = len(result.skill_extraction.skills) > 0 or len(result.skill_extraction.tools) > 0
-
-    # ---- Build IA-only skill lists (backward compat, secondary) ----
-    ia_detected_skills: list[SkillInfo] = []
-    ia_low_confidence_skills: list[SkillInfo] = []
-    ia_rejected_skills: list[SkillInfo] = []
-    ia_indeterminate_skills: list[SkillInfo] = []
-
-    discriminating = result.ia_classification.discriminating
-
-    for p in predictions:
-        prob = p['probability']
-        label = p['label']
-        confidence = _skill_confidence(prob)
-        skill = SkillInfo(
-            label=label,
-            score_brut=round(prob, 4),
-            niveau_confiance=confidence,
-            seuil_applique=threshold,
-            methode_detection='camembert_multilabel',
-        )
-        if not discriminating:
-            skill.presence = 'indeterminate'
-            skill.statut = 'indetermine'
-            ia_indeterminate_skills.append(skill)
-        elif prob >= threshold and confidence in ('forte', 'moyenne'):
-            skill.presence = 'present'
-            skill.statut = 'central' if prob >= 0.70 else 'secondaire'
-            ia_detected_skills.append(skill)
-        elif prob >= threshold * 0.5:
-            skill.presence = 'indeterminate'
-            skill.statut = 'a_verifier'
-            ia_low_confidence_skills.append(skill)
-        else:
-            skill.presence = 'absent'
-            skill.statut = 'rejete'
-            ia_rejected_skills.append(skill)
-
-    ia_detected_skills.sort(key=lambda s: s.score_brut, reverse=True)
-    ia_low_confidence_skills.sort(key=lambda s: s.score_brut, reverse=True)
-    ia_indeterminate_skills.sort(key=lambda s: s.score_brut, reverse=True)
-
-    result.detected_skills = ia_detected_skills
-    result.low_confidence_skills = ia_low_confidence_skills
-    result.rejected_skills = ia_rejected_skills
-    result.indeterminate_skills = ia_indeterminate_skills
-
-    # ---- Formation analysis status (now driven by skill_extraction, NOT ia_classifier) ----
-    if not skill_extraction_ok:
-        result.formation_analysis_status = 'unreliable'
-        result.skills_presence = 'indeterminate'
-        result.comparison_available = False
-        result.recommendations_available = False
-        result.blocking_reasons = ['skill_extraction_failed']
-    elif not has_extracted_skills:
-        result.formation_analysis_status = 'no_skills_detected'
-        result.skills_presence = 'indeterminate'
-        result.comparison_available = False
-        result.recommendations_available = False
-        result.blocking_reasons = ['no_skills_detected']
-    else:
-        result.formation_analysis_status = 'reliable'
-        result.skills_presence = 'determinate'
-        result.comparison_available = True
-        result.recommendations_available = True
-        result.blocking_reasons = []
-
-    # ---- Model metadata ----
-    binary_model_checkpoint = str(getattr(analysis, 'binary_model_dir', 'models/binary_ia_v2/final'))
-    multilabel_model_checkpoint = str(getattr(analysis, 'multilabel_model_dir', 'models/multilabel_competences_v2/final'))
-    checkpoint_audit_raw = analysis.get('checkpoint_audit', {})
-
-    result.checkpoint_audit = CheckpointAuditInfo(
-        config_present=checkpoint_audit_raw.get('config_present', False),
-        weights_present=checkpoint_audit_raw.get('weights_present', False),
-        weights_size_bytes=checkpoint_audit_raw.get('weights_size_bytes', 0),
-        architecture_declared=checkpoint_audit_raw.get('architecture_declared', ''),
-        num_labels_declared=checkpoint_audit_raw.get('num_labels_declared', 0),
-        num_labels_effective=checkpoint_audit_raw.get('num_labels_effective', 0),
-        problem_type=checkpoint_audit_raw.get('problem_type', ''),
-        id2label_count=checkpoint_audit_raw.get('id2label_count', 0),
-        label2id_count=checkpoint_audit_raw.get('label2id_count', 0),
-        strict_load_success=checkpoint_audit_raw.get('strict_load_success', False),
-        missing_keys=checkpoint_audit_raw.get('missing_keys', []),
-        unexpected_keys=checkpoint_audit_raw.get('unexpected_keys', []),
-        ignored_keys=checkpoint_audit_raw.get('ignored_keys', []),
-        appears_random_init=checkpoint_audit_raw.get('appears_random_init', True),
-        body_params_match_base=checkpoint_audit_raw.get('body_params_match_base', True),
-        parameter_errors=checkpoint_audit_raw.get('parameter_errors', []),
-        classifier_params=checkpoint_audit_raw.get('classifier_params', {}),
-    )
-
-    from inference.deepforma_predictor import DEFAULT_TAXONOMY_PATH
-    _taxonomy_version = ""
-    _tax_path = Path(DEFAULT_TAXONOMY_PATH)
-    if _tax_path.exists():
-        try:
-            _tax = json.loads(_tax_path.read_text(encoding="utf-8"))
-            _taxonomy_version = _tax.get("version", "")
-        except Exception:
-            pass
-    _model_name = "Classifieur IA"
-    _num_labels = len(skills_result.get("predictions", []))
-    _validation_status = "non validé"
-    if result.checkpoint_audit.appears_random_init:
-        _validation_status = "non entraîné"
-    elif result.checkpoint_audit.strict_load_success:
-        _validation_status = "entraîné (non validé)"
-    if _taxonomy_version:
-        _model_name = f"Classifieur IA v{_taxonomy_version}"
-
-    result.model_metadata = ModelMetadata(
-        binary_model="CamemBERT (CamembertForSequenceClassification)",
-        multilabel_model="CamemBERT (CamembertForSequenceClassification)",
-        model_name=_model_name,
-        taxonomy_version=_taxonomy_version,
-        validation_status=_validation_status,
-        binary_checkpoint=binary_model_checkpoint,
-        multilabel_checkpoint=multilabel_model_checkpoint,
-        device=analysis.get("device", "cpu"),
-        max_length=512,
-        num_labels=_num_labels,
-        labels=[p["label"] for p in predictions] if predictions else [],
-        thresholds={"multilabel": threshold, "binary": None},
-        inference_time_ms=analysis.get("inference_time_ms", 0.0),
-        classifier_weight_stats={
-            "appears_random_init": result.checkpoint_audit.appears_random_init,
-            "out_proj": result.checkpoint_audit.classifier_params.get("classifier.out_proj.weight", {}),
-            "dense": result.checkpoint_audit.classifier_params.get("classifier.dense.weight", {}),
-        },
-    )
-
-    # ---- Quality info (scoped to model, no longer blocks extraction) ----
-    result.quality = QualityInfo(
-        model_loaded=True,
-        skills_discriminating=discriminating,
-        score_min=result.ia_classification.score_min,
-        score_max=result.ia_classification.score_max,
-        score_mean=result.ia_classification.score_mean,
-        score_std=result.ia_classification.score_std,
-        offers_sufficient=len(normalized_offers) >= THRESHOLDS.min_offers_for_conclusion,
-        warnings=result.ia_classification.warnings,
-    )
-
-    # ---- Territorial market (independent) ----
-    if territorial_stats:
-        market_skills_sorted = sorted(
-            territorial_stats.skill_counts.items(),
-            key=lambda item: (-item[1], item[0]),
-        )
-        top_skills = [
-            MarketSkillInfo(
-                label=label,
-                offer_count=count,
-                share_percent=round(
-                    count / territorial_stats.offer_count * 100, 2
-                ) if territorial_stats.offer_count else 0.0,
-            )
-            for label, count in market_skills_sorted[:20]
-        ]
-        robust = 'forte' if territorial_stats.offer_count >= THRESHOLDS.statistical_robustness_min else (
-            'moyenne' if territorial_stats.offer_count >= THRESHOLDS.min_offers_for_conclusion else 'faible'
-        )
-        alert = ''
-        if territorial_stats.offer_count < THRESHOLDS.min_offers_for_conclusion:
-            alert = (
-                f"Nombre d'offres trop faible ({territorial_stats.offer_count}) "
-                "pour une analyse territoriale fiable."
-            )
-        elif territorial_stats.offer_count < THRESHOLDS.statistical_robustness_min:
-            alert = (
-                f"Volume d'offres modere ({territorial_stats.offer_count}). "
-                "Les tendances restent indicatives."
-            )
-        result.territorial_market = TerritorialMarketInfo(
-            territory=departement,
-            period='Derniers mois (source: France Travail)',
-            offer_count=territorial_stats.offer_count,
-            exploitable_offers=len(normalized_offers),
-            top_skills=top_skills,
-            contract_types=getattr(territorial_stats, 'contract_types', {}),
-            statistical_robustness=robust,
-            alert=alert,
-        )
-
-    # ---- Comparison and recommendations (uses skill_extraction, NOT ia_classifier) ----
-    if recommendation and result.comparison_available:
-        formation_labels = extracted_labels_normalized | extracted_tools_normalized
-        market_lookup = {}
-        for ms in recommendation.market_skills:
-            market_lookup[normalize_skill_label(ms.label)] = ms
-
-        comparison_items: list[MarketComparisonItem] = []
-        all_compared_labels = set()
-
-        for skill_key, ms in market_lookup.items():
-            in_formation = skill_key in formation_labels
-            detection_conf = 0.0
-            for es in result.skill_extraction.skills:
-                if normalize_skill_label(es.normalized_label) == skill_key:
-                    detection_conf = es.confidence
-                    break
-            if detection_conf == 0.0:
-                for es_t in result.skill_extraction.tools:
-                    if normalize_skill_label(es_t.normalized_label) == skill_key:
-                        detection_conf = es_t.confidence
-                        break
-            coverage = 'complete' if in_formation else 'absente'
-            priority = 'haute' if ms.offer_count >= 5 else 'moyenne'
-            comparison_items.append(MarketComparisonItem(
-                skill=ms.label,
-                in_formation=in_formation,
-                detection_confidence=detection_conf,
-                frequency_in_offers=ms.share_percent,
-                offer_count=ms.offer_count,
-                coverage_level=coverage,
-                priority=priority,
-            ))
-            all_compared_labels.add(skill_key)
-
-        covered = [c for c in comparison_items if c.in_formation]
-        overrepresented = [
-            c for c in comparison_items
-            if c.in_formation and c.frequency_in_offers < 5.0
-        ]
-        missing = [c for c in comparison_items if not c.in_formation]
-
-        result.formation_market_comparison = comparison_items
-        result.comparison_categories = {
-            'covered': covered,
-            'overrepresented': overrepresented,
-            'missing': missing,
-        }
-        result.missing_skills = [
-            MarketSkillInfo(label=c.skill, offer_count=c.offer_count, share_percent=c.frequency_in_offers)
-            for c in missing
-        ]
-
-        sub_score_values = {}
-        if len(result.skill_extraction.skills) > 0 and len(market_lookup) > 0:
-            coverage_pct = len(covered) / max(len(market_lookup), 1)
-            sub_score_values['couverture_competences'] = coverage_pct * 100
-            sub_score_values['pertinence_metier'] = min(100.0, coverage_pct * 120)
-            sub_score_values['adequation_territoriale'] = min(100.0, coverage_pct * 100)
-            sub_score_values['niveau_experience'] = 50.0
-            sub_score_values['employabilite'] = min(100.0, coverage_pct * 150)
-            sub_score_values['actualite_programme'] = 50.0
-            result.global_score = SCORING_WEIGHTS.compute_global(sub_score_values)
-
-        recommendations: list[Recommendation] = []
-        seen_recs: set[str] = set()
-
-        for c in missing[:5]:
-            if c.skill not in seen_recs:
-                seen_recs.add(c.skill)
-                recommendations.append(Recommendation(
-                    type='competence_a_ajouter',
-                    skill=c.skill,
-                    justification=(
-                        f"Competence demandee dans {c.offer_count} offres locales "
-                        f"({c.frequency_in_offers:.1f}%) mais absente de la formation."
-                    ),
-                    impact_estime='eleve' if c.offer_count >= 5 else 'moyen',
-                    offer_count=c.offer_count,
-                    offer_percent=round(c.frequency_in_offers, 1),
-                    priorite='haute' if c.offer_count >= 5 else 'moyenne',
-                    niveau_confiance='forte' if c.offer_count >= 10 else 'moyenne',
-                ))
-
-        for es in result.skill_extraction.skills:
-            skill_key = normalize_skill_label(es.normalized_label)
-            if skill_key not in market_lookup and es.confidence >= 0.70:
-                if es.normalized_label not in seen_recs:
-                    seen_recs.add(es.normalized_label)
-                    recommendations.append(Recommendation(
-                        type='competence_peu_utile_localement',
-                        skill=es.normalized_label,
-                        justification=(
-                            f"Competence '{es.normalized_label}' bien detectee dans la formation "
-                            "mais peu presente dans les offres locales."
-                        ),
-                        impact_estime='faible',
-                        offer_count=0,
-                        offer_percent=0.0,
-                        priorite='basse',
-                        niveau_confiance='moyenne',
-                    ))
-
-        if len(overrepresented) > 0:
-            for c in overrepresented[:3]:
-                if c.skill not in seen_recs:
-                    seen_recs.add(c.skill)
-                    recommendations.append(Recommendation(
-                        type='contenu_surrepresente',
-                        skill=c.skill,
-                        justification=(
-                            f"Competence '{c.skill}' presente dans la formation "
-                            f"mais faiblement demandee localement ({c.frequency_in_offers:.1f}% des offres)."
-                        ),
-                        impact_estime='moyen',
-                        offer_count=c.offer_count,
-                        offer_percent=round(c.frequency_in_offers, 1),
-                        priorite='moyenne',
-                        niveau_confiance='moyenne',
-                    ))
-
-        priorities = {'haute': 0, 'moyenne': 1, 'basse': 2}
-        recommendations.sort(key=lambda r: (priorities.get(r.priorite, 99), -r.offer_count))
-        result.recommendations = recommendations
-
-    # ---- Summary ----
-    result.summary = {
-        'formation_analysis_status': result.formation_analysis_status,
-        'skill_extraction_status': result.skill_extraction.status,
-        'total_skills_extracted': len(result.skill_extraction.skills),
-        'total_tools_detected': len(result.skill_extraction.tools),
-        'total_ia_categories': len(result.ia_classification.categories),
-        'ia_classification_status': result.ia_classification.status,
-        'ia_classification_discriminating': result.ia_classification.discriminating,
-        'total_skills_detected': len(ia_detected_skills),
-        'total_skills_low_confidence': len(ia_low_confidence_skills),
-        'total_skills_indeterminate': len(ia_indeterminate_skills),
-        'total_skills_rejected': len(ia_rejected_skills),
-        'total_offers_analyzed': len(normalized_offers),
-        'classification_state': class_state['state'],
-        'global_score': result.global_score.get('global_score') if result.global_score else None,
-        'inference_time_ms': analysis.get('inference_time_ms', 0.0),
-        'analyzed_at': datetime.now(timezone.utc).isoformat(),
-    }
-
-    return result
 
 
 def normalize_skill_label(label: str) -> str:
@@ -683,6 +329,7 @@ def create_app(
     app.extensions['deepforma_predictor'] = predictor
     app.extensions['deepforma_predictor_error'] = predictor_error
     app.extensions['recommendation_service'] = RecommendationService()
+    app.extensions['certification_market_comparator'] = CertificationMarketComparator()
     app.extensions['market_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
     app.extensions['france_travail_client_factory'] = france_travail_client_factory or _build_france_travail_client
 
@@ -1005,6 +652,7 @@ def create_app(
         market_offers_used: list[dict[str, Any]] = []
         market_offers_preview: list[dict[str, Any]] = []
         market_offers_more_count = 0
+        market_analysis = None
 
         if not model_only:
             keyword_candidates = market_keyword_candidates or ([keywords] if keywords else [None])
@@ -1076,14 +724,19 @@ def create_app(
 
                 service: RecommendationService = app.extensions['recommendation_service']
                 # Comparison uses open-extracted skills (normalized), NOT the 18 sigmoid outputs
-                extracted_labels = [s.normalized_label for s in skill_extraction.skills]
-                extracted_labels += [s.normalized_label for s in skill_extraction.tools]
-                recommendation = service.compare(extracted_labels, normalized_offers)
-                territorial_stats = compute_territorial_stats(normalized_offers, territory_key=departement)
+                market_context = build_market_context(
+                    skill_extraction=skill_extraction,
+                    normalized_offers=normalized_offers,
+                    departement=departement,
+                    recommendation_service=service,
+                )
+                recommendation = market_context['recommendation']
+                market_analysis = market_context['market_analysis']
+                territorial_stats = market_context['territorial_stats']
                 market_status = 'ok'
                 market_offers_used = normalized_offers
-                market_offers_preview = normalized_offers[:10]
-                market_offers_more_count = max(len(normalized_offers) - len(market_offers_preview), 0)
+                market_offers_preview = market_context['market_offers_preview']
+                market_offers_more_count = market_context['market_offers_more_count']
                 break
 
             if not normalized_offers and market_error is None:
@@ -1103,6 +756,7 @@ def create_app(
                 'market_offers_more_count': market_offers_more_count,
                 'territorial_stats': territorial_stats,
                 'recommendation': recommendation,
+                'market_analysis': market_analysis,
                 'market_status': market_status,
                 'market_error': market_error,
             },
@@ -1578,6 +1232,100 @@ def create_app(
         uploaded.save(temp_path)
         analysis = referential_import_service.analyze(temp_path)
         return _render_referential_import_context(analysis, source_path=str(temp_path))
+
+    @app.route('/admin/ai-certification-market-comparison', methods=['GET', 'POST'])
+    @require_admin_auth
+    def admin_ai_certification_market_comparison():
+        def _split_form_values(raw: str | None) -> list[str]:
+            if not raw:
+                return []
+            parts = [part.strip() for part in re.split(r'[\n,;|]+', raw) if part and part.strip()]
+            return [part for part in parts if part]
+
+        def _parse_int(value: str | None) -> int | None:
+            value = clean_text(value)
+            if not value:
+                return None
+            try:
+                return int(value)
+            except ValueError:
+                return None
+
+        job_titles_default = 'ingénieur intelligence artificielle,AI Engineer,Machine Learning Engineer,Data Scientist,MLOps Engineer,ingénieur Machine Learning,ingénieur NLP,ingénieur Deep Learning,ingénieur IA générative,Data Engineer IA,chef de projet IA'
+        rome_codes_default = 'M1805'
+        territory = clean_text(request.values.get('territory') or '75056')
+        commune = clean_text(request.values.get('commune') or '') or None
+        departement = clean_text(request.values.get('departement') or '') or None
+        if not commune and not departement:
+            if len(territory) == 5 and territory.isdigit():
+                commune = territory
+            elif len(territory) == 2 and territory.isdigit():
+                departement = territory
+        radius_km = _parse_int(request.values.get('radius_km'))
+        date_min = clean_text(request.values.get('date_min') or '') or None
+        date_max = clean_text(request.values.get('date_max') or '') or None
+        job_titles = _split_form_values(request.values.get('job_titles') or job_titles_default)
+        rome_codes = _split_form_values(request.values.get('rome_codes') or rome_codes_default)
+        max_pages = _parse_int(request.values.get('max_pages')) or DEFAULT_MAX_PAGES
+        max_offers = _parse_int(request.values.get('max_offers')) or DEFAULT_MAX_OFFERS
+        page_size = _parse_int(request.values.get('page_size')) or DEFAULT_PAGE_SIZE
+        report = None
+        output_paths: dict[str, Path] | None = None
+        source_queries: list[str] = []
+        error = None
+        if request.method == 'POST':
+            try:
+                client = get_market_client()
+                offers, source_queries = collect_market_offers(
+                    client,
+                    commune=commune,
+                    departement=departement,
+                    distance_km=radius_km,
+                    date_min=date_min,
+                    date_max=date_max,
+                    job_titles=job_titles,
+                    rome_codes=rome_codes,
+                    max_pages=max_pages,
+                    max_offers=max_offers,
+                    page_size=page_size,
+                )
+                comparator: CertificationMarketComparator = app.extensions['certification_market_comparator']
+                territory_label = ' / '.join([part for part in [commune, departement, territory] if part])
+                report = comparator.compare(
+                    offers,
+                    territory=territory_label,
+                    radius_km=radius_km,
+                    date_min=date_min,
+                    date_max=date_max,
+                    job_titles=job_titles,
+                    rome_codes=rome_codes,
+                    source_queries=source_queries,
+                )
+                output_paths = write_comparison_outputs(report, PROJECT_ROOT / 'data' / 'reports' / 'ai_certification_market')
+            except ValueError as exc:
+                error = str(exc)
+            except RuntimeError as exc:
+                error = str(exc)
+        return render_template(
+            'admin_ai_certification_market_comparison.html',
+            report=report.to_dict() if report else None,
+            report_obj=report,
+            output_paths=output_paths,
+            error=error,
+            territory=territory,
+            commune=commune or '',
+            departement=departement or '',
+            radius_km=radius_km or '',
+            date_min=date_min or '',
+            date_max=date_max or '',
+            job_titles='\n'.join(job_titles),
+            rome_codes='\n'.join(rome_codes),
+            max_pages=max_pages,
+            max_offers=max_offers,
+            page_size=page_size,
+            dry_run=str(request.values.get('dry_run') or '').lower() in {'1', 'true', 'yes', 'on'},
+            source_queries=source_queries,
+        )
 
     ner_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_ner_candidates.jsonl')
     multilabel_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_multilabel_candidates.jsonl')

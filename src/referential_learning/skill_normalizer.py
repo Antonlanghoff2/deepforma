@@ -81,7 +81,11 @@ class SkillNormalizer:
         if not norm:
             return NormalizationResult(surface_form=text, canonical_name=None, confidence=0.0, referential_id=None, provenance='empty')
 
-        canonical_term, _, _ = canonicalize_term(text)
+        shared_label = normalize_skill_label(text)
+        if shared_label and normalize_for_match(shared_label) == norm:
+            canonical_term = shared_label
+        else:
+            canonical_term, _, _ = canonicalize_term(text)
         if canonical_term and normalize_for_match(canonical_term) == norm:
             return NormalizationResult(surface_form=text, canonical_name=canonical_term, confidence=0.95, referential_id=f'ml-dl::{normalize_for_match(canonical_term)}', provenance='taxonomy_alias')
 

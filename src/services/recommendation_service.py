@@ -6,6 +6,12 @@ from typing import Any, Iterable
 
 from common.text import clean_text, normalize_for_match
 from skills.skill_normalizer import SkillNormalizer
+from services.skill_normalization import (
+    get_skill_normalizer,
+    normalize_offer_skill_labels,
+    normalize_skill_label,
+    normalize_skill_labels,
+)
 
 
 @dataclass(frozen=True)
@@ -28,55 +34,16 @@ class RecommendationReport:
 
 class RecommendationService:
     def __init__(self, normalizer: SkillNormalizer | None = None) -> None:
-        self.normalizer = normalizer or SkillNormalizer()
+        self.normalizer = normalizer or get_skill_normalizer()
 
     def normalize_label(self, label: str) -> str | None:
-        cleaned = clean_text(label)
-        if not cleaned:
-            return None
-        canonical, _, _ = self.normalizer.normalize(cleaned)
-        if canonical:
-            return canonical
-        normalized = normalize_for_match(cleaned)
-        return normalized or None
+        return normalize_skill_label(label, normalizer=self.normalizer)
 
     def normalize_labels(self, labels: Iterable[Any]) -> list[str]:
-        normalized: list[str] = []
-        seen: set[str] = set()
-        for label in labels:
-            if isinstance(label, dict):
-                candidate = label.get('label') or label.get('canonical_label') or label.get('name')
-            else:
-                candidate = label
-            normalized_label = self.normalize_label(str(candidate or ''))
-            if not normalized_label:
-                continue
-            key = normalize_for_match(normalized_label)
-            if key and key not in seen:
-                seen.add(key)
-                normalized.append(normalized_label)
-        return normalized
+        return normalize_skill_labels(labels, normalizer=self.normalizer)
 
     def _offer_skill_labels(self, offer: dict[str, Any]) -> list[str]:
-        labels: list[str] = []
-        for key in ('normalized_skills', 'merged_skills', 'structured_skills', 'model_skills'):
-            values = offer.get(key) or []
-            for item in values:
-                if isinstance(item, dict):
-                    candidate = item.get('canonical_label') or item.get('label')
-                else:
-                    candidate = item
-                normalized = self.normalize_label(str(candidate or ''))
-                if normalized:
-                    labels.append(normalized)
-        seen: set[str] = set()
-        deduped: list[str] = []
-        for label in labels:
-            key = normalize_for_match(label)
-            if key and key not in seen:
-                seen.add(key)
-                deduped.append(label)
-        return deduped
+        return normalize_offer_skill_labels(offer, normalizer=self.normalizer)
 
     def summarize_market(self, offers: list[dict[str, Any]]) -> tuple[int, dict[str, int], dict[str, float]]:
         skill_offer_counts: Counter[str] = Counter()
