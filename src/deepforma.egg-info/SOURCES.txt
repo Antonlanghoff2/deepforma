@@ -55,6 +55,7 @@ tests/test_cpf_pipeline.py
 tests/test_cpf_training_input_examples.py
 tests/test_cpf_training_pipeline.py
 tests/test_cpf_v3_import.py
+tests/test_deployment.py
 tests/test_diagnostic.py
 tests/test_france_travail.py
 tests/test_ia_classification_ui.py
