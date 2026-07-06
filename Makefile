@@ -178,15 +178,27 @@ REFERENTIAL_NER_EPOCHS ?= 5
 REFERENTIAL_NER_LEARNING_RATE ?= 2e-5
 REFERENTIAL_NER_DEVICE ?=
 REFERENTIAL_NER_FP16 ?= true
+REFERENTIAL_MULTILABEL_MODEL_OUTPUT ?= models/referential-multilabel
+REFERENTIAL_MULTILABEL_BASE_MODEL ?= camembert-base
+REFERENTIAL_MULTILABEL_BATCH_SIZE ?= 4
+REFERENTIAL_MULTILABEL_EPOCHS ?= 5
+REFERENTIAL_MULTILABEL_LEARNING_RATE ?= 2e-5
+REFERENTIAL_MULTILABEL_DEVICE ?=
+REFERENTIAL_MULTILABEL_FP16 ?= true
 
 audit-referential-pdfs:
 	$(PYTHON) scripts/audit_referential_pdfs.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output-report "$(REFERENTIAL_AUDIT_REPORT)"
 
-build-referential-annotations: audit-referential-pdfs
-	$(PYTHON) scripts/build_referential_annotation_candidates.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output "$(REFERENTIAL_CANDIDATES)"
+build-referential-ner-candidates: audit-referential-pdfs
+	$(PYTHON) scripts/build_referential_ner_candidates.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output "data/annotation/referential_ner_candidates.jsonl"
+
+build-referential-multilabel-candidates: audit-referential-pdfs
+	$(PYTHON) scripts/build_referential_multilabel_candidates.py --input-dir "$(REFERENTIAL_PDF_DIR)" --output "data/annotation/referential_multilabel_candidates.jsonl"
+
+build-referential-annotations: build-referential-ner-candidates
 
 export-referential-training-data:
-	$(PYTHON) scripts/export_approved_referential_annotations.py --input "$(REFERENTIAL_CANDIDATES)" --output-dir "$(REFERENTIAL_TRAIN_DIR)"
+	$(PYTHON) scripts/export_referential_training_data.py --ner-input "data/annotation/referential_ner_candidates.jsonl" --multilabel-input "data/annotation/referential_multilabel_candidates.jsonl" --output-dir "$(REFERENTIAL_TRAIN_DIR)"
 
 train-referential-section-model: export-referential-training-data
 	$(PYTHON) scripts/train_referential_section_classifier.py --train "$(REFERENTIAL_TRAIN_DIR)/referential_sections_train.jsonl" --validation "$(REFERENTIAL_TRAIN_DIR)/referential_sections_validation.jsonl" --test "$(REFERENTIAL_TRAIN_DIR)/referential_sections_test.jsonl" --base-model "$(REFERENTIAL_SECTION_BASE_MODEL)" --output-dir "$(REFERENTIAL_SECTION_MODEL_OUTPUT)" --batch-size $(REFERENTIAL_SECTION_BATCH_SIZE) --epochs $(REFERENTIAL_SECTION_EPOCHS) --learning-rate $(REFERENTIAL_SECTION_LEARNING_RATE) $(if $(strip $(REFERENTIAL_SECTION_DEVICE)),--device "$(REFERENTIAL_SECTION_DEVICE)",) $(if $(filter true,$(REFERENTIAL_SECTION_FP16)),--fp16,)
@@ -194,8 +206,14 @@ train-referential-section-model: export-referential-training-data
 train-referential-ner: export-referential-training-data
 	$(PYTHON) scripts/train_referential_skill_ner.py --train "$(REFERENTIAL_TRAIN_DIR)/referential_ner_train.jsonl" --validation "$(REFERENTIAL_TRAIN_DIR)/referential_ner_validation.jsonl" --test "$(REFERENTIAL_TRAIN_DIR)/referential_ner_test.jsonl" --base-model "$(REFERENTIAL_NER_BASE_MODEL)" --output-dir "$(REFERENTIAL_NER_MODEL_OUTPUT)" --batch-size $(REFERENTIAL_NER_BATCH_SIZE) --gradient-accumulation-steps $(REFERENTIAL_NER_GRADIENT_ACCUMULATION) --epochs $(REFERENTIAL_NER_EPOCHS) --learning-rate $(REFERENTIAL_NER_LEARNING_RATE) $(if $(strip $(REFERENTIAL_NER_DEVICE)),--device "$(REFERENTIAL_NER_DEVICE)",) $(if $(filter true,$(REFERENTIAL_NER_FP16)),--fp16,)
 
+train-referential-multilabel: export-referential-training-data
+	$(PYTHON) scripts/train_referential_multilabel.py --train "$(REFERENTIAL_TRAIN_DIR)/referential_multilabel_train.jsonl" --validation "$(REFERENTIAL_TRAIN_DIR)/referential_multilabel_validation.jsonl" --test "$(REFERENTIAL_TRAIN_DIR)/referential_multilabel_test.jsonl" --base-model "$(REFERENTIAL_MULTILABEL_BASE_MODEL)" --output-dir "$(REFERENTIAL_MULTILABEL_MODEL_OUTPUT)" --batch-size $(REFERENTIAL_MULTILABEL_BATCH_SIZE) --epochs $(REFERENTIAL_MULTILABEL_EPOCHS) --learning-rate $(REFERENTIAL_MULTILABEL_LEARNING_RATE) $(if $(strip $(REFERENTIAL_MULTILABEL_DEVICE)),--device "$(REFERENTIAL_MULTILABEL_DEVICE)",) $(if $(filter true,$(REFERENTIAL_MULTILABEL_FP16)),--fp16,)
+
 evaluate-referential-models: export-referential-training-data
-	$(PYTHON) scripts/evaluate_referential_models.py --sections-test "$(REFERENTIAL_TRAIN_DIR)/referential_sections_test.jsonl" --ner-test "$(REFERENTIAL_TRAIN_DIR)/referential_ner_test.jsonl" --output-dir reports
+	$(PYTHON) scripts/evaluate_referential_models.py --ner-test "$(REFERENTIAL_TRAIN_DIR)/referential_ner_test.jsonl" --multilabel-test "$(REFERENTIAL_TRAIN_DIR)/referential_multilabel_test.jsonl" --ner-model "$(REFERENTIAL_NER_MODEL_OUTPUT)/final" --multilabel-model "$(REFERENTIAL_MULTILABEL_MODEL_OUTPUT)/final" --output-dir reports
+
+test-referential-ml-dl: evaluate-referential-models
+	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_taxonomy.py
 
 import-referential-preview:
 	@if [ -z "$(strip $(REFERENTIAL_INPUT))" ]; then \

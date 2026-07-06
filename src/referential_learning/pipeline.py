@@ -7,13 +7,16 @@ from typing import Any
 
 from common.text import clean_text, split_multi_values
 
+from .ml_dl_taxonomy import canonical_entity_type, dedupe_mentions, find_mentions, infer_families, negative_hint_score
 from .models import AnnotationBlock, AnnotationDocument, AnnotationEntity, AnnotationPage, PdfBlock, PdfDocument
 from .section_labels import classify_section_label
 from .skill_normalizer import SkillNormalizer
 
 DEFAULT_SECTION_MODEL_DIR = Path(os.getenv('REFERENTIAL_SECTION_MODEL_DIR', 'models/referential-section-classifier/current'))
 DEFAULT_NER_MODEL_DIR = Path(os.getenv('REFERENTIAL_NER_MODEL_DIR', 'models/referential-skill-ner/current'))
+DEFAULT_MULTILABEL_MODEL_DIR = Path(os.getenv('REFERENTIAL_MULTILABEL_MODEL_DIR', 'models/referential-multilabel/current'))
 ML_ENABLED_ENV = os.getenv('REFERENTIAL_ML_IMPORT_ENABLED', 'false').lower() in {'1', 'true', 'yes', 'on'}
+ML_SKILL_MODEL_ENABLED = os.getenv('REFERENTIAL_ML_SKILL_MODEL_ENABLED', 'false').lower() in {'1', 'true', 'yes', 'on'}
 
 @lru_cache(maxsize=1)
 def _load_section_model() -> tuple[Any | None, Any | None]:
@@ -30,7 +33,7 @@ def _load_section_model() -> tuple[Any | None, Any | None]:
 
 @lru_cache(maxsize=1)
 def _load_ner_model() -> tuple[Any | None, Any | None]:
-    if not ML_ENABLED_ENV or not DEFAULT_NER_MODEL_DIR.exists():
+    if not (ML_ENABLED_ENV and ML_SKILL_MODEL_ENABLED and DEFAULT_NER_MODEL_DIR.exists()):
         return None, None
     try:
         from transformers import AutoModelForTokenClassification, AutoTokenizer  # type: ignore
@@ -41,10 +44,31 @@ def _load_ner_model() -> tuple[Any | None, Any | None]:
     except Exception:
         return None, None
 
+@lru_cache(maxsize=1)
+def _load_multilabel_model() -> tuple[Any | None, Any | None, dict[str, float] | None]:
+    if not (ML_ENABLED_ENV and ML_SKILL_MODEL_ENABLED and DEFAULT_MULTILABEL_MODEL_DIR.exists()):
+        return None, None, None
+    try:
+        from transformers import AutoModelForSequenceClassification, AutoTokenizer  # type: ignore
+        thresholds_path = DEFAULT_MULTILABEL_MODEL_DIR / 'thresholds.json'
+        thresholds: dict[str, float] = {}
+        if thresholds_path.exists():
+            import json
+            thresholds = json.loads(thresholds_path.read_text(encoding='utf-8'))
+        return (
+            AutoTokenizer.from_pretrained(DEFAULT_MULTILABEL_MODEL_DIR),
+            AutoModelForSequenceClassification.from_pretrained(DEFAULT_MULTILABEL_MODEL_DIR),
+            thresholds,
+        )
+    except Exception:
+        return None, None, None
+
+
 def _block_bbox(block: PdfBlock) -> list[float] | None:
     if block.bbox is None:
         return None
     return [float(item) for item in block.bbox]
+
 
 def _section_from_block(block: PdfBlock) -> AnnotationBlock:
     match = classify_section_label(block.text)
@@ -60,6 +84,7 @@ def _section_from_block(block: PdfBlock) -> AnnotationBlock:
         source_file=block.source_file,
         document_id=block.document_id,
     )
+
 
 def _predict_section_label(text: str) -> tuple[str, float]:
     tokenizer, model = _load_section_model()
@@ -79,6 +104,7 @@ def _predict_section_label(text: str) -> tuple[str, float]:
         match = classify_section_label(text)
         return match.label, match.confidence
 
+
 def _extract_entities_from_text(
     text: str,
     normalizer: SkillNormalizer,
@@ -88,7 +114,7 @@ def _extract_entities_from_text(
     document_id: str,
 ) -> list[AnnotationEntity]:
     entities: list[AnnotationEntity] = []
-    seen: set[tuple[int, int, str]] = set()
+    entity_index: dict[tuple[int, int, str], AnnotationEntity] = {}
 
     def add(
         label: str,
@@ -101,27 +127,34 @@ def _extract_entities_from_text(
         referential_id: str | None = None,
         evidence: str = '',
     ) -> None:
-        key = (start, end, label)
-        if key in seen:
+        key = (start, end, clean_text(canonical or surface).lower())
+        current = entity_index.get(key)
+        if current is not None:
+            if confidence > float(current.confidence):
+                current.predicted_label = label
+                current.approved_label = None
+                current.canonical_name = canonical or current.canonical_name
+                current.confidence = confidence
+                current.referential_id = referential_id or current.referential_id
+                current.evidence = evidence or current.evidence
             return
-        seen.add(key)
-        entities.append(
-            AnnotationEntity(
-                entity_id=f'{label}:{start}:{end}',
-                start=start,
-                end=end,
-                text=surface,
-                predicted_label=label,
-                approved_label=None,
-                canonical_name=canonical,
-                confidence=confidence,
-                page=page_number,
-                source_file=source_file,
-                document_id=document_id,
-                evidence=evidence,
-                referential_id=referential_id,
-            )
+        entity = AnnotationEntity(
+            entity_id=f'{label}:{start}:{end}:{clean_text(canonical or surface)}',
+            start=start,
+            end=end,
+            text=surface,
+            predicted_label=label,
+            approved_label=None,
+            canonical_name=canonical,
+            confidence=confidence,
+            page=page_number,
+            source_file=source_file,
+            document_id=document_id,
+            evidence=evidence,
+            referential_id=referential_id,
         )
+        entity_index[key] = entity
+        entities.append(entity)
 
     import re
 
@@ -142,6 +175,18 @@ def _extract_entities_from_text(
         surface = clean_text(match.group(0))
         add('OTHER', match.start(), match.end(), surface, canonical=surface, confidence=0.72, evidence='cpf_marker')
 
+    for mention in find_mentions(text):
+        label = canonical_entity_type(mention['entity_type'])
+        add(
+            label,
+            int(mention['start']),
+            int(mention['end']),
+            clean_text(mention['text']),
+            canonical=mention['canonical_name'],
+            confidence=0.97,
+            evidence='taxonomy_alias',
+        )
+
     try:
         from skills.open_extractor import extract_skills as extract_open_skills  # type: ignore
         for item in extract_open_skills(text):
@@ -151,9 +196,13 @@ def _extract_entities_from_text(
             if item.type in {'tool', 'tool_with_context'}:
                 label = 'TOOL'
             elif item.type == 'knowledge':
-                label = 'KNOWLEDGE'
+                label = 'SKILL'
             elif item.type == 'soft_skill':
                 label = 'SOFT_SKILL'
+            elif item.type == 'method':
+                label = 'METHOD'
+            elif item.type == 'domain':
+                label = 'DOMAIN'
             else:
                 label = 'SKILL'
             add(
@@ -182,6 +231,7 @@ def _extract_entities_from_text(
                         evidence=result.provenance,
                     )
     return entities
+
 
 def build_annotation_document(document: PdfDocument) -> AnnotationDocument:
     normalizer = SkillNormalizer()
@@ -216,8 +266,17 @@ def build_annotation_document(document: PdfDocument) -> AnnotationDocument:
         metadata={'extraction_method': document.extraction_method},
     )
 
+
 def enrich_with_ml_predictions(document: AnnotationDocument) -> AnnotationDocument:
-    if not ML_ENABLED_ENV:
+    if not ML_ENABLED_ENV or not ML_SKILL_MODEL_ENABLED:
         return document
-    # ML hook reserved for trained models. Current implementation keeps rule-based output as fallback.
+    try:
+        multilabels: list[dict[str, Any]] = []
+        for page in document.pages:
+            page_labels = infer_families(page.text)
+            if page_labels:
+                multilabels.append({'page': page.number, 'labels': page_labels})
+        document.metadata['ml_predictions'] = {'multilabels': multilabels}
+    except Exception as exc:
+        document.metadata['ml_predictions_error'] = str(exc)
     return document

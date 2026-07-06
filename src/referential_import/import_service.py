@@ -574,6 +574,7 @@ class ReferentialImportService:
             "metadata": metadata,
             "semantic_annotation": semantic_annotation,
         }
+        analysis["export"] = build_export_payload(analysis)
         LOGGER.info(
             "[referential-import] validation status=%s blocks=%s activities=%s competencies=%s criteria=%s derived=%s",
             report.status,
@@ -609,5 +610,6 @@ class ReferentialImportService:
             review_status="approved",
         )
         output_path = self.output_dir / f"{document.file_name}.json"
-        output_path.write_text(json.dumps(analysis["export"], ensure_ascii=False, indent=2), encoding="utf-8")
+        export_payload = analysis.get("export") or build_export_payload(analysis)
+        output_path.write_text(json.dumps(export_payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return output_path

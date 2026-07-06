@@ -824,10 +824,131 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
     competency_payload = _json.loads(validated_competencies[0]['payload_json'])
     assert competency_payload['official_label'] == 'Coordonner les parties prenantes'
     assert competency_payload['review_status'] == 'corrected'
-    approved_imports = store.list_imports(status='approved')
+    approved_imports = import_store.list_imports(status='approved')
     assert len(approved_imports) == 1
     assert approved_imports[0]['review_status'] == 'approved'
 
+
+
+
+def test_admin_referential_import_edits_are_persisted(monkeypatch, tmp_path):
+    import json
+    from referential_import.import_service import ReferentialImportService, build_export_payload
+    from referential_import.store import ReferentialImportStore
+    import web_app as web_app_module
+
+    import_store = ReferentialImportStore(tmp_path / 'referential_imports.sqlite3')
+    service = ReferentialImportService(store=import_store, output_dir=tmp_path / 'imports')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    monkeypatch.setattr(web_app_module, 'ReferentialImportService', lambda *args, **kwargs: service)
+
+    document = ReferentialDocument(
+        id='doc-admin-1',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='abc123',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='Titre initial',
+    )
+    competency = OfficialCompetency(
+        code='C1.1',
+        official_label='Coordonner les parties prenantes',
+        normalized_label='coordonner les parties prenantes',
+        block_code='BLOC_1',
+        activity_code='A1.1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    derived = DerivedSkill(
+        label='Coordination',
+        canonical_label='Coordination',
+        category='skill',
+        source_code='C1.1',
+        source_type='competency',
+        surface_form='Coordination',
+        normalized_surface='coordination',
+        confidence=0.9,
+        explicit=True,
+        page_start=1,
+        page_end=1,
+        context='Coordonner les parties prenantes',
+    )
+    competency.derived_skills = [derived]
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-admin-1',
+            source_hash='abc123',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=1,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.8,
+            coverage_score=1.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [ReferentialBlock(code='BLOC_1', label='Bloc 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'activities': [ReferentialActivity(code='A1.1', block_code='BLOC_1', label='Activité 1', page_start=1, page_end=1, confidence=0.9, source_pages=[1])],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [derived],
+        'tools_methods': [derived],
+    }
+    analysis_json = build_export_payload(analysis)
+
+    app = build_app(client_factory=lambda: DummyOfferClient(offers=[]))
+    app.testing = True
+    client = app.test_client()
+    auth = base64.b64encode(b'anton:deepforma').decode('ascii')
+    response = client.post(
+        '/admin/referential-import',
+        data={
+            'action': 'approve',
+            'analysis_json': json.dumps(analysis_json, ensure_ascii=False),
+            'source_path': '/tmp/referentiel.pdf',
+            'validated_title': 'Data Scientist',
+            'validation_note': 'Titre corrigé manuellement',
+            'competency_label__C1.1': '',
+            'remove_competency__C1.1': 'on',
+            'new_competency_labels': 'Modélisation prédictive',
+            'derived_skill_label__0': 'Coordination',
+            'derived_skill_canonical__0': 'Coordination',
+            'derived_skill_category__0': 'skill',
+            'remove_derived_skill__0': 'on',
+            'new_derived_skill_labels': 'TensorFlow | tool | TensorFlow',
+            'validated_by': 'anton',
+        },
+        headers={'Authorization': f'Basic {auth}'},
+    )
+    assert response.status_code == 200
+    approved_imports = import_store.list_imports(status='approved')
+    assert len(approved_imports) == 1
+    document_payload = json.loads(approved_imports[0]['document_json'])
+    assert document_payload['title'] == 'Data Scientist'
+    assert approved_imports[0]['validated_by'] == 'anton'
+    output_path = tmp_path / 'imports' / 'referentiel.pdf.json'
+    assert output_path.exists()
+    output_payload = json.loads(output_path.read_text(encoding='utf-8'))
+    assert output_payload['document']['title'] == 'Data Scientist'
+    assert len(output_payload['competencies']) == 1
+    assert output_payload['competencies'][0]['official_label'] == 'Modélisation prédictive'
+    assert len(output_payload['derived_skills']) == 1
+    assert output_payload['derived_skills'][0]['canonical_label'] == 'TensorFlow'
+    assert output_payload['derived_skills'][0]['category'] == 'tool'
 
 def test_france_travail_error():
     app = build_app(

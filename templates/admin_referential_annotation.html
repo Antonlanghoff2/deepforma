@@ -5,44 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Validation des annotations référentielles</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f1ea; color: #1f2937; }
-    .wrap { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
-    aside { padding: 20px; background: #102a43; color: #f8fafc; }
-    main { padding: 20px; }
-    .card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); }
-    .muted { color: #64748b; font-size: 0.95rem; }
-    .list { list-style: none; padding: 0; margin: 0; }
-    .list li { margin-bottom: 10px; }
-    .list a { color: #cbd5e1; text-decoration: none; }
-    .list a strong { color: #fff; display: block; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-    .item { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; background: #fff; }
-    .item.pending { border-color: #f59e0b; }
-    .item.approved { border-color: #10b981; }
-    .item.rejected { border-color: #ef4444; }
-    input, select, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1; }
-    button { cursor: pointer; font-weight: 600; }
-    .actions { display: flex; gap: 8px; }
-    .actions form { flex: 1; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border-bottom: 1px solid #e2e8f0; text-align: left; padding: 8px; vertical-align: top; }
-    pre { background: #0f172a; color: #e2e8f0; padding: 12px; border-radius: 12px; overflow:auto; }
+    :root { --bg: #f3f1eb; --panel: #ffffff; --ink: #172033; --muted: #607087; --line: #d7dde5; --accent: #0f766e; --danger: #b42318; --warning: #b45309; }
+    body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: var(--ink); background: radial-gradient(circle at top left, #f8f3e7, var(--bg) 38%), linear-gradient(135deg, #eff6ff, transparent 45%); }
+    .wrap { display: grid; grid-template-columns: 360px minmax(0, 1fr); min-height: 100vh; }
+    aside { padding: 20px; background: rgba(15, 23, 42, 0.94); color: #f8fafc; overflow:auto; }
+    main { padding: 20px; overflow:auto; }
+    h1, h2, h3, h4 { margin: 0 0 12px; }
+    .muted { color: var(--muted); font-size: 0.95rem; }
+    .panel { background: var(--panel); border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 16px; padding: 16px; box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08); margin-bottom: 16px; }
+    .nav { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; }
+    .nav a { display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 12px; }
+    .nav a:hover { background: rgba(255,255,255,0.1); }
+    .nav strong { display:block; color: #fff; }
+    .badge { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:4px 10px; font-size: 0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+    .badge.ner { background: rgba(14, 165, 233, 0.15); color: #7dd3fc; }
+    .badge.multilabel { background: rgba(34, 197, 94, 0.15); color: #86efac; }
+    .badge.pending { background: rgba(245, 158, 11, 0.15); color: #fcd34d; }
+    .badge.approved { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; }
+    .badge.rejected { background: rgba(239, 68, 68, 0.15); color: #fca5a5; }
+    .badge.validated { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
+    .grid { display:grid; gap:12px; }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .entity-box, .label-box { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #fff; }
+    .entity-box + .entity-box, .label-box + .label-box { margin-top: 10px; }
+    .entity-highlight { background: rgba(250, 204, 21, 0.32); border-bottom: 2px solid rgba(180, 83, 9, 0.55); padding: 0 2px; border-radius: 4px; }
+    .entity-highlight span { display:block; font-size:0.72rem; font-weight:700; color: #7c2d12; line-height: 1.1; }
+    .text-preview { white-space: pre-wrap; line-height: 1.65; font-size: 1rem; }
+    label { display:block; font-size: 0.9rem; font-weight: 600; margin-top: 8px; }
+    input, select, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); font: inherit; background: #fff; }
+    textarea { min-height: 78px; }
+    button { cursor:pointer; font-weight:700; }
+    .actions { display:flex; gap:8px; margin-top: 10px; }
+    .actions > * { flex:1; }
+    .danger { background:#fff1f2; color: var(--danger); border-color:#fecdd3; }
+    .success { background:#ecfdf5; color:#047857; border-color:#bbf7d0; }
+    .inline { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .inline > * { flex:1; min-width: 180px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { text-align:left; padding:8px 0; border-bottom:1px solid var(--line); vertical-align: top; }
+    code { background:#f1f5f9; padding:2px 5px; border-radius:6px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <aside>
       <h1>Annotations référentielles</h1>
-      <p class="muted">Labels sections: {{ section_labels | join(', ') }}</p>
-      <p class="muted">Labels entités: {{ entity_labels | join(', ') }}</p>
-      {% if error %}<div class="card" style="background:#fee2e2;color:#991b1b;">{{ error }}</div>{% endif %}
-      {% if success %}<div class="card" style="background:#dcfce7;color:#166534;">{{ success }}</div>{% endif %}
-      <ul class="list">
+      <p class="muted">NER, multilabel et validation manuelle par bloc candidat.</p>
+      {% if error %}<div class="panel" style="background:#fef2f2;color:#991b1b;">{{ error }}</div>{% endif %}
+      {% if success %}<div class="panel" style="background:#ecfdf5;color:#065f46;">{{ success }}</div>{% endif %}
+      <ul class="nav">
         {% for record in records %}
         <li>
-          <a href="{{ url_for('admin_referential_annotation', document_id=record.document_id) }}">
-            <strong>{{ record.source_file }}</strong>
-            <span class="muted">{{ record.document_id }} | {{ record.status }}</span>
+          <a href="{{ url_for('admin_referential_annotation', record_id=record.record_id) }}">
+            <strong>{{ record.source_file }} · p{{ record.page }} · {{ record.section }}</strong>
+            <span class="muted">{{ record.kind }} | {{ record.status }} | {{ record.record_id }}</span>
           </a>
         </li>
         {% endfor %}
@@ -50,134 +66,127 @@
     </aside>
     <main>
       {% if selected %}
-      <section class="card">
-        <h2>{{ selected.source_file }}</h2>
-        <p class="muted">Document: {{ selected.document_id }} | Statut: {{ selected.status }} | pages: {{ selected.page_count }}</p>
-        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="grid">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
-          <label>
-            Ajouter une section
-            <input type="text" name="text" placeholder="Texte de section ou bloc">
-          </label>
-          <label>
-            Label section
-            <select name="section_label">
-              {% for label in section_labels %}
-              <option value="{{ label }}">{{ label }}</option>
-              {% endfor %}
-            </select>
-          </label>
-          <button type="submit" name="action" value="add_section">Ajouter la section</button>
-        </form>
-        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="grid" style="margin-top:12px;">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
-          <label>
-            Ajouter une compétence
-            <input type="text" name="text" placeholder="Python, Lean Management, etc.">
-          </label>
-          <label>
-            Type entité
-            <select name="entity_label">
-              {% for label in entity_labels %}
-              <option value="{{ label }}">{{ label }}</option>
-              {% endfor %}
-            </select>
-          </label>
-          <button type="submit" name="action" value="add_entity">Ajouter la compétence</button>
-        </form>
-      </section>
-
-      <section class="card">
-        <h3>Pages</h3>
-        {% for page in selected.pages %}
-        <div class="item">
-          <h4>Page {{ page.number }}</h4>
-          <pre>{{ page.text }}</pre>
+      <section class="panel">
+        <div class="inline" style="margin-bottom: 8px;">
+          <div>
+            <h2>{{ selected.source_file }}</h2>
+            <p class="muted">Record: <code>{{ selected.record_id }}</code> · Document: <code>{{ selected.document_id }}</code> · Page {{ selected.page }} · Section {{ selected.section }}</p>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge {{ selected.kind }}">{{ selected.kind }}</span>
+            <span class="badge {{ selected.status }}">{{ selected.status }}</span>
+          </div>
         </div>
-        {% endfor %}
+        <div class="panel" style="margin:0; background:#fafafa;">
+          <div class="text-preview">{{ selected.highlighted_text | safe }}</div>
+        </div>
       </section>
 
-      <section class="card">
-        <h3>Blocs</h3>
+      {% if selected.kind == 'ner' %}
+      <section class="panel">
+        <h3>Entités détectées</h3>
+        {% if selected.entities %}
         <div class="grid">
-          {% for block in selected.blocks %}
-          <div class="item {{ block.status }}">
-            <strong>{{ block.text }}</strong>
-            <div class="muted">{{ block.block_id }} | page {{ block.page }} | {{ block.predicted_section }} | {{ block.status }}</div>
+          {% for entity in selected.entities %}
+          <div class="entity-box {{ entity.status }}">
+            <div class="inline">
+              <div>
+                <strong>{{ entity.text }}</strong>
+                <div class="muted">{{ entity.start }}-{{ entity.end }} · {{ entity.predicted_label }} · {{ entity.status }}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge {{ entity.status }}">{{ entity.status }}</span>
+              </div>
+            </div>
             <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-              <input type="hidden" name="document_id" value="{{ selected.document_id }}">
-              <input type="hidden" name="block_id" value="{{ block.block_id }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="entity_id" value="{{ entity.entity_id }}">
               <label>
-                Label validé
-                <select name="approved_section">
+                Type validé
+                <select name="approved_label">
                   <option value="">--</option>
-                  {% for label in section_labels %}
-                  <option value="{{ label }}" {% if block.approved_section == label %}selected{% endif %}>{{ label }}</option>
+                  {% for label in entity_labels %}
+                  <option value="{{ label }}" {% if entity.approved_label == label %}selected{% endif %}>{{ label }}</option>
                   {% endfor %}
                 </select>
               </label>
+              <label>
+                Nom canonique
+                <input type="text" name="canonical_name" value="{{ entity.canonical_name }}">
+              </label>
+              <label>
+                Référentiel canonique
+                <input type="text" name="referential_id" value="{{ entity.referential_id or '' }}">
+              </label>
               <div class="actions">
-                <button type="submit" name="action" value="approve_block">Valider</button>
-                <button type="submit" name="action" value="reject_block">Rejeter</button>
+                <button type="submit" name="action" value="approve_entity" class="success">Accepter</button>
+                <button type="submit" name="action" value="reject_entity" class="danger">Rejeter</button>
               </div>
             </form>
           </div>
           {% endfor %}
         </div>
-      </section>
-
-      <section class="card">
-        <h3>Entités</h3>
-        <div class="grid">
-          {% for page in selected.pages %}
-            {% for entity in page.entities %}
-            <div class="item {{ entity.status }}">
-              <strong>{{ entity.text }}</strong>
-              <div class="muted">{{ entity.entity_id }} | page {{ entity.page }} | {{ entity.predicted_label }} | {{ entity.status }}</div>
-              <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="document_id" value="{{ selected.document_id }}">
-                <input type="hidden" name="entity_id" value="{{ entity.entity_id }}">
-                <label>
-                  Label validé
-                  <select name="approved_label">
-                    <option value="">--</option>
-                    {% for label in entity_labels %}
-                    <option value="{{ label }}" {% if entity.approved_label == label %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                  </select>
-                </label>
-                <label>
-                  Nom canonique
-                  <input type="text" name="canonical_name" value="{{ entity.canonical_name }}">
-                </label>
-                <label>
-                  Référentiel
-                  <input type="text" name="referential_id" value="{{ entity.referential_id }}">
-                </label>
-                <div class="actions">
-                  <button type="submit" name="action" value="approve_entity">Valider</button>
-                  <button type="submit" name="action" value="reject_entity">Rejeter</button>
-                </div>
-              </form>
-            </div>
-            {% endfor %}
-          {% endfor %}
-        </div>
-      </section>
-
-      <section class="card">
-        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+        {% else %}
+        <p class="muted">Aucune entité détectée sur ce bloc.</p>
+        {% endif %}
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="panel" style="margin-top:12px;">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <input type="hidden" name="document_id" value="{{ selected.document_id }}">
-          <button type="submit" name="action" value="validate_document">Marquer le document validé</button>
+          <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <h4>Ajouter / corriger une entité</h4>
+          <div class="grid cols-2">
+            <label>Texte <input type="text" name="text" placeholder="SVM"></label>
+            <label>Type <select name="entity_label">{% for label in entity_labels %}<option value="{{ label }}">{{ label }}</option>{% endfor %}</select></label>
+          </div>
+          <div class="grid cols-2">
+            <label>Début <input type="number" name="start" min="0" value="0"></label>
+            <label>Fin <input type="number" name="end" min="0" value="0"></label>
+          </div>
+          <div class="grid cols-2">
+            <label>Nom canonique <input type="text" name="canonical_name" value=""></label>
+            <label>Référentiel <input type="text" name="referential_id" value=""></label>
+          </div>
+          <div class="actions">
+            <button type="submit" name="action" value="add_entity" class="success">Ajouter</button>
+          </div>
         </form>
       </section>
       {% else %}
-      <div class="card">Aucun document à valider.</div>
+      <section class="panel">
+        <h3>Familles proposées</h3>
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <label>
+            Familles validées
+            <select name="approved_labels" multiple size="5">
+              {% for label in family_labels %}
+              <option value="{{ label }}" {% if selected.approved_labels and label in selected.approved_labels %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <label>
+            Résumé des labels
+            <textarea name="labels_summary" placeholder="Machine Learning, Deep Learning">{{ selected.approved_labels | default([], true) | join(', ') }}</textarea>
+          </label>
+          <div class="actions">
+            <button type="submit" name="action" value="save_multilabel" class="success">Enregistrer</button>
+            <button type="submit" name="action" value="approve_multilabel" class="success">Accepter</button>
+            <button type="submit" name="action" value="reject_multilabel" class="danger">Rejeter</button>
+          </div>
+        </form>
+      </section>
+      {% endif %}
+
+      <section class="panel">
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <button type="submit" name="action" value="validate_document" class="success">Valider tous les blocs du document</button>
+        </form>
+      </section>
+      {% else %}
+      <div class="panel">Aucun document à valider.</div>
       {% endif %}
     </main>
   </div>

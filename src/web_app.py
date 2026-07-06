@@ -17,10 +17,11 @@ from typing import Any
 
 import requests
 from flask import Flask, jsonify, render_template, request, Response, redirect, url_for, session
+from markupsafe import Markup, escape
 from werkzeug.exceptions import RequestEntityTooLarge
 
 from analytics.territorial_skills import compute_territorial_stats
-from common.text import clean_text, normalize_for_match
+from common.text import clean_text, normalize_for_match, stable_hash
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
 from france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
@@ -36,6 +37,7 @@ from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skil
 from continual_learning.auth import require_admin_auth
 from continual_learning.store import ContinualLearningStore
 from referential_import import ReferentialImportService
+from referential_import.models import DerivedSkill, OfficialCompetency
 from referential_learning.store import AnnotationStore
 from referential_import.import_service import analysis_from_export, build_export_payload
 from referential_import.pdf_loader import load_pdf_document
@@ -1143,47 +1145,16 @@ def create_app(
             'source_path': source_path,
         }
 
-    def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, referential_success: str | None = None, referential_error: str | None = None):
-        preview = _build_referential_preview_payload(analysis, source_path=source_path)
-        return _render_home_page(
-            referential_analysis=preview,
-            referential_validation={
-                'analysis_json': preview['analysis_json'],
-                'source_path': source_path,
-                'departement': departement,
-                'validated_title': getattr(analysis['document'], 'title', '') or '',
-                'competencies': [
-                    {
-                        'code': competency.code,
-                        'official_label': competency.official_label,
-                        'review_status': competency.review_status,
-                        'block_code': competency.block_code,
-                        'activity_code': competency.activity_code,
-                    }
-                    for competency in analysis.get('competencies', [])
-                ],
-            },
-            referential_success=referential_success,
-            referential_error=referential_error,
-        )
+    def _parse_manual_detected_skill_line(raw_line: str) -> tuple[str, str, str]:
+        parts = [clean_text(part) for part in re.split(r'\s*\|\s*', clean_text(raw_line)) if clean_text(part)]
+        label = parts[0] if parts else ''
+        category = parts[1] if len(parts) > 1 else 'skill'
+        canonical = parts[2] if len(parts) > 2 else label
+        if category not in {'skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'}:
+            category = 'skill'
+        return label, category, canonical
 
-    @app.get('/')
-    def index():
-        return _render_home_page()
-
-    @app.post('/referential/import')
-    def referential_import_preview():
-        uploaded = request.files.get('pdf')
-        if not uploaded or not uploaded.filename:
-            return _render_home_page(referential_error='Fichier PDF manquant.'), 400
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
-        temp_path = Path(temp_file.name)
-        temp_file.close()
-        uploaded.save(temp_path)
-        analysis = referential_import_service.analyze(temp_path)
-        return _render_referential_validation(analysis, source_path=str(temp_path), departement=clean_text(request.form.get('departement') or ''))
-
-    def _apply_referential_validation_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
+    def _apply_referential_import_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
         title = clean_text(form.get('validated_title') or '')
         if title:
             analysis['document'].title = title
@@ -1247,11 +1218,65 @@ def create_app(
                 )
             )
 
+        updated_derived_skills: list[Any] = []
+        for index, skill in enumerate(list(analysis.get('derived_skills', []))):
+            remove_key = f'remove_derived_skill__{index}'
+            if str(form.get(remove_key) or '').strip() in {'1', 'true', 'yes', 'on'}:
+                continue
+            label_key = f'derived_skill_label__{index}'
+            canonical_key = f'derived_skill_canonical__{index}'
+            category_key = f'derived_skill_category__{index}'
+            if label_key in form:
+                label = clean_text(form.get(label_key))
+                if label:
+                    skill.label = label
+                    skill.surface_form = label
+            if canonical_key in form:
+                canonical = clean_text(form.get(canonical_key))
+                if canonical:
+                    skill.canonical_label = canonical
+            if category_key in form:
+                category = clean_text(form.get(category_key))
+                if category in {'skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'}:
+                    skill.category = category
+            skill.normalized_surface = normalize_for_match(skill.surface_form or skill.label)
+            updated_derived_skills.append(skill)
+
+        manual_detected_skills: list[DerivedSkill] = []
+        seen_manual_detected: set[str] = set()
+        for raw_line in clean_text(form.get('new_derived_skill_labels') or '').splitlines():
+            label, category, canonical = _parse_manual_detected_skill_line(raw_line)
+            if not label:
+                continue
+            key = normalize_for_match(canonical or label)
+            if key in seen_manual_detected:
+                continue
+            seen_manual_detected.add(key)
+            manual_detected_skills.append(
+                DerivedSkill(
+                    label=label,
+                    canonical_label=canonical or label,
+                    category=category,
+                    source_code=f'MANUAL_SKILL_{len(manual_detected_skills) + 1}',
+                    source_type='human_review',
+                    surface_form=label,
+                    normalized_surface=normalize_for_match(label),
+                    provenance='human_review',
+                    confidence=1.0,
+                    explicit=True,
+                    page_start=getattr(anchor, 'page_start', 1) if anchor else 1,
+                    page_end=getattr(anchor, 'page_end', 1) if anchor else 1,
+                    context=label,
+                )
+            )
+
+        updated_derived_skills.extend(manual_detected_skills)
+
         kept_codes = {competency.code for competency in updated_competencies}
         analysis['competencies'] = updated_competencies
         analysis['criteria'] = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code in kept_codes]
-        analysis['derived_skills'] = [skill for skill in analysis.get('derived_skills', []) if getattr(skill, 'source_code', '') not in removed_codes]
-        analysis['tools_methods'] = [skill for skill in analysis.get('tools_methods', []) if getattr(skill, 'source_code', '') not in removed_codes]
+        analysis['derived_skills'] = [skill for skill in updated_derived_skills if getattr(skill, 'source_code', '') not in removed_codes]
+        analysis['tools_methods'] = [skill for skill in analysis['derived_skills'] if getattr(skill, 'category', '') in {'tool', 'method', 'regulatory'}]
         if analysis.get('report') is not None:
             analysis['report'].competencies = len(analysis.get('competencies', []))
             analysis['report'].criteria = len(analysis.get('criteria', []))
@@ -1260,6 +1285,49 @@ def create_app(
         for competency in analysis.get('competencies', []):
             competency.evaluation_criteria = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code == competency.code]
         return analysis
+
+    def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, referential_success: str | None = None, referential_error: str | None = None):
+        preview = _build_referential_preview_payload(analysis, source_path=source_path)
+        return _render_home_page(
+            referential_analysis=preview,
+            referential_validation={
+                'analysis_json': preview['analysis_json'],
+                'source_path': source_path,
+                'departement': departement,
+                'validated_title': getattr(analysis['document'], 'title', '') or '',
+                'competencies': [
+                    {
+                        'code': competency.code,
+                        'official_label': competency.official_label,
+                        'review_status': competency.review_status,
+                        'block_code': competency.block_code,
+                        'activity_code': competency.activity_code,
+                    }
+                    for competency in analysis.get('competencies', [])
+                ],
+            },
+            referential_success=referential_success,
+            referential_error=referential_error,
+        )
+
+    @app.get('/')
+    def index():
+        return _render_home_page()
+
+    @app.post('/referential/import')
+    def referential_import_preview():
+        uploaded = request.files.get('pdf')
+        if not uploaded or not uploaded.filename:
+            return _render_home_page(referential_error='Fichier PDF manquant.'), 400
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
+        temp_path = Path(temp_file.name)
+        temp_file.close()
+        uploaded.save(temp_path)
+        analysis = referential_import_service.analyze(temp_path)
+        return _render_referential_validation(analysis, source_path=str(temp_path), departement=clean_text(request.form.get('departement') or ''))
+
+    def _apply_referential_validation_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
+        return _apply_referential_import_edits(analysis, form)
 
     def _build_referential_market_context(referential_analysis: dict[str, Any], pdf_path: Path, departement: str) -> dict[str, Any]:
         document_loader = load_pdf_document(pdf_path)
@@ -1313,6 +1381,7 @@ def create_app(
                     raise ValueError('JSON du référentiel invalide.')
                 referential_analysis = analysis_from_export(export)
                 referential_analysis = _apply_referential_validation_edits(referential_analysis, payload)
+                referential_analysis['export'] = build_export_payload(referential_analysis)
                 validated_by = clean_text(payload.get('validated_by') or 'human_review') or 'human_review'
                 referential_import_service.approve(referential_analysis, validated_by=validated_by)
                 source_path = clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
@@ -1469,14 +1538,7 @@ def create_app(
         )
 
     def _apply_manual_corrections(analysis: dict[str, Any]) -> dict[str, Any]:
-        for competency in analysis.get('competencies', []):
-            label_key = f'competency_label__{competency.code}'
-            status_key = f'competency_status__{competency.code}'
-            if label_key in request.form:
-                competency.official_label = clean_text(request.form.get(label_key)) or competency.official_label
-                competency.normalized_label = clean_text(request.form.get(label_key)) or competency.normalized_label
-            if status_key in request.form:
-                competency.review_status = clean_text(request.form.get(status_key)) or competency.review_status
+        analysis = _apply_referential_import_edits(analysis, request.form)
         for criterion in analysis.get('criteria', []):
             label_key = f'criterion_label__{criterion.code}'
             status_key = f'criterion_status__{criterion.code}'
@@ -1517,16 +1579,90 @@ def create_app(
         analysis = referential_import_service.analyze(temp_path)
         return _render_referential_import_context(analysis, source_path=str(temp_path))
 
-    annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_candidates.jsonl')
-    app.extensions['referential_annotation_store'] = annotation_store
+    ner_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_ner_candidates.jsonl')
+    multilabel_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_multilabel_candidates.jsonl')
+    app.extensions['referential_ner_annotation_store'] = ner_annotation_store
+    app.extensions['referential_multilabel_annotation_store'] = multilabel_annotation_store
 
-    def _render_referential_annotation_index(*, selected_document_id: str | None = None, success: str | None = None, error: str | None = None):
-        records = annotation_store.load()
+    REFERENTIAL_ENTITY_LABELS = ['SKILL', 'METHOD', 'TOOL', 'DOMAIN', 'SOFT_SKILL', 'OTHER']
+    REFERENTIAL_FAMILY_LABELS = ['Machine Learning', 'Deep Learning', 'NLP', 'MLOps', 'Other']
+
+    def _referential_annotation_records() -> list[dict[str, Any]]:
+        records: list[dict[str, Any]] = []
+        for kind, store in (('ner', ner_annotation_store), ('multilabel', multilabel_annotation_store)):
+            for record in store.load():
+                item = dict(record)
+                item['kind'] = kind
+                item['record_id'] = item.get('record_id') or stable_hash(
+                    kind,
+                    item.get('document_id', ''),
+                    item.get('page', 0),
+                    item.get('block_id', ''),
+                    item.get('text', ''),
+                    length=24,
+                )
+                item.setdefault('status', 'pending')
+                records.append(item)
+        records.sort(key=lambda item: (
+            clean_text(item.get('source_file') or ''),
+            int(item.get('page') or 0),
+            clean_text(item.get('section') or ''),
+            clean_text(item.get('record_id') or ''),
+        ))
+        return records
+
+    def _persist_referential_records(records: list[dict[str, Any]]) -> None:
+        ner_rows = [dict(record) for record in records if clean_text(record.get('kind')) == 'ner']
+        multilabel_rows = [dict(record) for record in records if clean_text(record.get('kind')) == 'multilabel']
+        ner_annotation_store.save(ner_rows)
+        multilabel_annotation_store.save(multilabel_rows)
+
+    def _highlight_referential_text(text: str, entities: list[dict[str, Any]] | None) -> Markup:
+        safe_text = clean_text(text)
+        if not safe_text:
+            return Markup('')
+        spans = []
+        for entity in entities or []:
+            try:
+                start = int(entity.get('start', 0))
+                end = int(entity.get('end', 0))
+            except Exception:
+                continue
+            if start < 0 or end <= start or end > len(safe_text):
+                continue
+            spans.append((start, end, entity))
+        spans.sort(key=lambda item: (item[0], -(item[1] - item[0])))
+        parts: list[str] = []
+        cursor = 0
+        for start, end, entity in spans:
+            if start < cursor:
+                continue
+            parts.append(str(escape(safe_text[cursor:start])))
+            label = clean_text(entity.get('approved_label') or entity.get('predicted_label') or '') or 'OTHER'
+            canonical = clean_text(entity.get('canonical_name') or '')
+            annotation = f"{label}"
+            if canonical and canonical != label:
+                annotation = f"{label} · {canonical}"
+            parts.append(
+                f"<mark class='entity-highlight entity-{normalize_for_match(label)}'>"
+                f"{escape(safe_text[start:end])}"
+                f"<span>{escape(annotation)}</span>"
+                f"</mark>"
+            )
+            cursor = end
+        parts.append(str(escape(safe_text[cursor:])))
+        return Markup(''.join(parts))
+
+    def _render_referential_annotation_index(*, selected_record_id: str | None = None, success: str | None = None, error: str | None = None):
+        records = _referential_annotation_records()
         selected = None
-        if selected_document_id:
-            selected = next((record for record in records if record.get('document_id') == selected_document_id), None)
+        if selected_record_id:
+            selected = next((record for record in records if clean_text(record.get('record_id') or '') == clean_text(selected_record_id)), None)
         if selected is None and records:
             selected = records[0]
+        if selected is not None:
+            selected = dict(selected)
+            selected['highlighted_text'] = _highlight_referential_text(selected.get('text', ''), selected.get('entities', []))
         return render_template(
             'admin_referential_annotation.html',
             records=records,
@@ -1534,107 +1670,96 @@ def create_app(
             success=success,
             error=error,
             section_labels=['TITLE', 'PROVIDER', 'REFERENCE', 'DURATION', 'LEVEL', 'FORMAT', 'PRICE', 'CPF', 'CERTIFICATION', 'PUBLIC', 'PREREQUISITES', 'OBJECTIVES', 'PROGRAM', 'MODULE', 'SKILLS', 'TOOLS', 'DOMAINS', 'FOOTER', 'OTHER'],
-            entity_labels=['SKILL', 'SOFT_SKILL', 'TOOL', 'METHOD', 'KNOWLEDGE', 'DOMAIN', 'DEGREE', 'CERTIFICATION', 'DURATION', 'PRICE', 'REFERENCE', 'PROVIDER', 'OTHER'],
+            entity_labels=REFERENTIAL_ENTITY_LABELS,
+            family_labels=REFERENTIAL_FAMILY_LABELS,
         )
 
     @app.get('/admin/referential-annotation')
     @require_admin_auth
     def admin_referential_annotation():
-        return _render_referential_annotation_index(selected_document_id=request.args.get('document_id'))
+        return _render_referential_annotation_index(selected_record_id=request.args.get('record_id'))
 
-    def _update_annotation_status(record: dict[str, Any], *, document_id: str, action: str, form: Any) -> None:
-        if action == 'approve_block':
-            block_id = clean_text(form.get('block_id') or '')
-            approved_section = clean_text(form.get('approved_section') or '')
-            for block in record.get('blocks', []):
-                if block.get('block_id') == block_id:
-                    block['approved_section'] = approved_section or block.get('predicted_section')
-                    block['status'] = 'approved'
-        elif action == 'reject_block':
-            block_id = clean_text(form.get('block_id') or '')
-            for block in record.get('blocks', []):
-                if block.get('block_id') == block_id:
-                    block['status'] = 'rejected'
-        elif action == 'approve_entity':
-            entity_id = clean_text(form.get('entity_id') or '')
-            approved_label = clean_text(form.get('approved_label') or '')
-            canonical_name = clean_text(form.get('canonical_name') or '')
-            referential_id = clean_text(form.get('referential_id') or '')
-            for page in record.get('pages', []):
-                for entity in page.get('entities', []):
-                    if entity.get('entity_id') == entity_id:
+    def _update_annotation_status(record: dict[str, Any], *, action: str, form: Any) -> None:
+        kind = clean_text(record.get('kind') or 'ner')
+        if kind == 'ner':
+            if action == 'approve_entity':
+                entity_id = clean_text(form.get('entity_id') or '')
+                approved_label = clean_text(form.get('approved_label') or '')
+                canonical_name = clean_text(form.get('canonical_name') or '')
+                referential_id = clean_text(form.get('referential_id') or '')
+                for entity in record.get('entities', []):
+                    current_id = clean_text(entity.get('entity_id') or '')
+                    if current_id and current_id == entity_id:
                         entity['approved_label'] = approved_label or entity.get('predicted_label')
                         entity['canonical_name'] = canonical_name or entity.get('canonical_name')
                         entity['referential_id'] = referential_id or entity.get('referential_id')
                         entity['status'] = 'approved'
-        elif action == 'reject_entity':
-            entity_id = clean_text(form.get('entity_id') or '')
-            for page in record.get('pages', []):
-                for entity in page.get('entities', []):
-                    if entity.get('entity_id') == entity_id:
+            elif action == 'reject_entity':
+                entity_id = clean_text(form.get('entity_id') or '')
+                for entity in record.get('entities', []):
+                    if clean_text(entity.get('entity_id') or '') == entity_id:
                         entity['status'] = 'rejected'
-        elif action == 'add_section':
-            text_value = clean_text(form.get('text') or '')
-            label = clean_text(form.get('section_label') or 'OTHER') or 'OTHER'
-            if text_value:
-                record.setdefault('blocks', []).append({
-                    'block_id': f'manual-block-{len(record.get("blocks", [])) + 1}',
-                    'page': int(form.get('page') or 1),
-                    'bbox': None,
-                    'text': text_value,
-                    'predicted_section': label,
-                    'confidence': 1.0,
-                    'approved_section': label,
-                    'status': 'approved',
-                    'order': len(record.get('blocks', [])) + 1,
-                    'source_file': record.get('source_file', ''),
-                    'document_id': document_id,
-                })
-        elif action == 'add_entity':
-            text_value = clean_text(form.get('text') or '')
-            if text_value:
-                record.setdefault('pages', [])
-                if not record['pages']:
-                    record['pages'].append({'number': 1, 'text': '', 'blocks': [], 'entities': []})
-                page = record['pages'][0]
-                page.setdefault('entities', []).append({
-                    'entity_id': f'manual-entity-{len(page.get("entities", [])) + 1}',
-                    'start': int(form.get('start') or 0),
-                    'end': int(form.get('end') or len(text_value)),
-                    'text': text_value,
-                    'predicted_label': clean_text(form.get('entity_label') or 'SKILL') or 'SKILL',
-                    'approved_label': clean_text(form.get('entity_label') or 'SKILL') or 'SKILL',
-                    'canonical_name': clean_text(form.get('canonical_name') or text_value) or text_value,
-                    'confidence': 1.0,
-                    'page': int(form.get('page') or 1),
-                    'block_id': clean_text(form.get('block_id') or ''),
-                    'source_file': record.get('source_file', ''),
-                    'document_id': document_id,
-                    'status': 'approved',
-                    'referential_id': clean_text(form.get('referential_id') or ''),
-                    'evidence': clean_text(form.get('evidence') or ''),
-                })
-        elif action == 'validate_document':
-            record['status'] = 'validated'
+            elif action == 'add_entity':
+                text_value = clean_text(form.get('text') or '')
+                if text_value:
+                    record.setdefault('entities', []).append({
+                        'entity_id': f"manual-entity-{len(record.get('entities', [])) + 1}",
+                        'start': int(form.get('start') or 0),
+                        'end': int(form.get('end') or len(text_value)),
+                        'text': text_value,
+                        'predicted_label': clean_text(form.get('entity_label') or 'SKILL') or 'SKILL',
+                        'approved_label': clean_text(form.get('approved_label') or form.get('entity_label') or 'SKILL') or 'SKILL',
+                        'canonical_name': clean_text(form.get('canonical_name') or text_value) or text_value,
+                        'confidence': 1.0,
+                        'page': int(form.get('page') or record.get('page') or 0),
+                        'block_id': clean_text(form.get('block_id') or record.get('block_id') or ''),
+                        'source_file': record.get('source_file', ''),
+                        'document_id': record.get('document_id', ''),
+                        'status': 'approved',
+                        'referential_id': clean_text(form.get('referential_id') or ''),
+                        'evidence': clean_text(form.get('evidence') or ''),
+                    })
+            elif action == 'validate_document':
+                pass
         else:
-            raise ValueError(f'Action inconnue: {action}')
+            if action in {'approve_multilabel', 'save_multilabel'}:
+                approved_labels = [clean_text(label) for label in form.getlist('approved_labels') if clean_text(label)]
+                if not approved_labels:
+                    approved_labels = [clean_text(form.get('approved_labels') or '')] if clean_text(form.get('approved_labels') or '') else []
+                if approved_labels:
+                    record['approved_labels'] = approved_labels
+                    record['status'] = 'approved'
+            elif action == 'reject_multilabel':
+                record['approved_labels'] = []
+                record['status'] = 'rejected'
+            elif action == 'validate_document':
+                pass
 
     @app.post('/admin/referential-annotation/action')
     @require_admin_auth
     def admin_referential_annotation_action():
         _require_valid_csrf()
-        document_id = clean_text(request.form.get('document_id') or '')
+        record_id = clean_text(request.form.get('record_id') or '')
         action = clean_text(request.form.get('action') or '')
-        if not document_id:
-            raise ValueError('document_id requis.')
-        records = annotation_store.load()
-        record = next((item for item in records if item.get('document_id') == document_id), None)
+        if not record_id:
+            raise ValueError('record_id requis.')
+        records = _referential_annotation_records()
+        record = next((item for item in records if clean_text(item.get('record_id') or '') == record_id), None)
         if record is None:
-            raise ValueError('Document introuvable.')
-        _update_annotation_status(record, document_id=document_id, action=action, form=request.form)
-        annotation_store.save(records)
-        return redirect(url_for('admin_referential_annotation', document_id=document_id))
-
+            raise ValueError('Enregistrement introuvable.')
+        _update_annotation_status(record, action=action, form=request.form)
+        for idx, item in enumerate(records):
+            if clean_text(item.get('record_id') or '') == record_id:
+                records[idx] = record
+                break
+        if action == 'validate_document':
+            document_id = clean_text(record.get('document_id') or '')
+            for idx, item in enumerate(records):
+                if clean_text(item.get('document_id') or '') == document_id:
+                    records[idx] = item
+                    records[idx]['status'] = 'validated'
+        _persist_referential_records(records)
+        return redirect(url_for('admin_referential_annotation', record_id=record_id))
 
     continual_store = ContinualLearningStore(PROJECT_ROOT / 'data' / 'continual_learning' / 'continual_learning.sqlite3')
     app.extensions['continual_learning_store'] = continual_store

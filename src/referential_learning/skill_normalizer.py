@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from common.text import clean_text, normalize_for_match
+from .ml_dl_taxonomy import alias_map as ml_dl_alias_map, canonicalize_term
 
 DEFAULT_SKILLS_PATH = Path(__file__).resolve().parents[2] / 'data' / 'referentials' / 'skills.json'
 
@@ -44,6 +45,8 @@ class SkillNormalizer:
             self._index.append((skill, normalize_for_match(label)))
             for alias in skill.get('aliases', []) or []:
                 self._index.append((skill, normalize_for_match(alias)))
+        for alias_norm, canonical in ml_dl_alias_map().items():
+            self._index.append(({'label': canonical, 'skill_id': f'ml-dl::{normalize_for_match(canonical)}'}, alias_norm))
 
         self._model = None
         self._model_ready = False
@@ -77,6 +80,10 @@ class SkillNormalizer:
         norm = normalize_for_match(text)
         if not norm:
             return NormalizationResult(surface_form=text, canonical_name=None, confidence=0.0, referential_id=None, provenance='empty')
+
+        canonical_term, _, _ = canonicalize_term(text)
+        if canonical_term and normalize_for_match(canonical_term) == norm:
+            return NormalizationResult(surface_form=text, canonical_name=canonical_term, confidence=0.95, referential_id=f'ml-dl::{normalize_for_match(canonical_term)}', provenance='taxonomy_alias')
 
         exact_hits: list[dict[str, Any]] = []
         partial_hits: list[tuple[float, dict[str, Any]]] = []

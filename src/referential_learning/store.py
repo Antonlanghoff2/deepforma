@@ -40,14 +40,18 @@ class AnnotationStore:
         self.path.write_text('\n'.join(json.dumps(record, ensure_ascii=False) for record in data) + ('\n' if data else ''), encoding='utf-8')
         return self.path
 
+    def _record_key(self, record: dict[str, Any]) -> str:
+        key = str(record.get('record_id') or record.get('document_id') or '').strip()
+        if not key:
+            raise ValueError('record_id ou document_id manquant')
+        return key
+
     def upsert(self, record: dict[str, Any]) -> None:
         rows = self.load()
-        document_id = record.get('document_id')
-        if not document_id:
-            raise ValueError('document_id manquant')
+        key = self._record_key(record)
         replaced = False
         for index, existing in enumerate(rows):
-            if existing.get('document_id') == document_id:
+            if self._record_key(existing) == key:
                 rows[index] = record
                 replaced = True
                 break
@@ -58,17 +62,17 @@ class AnnotationStore:
     def by_status(self, status: str = 'pending') -> list[dict[str, Any]]:
         return [row for row in self.load() if row.get('status') == status]
 
-    def get(self, document_id: str) -> dict[str, Any] | None:
+    def get(self, record_id: str) -> dict[str, Any] | None:
         for row in self.load():
-            if row.get('document_id') == document_id:
+            if self._record_key(row) == record_id:
                 return row
         return None
 
-    def update_status(self, document_id: str, status: str, *, validated_by: str | None = None) -> dict[str, Any]:
+    def update_status(self, record_id: str, status: str, *, validated_by: str | None = None) -> dict[str, Any]:
         rows = self.load()
         updated: dict[str, Any] | None = None
         for row in rows:
-            if row.get('document_id') == document_id:
+            if self._record_key(row) == record_id:
                 row['status'] = status
                 row['updated_at'] = _now()
                 if validated_by:
@@ -76,6 +80,6 @@ class AnnotationStore:
                 updated = row
                 break
         if updated is None:
-            raise KeyError(document_id)
+            raise KeyError(record_id)
         self.save(rows)
         return updated
