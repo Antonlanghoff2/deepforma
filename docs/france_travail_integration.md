@@ -30,6 +30,33 @@ python -m src.jobs.collect_france_travail_offers \
   --run-model
 ```
 
+Activation du référentiel IA certif pour enrichir les offres :
+
+```bash
+AI_CERTIFICATION_EXTRACTION_ENABLED=true \
+AI_CERTIFICATION_REFERENTIAL_PATH=data/referentials/ai_engineer_certification_2025.json \
+python -m src.jobs.collect_france_travail_offers \
+  --departement 93 \
+  --keywords "intelligence artificielle" \
+  --max-pages 5 \
+  --output data/france_travail/normalized/offers_93_ia.jsonl \
+  --keep-raw \
+  --run-model
+```
+
+Mode comparaison sans écriture :
+
+```bash
+AI_CERTIFICATION_EXTRACTION_ENABLED=true \
+AI_CERTIFICATION_EXTRACTION_DRY_RUN=true \
+python -m src.jobs.collect_france_travail_offers \
+  --departement 93 \
+  --keywords "intelligence artificielle" \
+  --max-pages 5 \
+  --output data/france_travail/normalized/offers_93_ia.jsonl \
+  --keep-raw
+```
+
 Tests:
 
 ```bash
@@ -75,3 +102,9 @@ La récupération s'effectue par plages via l'en-tête `Range`. Le client arrêt
 2. Recharger le normaliseur.
 3. Ajouter si nécessaire des alias et une catégorie.
 
+
+## RNCP / ROME
+- `RNCP_ROME_EXTRACTION_ENABLED=false` active l enrichissement canonique des compétences à partir du référentiel unifié RNCP/ROME.
+- `RNCP_ROME_UNIFIED_REFERENTIAL_PATH=data/referentials/unified/skills.jsonl`
+- `RNCP_ROME_MAPPINGS_PATH=data/referentials/mappings/rncp_rome_links.jsonl`
+- Le pipeline conserve les compétences explicites du texte et ne remplace pas une correspondance exacte fiable par une prédiction faible.

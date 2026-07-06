@@ -1,0 +1,15 @@
+{
+  "source_pdf": "/home/bibi/deepforma/data/raw/Referentiel de certification - Ingenieur en intelligence artificelle janvier 2025.pdf",
+  "sha256": "38e204df89e1069fc76175707f7dc1962c76534f6ed79c556797a2d23dd61fe7",
+  "page_count": 28,
+  "skill_count": 101,
+  "blocks": [
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5A",
+    "B5B"
+  ],
+  "generated_at": "2026-07-06T10:24:51.817836+00:00"
+}

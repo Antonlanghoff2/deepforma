@@ -313,3 +313,26 @@ deploy-candidate:
 
 rollback-model:
 	$(PYTHON) scripts/rollback_continual_model.py --registry-path models/skill-extractor/registry.json --production-link "$(CONTINUAL_PRODUCTION_LINK)" --service-name "$(CONTINUAL_SERVICE_NAME)" --health-url "$(CONTINUAL_HEALTH_URL)"
+
+# ----- RNCP / ROME referentials -----
+import-france-competences:
+	$(PYTHON) scripts/import_france_competences.py --active-only --write
+
+import-rome-referential:
+	$(PYTHON) scripts/import_rome_referential.py --write
+
+map-rncp-to-rome:
+	$(PYTHON) scripts/map_rncp_to_rome.py --write
+
+build-unified-skill-referential:
+	$(PYTHON) scripts/build_unified_skill_referential.py --write
+
+enrich-offers-with-rome-rncp:
+	$(PYTHON) scripts/enrich_offers_with_rome_rncp.py --input data/france_travail/normalized --write
+
+build-rome-rncp-training-dataset:
+	$(PYTHON) scripts/build_rome_rncp_training_dataset.py
+
+train-skill-extractor:
+	$(PYTHON) scripts/train_skill_extractor.py --train data/training/skill_extraction/train.jsonl --validation data/training/skill_extraction/validation.jsonl --test data/training/skill_extraction/test.jsonl
+

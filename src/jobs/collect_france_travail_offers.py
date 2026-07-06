@@ -4,6 +4,7 @@ import argparse
 import csv
 import json
 import logging
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,8 @@ from continual_learning.store import ContinualLearningStore
 from france_travail.client import FranceTravailClient, SearchCriteria
 from france_travail.normalizer import normalize_offer
 from inference.skill_model import SkillModel
+from referentials.offer_skill_enricher import RNCPROMEOfferEnricher
+from skill_extraction.ai_certification_extractor import AICertificationSkillExtractor
 from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skills
 
 
@@ -172,6 +175,14 @@ def run_collection(args: argparse.Namespace) -> dict[str, Any]:
 
     client = FranceTravailClient()
     model = SkillModel() if args.run_model else None
+    ai_cert_enabled = os.getenv('AI_CERTIFICATION_EXTRACTION_ENABLED', 'false').lower() in {'1', 'true', 'yes', 'on'}
+    ai_cert_dry_run = os.getenv('AI_CERTIFICATION_EXTRACTION_DRY_RUN', 'false').lower() in {'1', 'true', 'yes', 'on'}
+    ai_cert_referential = os.getenv('AI_CERTIFICATION_REFERENTIAL_PATH', 'data/referentials/ai_engineer_certification_2025.json')
+    rncp_rome_enabled = os.getenv('RNCP_ROME_EXTRACTION_ENABLED', 'false').lower() in {'1', 'true', 'yes', 'on'}
+    rncp_rome_unified = os.getenv('RNCP_ROME_UNIFIED_REFERENTIAL_PATH', 'data/referentials/unified/skills.jsonl')
+    rncp_rome_mappings = os.getenv('RNCP_ROME_MAPPINGS_PATH', 'data/referentials/mappings/rncp_rome_links.jsonl')
+    ai_cert_extractor = AICertificationSkillExtractor(referential_path=ai_cert_referential) if ai_cert_enabled else None
+    rncp_rome_enricher = RNCPROMEOfferEnricher(rncp_rome_unified, rncp_rome_mappings) if rncp_rome_enabled else None
 
     criteria = SearchCriteria(
         keywords=args.keywords,
@@ -210,20 +221,46 @@ def run_collection(args: argparse.Namespace) -> dict[str, Any]:
             )
         normalized = normalize_offer(offer, model_skills=model_skills)
         explicit_skills = extract_skills_from_text(normalized.offer_text)
+        final_title = normalized.title
+        ai_certification: dict[str, Any] | None = None
+        rncp_rome_extraction: dict[str, Any] | None = None
+        if ai_cert_extractor is not None and not ai_cert_dry_run:
+            ai_certification = ai_cert_extractor.extract(title=normalized.title, description=normalized.description)
+            if not final_title and ai_certification.get("intitule_poste"):
+                final_title = ai_certification["intitule_poste"]
+        if rncp_rome_enricher is not None:
+            rncp_rome_extraction = rncp_rome_enricher.extract(
+                title=normalized.title,
+                description=normalized.description,
+                rome_code=normalized.rome_code,
+                rome_label=normalized.rome_label,
+                structured_skills=normalized.structured_skills,
+                model_skills=model_skills,
+            )
         merged_skills = merge_offer_skills(
             structured_skills=normalized.structured_skills,
             explicit_skills=explicit_skills,
             model_skills=normalized.model_skills,
-            rome_skills=[],
+            rome_skills=[
+                {"label": item.get("canonical_label"), "confidence": item.get("confidence", 0.0)}
+                for item in ((rncp_rome_extraction or {}).get("competences") or [])
+                if item.get("canonical_label")
+            ],
         )
         normalized_dict = normalized.to_dict()
+        normalized_dict["title"] = final_title
         normalized_dict["collected_at"] = collected_at
         normalized_dict["content_version"] = continual_store.normalize_content_version(
-            normalized.title,
+            final_title,
             normalized.description,
             normalized.structured_skills,
         )
         normalized_dict["merged_skills"] = merged_skills
+        if rncp_rome_extraction is not None:
+            normalized_dict["competences"] = rncp_rome_extraction["competences"]
+            normalized_dict["rncp_candidates"] = rncp_rome_extraction["rncp_candidates"]
+        elif ai_certification is not None:
+            normalized_dict["competences"] = ai_certification["competences"]
         normalized_rows.append(normalized_dict)
         enriched_rows.append(
             {
@@ -262,7 +299,7 @@ def run_collection(args: argparse.Namespace) -> dict[str, Any]:
         ]
         offer_result = continual_store.upsert_offer(
             offer_id=normalized.offer_id,
-            title=normalized.title,
+            title=final_title,
             description_original=normalized.description,
             collected_at=collected_at,
             location_label=normalized.location_label,
@@ -282,6 +319,12 @@ def run_collection(args: argparse.Namespace) -> dict[str, Any]:
             validation_status="pending",
             raw_payload=normalized_dict,
         )
+        continual_store.update_offer_title_and_competences(
+            offer_result.offer_row_id,
+            title=final_title,
+            competences=normalized_dict.get("competences") or [],
+        )
+
         for item in structured_payload:
             continual_store.upsert_annotation(
                 offer_row_id=offer_result.offer_row_id,
