@@ -99,8 +99,13 @@ class SkillTaxonomyNormalizer:
         if not norm:
             return None
 
+        shared_label = normalize_skill_label(original)
+        if shared_label and normalize_for_match(shared_label) == norm:
+            direct = self._alias_to_skill.get(norm)
+        else:
+            direct = self._alias_to_skill.get(norm)
+
         # Correspondance exacte d'abord.
-        direct = self._alias_to_skill.get(norm)
         if direct:
             skill_norm = normalize_for_match(direct["label"])
             if not self._is_blocked(norm, skill_norm):

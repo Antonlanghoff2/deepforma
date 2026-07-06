@@ -310,6 +310,41 @@ class ContinualLearningStore:
         offer["annotations"] = annotations
         return offer
 
+    def update_offer_title_and_competences(
+        self,
+        offer_row_id: int,
+        *,
+        title: str | None = None,
+        competences: list[dict[str, Any]] | None = None,
+    ) -> None:
+        now = utcnow()
+        with self.connect() as conn:
+            row = conn.execute(
+                "SELECT title, raw_payload_json FROM continual_learning_offers WHERE id = ?",
+                (offer_row_id,),
+            ).fetchone()
+            if row is None:
+                return
+            current_title = clean_text(row["title"] or "")
+            payload = _loads(row["raw_payload_json"], {})
+            if not isinstance(payload, dict):
+                payload = {}
+            if title is not None:
+                cleaned_title = clean_text(title)
+                if cleaned_title:
+                    current_title = cleaned_title
+                    payload["title"] = cleaned_title
+            if competences is not None:
+                payload["competences"] = competences
+            conn.execute(
+                """
+                UPDATE continual_learning_offers
+                SET title = ?, raw_payload_json = ?, updated_at = ?
+                WHERE id = ?
+                """,
+                (current_title, _json(payload), now, offer_row_id),
+            )
+
     def get_annotation(self, annotation_id: int) -> dict[str, Any] | None:
         with self.connect() as conn:
             row = conn.execute("SELECT * FROM continual_learning_annotations WHERE id = ?", (annotation_id,)).fetchone()

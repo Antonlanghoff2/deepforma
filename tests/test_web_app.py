@@ -824,7 +824,7 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
     competency_payload = _json.loads(validated_competencies[0]['payload_json'])
     assert competency_payload['official_label'] == 'Coordonner les parties prenantes'
     assert competency_payload['review_status'] == 'corrected'
-    approved_imports = import_store.list_imports(status='approved')
+    approved_imports = store.list_imports(status='approved')
     assert len(approved_imports) == 1
     assert approved_imports[0]['review_status'] == 'approved'
 

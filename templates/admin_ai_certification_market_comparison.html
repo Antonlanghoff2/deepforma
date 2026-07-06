@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparaison référentiel IA / marché</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <p class="eyebrow">Deepforma</p>
+      <h1>Comparaison du référentiel IA avec le marché</h1>
+      <p class="lead">Compare le référentiel « Ingénieur en intelligence artificielle (MS) » aux offres France Travail d’un territoire, avec preuve textuelle et écarts exploitables.</p>
+    </section>
+
+    <section class="card">
+      {% if error %}
+      <div class="alert alert-error">{{ error }}</div>
+      {% endif %}
+      <form method="post" class="form-grid">
+        <label class="field">
+          <span>Territoire</span>
+          <input type="text" name="territory" value="{{ territory }}" placeholder="75056 ou 75">
+        </label>
+        <label class="field">
+          <span>Commune</span>
+          <input type="text" name="commune" value="{{ commune }}" placeholder="75056">
+        </label>
+        <label class="field">
+          <span>Département</span>
+          <input type="text" name="departement" value="{{ departement }}" placeholder="75">
+        </label>
+        <label class="field">
+          <span>Rayon (km)</span>
+          <input type="number" name="radius_km" value="{{ radius_km }}" min="0" step="1">
+        </label>
+        <label class="field">
+          <span>Date minimale</span>
+          <input type="date" name="date_min" value="{{ date_min }}">
+        </label>
+        <label class="field">
+          <span>Date maximale</span>
+          <input type="date" name="date_max" value="{{ date_max }}">
+        </label>
+        <label class="field field-full">
+          <span>Intitulés métiers</span>
+          <textarea name="job_titles" rows="4">{{ job_titles }}</textarea>
+        </label>
+        <label class="field field-full">
+          <span>Codes ROME</span>
+          <textarea name="rome_codes" rows="3">{{ rome_codes }}</textarea>
+        </label>
+        <label class="field">
+          <span>Pages max</span>
+          <input type="number" name="max_pages" value="{{ max_pages }}" min="1" step="1">
+        </label>
+        <label class="field">
+          <span>Offres max</span>
+          <input type="number" name="max_offers" value="{{ max_offers }}" min="1" step="1">
+        </label>
+        <label class="field">
+          <span>Taille page</span>
+          <input type="number" name="page_size" value="{{ page_size }}" min="1" step="1">
+        </label>
+        <div class="actions field-full">
+          <button type="submit">Lancer la comparaison</button>
+        </div>
+      </form>
+    </section>
+
+    {% if report %}
+    <section class="card wide">
+      <h2>Résumé</h2>
+      <div class="stat-grid">
+        <div class="stat-block"><span class="stat-value">{{ report.offer_count }}</span><span class="stat-label">Offres analysées</span></div>
+        <div class="stat-block"><span class="stat-value">{{ report.covered_offer_count }}</span><span class="stat-label">Offres couvertes</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(report.global_coverage_score) }}%</span><span class="stat-label">Score global</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(report.covered_weight) }}</span><span class="stat-label">Poids couvert</span></div>
+      </div>
+      <p class="meta-info">Territoire: {{ report.territory }} · Période: {{ report.period or 'Non renseignée' }} · Titres: {{ report.job_titles|length }} · ROME: {{ report.rome_codes|length }}</p>
+      {% if output_paths %}
+      <p class="meta-info">Exports: {{ output_paths.json }}, {{ output_paths.validation_csv }}, {{ output_paths.gaps_csv }}</p>
+      {% endif %}
+    </section>
+
+    <section class="card wide">
+      <h2>Score par bloc</h2>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Bloc</th><th>Compétences</th><th>Couverts</th><th>Poids</th><th>Part marché</th><th>Score</th></tr>
+          </thead>
+          <tbody>
+            {% for block in report.block_summaries %}
+            <tr>
+              <td>{{ block.block }}{% if block.block_name %} · {{ block.block_name }}{% endif %}</td>
+              <td>{{ block.skill_count }}</td>
+              <td>{{ block.covered_skill_count }}</td>
+              <td>{{ '%.2f'|format(block.total_weight) }}</td>
+              <td>{{ '%.1f'|format(block.market_share_percent) }}%</td>
+              <td>{{ '%.1f'|format(block.average_skill_share_percent) }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Compétences demandées</h2>
+      <div class="chips">
+        {% for skill in report.top_demanded_skills[:24] %}
+        <div class="chip {% if skill.status == 'covered' %}chip-tool{% else %}chip-low{% endif %}" tabindex="0">
+          <span>{{ skill.label }}</span>
+          <small>{{ skill.offer_count }} offres · {{ '%.1f'|format(skill.share_percent) }}%</small>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Compétences couvertes</h2>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Compétence</th><th>Catégorie</th><th>Sous-catégorie</th><th>Offres</th><th>Poids</th><th>Preuves</th></tr>
+          </thead>
+          <tbody>
+            {% for skill in report.covered_skills[:20] %}
+            <tr>
+              <td>{{ skill.label }}</td>
+              <td>{{ skill.category or '—' }}</td>
+              <td>{{ skill.subcategory or '—' }}</td>
+              <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
+              <td>{% if skill.evidence_examples %}{{ skill.evidence_examples[0] }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Compétences manquantes</h2>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Offres</th><th>Poids</th></tr>
+          </thead>
+          <tbody>
+            {% for skill in report.missing_skills[:20] %}
+            <tr>
+              <td>{{ skill.label }}</td>
+              <td>{{ skill.block }}</td>
+              <td>{{ skill.category or '—' }}</td>
+              <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Compétences présentes hors référentiel</h2>
+      <div class="chips">
+        {% for skill in report.unmapped_market_skills[:24] %}
+        <div class="chip chip-low" tabindex="0">
+          <span>{{ skill.label }}</span>
+          <small>{{ skill.category or 'Other' }}</small>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Exemples d’offres</h2>
+      <div class="rec-list">
+        {% for offer in report.example_offers[:8] %}
+        <article class="rec-card">
+          <div class="rec-header">
+            <span class="badge badge-green">Offre</span>
+            <span class="rec-skill">{{ offer.title }}</span>
+          </div>
+          <div class="rec-meta">
+            <span>{{ offer.offer_id }}</span>
+            <span>{{ offer.location_label or 'Non renseigné' }}</span>
+            <span>{{ offer.contract_label or 'Non renseigné' }}</span>
+            <span>{{ offer.rome_code or 'ROME non renseigné' }}</span>
+          </div>
+          <p class="rec-justification">Matches: {{ offer.matches|join(', ') if offer.matches else 'Aucun' }}</p>
+          {% if offer.unmatched %}
+          <p class="rec-justification">Hors référentiel: {{ offer.unmatched|join(', ') }}</p>
+          {% endif %}
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% else %}
+    <section class="card">
+      <h2>Aperçu</h2>
+      <p>Lancez la comparaison pour obtenir un score global, un score par bloc et les écarts marché.</p>
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

@@ -40,6 +40,19 @@ CPF_DEVICE ?=
 CPF_GRADIENT_ACCUMULATION ?= 2
 CPF_MIXED_PRECISION ?= true
 
+# ----- France Compétences RNCP/RS -----
+FRANCE_COMPETENCES_DATASET_SLUG ?= repertoire-national-des-certifications-professionnelles-et-repertoire-specifique
+FRANCE_COMPETENCES_INCLUDE_RNCP ?= true
+FRANCE_COMPETENCES_INCLUDE_RS ?= true
+FRANCE_COMPETENCES_ACTIVE_ONLY ?= true
+FRANCE_COMPETENCES_KEEP_EVALUATION ?= false
+FRANCE_COMPETENCES_FORCE_DOWNLOAD ?= false
+FRANCE_COMPETENCES_TIMEOUT ?= 60
+FRANCE_COMPETENCES_RAW_DIR ?= data/raw/france_competences
+FRANCE_COMPETENCES_INTERIM_DIR ?= data/interim/france_competences
+FRANCE_COMPETENCES_PROCESSED_DIR ?= data/processed/france_competences
+FRANCE_COMPETENCES_TRAINING_DIR ?= data/training/france_competences
+
 # ----- IA Classifier variables -----
 IA_DATASET ?= data/raw/Dataset_IA_V9_synth.xlsx
 IA_TAXONOMY ?= config/ia_taxonomy_v2.json
@@ -313,3 +326,42 @@ deploy-candidate:
 
 rollback-model:
 	$(PYTHON) scripts/rollback_continual_model.py --registry-path models/skill-extractor/registry.json --production-link "$(CONTINUAL_PRODUCTION_LINK)" --service-name "$(CONTINUAL_SERVICE_NAME)" --health-url "$(CONTINUAL_HEALTH_URL)"
+
+
+# ----- France Compétences RNCP/RS pipeline -----
+france-competences-download:
+	$(PYTHON) scripts/download_france_competences.py --output-dir "$(FRANCE_COMPETENCES_RAW_DIR)" --dataset-slug "$(FRANCE_COMPETENCES_DATASET_SLUG)" $(if $(filter true,$(FRANCE_COMPETENCES_INCLUDE_RNCP)),,--no-rncp) $(if $(filter true,$(FRANCE_COMPETENCES_INCLUDE_RS)),,--no-rs) $(if $(filter true,$(FRANCE_COMPETENCES_FORCE_DOWNLOAD)),--force,) --timeout $(FRANCE_COMPETENCES_TIMEOUT)
+
+france-competences-inspect:
+	$(PYTHON) scripts/inspect_france_competences_archive.py --input "$(FRANCE_COMPETENCES_RAW_DIR)" --output "$(FRANCE_COMPETENCES_INTERIM_DIR)/archive_report.json"
+
+france-competences-normalize:
+	$(PYTHON) scripts/normalize_france_competences.py --input "$(FRANCE_COMPETENCES_RAW_DIR)" --output-dir "$(FRANCE_COMPETENCES_PROCESSED_DIR)" $(if $(filter true,$(FRANCE_COMPETENCES_KEEP_EVALUATION)),--keep-evaluation,)
+
+france-competences-build-training:
+	$(PYTHON) scripts/build_france_competences_training_dataset.py --skills "$(FRANCE_COMPETENCES_PROCESSED_DIR)/skills.parquet" --output-dir "$(FRANCE_COMPETENCES_TRAINING_DIR)"
+
+france-competences-all: france-competences-download france-competences-inspect france-competences-normalize france-competences-build-training
+
+# ----- RNCP / ROME referentials -----
+import-france-competences:
+	$(PYTHON) scripts/import_france_competences.py --active-only --write
+
+import-rome-referential:
+	$(PYTHON) scripts/import_rome_referential.py --write
+
+map-rncp-to-rome:
+	$(PYTHON) scripts/map_rncp_to_rome.py --write
+
+build-unified-skill-referential:
+	$(PYTHON) scripts/build_unified_skill_referential.py --write
+
+enrich-offers-with-rome-rncp:
+	$(PYTHON) scripts/enrich_offers_with_rome_rncp.py --input data/france_travail/normalized --write
+
+build-rome-rncp-training-dataset:
+	$(PYTHON) scripts/build_rome_rncp_training_dataset.py
+
+train-skill-extractor:
+	$(PYTHON) scripts/train_skill_extractor.py --train data/training/skill_extraction/train.jsonl --validation data/training/skill_extraction/validation.jsonl --test data/training/skill_extraction/test.jsonl
+

@@ -1,26 +1,4 @@
 ,Automatisation,Big Data,Computer Vision,Data Engineering,Data Science,Deep Learning,Ethique IA & RGPD,Gestion de projet IA,IA Generative,LangChain / Agents RAG,Machine Learning,MLOps / Deploiement,NLP / Traitement du langage,No-code / Low-code,Prompt Engineering,Python,Reinforcement Learning,Series temporelles,SQL / Data Engineering,Visualisation
-<<<<<<< HEAD
-Automatisation,5,0,0,0,0,0,1,0,4,0,0,0,0,1,0,0,0,0,0,0
-Big Data,0,31,0,31,30,1,0,0,0,0,27,0,0,0,0,10,0,0,16,19
-Computer Vision,0,0,3,2,0,0,0,0,0,0,3,2,1,0,0,0,0,1,1,0
-Data Engineering,0,31,2,50,36,2,0,0,0,1,40,4,2,1,0,18,1,2,26,27
-Data Science,0,30,0,36,36,1,0,0,0,0,31,0,0,0,0,15,0,0,21,24
-Deep Learning,0,1,0,2,1,2,0,0,0,0,2,0,0,0,0,0,1,0,0,0
-Ethique IA & RGPD,1,0,0,0,0,0,17,12,11,0,0,0,0,0,1,0,0,0,0,0
-Gestion de projet IA,0,0,0,0,0,0,12,25,18,0,0,0,0,2,6,0,0,0,0,0
-IA Generative,4,0,0,0,0,0,11,18,41,0,0,0,0,4,7,0,0,0,0,0
-LangChain / Agents RAG,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,1,1,0
-Machine Learning,0,27,3,40,31,2,0,0,0,1,43,3,2,0,0,18,1,3,26,27
-MLOps / Deploiement,0,0,2,4,0,0,0,0,0,1,3,5,3,0,0,0,0,2,2,0
-NLP / Traitement du langage,0,0,1,2,0,0,0,0,0,1,2,3,3,0,0,0,0,2,2,0
-No-code / Low-code,1,0,0,1,0,0,0,2,4,0,0,0,0,7,3,0,0,0,0,0
-Prompt Engineering,0,0,0,0,0,0,1,6,7,0,0,0,0,3,7,0,0,0,0,0
-Python,0,10,0,18,15,0,0,0,0,0,18,0,0,0,0,18,0,0,18,18
-Reinforcement Learning,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,1,0,0,0
-Series temporelles,0,0,1,2,0,0,0,0,0,1,3,2,2,0,0,0,0,3,2,0
-SQL / Data Engineering,0,16,1,26,21,0,0,0,0,1,26,2,2,0,0,18,0,2,26,24
-Visualisation,0,19,0,27,24,0,0,0,0,0,27,0,0,0,0,18,0,0,24,27
-=======
 Automatisation,6,0,0,1,1,0,1,0,3,0,0,0,0,1,0,0,0,0,0,0
 Big Data,0,36,0,36,34,1,0,0,0,1,31,5,0,0,0,16,0,0,15,22
 Computer Vision,0,0,4,3,0,0,0,0,0,2,4,4,0,0,0,2,1,0,1,0
@@ -41,4 +19,3 @@ Reinforcement Learning,0,0,1,2,0,1,0,0,0,1,2,2,0,0,0,1,2,0,0,0
 Series temporelles,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0
 SQL / Data Engineering,0,15,1,21,20,0,0,0,0,5,21,6,0,0,0,19,0,0,21,20
 Visualisation,0,22,0,27,27,0,0,0,0,4,27,5,0,0,0,21,0,0,20,27
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee

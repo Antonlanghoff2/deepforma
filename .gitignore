@@ -6,6 +6,10 @@ __pycache__/
 
 # Données et artefacts générés
 data/raw/
+data/training/france_competences/*
+data/processed/france_competences/*
+data/interim/france_competences/*
+data/raw/france_competences/*
 data/moncompteformation_catalogueformation.csv
 data/france_travail/
 data/processed/

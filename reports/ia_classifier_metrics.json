@@ -4,17 +4,6 @@
   "num_samples": 117,
   "num_labels": 20,
   "metrics": {
-<<<<<<< HEAD
-    "micro_f1": 0.5784,
-    "macro_f1": 0.5699,
-    "weighted_f1": 0.6021,
-    "micro_precision": 0.51,
-    "macro_precision": 0.5663,
-    "micro_recall": 0.6679,
-    "macro_recall": 0.7012,
-    "micro_average_precision": 0.5622,
-    "macro_average_precision": 0.6926
-=======
     "micro_f1": 0.5764,
     "macro_f1": 0.5782,
     "weighted_f1": 0.6114,
@@ -24,49 +13,37 @@
     "macro_recall": 0.698,
     "micro_average_precision": 0.5861,
     "macro_average_precision": 0.6958
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
   },
   "per_label_metrics": [
     {
       "label": "Automatisation",
       "support": 18,
-      "f1": 0.4348,
+      "f1": 0.5,
       "precision": 1.0,
-<<<<<<< HEAD
-      "recall": 0.2778,
-      "roc_auc": 0.8081,
-=======
       "recall": 0.3333,
       "roc_auc": 0.8272,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "threshold": 0.52,
-      "n_predicted": 5
+      "n_predicted": 6
     },
     {
       "label": "Big Data",
       "support": 15,
-      "f1": 0.6087,
-      "precision": 0.4516,
+      "f1": 0.549,
+      "precision": 0.3889,
       "recall": 0.9333,
-<<<<<<< HEAD
-      "roc_auc": 0.9248,
-      "threshold": 0.6,
-      "n_predicted": 31
-=======
       "roc_auc": 0.9229,
       "threshold": 0.58,
       "n_predicted": 36
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Computer Vision",
       "support": 2,
-      "f1": 0.8,
-      "precision": 0.6667,
+      "f1": 0.6667,
+      "precision": 0.5,
       "recall": 1.0,
       "roc_auc": 1.0,
-      "threshold": 0.61,
-      "n_predicted": 3
+      "threshold": 0.59,
+      "n_predicted": 4
     },
     {
       "label": "Data Engineering",
@@ -74,32 +51,19 @@
       "f1": 0.3051,
       "precision": 0.18,
       "recall": 1.0,
-<<<<<<< HEAD
-      "roc_auc": 0.8477,
-=======
       "roc_auc": 0.8344,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "threshold": 0.5,
       "n_predicted": 50
     },
     {
       "label": "Data Science",
       "support": 23,
-<<<<<<< HEAD
-      "f1": 0.5424,
-      "precision": 0.4444,
-      "recall": 0.6957,
-      "roc_auc": 0.8173,
-      "threshold": 0.61,
-      "n_predicted": 36
-=======
       "f1": 0.5625,
       "precision": 0.439,
       "recall": 0.7826,
       "roc_auc": 0.8228,
       "threshold": 0.59,
       "n_predicted": 41
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Deep Learning",
@@ -107,89 +71,49 @@
       "f1": 0.2,
       "precision": 0.5,
       "recall": 0.125,
-<<<<<<< HEAD
-      "roc_auc": 0.7397,
-=======
       "roc_auc": 0.7466,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "threshold": 0.63,
       "n_predicted": 2
     },
     {
       "label": "Ethique IA & RGPD",
       "support": 31,
-<<<<<<< HEAD
-      "f1": 0.6667,
-      "precision": 0.9412,
-      "recall": 0.5161,
-      "roc_auc": 0.8777,
-      "threshold": 0.6,
-      "n_predicted": 17
-=======
       "f1": 0.6939,
       "precision": 0.9444,
       "recall": 0.5484,
       "roc_auc": 0.871,
       "threshold": 0.59,
       "n_predicted": 18
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Gestion de projet IA",
       "support": 23,
-<<<<<<< HEAD
-      "f1": 0.6667,
-      "precision": 0.64,
-      "recall": 0.6957,
-      "roc_auc": 0.8682,
-      "threshold": 0.59,
-      "n_predicted": 25
-=======
       "f1": 0.7347,
       "precision": 0.6923,
       "recall": 0.7826,
       "roc_auc": 0.8844,
       "threshold": 0.59,
       "n_predicted": 26
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "IA Generative",
       "support": 51,
-<<<<<<< HEAD
-      "f1": 0.8043,
-      "precision": 0.9024,
-      "recall": 0.7255,
-      "roc_auc": 0.932,
-      "threshold": 0.59,
-      "n_predicted": 41
-=======
       "f1": 0.8046,
       "precision": 0.9722,
       "recall": 0.6863,
       "roc_auc": 0.9376,
       "threshold": 0.6,
       "n_predicted": 36
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "LangChain / Agents RAG",
       "support": 6,
-<<<<<<< HEAD
-      "f1": 0.0,
-      "precision": 0.0,
-      "recall": 0.0,
-      "roc_auc": 0.7973,
-      "threshold": 0.53,
-      "n_predicted": 1
-=======
       "f1": 0.1538,
       "precision": 0.1429,
       "recall": 0.1667,
       "roc_auc": 0.8048,
       "threshold": 0.51,
       "n_predicted": 7
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Machine Learning",
@@ -197,33 +121,19 @@
       "f1": 0.3667,
       "precision": 0.2558,
       "recall": 0.6471,
-<<<<<<< HEAD
-      "roc_auc": 0.7124,
-      "threshold": 0.58,
-=======
       "roc_auc": 0.7259,
       "threshold": 0.56,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "n_predicted": 43
     },
     {
       "label": "MLOps / Deploiement",
       "support": 6,
-<<<<<<< HEAD
-      "f1": 0.7273,
-      "precision": 0.8,
-      "recall": 0.6667,
-      "roc_auc": 0.964,
-      "threshold": 0.52,
-      "n_predicted": 5
-=======
       "f1": 0.4444,
       "precision": 0.3333,
       "recall": 0.6667,
       "roc_auc": 0.9264,
       "threshold": 0.5,
       "n_predicted": 12
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "NLP / Traitement du langage",
@@ -231,110 +141,69 @@
       "f1": 0.6667,
       "precision": 1.0,
       "recall": 0.5,
-<<<<<<< HEAD
-      "roc_auc": 0.6826,
-      "threshold": 0.56,
-      "n_predicted": 3
-=======
       "roc_auc": 0.6957,
       "threshold": 0.56,
       "n_predicted": 1
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "No-code / Low-code",
       "support": 4,
-<<<<<<< HEAD
-      "f1": 0.7273,
-      "precision": 0.5714,
-      "recall": 1.0,
-      "roc_auc": 0.9934,
-=======
       "f1": 0.6667,
       "precision": 1.0,
       "recall": 0.5,
       "roc_auc": 0.9912,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "threshold": 0.53,
-      "n_predicted": 7
+      "n_predicted": 2
     },
     {
       "label": "Prompt Engineering",
       "support": 6,
-      "f1": 0.7692,
-      "precision": 0.7143,
+      "f1": 0.6667,
+      "precision": 0.5556,
       "recall": 0.8333,
-<<<<<<< HEAD
-      "roc_auc": 0.9865,
-      "threshold": 0.58,
-      "n_predicted": 7
-=======
       "roc_auc": 0.9925,
       "threshold": 0.57,
       "n_predicted": 9
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Python",
       "support": 17,
-<<<<<<< HEAD
-      "f1": 0.7429,
-      "precision": 0.7222,
-      "recall": 0.7647,
-      "roc_auc": 0.9688,
-      "threshold": 0.64,
-      "n_predicted": 18
-=======
       "f1": 0.75,
       "precision": 0.6522,
       "recall": 0.8824,
       "roc_auc": 0.9706,
       "threshold": 0.61,
       "n_predicted": 23
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Reinforcement Learning",
+      "support": 1,
+      "f1": 0.6667,
+      "precision": 0.5,
+      "recall": 1.0,
+      "roc_auc": 1.0,
+      "threshold": 0.56,
+      "n_predicted": 2
+    },
+    {
+      "label": "Series temporelles",
       "support": 1,
       "f1": 1.0,
       "precision": 1.0,
       "recall": 1.0,
       "roc_auc": 1.0,
-<<<<<<< HEAD
-      "threshold": 0.59,
-=======
       "threshold": 0.58,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "n_predicted": 1
-    },
-    {
-      "label": "Series temporelles",
-      "support": 1,
-      "f1": 0.5,
-      "precision": 0.3333,
-      "recall": 1.0,
-      "roc_auc": 1.0,
-      "threshold": 0.57,
-      "n_predicted": 3
     },
     {
       "label": "SQL / Data Engineering",
       "support": 14,
-<<<<<<< HEAD
-      "f1": 0.6,
-      "precision": 0.4615,
-      "recall": 0.8571,
-      "roc_auc": 0.9071,
-      "threshold": 0.56,
-      "n_predicted": 26
-=======
       "f1": 0.6286,
       "precision": 0.5238,
       "recall": 0.7857,
       "roc_auc": 0.9036,
       "threshold": 0.58,
       "n_predicted": 21
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
     },
     {
       "label": "Visualisation",
@@ -342,65 +211,13 @@
       "f1": 0.5366,
       "precision": 0.4074,
       "recall": 0.7857,
-<<<<<<< HEAD
-      "roc_auc": 0.9015,
-      "threshold": 0.56,
-=======
       "roc_auc": 0.9161,
       "threshold": 0.55,
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
       "n_predicted": 27
     }
   ],
   "proba_distribution": {
     "positive": {
-<<<<<<< HEAD
-      "mean": 0.5812138915061951,
-      "std": 0.06837496906518936,
-      "min": 0.35599851608276367,
-      "max": 0.6845471262931824
-    },
-    "negative": {
-      "mean": 0.4499942362308502,
-      "std": 0.08073445409536362,
-      "min": 0.32481351494789124,
-      "max": 0.6643111705780029
-    }
-  },
-  "training_signal": {
-    "mean_proba_std": 0.0817,
-    "weak_signal_detected": false
-  },
-  "prediction_statistics": {
-    "empty_predictions": 11,
-    "empty_pct": 9.4,
-    "all_labels_predicted": 0,
-    "all_labels_pct": 0.0,
-    "per_label_predicted": [
-      5,
-      31,
-      3,
-      50,
-      36,
-      2,
-      17,
-      25,
-      41,
-      1,
-      43,
-      5,
-      3,
-      7,
-      7,
-      18,
-      1,
-      3,
-      26,
-      27
-    ]
-  },
-  "num_errors_analyzed": 81
-=======
       "mean": 0.5792834162712097,
       "std": 0.0666670948266983,
       "min": 0.34217190742492676,
@@ -446,5 +263,4 @@
     ]
   },
   "num_errors_analyzed": 77
->>>>>>> 6aa820937574aeaf7afddbc71fe87107ec5063ee
 }
