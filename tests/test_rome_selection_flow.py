@@ -1,0 +1,267 @@
+from __future__ import annotations
+
+import json
+import re
+from dataclasses import dataclass
+from io import BytesIO
+
+from referential_import.import_service import build_export_payload
+from referential_import.models import DerivedSkill, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
+from referentials.rome_referential import RomeJob
+from web_app import create_app
+
+
+@dataclass
+class DummyPredictor:
+    def analyze(self, text, threshold=None):
+        return {
+            'binary': {
+                'is_ia': True,
+                'predicted_class': 1,
+                'probability_non_ia': 0.25,
+                'probability_ia': 0.75,
+            },
+            'skills': {
+                'predictions': [
+                    {'label': 'Python', 'probability': 0.91, 'threshold': threshold or 0.35},
+                ],
+                'all_scores': [0.91],
+                'score_min': 0.91,
+                'score_max': 0.91,
+                'score_mean': 0.91,
+                'score_std': 0.0,
+                'inference_time_ms': 42.0,
+                'num_labels': 1,
+                'threshold_applied': threshold or 0.35,
+            },
+            'device': 'cpu',
+            'inference_time_ms': 42.0,
+            'checkpoint_audit': {
+                'config_present': True,
+                'weights_present': True,
+                'weights_size_bytes': 1000000,
+                'architecture_declared': 'CamembertForSequenceClassification',
+                'num_labels_declared': 1,
+                'num_labels_effective': 1,
+                'problem_type': 'multi_label_classification',
+                'id2label_count': 1,
+                'label2id_count': 1,
+                'appears_random_init': False,
+                'body_params_match_base': True,
+                'parameter_errors': [],
+                'classifier_params': {},
+            },
+        }
+
+
+class DummyOfferClient:
+    def iter_offers(self, *args, **kwargs):
+        return iter(())
+
+
+def _build_analysis():
+    document = ReferentialDocument(
+        id='doc-rome',
+        source_path='/tmp/referentiel.pdf',
+        file_name='referentiel.pdf',
+        sha256='abc123',
+        page_count=1,
+        collected_at='2026-07-03T00:00:00+00:00',
+        text_extraction_method='pdftotext-layout',
+        title='Ingénieur en intelligence artificielle',
+    )
+    competency = OfficialCompetency(
+        code='A1-C1',
+        official_label='Organiser la coordination',
+        normalized_label='organiser la coordination',
+        block_code='B1',
+        activity_code='A1',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    activity = ReferentialActivity(
+        code='A1',
+        block_code='B1',
+        label='Coordonner un projet',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    block = ReferentialBlock(
+        code='B1',
+        label='Pilotage',
+        page_start=1,
+        page_end=1,
+        confidence=0.95,
+        source_pages=[1],
+    )
+    derived = DerivedSkill(
+        label='Coordination',
+        canonical_label='Coordination',
+        category='action',
+        source_code='A1-C1',
+        source_type='competency',
+        surface_form='coordination',
+        normalized_surface='coordination',
+        confidence=0.9,
+        explicit=True,
+        page_start=1,
+        page_end=1,
+        context='Organiser la coordination',
+    )
+    competency.derived_skills = [derived]
+    analysis = {
+        'document': document,
+        'report': ImportReport(
+            schema_version='1.0',
+            importer_version='0.1.0',
+            document_id='doc-rome',
+            source_hash='abc123',
+            pages=1,
+            blocks=1,
+            activities=1,
+            competencies=1,
+            criteria=0,
+            derived_skills=1,
+            tools_methods=0,
+            errors=[],
+            warnings=[],
+            review_items=[],
+            score_global=0.8,
+            coverage_score=1.0,
+            duplicate_document=False,
+            extraction_mode='layout',
+        ),
+        'blocks': [block],
+        'activities': [activity],
+        'competencies': [competency],
+        'criteria': [],
+        'derived_skills': [derived],
+        'tools_methods': [derived],
+    }
+    return analysis
+
+
+def build_app(monkeypatch):
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient(),
+        cache_ttl_seconds=60,
+    )
+    monkeypatch.setattr('web_app.RomeService.search', lambda self, query, limit=10: [RomeJob('M1805', 'Data Scientist', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data')])
+    monkeypatch.setattr('web_app.RomeService.get', lambda self, code: RomeJob(code, 'Data Scientist', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data'))
+    monkeypatch.setattr('web_app.fetch_offers_by_rome', lambda *args, **kwargs: [
+        {
+            'offer_id': 'offer-1',
+            'title': 'Data Scientist',
+            'description': 'Travail sur la coordination des données',
+            'normalized_skills': ['Organiser la coordination'],
+            'structured_skills': [{'canonical_label': 'Organiser la coordination'}],
+            'contract_type': 'CDI',
+            'location_label': 'Paris',
+            'department_code': '75',
+            'offer_url': 'https://example.com/offer-1',
+        }
+    ])
+    return app
+
+
+def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
+    import web_app as web_app_module
+    from referential_import.import_service import ReferentialImportService
+
+    analysis = _build_analysis()
+    export_json = json.dumps(build_export_payload(analysis), ensure_ascii=False, indent=2)
+
+    class DummyPage:
+        def __init__(self, text):
+            self.text = text
+
+    class DummyPdf:
+        def __init__(self, pages):
+            self.pages = pages
+
+    monkeypatch.setattr(ReferentialImportService, 'analyze', lambda self, input_path: analysis)
+    monkeypatch.setattr(web_app_module, 'load_pdf_document', lambda path: DummyPdf([DummyPage('Ingénieur en intelligence artificielle\nRéférentiel de compétences')]))
+
+    app = build_app(monkeypatch)
+    client = app.test_client()
+
+    preview_response = client.post(
+        '/referential/import',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+            'departement': '75',
+        },
+        content_type='multipart/form-data',
+    )
+    assert preview_response.status_code == 200
+    preview_html = preview_response.get_data(as_text=True)
+    assert 'Métier cible pour l’analyse du marché' in preview_html
+    match = re.search(r'name="analysis_id" value="([^"]+)"', preview_html)
+    assert match, preview_html
+    analysis_id = match.group(1)
+
+    search_response = client.post(
+        '/analyze',
+        data={
+            'action': 'search_rome_candidates',
+            'analysis_id': analysis_id,
+            'analysis_json': export_json,
+            'source_path': '/tmp/referentiel.pdf',
+            'departement': '75',
+            'rome_query': 'Data Scientist',
+        },
+    )
+    assert search_response.status_code == 200
+    search_html = search_response.get_data(as_text=True)
+    assert 'M1805' in search_html
+    assert 'Data Scientist' in search_html
+
+    confirm_response = client.post(
+        '/analyze',
+        data={
+            'action': 'select_market_target',
+            'analysis_id': analysis_id,
+            'analysis_json': export_json,
+            'source_path': '/tmp/referentiel.pdf',
+            'departement': '75',
+            'rome_code': 'M1805',
+            'rome_label': 'Data Scientist',
+            'territory_code': '75',
+            'territory_label': 'Paris',
+            'radius_km': '20',
+        },
+    )
+    assert confirm_response.status_code == 200
+    confirm_html = confirm_response.get_data(as_text=True)
+    assert 'Code ROME confirmé' in confirm_html
+    assert 'M1805' in confirm_html
+    assert 'Paris' in confirm_html
+
+    result_response = client.post(
+        '/analyze',
+        data={
+            'action': 'run_market_search',
+            'analysis_id': analysis_id,
+            'analysis_json': export_json,
+            'source_path': '/tmp/referentiel.pdf',
+            'departement': '75',
+            'rome_code': 'M1805',
+            'rome_label': 'Data Scientist',
+            'territory_code': '75',
+            'territory_label': 'Paris',
+            'radius_km': '20',
+            'contract_type': 'CDI',
+        },
+    )
+    assert result_response.status_code == 200
+    result_html = result_response.get_data(as_text=True)
+    assert 'Code ROME confirmé: M1805' in result_html
+    assert 'Territoire: Paris' in result_html
+    assert 'Offres utilisées pour l\'étude de marché' in result_html
+    assert 'Organiser la coordination' in result_html
+    assert 'Data Scientist' in result_html

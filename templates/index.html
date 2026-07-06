@@ -50,6 +50,7 @@
       <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
         <input type="hidden" name="action" value="validate_referential">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+        <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
         <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
         <label class="field field-full">
@@ -95,9 +96,109 @@
           </div>
         </div>
         <div class="actions field-full">
-          <button type="submit">Valider le référentiel et lancer l’analyse</button>
+          <button type="submit">Valider le référentiel</button>
         </div>
       </form>
+    </section>
+
+    <section class="card">
+      <h2>Métier cible pour l’analyse du marché</h2>
+      <p>Recherchez un métier, sélectionnez ou saisissez un code ROME, confirmez-le, puis lancez la recherche France Travail.</p>
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
+        <input type="hidden" name="action" value="search_rome_candidates">
+        <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
+        <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+        <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+        <label class="field field-full">
+          <span>Intitulé du métier cible</span>
+          <input type="text" name="rome_query" value="{{ referential_validation.rome_query or referential_validation.validated_title }}" placeholder="Data Scientist, MLOps Engineer...">
+        </label>
+        <div class="actions field-full">
+          <button type="submit">Rechercher un métier</button>
+        </div>
+      </form>
+
+      {% if referential_validation.rome_candidates %}
+      <div class="chips" style="margin-top: 1rem;">
+        {% for item in referential_validation.rome_candidates %}
+        <form method="post" action="{{ url_for('analyze') }}" class="rome-candidate-form" style="display:inline-block; margin:0 0.5rem 0.5rem 0;">
+          <input type="hidden" name="action" value="select_market_target">
+          <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
+          <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+          <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+          <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+          <input type="hidden" name="rome_code" value="{{ item.rome_code }}">
+          <input type="hidden" name="rome_label" value="{{ item.label }}">
+          <input type="hidden" name="territory_code" value="{{ referential_validation.market_target.territory_code or referential_validation.departement or '' }}">
+          <input type="hidden" name="territory_label" value="{{ referential_validation.market_target.territory_label or referential_validation.departement or '' }}">
+          <button type="submit" class="chip chip-tool" style="border:none; background:none; cursor:pointer;">
+            <span>{{ item.rome_code }}</span>
+            <small>{{ item.label }}</small>
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="margin-top: 1rem;">
+        <input type="hidden" name="action" value="select_market_target">
+        <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
+        <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+        <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+        <label class="field">
+          <span>Code ROME</span>
+          <input type="text" name="rome_code" value="{{ referential_validation.market_target.rome_code or '' }}" placeholder="M1805" required>
+        </label>
+        <label class="field">
+          <span>Libellé ROME</span>
+          <input type="text" name="rome_label" value="{{ referential_validation.market_target.rome_label or '' }}" placeholder="Data Scientist">
+        </label>
+        <label class="field">
+          <span>Territoire</span>
+          <input type="text" name="territory_code" value="{{ referential_validation.market_target.territory_code or referential_validation.departement or '' }}" placeholder="75 ou 75056">
+        </label>
+        <label class="field">
+          <span>Libellé territoire</span>
+          <input type="text" name="territory_label" value="{{ referential_validation.market_target.territory_label or '' }}" placeholder="Paris">
+        </label>
+        <label class="field">
+          <span>Rayon (km)</span>
+          <input type="number" name="radius_km" min="0" step="1" value="{{ referential_validation.market_target.radius_km or '' }}" placeholder="20">
+        </label>
+        <label class="field">
+          <span>Type de contrat</span>
+          <input type="text" name="contract_type" value="{{ referential_validation.market_target.contract_type or '' }}" placeholder="CDI, CDD...">
+        </label>
+        <div class="actions field-full">
+          <button type="submit">Confirmer le métier cible</button>
+        </div>
+      </form>
+
+      {% if referential_validation.market_target_confirmed %}
+      <div class="alert alert-success" role="alert" style="margin-top:1rem;">
+        <strong>Code ROME confirmé :</strong> {{ referential_validation.market_target.rome_code }} · {{ referential_validation.market_target.rome_label or 'Libellé non renseigné' }}
+        <br>
+        <strong>Territoire :</strong> {{ referential_validation.market_target.territory_label or referential_validation.market_target.territory_code or referential_validation.departement }}
+      </div>
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="margin-top: 1rem;">
+        <input type="hidden" name="action" value="run_market_search">
+        <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
+        <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+        <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+        <input type="hidden" name="rome_code" value="{{ referential_validation.market_target.rome_code or '' }}">
+        <input type="hidden" name="rome_label" value="{{ referential_validation.market_target.rome_label or '' }}">
+        <input type="hidden" name="territory_code" value="{{ referential_validation.market_target.territory_code or '' }}">
+        <input type="hidden" name="territory_label" value="{{ referential_validation.market_target.territory_label or '' }}">
+        <input type="hidden" name="radius_km" value="{{ referential_validation.market_target.radius_km or '' }}">
+        <input type="hidden" name="contract_type" value="{{ referential_validation.market_target.contract_type or '' }}">
+        <div class="actions field-full">
+          <button type="submit">Lancer la recherche France Travail</button>
+        </div>
+      </form>
+      {% endif %}
     </section>
     {% endif %}
 

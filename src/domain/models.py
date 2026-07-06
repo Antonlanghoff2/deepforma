@@ -44,9 +44,35 @@ class Training:
 class Territory:
     code: str | None = None
     label: str | None = None
+    type: str | None = None
+    radius_km: int | None = None
     department_code: str | None = None
     region_code: str | None = None
     remote_allowed: bool = True
+
+
+@dataclass(frozen=True, slots=True)
+class MarketTarget:
+    rome_code: str
+    rome_label: str | None = None
+    territory: Territory | None = None
+    contract_types: list[str] = field(default_factory=list)
+    period: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class PdfAnalysis:
+    analysis_id: str
+    document_title: str
+    certification_title: str | None = None
+    blocks: list[Any] = field(default_factory=list)
+    skills: list[Skill] = field(default_factory=list)
+    selected_rome_code: str | None = None
+    selected_rome_label: str | None = None
+    territory_code: str | None = None
+    territory_label: str | None = None
+    analysis_status: str = "PDF_ANALYZED"
+    market_search_status: str = "WAITING_FOR_ROME"
 
 
 @dataclass(frozen=True, slots=True)

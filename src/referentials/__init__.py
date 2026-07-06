@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from .ai_certification_referential import AICertificationReferential
+try:
+    from .ai_certification_referential import AICertificationReferential
+except Exception:  # pragma: no cover - optional dependency chain
+    AICertificationReferential = None  # type: ignore[assignment]
 from .france_competences import (
     FranceCompetenceBlock,
     FranceCompetenceCertification,
@@ -11,7 +14,7 @@ from .france_competences import (
 )
 from .offer_skill_enricher import RNCPROMEOfferEnricher
 from .rncp_rome_mapper import RNCPRomeMapper, RNCPRomeMatch
-from .rome_referential import RomeJob, RomeReferentialImporter, RomeSkill
+from .rome_referential import RomeJob, RomeReferentialImporter, RomeService, RomeSkill, get_default_rome_service, validate_rome_code
 from .unified_skill_referential import (
     UnifiedSkill,
     UnifiedSkillReferential,
@@ -34,7 +37,10 @@ __all__ = [
     'RNCPRomeMatch',
     'RomeJob',
     'RomeReferentialImporter',
+    'RomeService',
     'RomeSkill',
+    'get_default_rome_service',
+    'validate_rome_code',
     'UnifiedSkill',
     'UnifiedSkillReferential',
     'UnifiedSkillSourceLink',
