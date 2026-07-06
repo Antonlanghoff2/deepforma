@@ -110,7 +110,7 @@ TOOL_PATTERNS: list[tuple[str, float]] = [
     (r"\b(TensorFlow|PyTorch|Keras|Scikit-learn|scikit-learn|JAX|Spark MLlib)\b", 0.60),
     (r"\b(Docker|Kubernetes|K8s|Jenkins|GitLab CI|GitHub Actions|CircleCI)\b", 0.60),
     (r"\b(AWS|Azure|GCP|Google Cloud|Amazon Web Services|Cloud|Heroku)\b", 0.55),
-    (r"\b(Spark|Kafka|Airbyte|Kestra|Airflow|Hadoop|Flink|Storm)\b", 0.60),
+    (r"\b(Spark|Kafka|Airbyte|Kestra|Airflow|Hadoop|Flink|Storm|DVC|MLflow|MLOps|CI/CD|ONNX|AutoML)\b", 0.60),
     (r"\b(FastAPI|Flask|Django|Express|Spring|Node\.js|React|Vue|Angular)\b", 0.60),
     (r"\b(Jira|Confluence|Trello|Notion|Slack|Teams)\b", 0.50),
     (r"\b(Tableau|Power BI|Looker|Qlik|Metabase|Superset|Grafana)\b", 0.55),

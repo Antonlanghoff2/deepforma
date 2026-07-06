@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "doc-admin-1",
+    "source_path": "/tmp/referentiel.pdf",
+    "file_name": "referentiel.pdf",
+    "sha256": "abc123",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 1,
+    "title": "Data Scientist",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-03T00:00:00+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": "Titre corrigé manuellement"
+  },
+  "blocks": [
+    {
+      "code": "BLOC_1",
+      "label": "Bloc 1",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.9,
+      "text": "",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "code": "A1.1",
+      "block_code": "BLOC_1",
+      "label": "Activité 1",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.9,
+      "text": "",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    }
+  ],
+  "competencies": [
+    {
+      "code": "MANUAL_1",
+      "official_label": "Modélisation prédictive",
+      "normalized_label": "Modélisation prédictive",
+      "block_code": "BLOC_1",
+      "activity_code": "A1.1",
+      "page_start": 1,
+      "page_end": 1,
+      "derived_skills": [],
+      "tools_methods": [],
+      "knowledge_items": [],
+      "evaluation_criteria": [],
+      "confidence": 1.0,
+      "review_status": "approved",
+      "source_pages": [
+        1
+      ],
+      "source_text": "Modélisation prédictive",
+      "provenance": "human_review"
+    }
+  ],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "TensorFlow",
+      "canonical_label": "TensorFlow",
+      "category": "tool",
+      "source_code": "MANUAL_SKILL_1",
+      "source_type": "human_review",
+      "surface_form": "TensorFlow",
+      "normalized_surface": "tensorflow",
+      "provenance": "human_review",
+      "confidence": 1.0,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "TensorFlow"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "TensorFlow",
+      "canonical_label": "TensorFlow",
+      "category": "tool",
+      "source_code": "MANUAL_SKILL_1",
+      "source_type": "human_review",
+      "surface_form": "TensorFlow",
+      "normalized_surface": "tensorflow",
+      "provenance": "human_review",
+      "confidence": 1.0,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "TensorFlow"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "doc-admin-1",
+    "source_hash": "abc123",
+    "pages": 1,
+    "blocks": 1,
+    "activities": 1,
+    "competencies": 1,
+    "criteria": 0,
+    "derived_skills": 1,
+    "tools_methods": 1,
+    "errors": [],
+    "warnings": [],
+    "review_items": [],
+    "score_global": 0.8,
+    "coverage_score": 1.0,
+    "duplicate_document": false,
+    "extraction_mode": "layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [],
+  "errors": []
+}

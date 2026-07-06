@@ -225,3 +225,32 @@ def test_cli_help_runs():
     result = subprocess.run([sys.executable, str(repo_root / "scripts" / "import_referential.py"), "--help"], cwd=repo_root, capture_output=True, text=True, check=False)
     assert result.returncode == 0
     assert "Importeur spécialisé" in result.stdout
+
+
+def test_dst_mle_referential_pdf_regression(tmp_path):
+    from referential_learning.pdf_loader import load_pdf_document
+
+    pdf_path = Path('data/raw/referentiel/03_DataScientest_Machine_Learning_Engineer.pdf')
+    assert pdf_path.exists()
+
+    document = load_pdf_document(pdf_path)
+    assert len(document.pages) == 2
+    assert sum(len(page.blocks) for page in document.pages) > 30
+    assert sum(len(page.text) for page in document.pages) > 1000
+
+    service = ReferentialImportService(store=ReferentialImportStore(tmp_path / 'imports.sqlite3'), output_dir=tmp_path / 'out')
+    analysis = service.analyze(pdf_path)
+    report = analysis['report']
+    metadata = analysis['document']
+
+    assert metadata.provider == 'DataScientest'
+    assert metadata.title == 'Machine Learning Engineer'
+    assert metadata.reference == 'DST-MLE'
+    assert metadata.duration_hours == 560
+    assert metadata.cpf_eligible is True
+    assert report.status == 'review_required'
+
+    skill_labels = {clean_label for clean_label in [item.canonical_label for item in analysis['derived_skills']]}
+    expected = {'Python', 'PyTorch', 'Docker', 'Kubernetes', 'MLflow', 'Cloud', 'MLOps'}
+    assert expected.issubset(skill_labels)
+    assert not any('Compilation à fins de recherche' in item.label for item in analysis['derived_skills'])

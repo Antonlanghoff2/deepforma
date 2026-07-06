@@ -11,6 +11,7 @@ data/france_travail/
 data/processed/
 data/indexes/
 data/training/*.jsonl
+data/annotation/
 data/training/*.npy
 *.faiss
 *.index

@@ -5,29 +5,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Import référentiel</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; background: #f4f1ea; color: #1f2937; }
-    header { padding: 24px 32px; background: linear-gradient(135deg, #1f2937, #0f766e); color: #fff; }
-    main { padding: 24px 32px; display: grid; gap: 20px; }
-    .card { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); }
+    :root {
+      color-scheme: light;
+      --bg: #f4f1ea;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --brand: #0f766e;
+      --border: #d1d5db;
+      --danger: #991b1b;
+      --danger-bg: #fee2e2;
+      --success: #065f46;
+      --success-bg: #d1fae5;
+    }
+    body { font-family: system-ui, sans-serif; margin: 0; background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 30%), var(--bg); color: var(--text); }
+    header { padding: 28px 32px; background: linear-gradient(135deg, #111827, #0f766e); color: #fff; }
+    header p { max-width: 72ch; opacity: 0.92; }
+    main { padding: 24px 32px 40px; display: grid; gap: 20px; }
+    .card { background: var(--panel); border-radius: 18px; padding: 20px; box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); border: 1px solid rgba(148, 163, 184, 0.14); }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
     .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: #e2e8f0; margin-right: 6px; margin-bottom: 6px; font-size: 12px; }
     pre { white-space: pre-wrap; background: #0f172a; color: #e2e8f0; padding: 16px; border-radius: 12px; overflow: auto; }
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     button, .btn { border: 0; border-radius: 10px; padding: 10px 16px; font-weight: 600; cursor: pointer; }
-    .btn-primary { background: #0f766e; color: white; }
-    .btn-secondary { background: #e2e8f0; color: #111827; }
-    input[type=file], input[type=text] { padding: 10px; border: 1px solid #d1d5db; border-radius: 10px; }
-    .muted { color: #6b7280; }
-    .error { color: #991b1b; background: #fee2e2; padding: 12px; border-radius: 12px; }
-    .success { color: #065f46; background: #d1fae5; padding: 12px; border-radius: 12px; }
+    .btn-primary { background: var(--brand); color: white; }
+    input[type=file], input[type=text], textarea, select { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; background: white; color: var(--text); }
+    textarea { min-height: 96px; resize: vertical; }
+    label { display: grid; gap: 6px; font-weight: 600; }
+    .muted { color: var(--muted); }
+    .error { color: var(--danger); background: var(--danger-bg); padding: 12px; border-radius: 12px; }
+    .success { color: var(--success); background: var(--success-bg); padding: 12px; border-radius: 12px; }
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 8px 10px; border-bottom: 1px solid #e5e7eb; text-align: left; vertical-align: top; }
+    th { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .section-heading { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+    .table-wrap { overflow-x: auto; }
+    .table-actions { white-space: nowrap; }
+    .help { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .stack { display: grid; gap: 12px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    @media (max-width: 720px) {
+      main { padding: 16px; }
+      header { padding: 22px 16px; }
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>Import spécialisé des référentiels RNCP</h1>
-    <p>Prévisualisation, contrôle des codes Bloc / Activité / C / CE, puis approbation explicite.</p>
+    <p>Prévisualisation, édition manuelle complète de l’intitulé de poste, des compétences officielles et des compétences détectées, puis approbation explicite.</p>
   </header>
   <main>
     <section class="card">
@@ -55,7 +81,7 @@
         <div><strong>Score global</strong><br>{{ report.score_global }}</div>
         <div><strong>Couverture</strong><br>{{ report.coverage_score }}</div>
       </div>
-      <p><strong>Fichier:</strong> {{ document.file_name }} · <strong>Hash:</strong> {{ document.sha256 }}</p>
+      <p><strong>Fichier:</strong> {{ document.file_name }} · <strong>Hash:</strong> <span class="mono">{{ document.sha256 }}</span></p>
       <p><strong>Mode d'extraction:</strong> {{ document.text_extraction_method }}</p>
       <p><strong>Revue:</strong> {{ document.review_status }}</p>
       <p><strong>Alertes:</strong>
@@ -70,115 +96,131 @@
       </p>
     </section>
 
-    <section class="card">
-      <h2>Blocs détectés</h2>
-      <table>
-        <thead><tr><th>Code</th><th>Libellé</th><th>Pages</th><th>Confiance</th></tr></thead>
-        <tbody>
-          {% for item in blocks %}
-          <tr><td>{{ item.code }}</td><td>{{ item.label }}</td><td>{{ item.page_start }}-{{ item.page_end }}</td><td>{{ item.confidence }}</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>Activités</h2>
-      <table>
-        <thead><tr><th>Code</th><th>Bloc</th><th>Libellé</th><th>Pages</th></tr></thead>
-        <tbody>
-          {% for item in activities %}
-          <tr><td>{{ item.code }}</td><td>{{ item.block_code }}</td><td>{{ item.label }}</td><td>{{ item.page_start }}-{{ item.page_end }}</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>Compétences officielles</h2>
-      <table>
-        <thead><tr><th>Code</th><th>Libellé corrigé</th><th>Statut</th><th>Bloc</th><th>Activité</th><th>Confiance</th></tr></thead>
-        <tbody>
-          {% for item in competencies %}
-          <tr>
-            <td>{{ item.code }}</td>
-            <td><input type="text" form="approve-form" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"></td>
-            <td>
-              <select form="approve-form" name="competency_status__{{ item.code }}">
-                {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
-                  <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td>{{ item.block_code }}</td>
-            <td>{{ item.activity_code }}</td>
-            <td>{{ item.confidence }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>Critères</h2>
-      <table>
-        <thead><tr><th>Code</th><th>Compétence</th><th>Libellé corrigé</th><th>Statut</th><th>Provenance</th></tr></thead>
-        <tbody>
-          {% for item in criteria %}
-          <tr>
-            <td>{{ item.code }}</td>
-            <td>{{ item.competency_code }}</td>
-            <td><input type="text" form="approve-form" name="criterion_label__{{ item.code }}" value="{{ item.criterion_label }}"></td>
-            <td>
-              <select form="approve-form" name="criterion_status__{{ item.code }}">
-                {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
-                  <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
-                {% endfor %}
-              </select>
-            </td>
-            <td>{{ item.provenance }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>Compétences dérivées</h2>
-      <table>
-        <thead><tr><th>Canonique</th><th>Catégorie</th><th>Source</th><th>Provenance</th><th>Confiance</th></tr></thead>
-        <tbody>
-          {% for item in derived_skills %}
-          <tr>
-            <td>{{ item.canonical_label }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.source_code }}</td>
-            <td>{{ item.provenance }}</td>
-            <td>{{ item.confidence }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>Export JSON</h2>
-      <pre>{{ analysis_json }}</pre>
-    </section>
-
-    <section class="card">
-      <form id="approve-form" method="post">
-        <input type="hidden" name="analysis_json" value='{{ analysis_json | e }}'>
-        <input type="hidden" name="source_path" value="{{ source_path }}">
-        <div class="grid">
-          <label>Validé par<input type="text" name="validated_by" value="human_review"></label>
-          <label>Note<input type="text" name="validation_note" value=""></label>
+    <form id="approve-form" method="post" class="stack">
+      <input type="hidden" name="analysis_json" value='{{ analysis_json | e }}'>
+      <input type="hidden" name="source_path" value="{{ source_path }}">
+      <section class="card">
+        <div class="section-heading">
+          <h2>Intitulé de poste</h2>
+          <span class="muted">Édition directe avant approbation</span>
         </div>
-        <div class="actions" style="margin-top: 16px;">
+        <label>Intitulé validé
+          <input type="text" name="validated_title" value="{{ document.title }}" placeholder="Titre métier ou référentiel">
+        </label>
+        <label style="margin-top: 12px;">Note de validation
+          <input type="text" name="validation_note" value="" placeholder="Ex: titre confirmé manuellement">
+        </label>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Compétences officielles</h2>
+          <span class="muted">Corriger, retirer ou ajouter des compétences</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Code</th><th>Libellé</th><th>Statut</th><th>Bloc</th><th>Activité</th><th>Confiance</th><th>Supprimer</th></tr></thead>
+            <tbody>
+              {% for item in competencies %}
+              <tr>
+                <td>{{ item.code }}</td>
+                <td><input type="text" form="approve-form" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"></td>
+                <td>
+                  <select form="approve-form" name="competency_status__{{ item.code }}">
+                    {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
+                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>{{ item.block_code }}</td>
+                <td>{{ item.activity_code }}</td>
+                <td>{{ item.confidence }}</td>
+                <td class="table-actions"><input form="approve-form" type="checkbox" name="remove_competency__{{ item.code }}"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <label style="margin-top: 12px;">Ajouter des compétences officielles
+          <textarea form="approve-form" name="new_competency_labels" placeholder="Une compétence par ligne"></textarea>
+        </label>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Compétences détectées</h2>
+          <span class="muted">Édition des compétences, méthodes et outils détectés</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Libellé</th><th>Canonique</th><th>Catégorie</th><th>Source</th><th>Confiance</th><th>Supprimer</th></tr></thead>
+            <tbody>
+              {% for item in derived_skills %}
+              <tr>
+                <td><input type="text" form="approve-form" name="derived_skill_label__{{ loop.index0 }}" value="{{ item.label }}"></td>
+                <td><input type="text" form="approve-form" name="derived_skill_canonical__{{ loop.index0 }}" value="{{ item.canonical_label }}"></td>
+                <td>
+                  <select form="approve-form" name="derived_skill_category__{{ loop.index0 }}">
+                    {% for category in ['skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'] %}
+                      <option value="{{ category }}" {% if item.category == category %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>{{ item.source_code }} · {{ item.source_type }}</td>
+                <td>{{ item.confidence }}</td>
+                <td class="table-actions"><input form="approve-form" type="checkbox" name="remove_derived_skill__{{ loop.index0 }}"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <label style="margin-top: 12px;">Ajouter des compétences détectées
+          <textarea form="approve-form" name="new_derived_skill_labels" placeholder="Libellé | catégorie | canonique
+Ex: TensorFlow | tool | TensorFlow"></textarea>
+        </label>
+        <p class="help">Le format recommandé est <span class="mono">Libellé | catégorie | canonique</span>. Si la catégorie est omise, elle est interprétée comme <span class="mono">skill</span>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Critères</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Code</th><th>Compétence</th><th>Libellé corrigé</th><th>Statut</th><th>Provenance</th></tr></thead>
+            <tbody>
+              {% for item in criteria %}
+              <tr>
+                <td>{{ item.code }}</td>
+                <td>{{ item.competency_code }}</td>
+                <td><input type="text" form="approve-form" name="criterion_label__{{ item.code }}" value="{{ item.criterion_label }}"></td>
+                <td>
+                  <select form="approve-form" name="criterion_status__{{ item.code }}">
+                    {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
+                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+                <td>{{ item.provenance }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Export JSON</h2>
+        <pre>{{ analysis_json }}</pre>
+      </section>
+
+      <section class="card">
+        <div class="actions">
+          <label style="min-width: 220px;">Validé par
+            <input type="text" name="validated_by" value="human_review">
+          </label>
           <button class="btn btn-primary" type="submit" name="action" value="approve">Valider et importer</button>
         </div>
-      </form>
-    </section>
+      </section>
+    </form>
     {% endif %}
   </main>
 </body>

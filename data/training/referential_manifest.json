@@ -1,0 +1,49 @@
+{
+  "seed": 42,
+  "documents": {
+    "train": [
+      "d25053c4e0d8911eb13b1a8b",
+      "219a0aecf50deec78d18818d",
+      "2a2b561bd9753ac0364a5c61",
+      "34503916d8f74c12f8577629",
+      "07937d5cc8873ac72c0c48bc",
+      "22ef8f1c0408ef46db777bc6",
+      "1703f643837914daed32680a",
+      "7ac9d2cc688082115df3996e",
+      "38bf9bcabed1811193af934b",
+      "17ecc405b8d103625da357d3",
+      "f9c7b7dc6c769adf77bc5707",
+      "edcede90f8db797e7dbb1d77",
+      "52c10bd645fbdf160cf5d860",
+      "d95c51ebe5b061d06877d771",
+      "033ceb27cda71b5ace924d96",
+      "7968a40bd43b76557637de55",
+      "e7befcaf026d285bf11ca0fd",
+      "e359bde846f46189fc2fd763"
+    ],
+    "validation": [
+      "e5d15e34f6a299be0cdc1d45",
+      "3da2db8064da65025b8f8fd9",
+      "94d08e81860cf7d5a75a7229",
+      "4871e79ebb12bb79991936a3"
+    ],
+    "test": [
+      "10e9cb5afd52cd0255bdf17e",
+      "4883f1f316de88cd1d3e44bc",
+      "1f1870753148597c22b03d2c",
+      "ad5175abca363725451894cd"
+    ]
+  },
+  "counts": {
+    "ner": {
+      "train": 0,
+      "validation": 0,
+      "test": 0
+    },
+    "multilabel": {
+      "train": 0,
+      "validation": 0,
+      "test": 0
+    }
+  }
+}
