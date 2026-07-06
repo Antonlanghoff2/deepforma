@@ -93,6 +93,17 @@ def test_search_offers_uses_range_and_ignores_none():
     assert result.content_range == "items 0-0/0"
 
 
+def test_search_offers_by_rome_uses_rome_code():
+    session = FakeSession(
+        post_responses=[FakeResponse(json_data={"access_token": "tok", "expires_in": 3600})],
+        request_responses=[FakeResponse(json_data={"resultats": []}, headers={"Content-Range": "items 0-0/0"})],
+    )
+    client = FranceTravailClient(client_id="id", client_secret="secret", session=session, load_env=False)
+    client.search_offers_by_rome("M1805", commune="75056", size=10)
+    assert session.last_request["params"]["romeCode"] == "M1805"
+    assert session.last_request["params"]["commune"] == "75056"
+
+
 def test_error_401_raises(monkeypatch):
     session = FakeSession(
         post_responses=[

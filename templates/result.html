@@ -463,6 +463,9 @@
       <!-- Territorial Market -->
       <article class="card wide" aria-label="Marche territorial">
         <h2>Marche territorial</h2>
+        {% if market_target %}
+        <p class="meta-info">Code ROME confirmé: {{ market_target.rome_code or 'Non renseigné' }}{% if market_target.rome_label %} · {{ market_target.rome_label }}{% endif %} · Territoire: {{ market_target.territory_label or market_target.territory_code or department }}</p>
+        {% endif %}
         {% if model_only %}
         <p>Analyse modele uniquement. Aucun appel a France Travail n'a ete effectue.</p>
         {% elif context.market_status == 'error' %}

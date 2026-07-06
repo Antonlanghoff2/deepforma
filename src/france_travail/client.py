@@ -214,6 +214,34 @@ class FranceTravailClient:
             raw=payload,
         )
 
+    def search_offers_by_rome(
+        self,
+        rome_code: str,
+        *,
+        commune: str | None = None,
+        departement: str | None = None,
+        distance_km: int | None = None,
+        contract_type: str | None = None,
+        date_min: str | None = None,
+        date_max: str | None = None,
+        offset: int = 0,
+        size: int = 20,
+        extra_params: dict[str, Any] | None = None,
+    ) -> SearchResult:
+        criteria = SearchCriteria(
+            rome_code=rome_code,
+            commune=commune,
+            departement=departement,
+            distance_km=distance_km,
+            contract_type=contract_type,
+            date_min=date_min,
+            date_max=date_max,
+            offset=offset,
+            size=size,
+            extra_params=extra_params or {},
+        )
+        return self.search_offers(criteria)
+
     def get_offer(self, offer_id: str) -> dict[str, Any]:
         response = self._request("GET", f"/offres/{offer_id}")
         payload = response.json()

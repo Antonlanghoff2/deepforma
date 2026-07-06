@@ -23,6 +23,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from common.text import clean_text, normalize_for_match, stable_hash
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
+from domain.models import MarketTarget, PdfAnalysis, Territory
 from france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
 from france_travail.normalizer import normalize_offer
 from inference.deepforma_predictor import DeepformaPredictor, get_predictor
@@ -40,10 +41,11 @@ from referential_import.models import DerivedSkill, OfficialCompetency
 from referential_learning.store import AnnotationStore
 from referential_import.import_service import analysis_from_export, build_export_payload
 from referential_import.pdf_loader import load_pdf_document
+from referentials.rome_referential import RomeService, validate_rome_code
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.analysis_result_builder import build_analysis_result
 from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
-from services.market_context import build_market_context
+from services.market_context import build_market_context, fetch_offers_by_rome
 from services.recommendation_service import RecommendationService
 
 logger = logging.getLogger(__name__)
@@ -331,6 +333,8 @@ def create_app(
     app.extensions['recommendation_service'] = RecommendationService()
     app.extensions['certification_market_comparator'] = CertificationMarketComparator()
     app.extensions['market_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
+    app.extensions['referential_analysis_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
+    app.extensions['rome_service'] = RomeService()
     app.extensions['france_travail_client_factory'] = france_travail_client_factory or _build_france_travail_client
 
     @app.context_processor
@@ -358,6 +362,89 @@ def create_app(
     def get_market_client() -> FranceTravailClient:
         factory = app.extensions['france_travail_client_factory']
         return factory()
+
+    def get_rome_service() -> RomeService:
+        return app.extensions['rome_service']
+
+    def _referential_state_cache() -> TTLCache:
+        return app.extensions['referential_analysis_cache']
+
+    def _build_territory_from_form(form: Any, *, fallback_code: str | None = None, fallback_label: str | None = None) -> Territory:
+        raw_code = clean_text(form.get('territory_code') or form.get('territory') or form.get('departement') or fallback_code or '')
+        raw_label = clean_text(form.get('territory_label') or fallback_label or raw_code or '')
+        radius_raw = clean_text(form.get('radius_km') or form.get('distance_km') or '')
+        radius: int | None = None
+        if radius_raw:
+            try:
+                radius = int(radius_raw)
+            except ValueError:
+                radius = None
+        territory_type: str | None = None
+        department_code: str | None = None
+        if raw_code.isdigit() and len(raw_code) == 5:
+            territory_type = 'commune'
+        elif (raw_code.isdigit() and len(raw_code) in {2, 3}) or raw_code in {'2A', '2B'}:
+            territory_type = 'departement'
+            department_code = raw_code
+        elif raw_code:
+            territory_type = 'custom'
+        if territory_type == 'departement' and not department_code:
+            department_code = raw_code or None
+        return Territory(code=raw_code or None, label=raw_label or None, type=territory_type, radius_km=radius, department_code=department_code, region_code=None, remote_allowed=True)
+
+    def _build_referential_state(analysis: dict[str, Any], *, source_path: str, departement: str) -> dict[str, Any]:
+        export = build_export_payload(analysis)
+        document = analysis['document']
+        analysis_id = stable_hash(getattr(document, 'sha256', '') or source_path, getattr(document, 'file_name', '') or '', getattr(document, 'title', '') or '', length=24)
+        page_texts: list[str] = []
+        try:
+            document_loader = load_pdf_document(Path(source_path))
+            page_texts = [page.text for page in document_loader.pages if getattr(page, 'text', '')]
+        except Exception:
+            page_texts = []
+        overview = _build_referential_extraction_overview(analysis, _build_referential_keywords_candidates(analysis, page_texts), page_texts=page_texts) if page_texts else {'job_title': getattr(document, 'title', '') or '', 'job_title_source': 'document_metadata', 'keywords': [], 'keywords_source': 'manual', 'competency_labels': [], 'derived_skill_labels': [], 'tool_labels': [], 'criterion_labels': []}
+        market_target = {
+            'rome_code': '',
+            'rome_label': '',
+            'territory_code': departement or '',
+            'territory_label': departement or '',
+            'radius_km': None,
+            'contract_type': '',
+            'territory_type': 'departement' if departement else None,
+        }
+        state = {
+            'analysis_id': analysis_id,
+            'analysis_export': export,
+            'source_path': source_path,
+            'departement': departement,
+            'overview': overview,
+            'analysis': analysis,
+            'market_target': market_target,
+            'rome_candidates': [],
+            'rome_query': overview.get('job_title') or getattr(document, 'title', '') or '',
+            'market_target_confirmed': False,
+            'analysis_status': 'PDF_ANALYZED',
+            'market_search_status': 'WAITING_FOR_ROME',
+        }
+        _referential_state_cache().set(analysis_id, state)
+        return state
+
+    def _load_referential_state(analysis_id: str | None, analysis_json: str | None = None) -> dict[str, Any]:
+        if analysis_id:
+            cached = _referential_state_cache().get(analysis_id)
+            if cached is not None:
+                return cached
+        if analysis_json:
+            export = json.loads(analysis_json)
+            analysis = analysis_from_export(export)
+            source_path = getattr(analysis['document'], 'source_path', '') or ''
+            departement = clean_text(getattr(analysis['document'], 'department', '') or '')
+            state = _build_referential_state(analysis, source_path=source_path, departement=departement)
+            if analysis_id:
+                state['analysis_id'] = analysis_id
+                _referential_state_cache().set(analysis_id, state)
+            return state
+        raise ValueError('Analyse du référentiel manquante.')
 
     def _offer_matches_focus_terms(offer: dict[str, Any], focus_terms: list[str]) -> bool:
         if not focus_terms:
@@ -940,11 +1027,13 @@ def create_app(
             competency.evaluation_criteria = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code == competency.code]
         return analysis
 
-    def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, referential_success: str | None = None, referential_error: str | None = None):
+    def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, analysis_id: str | None = None, referential_success: str | None = None, referential_error: str | None = None, rome_query: str | None = None, rome_candidates: list[dict[str, Any]] | None = None, market_target: dict[str, Any] | None = None, market_target_confirmed: bool = False):
         preview = _build_referential_preview_payload(analysis, source_path=source_path)
+        preview['analysis_id'] = analysis_id or stable_hash(getattr(analysis['document'], 'sha256', '') or source_path, getattr(analysis['document'], 'file_name', '') or '', getattr(analysis['document'], 'title', '') or '', length=24)
         return _render_home_page(
             referential_analysis=preview,
             referential_validation={
+                'analysis_id': preview['analysis_id'],
                 'analysis_json': preview['analysis_json'],
                 'source_path': source_path,
                 'departement': departement,
@@ -959,6 +1048,10 @@ def create_app(
                     }
                     for competency in analysis.get('competencies', [])
                 ],
+                'rome_query': rome_query or getattr(analysis['document'], 'title', '') or '',
+                'rome_candidates': rome_candidates or [],
+                'market_target': market_target or {},
+                'market_target_confirmed': market_target_confirmed,
             },
             referential_success=referential_success,
             referential_error=referential_error,
@@ -983,39 +1076,129 @@ def create_app(
     def _apply_referential_validation_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
         return _apply_referential_import_edits(analysis, form)
 
-    def _build_referential_market_context(referential_analysis: dict[str, Any], pdf_path: Path, departement: str) -> dict[str, Any]:
+    def _build_referential_market_context(
+        referential_analysis: dict[str, Any],
+        *,
+        source_path: str,
+        departement: str,
+        selected_rome_code: str,
+        selected_rome_label: str | None = None,
+        territory: Territory | None = None,
+        contract_type: str | None = None,
+        radius_km: int | None = None,
+    ) -> dict[str, Any]:
+        pdf_path = Path(source_path)
         document_loader = load_pdf_document(pdf_path)
         page_texts = [page.text for page in document_loader.pages if getattr(page, 'text', '')]
         text = "\n".join(page_text for page_text in page_texts)
-        keyword_candidates = _build_referential_keywords_candidates(referential_analysis, page_texts)
-        keywords = next((candidate for candidate in keyword_candidates if candidate), None)
-        context = _build_context(
-            text,
-            departement,
-            keywords,
-            app.config['DEFAULT_THRESHOLD'],
-            False,
-            allow_market_failure=True,
-            market_keyword_candidates=keyword_candidates + ([None] if None not in keyword_candidates else []),
-        )
-        context['referential_analysis'] = referential_analysis
-        context['referential_overview'] = _build_referential_extraction_overview(
+        overview = _build_referential_extraction_overview(
             referential_analysis,
-            keyword_candidates,
+            _build_referential_keywords_candidates(referential_analysis, page_texts),
             page_texts=page_texts,
         )
+        market_territory = territory or Territory(code=departement or None, label=departement or None, type='departement' if departement else None, radius_km=radius_km, department_code=departement or None, region_code=None, remote_allowed=True)
+        market_target = MarketTarget(rome_code=selected_rome_code, rome_label=selected_rome_label, territory=market_territory, contract_types=[contract_type] if contract_type else [])
+        client = get_market_client()
+        normalized_offers = fetch_offers_by_rome(
+            client,
+            selected_rome_code,
+            market_territory,
+            radius_km=radius_km,
+            contract_types=[contract_type] if contract_type else None,
+            max_results=app.config['MAX_OFFERS'],
+        )
         focus_labels = [
-            *context['referential_overview'].get('derived_skill_labels', []),
-            *context['referential_overview'].get('competency_labels', []),
-            *context['referential_overview'].get('tool_labels', []),
+            *overview.get('derived_skill_labels', []),
+            *overview.get('competency_labels', []),
+            *overview.get('tool_labels', []),
         ]
-        market_offers = list(context['context'].get('market_offers_used', []))
-        if market_offers:
-            market_offers = sorted(market_offers, key=lambda offer: _market_offer_score(offer, focus_labels), reverse=True)
-            context['context']['normalized_offers'] = market_offers
-            context['context']['market_offers_used'] = market_offers
-            context['context']['market_offers_preview'] = market_offers[:10]
-            context['context']['market_offers_more_count'] = max(len(market_offers) - 10, 0)
+        if normalized_offers:
+            normalized_offers = sorted(normalized_offers, key=lambda offer: _market_offer_score(offer, focus_labels), reverse=True)
+        referential_skills = [
+            OpenExtractedSkill(
+                source_label=clean_text(getattr(competency, 'official_label', '') or ''),
+                normalized_label=normalize_for_match(clean_text(getattr(competency, 'official_label', '') or '')),
+                type='technical_skill',
+                source_text=clean_text(getattr(competency, 'source_text', '') or getattr(competency, 'official_label', '') or ''),
+                start=0,
+                end=0,
+                confidence=float(getattr(competency, 'confidence', 1.0) or 1.0),
+                method='referential',
+                referential_id=clean_text(getattr(competency, 'code', '') or ''),
+                referential_source='referential_import',
+            )
+            for competency in referential_analysis.get('competencies', [])
+            if clean_text(getattr(competency, 'official_label', '') or '')
+        ]
+        referential_tools = [
+            OpenExtractedSkill(
+                source_label=clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or ''),
+                normalized_label=normalize_for_match(clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '')),
+                type='tool',
+                source_text=clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or ''),
+                start=0,
+                end=0,
+                confidence=float(getattr(item, 'confidence', 1.0) or 1.0),
+                method='referential',
+                referential_id=clean_text(getattr(item, 'source_code', '') or ''),
+                referential_source='referential_import',
+            )
+            for item in referential_analysis.get('tools_methods', [])
+            if clean_text(getattr(item, 'canonical_label', '') or getattr(item, 'label', '') or '')
+        ]
+        skill_extraction = SkillExtractionInfo(
+            status='success' if referential_skills or referential_tools else 'failed',
+            skills=referential_skills,
+            tools=referential_tools,
+            knowledge_items=[],
+            warnings=[],
+        )
+        market_context = build_market_context(
+            skill_extraction=skill_extraction,
+            normalized_offers=normalized_offers,
+            departement=departement,
+            recommendation_service=app.extensions['recommendation_service'],
+        )
+        analysis_context = _build_context(text, departement, None, app.config['DEFAULT_THRESHOLD'], True, allow_market_failure=True)
+        analysis_result = _build_analysis_result(
+            analysis_context['analysis'],
+            normalized_offers,
+            market_context['recommendation'],
+            market_context['territorial_stats'],
+            departement,
+            app.config['DEFAULT_THRESHOLD'],
+            skill_extraction=skill_extraction,
+        )
+        context = {
+            'analysis': referential_analysis,
+            'context': {
+                'normalized_offers': normalized_offers,
+                'market_offers_used': normalized_offers,
+                'market_offers_preview': market_context.get('market_offers_preview', normalized_offers[:10]),
+                'market_offers_more_count': market_context.get('market_offers_more_count', max(len(normalized_offers) - 10, 0)),
+                'territorial_stats': market_context.get('territorial_stats'),
+                'recommendation': market_context.get('recommendation'),
+                'market_analysis': market_context.get('market_analysis'),
+                'market_status': 'ok' if normalized_offers else 'empty',
+                'market_error': None if normalized_offers else 'Aucune offre France Travail ne correspond au code ROME confirme.',
+            },
+            'analysis_result': analysis_result,
+            'department': departement,
+            'keywords': selected_rome_label or selected_rome_code,
+            'threshold': app.config['DEFAULT_THRESHOLD'],
+            'model_only': False,
+            'warning': EXPERIMENTAL_WARNING,
+            'referential_analysis': referential_analysis,
+            'referential_overview': overview,
+            'market_target': {
+                'rome_code': selected_rome_code,
+                'rome_label': selected_rome_label,
+                'territory_code': market_territory.code,
+                'territory_label': market_territory.label,
+                'radius_km': market_territory.radius_km,
+                'contract_type': contract_type,
+            },
+        }
         if context['context'].get('market_error'):
             context['warning'] = context['warning'] + ' Analyse territoriale partielle: ' + context['context']['market_error']
         return context
@@ -1039,15 +1222,121 @@ def create_app(
                 validated_by = clean_text(payload.get('validated_by') or 'human_review') or 'human_review'
                 referential_import_service.approve(referential_analysis, validated_by=validated_by)
                 source_path = clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
-                pdf_path = Path(source_path)
                 departement = clean_text(payload.get('departement') or '')
                 if not departement:
                     raise ValueError('Le departement est obligatoire.')
-                context = _build_referential_market_context(referential_analysis, pdf_path, departement)
+                state = _build_referential_state(referential_analysis, source_path=source_path, departement=departement)
+                context = {'analysis': referential_analysis, 'state': state, 'analysis_result': None}
+                return render_template(
+                    'index.html',
+                    department_options=DEPARTMENT_CODES,
+                    default_threshold=app.config['DEFAULT_THRESHOLD'],
+                    referential_analysis=_build_referential_preview_payload(referential_analysis, source_path=source_path) | {'analysis_id': state['analysis_id']},
+                    referential_validation={
+                        'analysis_id': state['analysis_id'],
+                        'analysis_json': json.dumps(state['analysis_export'], ensure_ascii=False, indent=2),
+                        'source_path': source_path,
+                        'departement': departement,
+                        'validated_title': getattr(referential_analysis['document'], 'title', '') or '',
+                        'competencies': [
+                            {
+                                'code': competency.code,
+                                'official_label': competency.official_label,
+                                'review_status': competency.review_status,
+                                'block_code': competency.block_code,
+                                'activity_code': competency.activity_code,
+                            }
+                            for competency in referential_analysis.get('competencies', [])
+                        ],
+                        'rome_query': state['rome_query'],
+                        'rome_candidates': [],
+                        'market_target': {},
+                        'market_target_confirmed': False,
+                    },
+                    referential_success='Le référentiel a été validé. Vous pouvez rechercher un métier cible.',
+                )
+            if action == 'search_rome_candidates':
+                state = _load_referential_state(clean_text(payload.get('analysis_id') or ''), payload.get('analysis_json'))
+                referential_analysis = state['analysis']
+                query = clean_text(payload.get('rome_query') or state.get('rome_query') or '')
+                candidates = [job.to_dict() for job in get_rome_service().search(query, limit=10)]
+                state['rome_query'] = query
+                state['rome_candidates'] = candidates
+                _referential_state_cache().set(state['analysis_id'], state)
+                return _render_referential_validation(
+                    referential_analysis,
+                    source_path=state['source_path'],
+                    departement=state['departement'],
+                    analysis_id=state['analysis_id'],
+                    rome_query=query,
+                    rome_candidates=candidates,
+                    market_target=state.get('market_target') or {},
+                    referential_success='Résultats de recherche métier affichés.',
+                )
+            if action == 'select_market_target':
+                state = _load_referential_state(clean_text(payload.get('analysis_id') or ''), payload.get('analysis_json'))
+                referential_analysis = state['analysis']
+                rome_code = validate_rome_code(clean_text(payload.get('rome_code') or payload.get('selected_rome_code') or ''), service=get_rome_service())
+                rome_job = get_rome_service().get(rome_code)
+                territory = _build_territory_from_form(payload, fallback_code=state.get('departement') or '', fallback_label=state.get('departement') or '')
+                market_target = {
+                    'rome_code': rome_code,
+                    'rome_label': rome_job.label if rome_job and rome_job.label else clean_text(payload.get('rome_label') or ''),
+                    'territory_code': territory.code,
+                    'territory_label': territory.label,
+                    'radius_km': territory.radius_km,
+                    'contract_type': clean_text(payload.get('contract_type') or ''),
+                }
+                state['market_target'] = market_target
+                state['market_target_confirmed'] = True
+                state['analysis_status'] = 'ROME_CONFIRMED'
+                state['market_search_status'] = 'WAITING_FOR_SEARCH'
+                _referential_state_cache().set(state['analysis_id'], state)
+                return _render_referential_validation(
+                    referential_analysis,
+                    source_path=state['source_path'],
+                    departement=state['departement'],
+                    analysis_id=state['analysis_id'],
+                    rome_query=state.get('rome_query'),
+                    rome_candidates=state.get('rome_candidates') or [],
+                    market_target=market_target,
+                    market_target_confirmed=True,
+                    referential_success='Le code ROME a été validé. Vous pouvez lancer la recherche France Travail.',
+                )
+            if action == 'run_market_search':
+                state = _load_referential_state(clean_text(payload.get('analysis_id') or ''), payload.get('analysis_json'))
+                referential_analysis = state['analysis']
+                market_target = state.get('market_target') or {}
+                selected_rome_code = clean_text(market_target.get('rome_code') or payload.get('rome_code') or '')
+                if not selected_rome_code:
+                    raise ValueError('Code ROME obligatoire')
+                territory = _build_territory_from_form(payload, fallback_code=market_target.get('territory_code') or state.get('departement') or '', fallback_label=market_target.get('territory_label') or state.get('departement') or '')
+                context = _build_referential_market_context(
+                    referential_analysis,
+                    source_path=state['source_path'],
+                    departement=state['departement'],
+                    selected_rome_code=selected_rome_code,
+                    selected_rome_label=clean_text(market_target.get('rome_label') or ''),
+                    territory=territory,
+                    contract_type=clean_text(market_target.get('contract_type') or payload.get('contract_type') or '') or None,
+                    radius_km=territory.radius_km,
+                )
+                state['analysis_status'] = 'MARKET_ANALYZED'
+                state['market_search_status'] = 'MARKET_ANALYZED'
+                _referential_state_cache().set(state['analysis_id'], state)
+                result = context['analysis_result']
+                return render_template(
+                    'result.html',
+                    **context,
+                    department_options=DEPARTMENT_CODES,
+                    result_json=result.to_json(),
+                    result_dict=result.to_dict(),
+                )
             elif request.files.get('pdf') and request.files.get('pdf').filename:
                 pdf_path, departement = _extract_referential_inputs(payload, request.files)
                 referential_analysis = referential_import_service.analyze(pdf_path)
-                context = _build_referential_market_context(referential_analysis, pdf_path, departement)
+                state = _build_referential_state(referential_analysis, source_path=str(pdf_path), departement=departement)
+                return _render_referential_validation(referential_analysis, source_path=str(pdf_path), departement=departement, analysis_id=state['analysis_id'], rome_query=state['rome_query'])
             else:
                 text, departement, keywords, threshold, model_only = _extract_inputs(payload)
                 context = _build_context(text, departement, keywords, threshold, model_only, allow_market_failure=False)
