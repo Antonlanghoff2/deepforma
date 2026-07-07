@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "4035d12def895f5744489adb",
+    "source_path": "/tmp/tmpzriveukb.pdf",
+    "file_name": "tmpzriveukb.pdf",
+    "sha256": "68537711fd0d4d936e57336670f219005d267702b3d1a6f571f7014c49d17f7e",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 3,
+    "title": "Equipier polyvalent du commerce",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-06T18:07:11.679604+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_5",
+      "label": "(BC05) : Français Activités / compétences du bloc",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 5 (BC05) : Français Activités / compétences du bloc",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_9",
+      "label": "(BC09) : Langue vivante étrangère Activités / compétences du bloc",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 9 (BC09) : Langue vivante étrangère Activités / compétences du bloc",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "vue",
+      "canonical_label": "vue",
+      "category": "tool",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "vue",
+      "normalized_surface": "vue",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_tool_pattern"
+    },
+    {
+      "label": "comprendre et présenter des textes documentaires ou fictionnels,",
+      "canonical_label": "Et présenter des textes documentaires ou fictionnels",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "comprendre et présenter des textes documentaires ou fictionnels,",
+      "normalized_surface": "comprendre et presenter des textes documentaires ou fictionnels",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "utiliser des repères chronologiques et spatiaux : mémoriser et s’approprier les notions,",
+      "canonical_label": "Des repères chronologiques et spatiaux : mémoriser et s’approprier les notions",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "utiliser des repères chronologiques et spatiaux : mémoriser et s’approprier les notions,",
+      "normalized_surface": "utiliser des reperes chronologiques et spatiaux memoriser et s approprier les notions",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "utiliser une simulation Critiquer un résultat,",
+      "canonical_label": "Une simulation Critiquer un résultat",
+      "category": "tool",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "utiliser une simulation Critiquer un résultat,",
+      "normalized_surface": "utiliser une simulation critiquer un resultat",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "vue",
+      "canonical_label": "vue",
+      "category": "tool",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "vue",
+      "normalized_surface": "vue",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_tool_pattern"
+    },
+    {
+      "label": "utiliser une simulation Critiquer un résultat,",
+      "canonical_label": "Une simulation Critiquer un résultat",
+      "category": "tool",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "utiliser une simulation Critiquer un résultat,",
+      "normalized_surface": "utiliser une simulation critiquer un resultat",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "4035d12def895f5744489adb",
+    "source_hash": "68537711fd0d4d936e57336670f219005d267702b3d1a6f571f7014c49d17f7e",
+    "pages": 3,
+    "blocks": 2,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 4,
+    "tools_methods": 2,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}
