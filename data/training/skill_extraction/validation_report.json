@@ -1,0 +1,122 @@
+{
+  "files": {
+    "test": {
+      "accepted": 20,
+      "label_distribution": {
+        "Analyse de données": 1,
+        "Big Data": 1,
+        "Communication": 3,
+        "Data Science": 1,
+        "Deep Learning": 1,
+        "FastAPI": 2,
+        "Gestion de projet": 1,
+        "IA générative": 1,
+        "Machine Learning": 1,
+        "Python": 3,
+        "RAG": 7
+      },
+      "negative_examples": 10,
+      "path": "data/training/skill_extraction/test.jsonl",
+      "positive_examples": 10,
+      "rejected_by_reason": {},
+      "sample_sizes": [
+        103,
+        1978,
+        1329,
+        1077,
+        3254
+      ],
+      "total_read": 20,
+      "unique_labels": 11
+    },
+    "train": {
+      "accepted": 87,
+      "label_distribution": {
+        "API REST": 4,
+        "Amazon Ads": 1,
+        "Amazon Brand Registry": 1,
+        "Amazon FBA": 1,
+        "Amazon Seller Central": 1,
+        "Analyse de données": 5,
+        "Automatisation": 7,
+        "Big Data": 2,
+        "Communication": 15,
+        "Computer Vision": 1,
+        "Data Science": 3,
+        "Deep Learning": 2,
+        "E-commerce": 1,
+        "FastAPI": 1,
+        "Gestion de projet": 10,
+        "IA générative": 10,
+        "Machine Learning": 3,
+        "NLP": 2,
+        "Prompt Engineering": 2,
+        "Python": 12,
+        "RAG": 29,
+        "SEO AM": 1,
+        "Visualisation": 1,
+        "Éthique de l’IA": 1
+      },
+      "negative_examples": 36,
+      "path": "data/training/skill_extraction/train.jsonl",
+      "positive_examples": 51,
+      "rejected_by_reason": {
+        "DUPLICATE": 2
+      },
+      "sample_sizes": [
+        1527,
+        3777,
+        588,
+        2600,
+        1543
+      ],
+      "total_read": 89,
+      "unique_labels": 24
+    },
+    "validation": {
+      "accepted": 21,
+      "label_distribution": {
+        "API REST": 2,
+        "Agile": 1,
+        "Analyse de données": 1,
+        "Automatisation": 1,
+        "Azure Devops": 1,
+        "Communication": 2,
+        "Cypress": 1,
+        "Data Science": 2,
+        "Github": 1,
+        "IA générative": 4,
+        "Jira / Confluence": 1,
+        "Machine Learning": 1,
+        "NLP": 1,
+        "Prompt Engineering": 1,
+        "Python": 2,
+        "RAG": 10
+      },
+      "negative_examples": 8,
+      "path": "data/training/skill_extraction/validation.jsonl",
+      "positive_examples": 13,
+      "rejected_by_reason": {},
+      "sample_sizes": [
+        1513,
+        3096,
+        678,
+        3538,
+        2195
+      ],
+      "total_read": 21,
+      "unique_labels": 16
+    }
+  },
+  "generated_at": "2026-07-07T10:01:53.196091+00:00",
+  "overall": {
+    "errors": [],
+    "has_negative_examples": true,
+    "has_positive_examples": true,
+    "train_is_empty": false,
+    "train_test_overlap": 0,
+    "train_val_overlap": 0,
+    "val_test_overlap": 0,
+    "verdict": "PASS"
+  }
+}

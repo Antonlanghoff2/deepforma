@@ -1,0 +1,112 @@
+{
+  "label_counts": [
+    [
+      "RAG",
+      47
+    ],
+    [
+      "Communication",
+      20
+    ],
+    [
+      "Python",
+      17
+    ],
+    [
+      "IA générative",
+      16
+    ],
+    [
+      "Gestion de projet",
+      11
+    ],
+    [
+      "Automatisation",
+      9
+    ],
+    [
+      "API REST",
+      7
+    ],
+    [
+      "Analyse de données",
+      7
+    ],
+    [
+      "Data Science",
+      6
+    ],
+    [
+      "Machine Learning",
+      5
+    ],
+    [
+      "Prompt Engineering",
+      3
+    ],
+    [
+      "FastAPI",
+      3
+    ],
+    [
+      "NLP",
+      3
+    ],
+    [
+      "Big Data",
+      3
+    ],
+    [
+      "Deep Learning",
+      3
+    ],
+    [
+      "Computer Vision",
+      1
+    ],
+    [
+      "Éthique de l’IA",
+      1
+    ],
+    [
+      "Visualisation",
+      1
+    ],
+    [
+      "Agile",
+      1
+    ],
+    [
+      "Azure Devops",
+      1
+    ],
+    [
+      "Cypress",
+      1
+    ],
+    [
+      "Github",
+      1
+    ],
+    [
+      "Jira / Confluence",
+      1
+    ],
+    [
+      "Amazon Ads",
+      1
+    ],
+    [
+      "Amazon Brand Registry",
+      1
+    ]
+  ],
+  "negative_examples": 56,
+  "rome_codes": [
+    "M1805"
+  ],
+  "test": 20,
+  "total_examples": 132,
+  "train": 89,
+  "validation": 21
+}
