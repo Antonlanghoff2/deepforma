@@ -3,12 +3,33 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from typing import Any
 from io import BytesIO
 
 from referential_import.import_service import build_export_payload
 from referential_import.models import DerivedSkill, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
 from referentials.rome_referential import RomeJob
 from web_app import create_app
+
+
+@dataclass
+class DummyRomeStats:
+    rome_code: str
+    rome_label: str
+    raw_count: int
+    accepted_count: int
+    rejected_count: int
+    pages_count: int
+    error: str | None = None
+
+
+@dataclass
+class DummyMultiRomeResult:
+    requested_rome_codes: list[str]
+    offers: list[dict[str, Any]]
+    stats_by_rome: list[DummyRomeStats]
+    rejected_offers: list[Any]
+    warnings: list[str]
 
 
 @dataclass
@@ -151,21 +172,50 @@ def build_app(monkeypatch):
         france_travail_client_factory=lambda: DummyOfferClient(),
         cache_ttl_seconds=60,
     )
-    monkeypatch.setattr('web_app.RomeService.search', lambda self, query, limit=10: [RomeJob('M1805', 'Data Scientist', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data')])
-    monkeypatch.setattr('web_app.RomeService.get', lambda self, code: RomeJob(code, 'Data Scientist', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data'))
-    monkeypatch.setattr('web_app.fetch_offers_by_rome', lambda *args, **kwargs: [
-        {
-            'offer_id': 'offer-1',
-            'title': 'Data Scientist',
-            'description': 'Travail sur la coordination des données',
-            'normalized_skills': ['Organiser la coordination'],
-            'structured_skills': [{'canonical_label': 'Organiser la coordination'}],
-            'contract_type': 'CDI',
-            'location_label': 'Paris',
-            'department_code': '75',
-            'offer_url': 'https://example.com/offer-1',
-        }
-    ])
+    monkeypatch.setattr('web_app.RomeService.search', lambda self, query, limit=10: [RomeJob('M1805', 'Data Scientist', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data'), RomeJob('M1802', 'Expertise et support en systèmes d’information', 'Support SI.', ['Support informatique'], [], [], 'IT')])
+    monkeypatch.setattr('web_app.RomeService.get', lambda self, code: RomeJob(code, 'Data Scientist' if code == 'M1805' else 'Expertise et support en systèmes d’information', 'Concevoir des solutions data.', ['Machine Learning Engineer'], [], [], 'Data'))
+
+    def fake_fetch_offers_by_rome_codes(rome_codes, territory, **kwargs):
+        offers: list[dict[str, Any]] = []
+        stats: list[DummyRomeStats] = []
+        for code in rome_codes:
+            if code == 'M1805':
+                offers.append({
+                    'offer_id': 'offer-1',
+                    'title': 'Data Scientist',
+                    'description': 'Travail sur la coordination des données',
+                    'normalized_skills': ['Organiser la coordination'],
+                    'structured_skills': [{'canonical_label': 'Organiser la coordination'}],
+                    'contract_type': 'CDI',
+                    'location_label': 'Paris',
+                    'department_code': '75',
+                    'offer_url': 'https://example.com/offer-1',
+                    'rome_code': 'M1805',
+                    'rome_label': 'Data Scientist',
+                    'matched_requested_rome_codes': ['M1805'],
+                })
+                stats.append(DummyRomeStats('M1805', 'Data Scientist', 1, 1, 0, 1, None))
+            elif code == 'M1802':
+                offers.append({
+                    'offer_id': 'offer-2',
+                    'title': 'Support SI',
+                    'description': 'Maintenance et support.',
+                    'normalized_skills': ['Support informatique'],
+                    'structured_skills': [{'canonical_label': 'Support informatique'}],
+                    'contract_type': 'CDI',
+                    'location_label': 'Paris',
+                    'department_code': '75',
+                    'offer_url': 'https://example.com/offer-2',
+                    'rome_code': 'M1802',
+                    'rome_label': 'Expertise et support en systèmes d’information',
+                    'matched_requested_rome_codes': ['M1802'],
+                })
+                stats.append(DummyRomeStats('M1802', 'Expertise et support en systèmes d’information', 1, 1, 0, 1, None))
+            else:
+                stats.append(DummyRomeStats(code, code, 0, 0, 0, 0, 'Aucune offre'))
+        return DummyMultiRomeResult(list(rome_codes), offers, stats, [], [])
+
+    monkeypatch.setattr('web_app.fetch_offers_by_rome_codes', fake_fetch_offers_by_rome_codes)
     return app
 
 
@@ -224,7 +274,7 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
     confirm_response = client.post(
         '/analyze',
         data={
-            'action': 'select_market_target',
+            'action': 'add_market_target',
             'analysis_id': analysis_id,
             'analysis_json': export_json,
             'source_path': '/tmp/referentiel.pdf',
@@ -238,9 +288,27 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
     )
     assert confirm_response.status_code == 200
     confirm_html = confirm_response.get_data(as_text=True)
-    assert 'Code ROME confirmé' in confirm_html
     assert 'M1805' in confirm_html
     assert 'Paris' in confirm_html
+
+    second_confirm_response = client.post(
+        '/analyze',
+        data={
+            'action': 'add_market_target',
+            'analysis_id': analysis_id,
+            'analysis_json': export_json,
+            'source_path': '/tmp/referentiel.pdf',
+            'departement': '75',
+            'rome_code': 'M1802',
+            'rome_label': 'Expertise et support en systèmes d’information',
+            'territory_code': '75',
+            'territory_label': 'Paris',
+            'radius_km': '20',
+        },
+    )
+    assert second_confirm_response.status_code == 200
+    second_confirm_html = second_confirm_response.get_data(as_text=True)
+    assert 'M1805' in second_confirm_html and 'M1802' in second_confirm_html
 
     result_response = client.post(
         '/analyze',
@@ -250,8 +318,6 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
             'analysis_json': export_json,
             'source_path': '/tmp/referentiel.pdf',
             'departement': '75',
-            'rome_code': 'M1805',
-            'rome_label': 'Data Scientist',
             'territory_code': '75',
             'territory_label': 'Paris',
             'radius_km': '20',
@@ -260,8 +326,9 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
     )
     assert result_response.status_code == 200
     result_html = result_response.get_data(as_text=True)
-    assert 'Code ROME confirmé: M1805' in result_html
-    assert 'Territoire: Paris' in result_html
-    assert 'Offres utilisées pour l\'étude de marché' in result_html
+    assert 'Codes ROME analysés' in result_html
+    assert 'M1805' in result_html
+    assert 'M1802' in result_html
+    assert "Offres utilisées pour l'étude de marché" in result_html
     assert 'Organiser la coordination' in result_html
-    assert 'Data Scientist' in result_html
+    assert 'Support informatique' in result_html

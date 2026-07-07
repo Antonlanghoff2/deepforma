@@ -14,12 +14,22 @@ class Skill:
 
 
 @dataclass(frozen=True, slots=True)
+class RomeOccupation:
+    code: str
+    label: str
+    alternative_labels: list[str] = field(default_factory=list)
+    domain: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class JobOffer:
     offer_id: str
     title: str
     description: str
     skills: list[Skill] = field(default_factory=list)
     rome_code: str | None = None
+    rome_label: str | None = None
+    matched_requested_rome_codes: list[str] = field(default_factory=list)
     location: str | None = None
 
 
@@ -67,12 +77,13 @@ class PdfAnalysis:
     certification_title: str | None = None
     blocks: list[Any] = field(default_factory=list)
     skills: list[Skill] = field(default_factory=list)
-    selected_rome_code: str | None = None
-    selected_rome_label: str | None = None
+    selected_rome_occupations: list[RomeOccupation] = field(default_factory=list)
     territory_code: str | None = None
     territory_label: str | None = None
     analysis_status: str = "PDF_ANALYZED"
     market_search_status: str = "WAITING_FOR_ROME"
+    selected_rome_code: str | None = None
+    selected_rome_label: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

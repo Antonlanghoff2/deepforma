@@ -103,7 +103,7 @@
 
     <section class="card">
       <h2>Métier cible pour l’analyse du marché</h2>
-      <p>Recherchez un métier, sélectionnez ou saisissez un code ROME, confirmez-le, puis lancez la recherche France Travail.</p>
+      <p>Recherchez un métier, sélectionnez ou saisissez un ou plusieurs codes ROME, puis lancez la recherche France Travail.</p>
       <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
         <input type="hidden" name="action" value="search_rome_candidates">
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
@@ -123,7 +123,7 @@
       <div class="chips" style="margin-top: 1rem;">
         {% for item in referential_validation.rome_candidates %}
         <form method="post" action="{{ url_for('analyze') }}" class="rome-candidate-form" style="display:inline-block; margin:0 0.5rem 0.5rem 0;">
-          <input type="hidden" name="action" value="select_market_target">
+          <input type="hidden" name="action" value="add_market_target">
           <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
           <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
           <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
@@ -141,8 +141,31 @@
       </div>
       {% endif %}
 
+      {% if referential_validation.selected_rome_occupations %}
+      <div class="field field-full" style="margin-top: 1rem;">
+        <span>Codes ROME sélectionnés</span>
+        <div class="chips">
+          {% for item in referential_validation.selected_rome_occupations %}
+          <form method="post" action="{{ url_for('analyze') }}" class="rome-candidate-form" style="display:inline-block; margin:0 0.5rem 0.5rem 0;">
+            <input type="hidden" name="action" value="remove_market_target">
+            <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
+            <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
+            <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
+            <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
+            <input type="hidden" name="rome_code" value="{{ item.code }}">
+            <button type="submit" class="chip chip-tool" style="border:none; background:none; cursor:pointer;">
+              <span>{{ item.code }}</span>
+              <small>{{ item.label }}</small>
+              <small>Supprimer</small>
+            </button>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
       <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="margin-top: 1rem;">
-        <input type="hidden" name="action" value="select_market_target">
+        <input type="hidden" name="action" value="add_market_target">
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
@@ -172,13 +195,16 @@
           <input type="text" name="contract_type" value="{{ referential_validation.market_target.contract_type or '' }}" placeholder="CDI, CDD...">
         </label>
         <div class="actions field-full">
-          <button type="submit">Confirmer le métier cible</button>
+          <button type="submit">Ajouter le métier</button>
         </div>
       </form>
 
       {% if referential_validation.market_target_confirmed %}
       <div class="alert alert-success" role="alert" style="margin-top:1rem;">
-        <strong>Code ROME confirmé :</strong> {{ referential_validation.market_target.rome_code }} · {{ referential_validation.market_target.rome_label or 'Libellé non renseigné' }}
+        <strong>Codes ROME confirmés :</strong>
+        {% for item in referential_validation.selected_rome_occupations or [] %}
+        {{ item.code }}{% if item.label %} · {{ item.label }}{% endif %}{% if not loop.last %} ; {% endif %}
+        {% endfor %}
         <br>
         <strong>Territoire :</strong> {{ referential_validation.market_target.territory_label or referential_validation.market_target.territory_code or referential_validation.departement }}
       </div>

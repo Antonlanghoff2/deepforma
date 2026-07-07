@@ -318,3 +318,21 @@ def validate_rome_code(code: str, service: RomeService | None = None) -> str:
     if active_service.has_local_referential() and active_service.get(normalized) is None:
         raise ValueError('Code ROME inconnu dans le référentiel chargé')
     return normalized
+
+
+def validate_rome_codes(values: list[str], *, max_codes: int = 10, service: RomeService | None = None) -> list[str]:
+    normalized_values = [clean_text(value).replace(' ', '').upper() for value in values if clean_text(value)]
+    if not normalized_values:
+        raise ValueError('Sélectionnez au moins un code ROME')
+    if len(normalized_values) > max_codes:
+        raise ValueError(f'Vous pouvez sélectionner au maximum {max_codes} codes ROME')
+    active_service = service or get_default_rome_service()
+    seen: set[str] = set()
+    validated: list[str] = []
+    for value in normalized_values:
+        normalized = validate_rome_code(value, service=active_service)
+        if normalized in seen:
+            raise ValueError(f'Le code ROME {normalized} est déjà sélectionné')
+        seen.add(normalized)
+        validated.append(normalized)
+    return validated

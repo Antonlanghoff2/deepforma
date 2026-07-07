@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from referentials.rome_referential import RomeJob, RomeService, validate_rome_code
+from referentials.rome_referential import RomeJob, RomeService, validate_rome_code, validate_rome_codes
 
 
 def _write_rome_fixture(tmp_path: Path) -> Path:
@@ -45,3 +45,10 @@ def test_validate_rome_code_rejects_unknown_when_reference_loaded(tmp_path: Path
     service = RomeService(_write_rome_fixture(tmp_path))
     with pytest.raises(ValueError, match='Code ROME inconnu dans le référentiel chargé'):
         validate_rome_code('M1806', service=service)
+
+
+def test_validate_rome_codes_keeps_order_and_rejects_duplicates(tmp_path: Path):
+    service = RomeService(_write_rome_fixture(tmp_path))
+    assert validate_rome_codes([' m1805 '], service=service) == ['M1805']
+    with pytest.raises(ValueError, match='déjà sélectionné'):
+        validate_rome_codes(['M1805', 'm1805'], service=service)

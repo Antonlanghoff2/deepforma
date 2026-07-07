@@ -464,7 +464,7 @@
       <article class="card wide" aria-label="Marche territorial">
         <h2>Marche territorial</h2>
         {% if market_target %}
-        <p class="meta-info">Code ROME analysé: {{ market_target.rome_code or 'Non renseigné' }}{% if market_target.rome_label %} · {{ market_target.rome_label }}{% endif %} · Territoire: {{ market_target.territory_label or market_target.territory_code or department }}</p>
+        <p class="meta-info">{% if market_target.selected_rome_occupations and market_target.selected_rome_occupations|length > 1 %}Codes ROME analysés: {% for item in market_target.selected_rome_occupations %}{{ item.code }}{% if item.label %} · {{ item.label }}{% endif %}{% if not loop.last %} ; {% endif %}{% endfor %}{% elif market_target.selected_rome_occupations and market_target.selected_rome_occupations|length == 1 %}Code ROME analysé: {{ market_target.selected_rome_occupations[0].code }}{% if market_target.selected_rome_occupations[0].label %} · {{ market_target.selected_rome_occupations[0].label }}{% endif %}{% else %}Code ROME analysé: {{ market_target.rome_code or 'Non renseigné' }}{% if market_target.rome_label %} · {{ market_target.rome_label }}{% endif %}{% endif %} · Territoire: {{ market_target.territory_label or market_target.territory_code or department }}</p>
         {% endif %}
         {% if context.market_offer_audit %}
         <div class="stat-grid" style="margin:1rem 0;">
@@ -474,6 +474,16 @@
         </div>
         {% if context.market_rejection_reasons %}
         <p class="meta-info">Motifs des rejets: {% for reason, count in context.market_rejection_reasons.items() %}{{ reason }}={{ count }}{% if not loop.last %} · {% endif %}{% endfor %}</p>
+        {% endif %}
+        {% if context.market_stats_by_rome %}
+        <details class="collapsible" style="margin-top:0.75rem;">
+          <summary>Résultat par code ROME</summary>
+          <ul class="list">
+            {% for item in context.market_stats_by_rome %}
+            <li>{{ item.rome_code }} — {{ item.rome_label or item.rome_code }} : {{ item.accepted_count }} offres conformes{% if item.rejected_count %}, {{ item.rejected_count }} rejetées{% endif %}{% if item.error %} · {{ item.error }}{% endif %}</li>
+            {% endfor %}
+          </ul>
+        </details>
         {% endif %}
         {% endif %}
         {% if model_only %}
