@@ -7,7 +7,10 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
-import numpy as np
+try:
+    import numpy as np
+except Exception:  # pragma: no cover - optional dependency
+    np = None
 
 from common.text import clean_text, normalize_for_match
 
@@ -185,7 +188,7 @@ class AICertificationReferential:
 
         encoder = self._load_sentence_encoder()
         results: list[ReferentialSearchResult] = []
-        if encoder is not None and self._skills:
+        if encoder is not None and self._skills and np is not None:
             try:
                 query_vec = encoder.encode([query], normalize_embeddings=True)
                 skill_texts = self._skill_texts()

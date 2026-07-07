@@ -1099,7 +1099,7 @@ def create_app(
         market_territory = territory or Territory(code=departement or None, label=departement or None, type='departement' if departement else None, radius_km=radius_km, department_code=departement or None, region_code=None, remote_allowed=True)
         market_target = MarketTarget(rome_code=selected_rome_code, rome_label=selected_rome_label, territory=market_territory, contract_types=[contract_type] if contract_type else [])
         client = get_market_client()
-        normalized_offers = fetch_offers_by_rome(
+        collected_offers = fetch_offers_by_rome(
             client,
             selected_rome_code,
             market_territory,
@@ -1107,6 +1107,8 @@ def create_app(
             contract_types=[contract_type] if contract_type else None,
             max_results=app.config['MAX_OFFERS'],
         )
+        market_audit = getattr(collected_offers, 'audit', {}) or {}
+        normalized_offers = list(collected_offers)
         focus_labels = [
             *overview.get('derived_skill_labels', []),
             *overview.get('competency_labels', []),
@@ -1169,6 +1171,14 @@ def create_app(
             app.config['DEFAULT_THRESHOLD'],
             skill_extraction=skill_extraction,
         )
+        accepted_count = len(normalized_offers)
+        raw_count = int(market_audit.get('raw_count', accepted_count) or accepted_count)
+        rejected_count = int(market_audit.get('rejected_count', max(raw_count - accepted_count, 0)) or max(raw_count - accepted_count, 0))
+        market_error = None
+        if raw_count > 0 and accepted_count == 0:
+            market_error = 'Le code ROME confirme est valide, mais aucune offre ne correspond exactement au code demandé.'
+        elif raw_count == 0:
+            market_error = 'Aucune offre France Travail ne correspond au code ROME confirme.'
         context = {
             'analysis': referential_analysis,
             'context': {
@@ -1180,7 +1190,13 @@ def create_app(
                 'recommendation': market_context.get('recommendation'),
                 'market_analysis': market_context.get('market_analysis'),
                 'market_status': 'ok' if normalized_offers else 'empty',
-                'market_error': None if normalized_offers else 'Aucune offre France Travail ne correspond au code ROME confirme.',
+                'market_error': market_error,
+                'market_offer_audit': market_audit,
+                'market_raw_count': raw_count,
+                'market_accepted_count': accepted_count,
+                'market_rejected_count': rejected_count,
+                'market_rejection_reasons': market_audit.get('rejected_reasons', {}),
+                'market_rejections': market_audit.get('rejections', []),
             },
             'analysis_result': analysis_result,
             'department': departement,

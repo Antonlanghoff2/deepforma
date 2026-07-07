@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import Any, Iterable
 
 from common.text import clean_text, normalize_for_match, split_multi_values
-from src.skills.skill_normalizer import SkillNormalizer
+from .skill_normalizer import SkillNormalizer
 
 
 DEFAULT_NORMALIZER = SkillNormalizer()

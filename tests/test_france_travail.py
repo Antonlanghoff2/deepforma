@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from analytics.territorial_skills import compute_territorial_stats
-from france_travail.client import FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
+from france_travail.client import FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria, build_search_params, count_returned_rome_codes
 from france_travail.normalizer import normalize_offer
 from france_travail.skill_extractor import extract_structured_skills
 from inference.skill_model import load_label_classes, load_thresholds
@@ -89,7 +89,7 @@ def test_search_offers_uses_range_and_ignores_none():
         SearchCriteria(keywords="python", rome_code=None, commune="93001", offset=0, size=20)
     )
     assert session.last_request["headers"]["Range"] == "items=0-19"
-    assert "romeCode" not in session.last_request["params"]
+    assert "codeROME" not in session.last_request["params"]
     assert result.content_range == "items 0-0/0"
 
 
@@ -100,7 +100,7 @@ def test_search_offers_by_rome_uses_rome_code():
     )
     client = FranceTravailClient(client_id="id", client_secret="secret", session=session, load_env=False)
     client.search_offers_by_rome("M1805", commune="75056", size=10)
-    assert session.last_request["params"]["romeCode"] == "M1805"
+    assert session.last_request["params"]["codeROME"] == "M1805"
     assert session.last_request["params"]["commune"] == "75056"
 
 
@@ -234,3 +234,21 @@ def test_no_secret_in_logs(caplog):
     client.authenticate()
     assert "super-secret" not in caplog.text
 
+
+
+def test_build_search_params_uses_codeROME_and_does_not_inject_keywords():
+    params = build_search_params(rome_code=' m1805 ', territory_code='75', territory_type='departement', range_value='20', keywords=None)
+    assert params['codeROME'] == 'M1805'
+    assert params['departement'] == '75'
+    assert 'motsCles' not in params
+
+
+def test_count_returned_rome_codes_handles_missing_and_nested_values():
+    distribution = count_returned_rome_codes([
+        {'romeCode': 'M1805'},
+        {'rome': {'code': 'M1802'}},
+        {'title': 'Sans code'},
+    ])
+    assert distribution['M1805'] == 1
+    assert distribution['M1802'] == 1
+    assert distribution['UNKNOWN'] == 1

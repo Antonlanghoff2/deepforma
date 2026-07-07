@@ -464,7 +464,17 @@
       <article class="card wide" aria-label="Marche territorial">
         <h2>Marche territorial</h2>
         {% if market_target %}
-        <p class="meta-info">Code ROME confirmé: {{ market_target.rome_code or 'Non renseigné' }}{% if market_target.rome_label %} · {{ market_target.rome_label }}{% endif %} · Territoire: {{ market_target.territory_label or market_target.territory_code or department }}</p>
+        <p class="meta-info">Code ROME analysé: {{ market_target.rome_code or 'Non renseigné' }}{% if market_target.rome_label %} · {{ market_target.rome_label }}{% endif %} · Territoire: {{ market_target.territory_label or market_target.territory_code or department }}</p>
+        {% endif %}
+        {% if context.market_offer_audit %}
+        <div class="stat-grid" style="margin:1rem 0;">
+          <div class="stat-block small"><span class="stat-value">{{ context.market_raw_count or 0 }}</span><span class="stat-label">Offres reçues</span></div>
+          <div class="stat-block small"><span class="stat-value">{{ context.market_accepted_count or 0 }}</span><span class="stat-label">Offres conformes</span></div>
+          <div class="stat-block small"><span class="stat-value">{{ context.market_rejected_count or 0 }}</span><span class="stat-label">Offres rejetées</span></div>
+        </div>
+        {% if context.market_rejection_reasons %}
+        <p class="meta-info">Motifs des rejets: {% for reason, count in context.market_rejection_reasons.items() %}{{ reason }}={{ count }}{% if not loop.last %} · {% endif %}{% endfor %}</p>
+        {% endif %}
         {% endif %}
         {% if model_only %}
         <p>Analyse modele uniquement. Aucun appel a France Travail n'a ete effectue.</p>
