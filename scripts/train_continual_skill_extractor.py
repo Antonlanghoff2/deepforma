@@ -314,7 +314,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
         num_train_epochs=args.epochs,
         per_device_train_batch_size=args.batch_size,
         per_device_eval_batch_size=args.batch_size,
-        evaluation_strategy='epoch',
+        eval_strategy='epoch',
         save_strategy='epoch',
         logging_strategy='steps',
         logging_steps=25,
@@ -334,7 +334,7 @@ def train(args: argparse.Namespace) -> dict[str, Any]:
         args=training_args,
         train_dataset=train_ds,
         eval_dataset=val_ds,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         data_collator=DataCollatorForTokenClassification(tokenizer),
         compute_metrics=compute_token_metrics,
     )

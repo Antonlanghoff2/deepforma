@@ -50,13 +50,21 @@ def _write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
 def _evidence_span(text: str, evidence: str) -> tuple[int, int]:
     if not evidence:
         return 0, 0
-    idx = normalize_for_match(text).find(normalize_for_match(evidence))
-    if idx >= 0:
-        return idx, idx + len(normalize_for_match(evidence))
-    pos = text.lower().find(evidence.lower())
+    evidence_lower = evidence.lower().strip()
+    text_lower = text.lower()
+    pos = text_lower.find(evidence_lower)
     if pos >= 0:
         return pos, pos + len(evidence)
-    return 0, min(len(text), max(1, len(evidence)))
+    norm_evidence = normalize_for_match(evidence)
+    if not norm_evidence:
+        return 0, 0
+    for i in range(len(text)):
+        chunk = text[i:i + len(evidence) + 20]
+        if normalize_for_match(chunk) == norm_evidence:
+            return i, i + len(evidence)
+        if normalize_for_match(chunk).startswith(norm_evidence):
+            return i, i + len(evidence)
+    return 0, 0
 
 
 def _group_id(row: dict[str, Any]) -> str:
@@ -111,6 +119,14 @@ def main() -> None:
         split = 'train' if bucket < 70 else 'validation' if bucket < 85 else 'test'
         split_buckets[split].append(example)
         examples.append(example)
+    train_hashes = {stable_hash(normalize_for_match(ex['text']), length=24) for ex in split_buckets['train']}
+    for split_name in ('validation', 'test'):
+        deduped = []
+        for ex in split_buckets[split_name]:
+            h = stable_hash(normalize_for_match(ex['text']), length=24)
+            if h not in train_hashes:
+                deduped.append(ex)
+        split_buckets[split_name] = deduped
     report = {
         'total_examples': len(examples),
         'train': len(split_buckets['train']),

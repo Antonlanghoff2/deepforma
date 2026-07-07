@@ -34,6 +34,14 @@ def normalize_rome_code(value: str | None) -> str:
     return (value or '').strip().upper()
 
 
+def remove_empty_params(params: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in params.items()
+        if value not in (None, '', [], ())
+    }
+
+
 def build_search_params(
     *,
     rome_code: str,
@@ -59,7 +67,7 @@ def build_search_params(
     normalized_keywords = (keywords or '').strip()
     if normalized_keywords:
         params['motsCles'] = normalized_keywords
-    return params
+    return remove_empty_params(params)
 
 
 def _extract_result_rome_code(offer: dict[str, Any]) -> str:

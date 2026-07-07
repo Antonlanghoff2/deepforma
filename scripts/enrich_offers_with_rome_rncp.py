@@ -14,7 +14,7 @@ for path in (ROOT, ROOT / 'src'):
     if text not in sys.path:
         sys.path.insert(0, text)
 
-from common.text import clean_text, normalize_for_match
+from common.text import clean_text, normalize_for_match, stable_hash
 from referentials.unified_skill_referential import UnifiedSkillReferential
 
 
@@ -97,17 +97,32 @@ def main() -> None:
             if link.get('rome_code') == rome_code:
                 rncp_candidates.append({'rncp_code': link.get('rncp_code'), 'mapping_score': float(link.get('score', 0.0))})
         skills: list[dict[str, Any]] = []
-        source_fields = row.get('competences') or row.get('skills') or []
+        seen_skill_labels: set[str] = set()
+        source_fields = row.get('competences') or row.get('skills') or row.get('merged_skills') or row.get('normalized_skills') or row.get('structured_skills') or []
         if isinstance(source_fields, list):
             for entry in source_fields:
-                if isinstance(entry, dict):
-                    label = clean_text(entry.get('libelle') or entry.get('canonical_label') or entry.get('official_label') or entry.get('label') or '')
-                else:
+                if isinstance(entry, str):
                     label = clean_text(entry)
+                else:
+                    label = clean_text(entry.get('libelle') or entry.get('canonical_label') or entry.get('official_label') or entry.get('label') or '')
                 if not label:
                     continue
-                canonical = source_by_label.get(normalize_for_match(label)) or _match_skill(description, unified_skills, label)
+                label_key = normalize_for_match(label)
+                if label_key and label_key in seen_skill_labels:
+                    continue
+                seen_skill_labels.add(label_key) if label_key else None
+                canonical = source_by_label.get(label_key) or _match_skill(description, unified_skills, label)
                 if not canonical:
+                    evidence = _evidence_for_skill(description, {'canonical_label': label, 'aliases': []})
+                    if not evidence:
+                        continue
+                    skills.append({
+                        'canonical_skill_id': stable_hash('merged', label, length=24),
+                        'canonical_label': label,
+                        'evidence': evidence,
+                        'confidence': 0.8,
+                        'source_links': entry.get('sources', []) if isinstance(entry, dict) else [],
+                    })
                     continue
                 evidence = _evidence_for_skill(description, canonical)
                 if not evidence:
