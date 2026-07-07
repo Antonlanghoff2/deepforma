@@ -2,13 +2,29 @@
 from __future__ import annotations
 
 from collections import Counter
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field, is_dataclass
 from typing import Any
 
 from common.text import clean_text, normalize_for_match
 from domain.models import JobOffer, Skill, Territory
 from france_travail.client import FranceTravailClient, ROME_CODE_RE, count_returned_rome_codes, normalize_rome_code
 from france_travail.normalizer import normalize_offer
+
+
+def serialize_record(value: Any) -> Any:
+    if value is None:
+        return None
+    if is_dataclass(value):
+        return asdict(value)
+    if hasattr(value, 'model_dump'):
+        return value.model_dump()
+    if hasattr(value, 'dict'):
+        return value.dict()
+    if isinstance(value, dict):
+        return value
+    if hasattr(value, '_asdict'):
+        return value._asdict()
+    raise TypeError(f'Type non sérialisable : {type(value).__name__}')
 
 
 class UnexpectedRomeOfferError(ValueError):

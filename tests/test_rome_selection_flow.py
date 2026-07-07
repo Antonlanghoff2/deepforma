@@ -332,3 +332,4 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
     assert "Offres utilisées pour l'étude de marché" in result_html
     assert 'Organiser la coordination' in result_html
     assert 'Support informatique' in result_html
+    assert 'Offres rejetées' in result_html or 'rejected_count' in result_html

@@ -45,7 +45,7 @@ from referentials.rome_referential import RomeService, validate_rome_code, valid
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.analysis_result_builder import build_analysis_result
 from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
-from services.market_context import build_market_context, fetch_offers_by_rome
+from services.market_context import build_market_context, fetch_offers_by_rome, fetch_offers_by_rome_codes, serialize_record
 from services.recommendation_service import RecommendationService
 
 logger = logging.getLogger(__name__)
@@ -1169,6 +1169,24 @@ def create_app(
             market_error = 'Le code ROME confirme est valide, mais aucune offre ne correspond exactement au code demandé.'
         elif raw_count == 0 and validated_codes:
             market_error = 'Aucune offre France Travail ne correspond aux codes ROME confirmés.'
+        rejected_reasons = dict(Counter(item.reason for item in multi_result.rejected_offers))
+        rome_distribution = {
+            code: sum(
+                1
+                for offer in normalized_offers
+                if code in set(offer.get('matched_requested_rome_codes') or [])
+            )
+            for code in validated_codes
+        }
+        market_offer_audit = {
+            'raw_count': raw_count,
+            'accepted_count': accepted_count,
+            'rejected_count': rejected_count,
+            'rejected_reasons': rejected_reasons,
+            'rejections': [serialize_record(item) for item in multi_result.rejected_offers],
+            'stats_by_rome': [serialize_record(item) for item in multi_result.stats_by_rome],
+            'rome_distribution': rome_distribution,
+        }
         context = {
             'analysis': referential_analysis,
             'context': {
@@ -1181,13 +1199,13 @@ def create_app(
                 'market_analysis': market_analysis,
                 'market_status': market_status,
                 'market_error': market_error,
-                'market_offer_audit': {'raw_count': raw_count, 'accepted_count': accepted_count, 'rejected_count': rejected_count, 'rejected_reasons': dict(Counter(item.reason for item in multi_result.rejected_offers)), 'rejections': [item.__dict__ for item in multi_result.rejected_offers], 'stats_by_rome': [item.__dict__ for item in multi_result.stats_by_rome], 'rome_distribution': Counter({code: sum(1 for offer in normalized_offers if code in set(offer.get('matched_requested_rome_codes') or [])) for code in validated_codes})},
+                'market_offer_audit': market_offer_audit,
                 'market_raw_count': raw_count,
                 'market_accepted_count': accepted_count,
                 'market_rejected_count': rejected_count,
-                'market_rejection_reasons': dict(Counter(item.reason for item in multi_result.rejected_offers)),
-                'market_rejections': [item.__dict__ for item in multi_result.rejected_offers],
-                'market_stats_by_rome': [item.__dict__ for item in multi_result.stats_by_rome],
+                'market_rejection_reasons': rejected_reasons,
+                'market_rejections': [serialize_record(item) for item in multi_result.rejected_offers],
+                'market_stats_by_rome': [serialize_record(item) for item in multi_result.stats_by_rome],
             },
             'analysis_result': _build_analysis_result(
                 _build_context(' '.join(page_texts) if page_texts else getattr(document, 'title', '') or '', departement, None, app.config['DEFAULT_THRESHOLD'], True, allow_market_failure=True)['analysis'],

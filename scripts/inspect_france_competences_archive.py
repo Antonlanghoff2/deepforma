@@ -77,9 +77,45 @@ def _preview_xml(payload: bytes) -> dict[str, object]:
 
 def inspect_archive(path: Path) -> dict[str, object]:
     report: dict[str, object] = {'archive': str(path), 'entries': []}
-    adapter = FranceCompetencesSchemaAdapter()
     if not path.exists():
         raise FileNotFoundError(path)
+
+    if path.is_dir():
+        candidates = [item for item in sorted(path.rglob('*')) if item.is_file() and item.suffix.lower() in {'.zip', '.csv', '.xml', '.xsd'}]
+        report['archive'] = str(path)
+        for item in candidates:
+            entry = {'name': str(item.relative_to(path)), 'format': item.suffix.lower().lstrip('.'), 'size': item.stat().st_size}
+            if item.suffix.lower() == '.zip':
+                with zipfile.ZipFile(item) as zf:
+                    entry['entries'] = []
+                    for info in zf.infolist():
+                        if info.is_dir():
+                            continue
+                        nested: dict[str, object] = {
+                            'name': info.filename,
+                            'format': Path(info.filename).suffix.lower().lstrip('.'),
+                            'size': info.file_size,
+                        }
+                        with zf.open(info) as fh:
+                            payload = fh.read(128 * 1024)
+                        if info.filename.lower().endswith('.csv'):
+                            nested.update(_preview_csv(payload))
+                        elif info.filename.lower().endswith('.xml'):
+                            nested.update(_preview_xml(payload))
+                        elif info.filename.lower().endswith('.xsd'):
+                            nested['preview'] = payload.decode('utf-8', errors='ignore')[:2000]
+                        entry['entries'].append(nested)
+            else:
+                payload = item.read_bytes()[:128 * 1024]
+                if item.suffix.lower() == '.csv':
+                    entry.update(_preview_csv(payload))
+                elif item.suffix.lower() == '.xml':
+                    entry.update(_preview_xml(payload))
+                elif item.suffix.lower() == '.xsd':
+                    entry['preview'] = payload.decode('utf-8', errors='ignore')[:2000]
+            report['entries'].append(entry)
+        return report
+
     if path.suffix.lower() != '.zip':
         payload = path.read_bytes()[:128 * 1024]
         entry: dict[str, object] = {'name': path.name, 'format': path.suffix.lower().lstrip('.'), 'size': path.stat().st_size}
