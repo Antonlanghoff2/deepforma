@@ -84,7 +84,21 @@
 
       {% if selected.kind == 'ner' %}
       <section class="panel">
-        <h3>Entités détectées</h3>
+        <div class="inline" style="align-items:center; justify-content:space-between;">
+          <h3 style="margin-bottom:0;">Entités détectées</h3>
+          <div class="actions" style="max-width: 320px; margin-top:0;">
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <button type="submit" name="action" value="approve_all_entities" class="success">Approuver tout</button>
+            </form>
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <button type="submit" name="action" value="reject_all_entities" class="danger">Rejeter tout</button>
+            </form>
+          </div>
+        </div>
         {% if selected.entities %}
         <div class="grid">
           {% for entity in selected.entities %}
@@ -153,7 +167,21 @@
       </section>
       {% else %}
       <section class="panel">
-        <h3>Familles proposées</h3>
+        <div class="inline" style="align-items:center; justify-content:space-between;">
+          <h3 style="margin-bottom:0;">Familles proposées</h3>
+          <div class="actions" style="max-width: 320px; margin-top:0;">
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <button type="submit" name="action" value="approve_all_labels" class="success">Approuver tout</button>
+            </form>
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <button type="submit" name="action" value="reject_all_labels" class="danger">Rejeter tout</button>
+            </form>
+          </div>
+        </div>
         <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="record_id" value="{{ selected.record_id }}">

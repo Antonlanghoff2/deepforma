@@ -1806,22 +1806,22 @@ def create_app(
     def _update_annotation_status(record: dict[str, Any], *, action: str, form: Any) -> None:
         kind = clean_text(record.get('kind') or 'ner')
         if kind == 'ner':
-            if action == 'approve_entity':
+            if action in {'approve_entity', 'approve_all_entities'}:
                 entity_id = clean_text(form.get('entity_id') or '')
                 approved_label = clean_text(form.get('approved_label') or '')
                 canonical_name = clean_text(form.get('canonical_name') or '')
                 referential_id = clean_text(form.get('referential_id') or '')
                 for entity in record.get('entities', []):
                     current_id = clean_text(entity.get('entity_id') or '')
-                    if current_id and current_id == entity_id:
+                    if action == 'approve_all_entities' or (current_id and current_id == entity_id):
                         entity['approved_label'] = approved_label or entity.get('predicted_label')
                         entity['canonical_name'] = canonical_name or entity.get('canonical_name')
                         entity['referential_id'] = referential_id or entity.get('referential_id')
                         entity['status'] = 'approved'
-            elif action == 'reject_entity':
+            elif action in {'reject_entity', 'reject_all_entities'}:
                 entity_id = clean_text(form.get('entity_id') or '')
                 for entity in record.get('entities', []):
-                    if clean_text(entity.get('entity_id') or '') == entity_id:
+                    if action == 'reject_all_entities' or clean_text(entity.get('entity_id') or '') == entity_id:
                         entity['status'] = 'rejected'
             elif action == 'add_entity':
                 text_value = clean_text(form.get('text') or '')
@@ -1846,14 +1846,17 @@ def create_app(
             elif action == 'validate_document':
                 pass
         else:
-            if action in {'approve_multilabel', 'save_multilabel'}:
-                approved_labels = [clean_text(label) for label in form.getlist('approved_labels') if clean_text(label)]
-                if not approved_labels:
-                    approved_labels = [clean_text(form.get('approved_labels') or '')] if clean_text(form.get('approved_labels') or '') else []
+            if action in {'approve_multilabel', 'save_multilabel', 'approve_all_labels'}:
+                if action == 'approve_all_labels':
+                    approved_labels = [clean_text(label) for label in record.get('predicted_labels') or [] if clean_text(label)]
+                else:
+                    approved_labels = [clean_text(label) for label in form.getlist('approved_labels') if clean_text(label)]
+                    if not approved_labels:
+                        approved_labels = [clean_text(form.get('approved_labels') or '')] if clean_text(form.get('approved_labels') or '') else []
                 if approved_labels:
                     record['approved_labels'] = approved_labels
                     record['status'] = 'approved'
-            elif action == 'reject_multilabel':
+            elif action in {'reject_multilabel', 'reject_all_labels'}:
                 record['approved_labels'] = []
                 record['status'] = 'rejected'
             elif action == 'validate_document':

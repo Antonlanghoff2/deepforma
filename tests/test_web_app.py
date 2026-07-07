@@ -8,6 +8,7 @@ from urllib.parse import urlencode
 import pytest
 
 from referential_import.models import DerivedSkill, EvaluationCriterion, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
+from referential_learning.store import AnnotationStore
 from continual_learning.store import ContinualLearningStore
 from services.recommendation_service import RecommendationService
 from web_app import create_app
@@ -949,6 +950,126 @@ def test_admin_referential_import_edits_are_persisted(monkeypatch, tmp_path):
     assert len(output_payload['derived_skills']) == 1
     assert output_payload['derived_skills'][0]['canonical_label'] == 'TensorFlow'
     assert output_payload['derived_skills'][0]['category'] == 'tool'
+
+
+
+def test_admin_referential_annotation_bulk_actions(monkeypatch, tmp_path):
+    import web_app as web_app_module
+
+    ner_store = AnnotationStore(tmp_path / 'referential_ner_candidates.jsonl')
+    multilabel_store = AnnotationStore(tmp_path / 'referential_multilabel_candidates.jsonl')
+
+    def fake_annotation_store(path):
+        path_str = str(path)
+        if 'referential_ner_candidates' in path_str:
+            return ner_store
+        if 'referential_multilabel_candidates' in path_str:
+            return multilabel_store
+        return AnnotationStore(path)
+
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    monkeypatch.setattr(web_app_module, 'AnnotationStore', fake_annotation_store)
+
+    ner_store.save([
+        {
+            'record_id': 'rec-ner-1',
+            'document_id': 'doc-ner-1',
+            'source_file': 'doc.pdf',
+            'page': 1,
+            'section': 'PROGRAM',
+            'text': 'SVM, CNN',
+            'entities': [
+                {
+                    'entity_id': 'e1',
+                    'start': 0,
+                    'end': 3,
+                    'text': 'SVM',
+                    'predicted_label': 'METHOD',
+                    'approved_label': None,
+                    'canonical_name': 'SVM',
+                    'status': 'pending',
+                    'page': 1,
+                    'document_id': 'doc-ner-1',
+                    'source_file': 'doc.pdf',
+                },
+                {
+                    'entity_id': 'e2',
+                    'start': 5,
+                    'end': 8,
+                    'text': 'CNN',
+                    'predicted_label': 'TOOL',
+                    'approved_label': None,
+                    'canonical_name': 'CNN',
+                    'status': 'pending',
+                    'page': 1,
+                    'document_id': 'doc-ner-1',
+                    'source_file': 'doc.pdf',
+                },
+            ],
+            'status': 'pending',
+            'kind': 'ner',
+        }
+    ])
+    multilabel_store.save([
+        {
+            'record_id': 'rec-ml-1',
+            'document_id': 'doc-ml-1',
+            'source_file': 'doc2.pdf',
+            'page': 2,
+            'section': 'PROGRAM',
+            'text': 'Machine Learning, Deep Learning',
+            'predicted_labels': ['Machine Learning', 'Deep Learning'],
+            'approved_labels': None,
+            'status': 'pending',
+            'kind': 'multilabel',
+        }
+    ])
+
+    app = build_app(client_factory=lambda: DummyOfferClient(offers=[]))
+    client = app.test_client()
+
+    response = client.get(
+        '/admin/referential-annotation?record_id=rec-ner-1',
+        headers=_admin_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Approuver tout' in html
+    assert 'Rejeter tout' in html
+    with client.session_transaction() as session_data:
+        csrf_token = session_data['_csrf_token']
+
+    response = client.post(
+        '/admin/referential-annotation/action',
+        data={
+            'csrf_token': csrf_token,
+            'record_id': 'rec-ner-1',
+            'action': 'approve_all_entities',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    updated_ner = ner_store.get('rec-ner-1')
+    assert updated_ner is not None
+    assert all(entity['status'] == 'approved' for entity in updated_ner['entities'])
+
+    response = client.post(
+        '/admin/referential-annotation/action',
+        data={
+            'csrf_token': csrf_token,
+            'record_id': 'rec-ml-1',
+            'action': 'reject_all_labels',
+        },
+        headers=_admin_auth_headers(),
+        follow_redirects=False,
+    )
+    assert response.status_code == 302
+    updated_ml = multilabel_store.get('rec-ml-1')
+    assert updated_ml is not None
+    assert updated_ml['status'] == 'rejected'
+    assert updated_ml['approved_labels'] == []
 
 def test_france_travail_error():
     app = build_app(
