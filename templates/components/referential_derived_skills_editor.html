@@ -1,0 +1,100 @@
+<section class="card">
+  <div class="section-heading">
+    <h2>Sous-compétences détectées</h2>
+    <span class="muted">Édition des compétences, méthodes et outils extraits du PDF</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Libellé</th>
+          <th>Canonique</th>
+          <th>Catégorie</th>
+          <th>Source</th>
+          <th>Confiance</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in derived_skills %}
+        {% if item.review_status not in ('rejected', 'excluded') or show_admin_actions %}
+        <tr>
+          <td><input type="text" name="derived_skill_label__{{ loop.index0 }}" value="{{ item.label }}"></td>
+          <td><input type="text" name="derived_skill_canonical__{{ loop.index0 }}" value="{{ item.canonical_label }}"></td>
+          <td>
+            <select name="derived_skill_category__{{ loop.index0 }}">
+              {% for category in ['skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'] %}
+              <option value="{{ category }}" {% if item.category == category %}selected{% endif %}>{{ category }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td>{{ item.source_code }} · {{ item.source_type }}</td>
+          <td>{{ item.confidence }}</td>
+          <td class="table-actions">
+            {% if not show_admin_actions and analysis_id %}
+              {% if item.review_status in ('rejected', 'excluded') %}
+              <form method="post" action="{{ url_for('referential_import_restore_derived_skill', analysis_id=analysis_id, skill_index=loop.index0) }}" style="display:inline">
+                <button type="submit">Restaurer</button>
+              </form>
+              {% else %}
+              <form method="post" action="{{ url_for('referential_import_reject_derived_skill', analysis_id=analysis_id, skill_index=loop.index0) }}" style="display:inline" onsubmit="return confirm('Rejeter cette sous-compétence ?');">
+                <button type="submit">Rejeter</button>
+              </form>
+              {% endif %}
+            {% else %}
+              {% if item.review_status in ('rejected', 'excluded') %}
+              <span style="color:#991b1b;">{{ item.review_status }}</span>
+              {% else %}
+              <input type="checkbox" name="remove_derived_skill__{{ loop.index0 }}">
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if not show_admin_actions and analysis_id %}
+  <details style="margin-top: 12px;">
+    <summary>Sous-compétences rejetées ({{ derived_skills | selectattr('review_status', 'in', ['rejected', 'excluded']) | list | length }})</summary>
+    <div class="table-wrap" style="margin-top: 8px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Libellé</th>
+            <th>Canonique</th>
+            <th>Catégorie</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in derived_skills %}
+          {% if item.review_status in ('rejected', 'excluded') %}
+          <tr>
+            <td>{{ item.label }}</td>
+            <td>{{ item.canonical_label }}</td>
+            <td>{{ item.category }}</td>
+            <td>
+              <form method="post" action="{{ url_for('referential_import_restore_derived_skill', analysis_id=analysis_id, skill_index=loop.index0) }}" style="display:inline">
+                <button type="submit">Restaurer</button>
+              </form>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {% endif %}
+
+  {% if show_admin_actions %}
+  <label style="margin-top: 12px;">Ajouter des sous-compétences
+    <textarea name="new_derived_skill_labels" placeholder="Libellé | catégorie | canonique
+Ex: TensorFlow | tool | TensorFlow"></textarea>
+  </label>
+  <p class="help">Format : <span class="mono">Libellé | catégorie | canonique</span>. Si la catégorie est omise, elle devient <span class="mono">skill</span>.</p>
+  {% endif %}
+</section>

@@ -110,6 +110,7 @@ class DerivedSkill(Serializable):
     page_start: int = 0
     page_end: int = 0
     context: str = ""
+    review_status: ReviewStatus = "pending"
 
 
 @dataclass(slots=True)
