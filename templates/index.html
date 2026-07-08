@@ -61,40 +61,9 @@
           <span>Note de validation</span>
           <input type="text" name="validation_note" value="" placeholder="Ex: intitulé confirmé par lecture humaine">
         </label>
-        <div class="field field-full">
-          <h3>Compétences à corriger</h3>
-          <p class="muted">Modifiez ici les libellés avant validation. Les changements seront enregistrés dans la version approuvée.</p>
-          <div style="overflow:auto;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Code</th>
-                  <th>Libellé</th>
-                  <th>Bloc</th>
-                  <th>Activité</th>
-                  <th>Statut</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in referential_validation.competencies %}
-                <tr>
-                  <td>{{ item.code }}</td>
-                  <td><input type="text" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"></td>
-                  <td>{{ item.block_code }}</td>
-                  <td>{{ item.activity_code }}</td>
-                  <td>
-                    <select name="competency_status__{{ item.code }}">
-                      {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
-                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        {% with show_admin_actions = false, competencies = referential_validation.competencies, analysis_id = referential_validation.analysis_id %}
+        {% include 'components/referential_skill_editor.html' %}
+        {% endwith %}
         <div class="actions field-full">
           <button type="submit">Valider le référentiel</button>
         </div>

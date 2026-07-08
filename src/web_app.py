@@ -38,6 +38,7 @@ from skills.merge_offer_skills import extract_skills_from_text, merge_offer_skil
 from continual_learning.auth import require_admin_auth
 from continual_learning.store import ContinualLearningStore
 from referential_import import ReferentialImportService
+from referential_import.editing_service import ReferentialEditingService
 from referential_import.models import DerivedSkill, OfficialCompetency
 from referential_learning.store import AnnotationStore
 from referential_import.import_service import analysis_from_export, build_export_payload
@@ -716,7 +717,7 @@ def create_app(
         return candidates[:3]
 
     def _build_referential_extraction_overview(analysis: dict[str, Any], keyword_candidates: list[str], *, page_texts: list[str]) -> dict[str, Any]:
-        competencies = analysis.get('competencies', [])
+        competencies = referential_editing_service.get_active_competencies(analysis)
         criteria = analysis.get('criteria', [])
         derived_skills = analysis.get('derived_skills', [])
         tools_methods = analysis.get('tools_methods', [])
@@ -928,146 +929,10 @@ def create_app(
             'source_path': source_path,
         }
 
-    def _parse_manual_detected_skill_line(raw_line: str) -> tuple[str, str, str]:
-        parts = [clean_text(part) for part in re.split(r'\s*\|\s*', clean_text(raw_line)) if clean_text(part)]
-        label = parts[0] if parts else ''
-        category = parts[1] if len(parts) > 1 else 'skill'
-        canonical = parts[2] if len(parts) > 2 else label
-        if category not in {'skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'}:
-            category = 'skill'
-        return label, category, canonical
+    referential_editing_service = ReferentialEditingService()
 
     def _apply_referential_import_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
-        title = clean_text(form.get('validated_title') or '')
-        if title:
-            analysis['document'].title = title
-        note = clean_text(form.get('validation_note') or '')
-        if note:
-            analysis['document'].notes = note
-
-        original_competencies = list(analysis.get('competencies', []))
-        anchor = original_competencies[0] if original_competencies else None
-        removed_codes: set[str] = set()
-        updated_competencies: list[Any] = []
-
-        for competency in original_competencies:
-            label_key = f'competency_label__{competency.code}'
-            status_key = f'competency_status__{competency.code}'
-            remove_key = f'remove_competency__{competency.code}'
-            if str(form.get(remove_key) or '').strip() in {'1', 'true', 'yes', 'on'}:
-                removed_codes.add(competency.code)
-                continue
-            if label_key in form:
-                corrected = clean_text(form.get(label_key))
-                if corrected:
-                    competency.official_label = corrected
-                    competency.normalized_label = corrected
-            if status_key in form:
-                status = clean_text(form.get(status_key))
-                if status:
-                    competency.review_status = status
-            updated_competencies.append(competency)
-
-        manual_labels = []
-        seen_manual: set[str] = set()
-        for raw_line in clean_text(form.get('new_competency_labels') or '').splitlines():
-            label = clean_text(raw_line)
-            if not label:
-                continue
-            key = normalize_for_match(label)
-            if key in seen_manual:
-                continue
-            seen_manual.add(key)
-            manual_labels.append(label)
-
-        for index, label in enumerate(manual_labels, start=1):
-            code = f'MANUAL_{index}'
-            if any(normalize_for_match(getattr(item, 'official_label', '') or '') == normalize_for_match(label) for item in updated_competencies):
-                continue
-            updated_competencies.append(
-                OfficialCompetency(
-                    code=code,
-                    official_label=label,
-                    normalized_label=label,
-                    block_code=getattr(anchor, 'block_code', 'MANUAL') if anchor else 'MANUAL',
-                    activity_code=getattr(anchor, 'activity_code', 'MANUAL') if anchor else 'MANUAL',
-                    page_start=getattr(anchor, 'page_start', 1) if anchor else 1,
-                    page_end=getattr(anchor, 'page_end', 1) if anchor else 1,
-                    confidence=1.0,
-                    review_status='approved',
-                    source_pages=list(getattr(anchor, 'source_pages', []) or [1]) if anchor else [1],
-                    source_text=label,
-                    provenance='human_review',
-                )
-            )
-
-        updated_derived_skills: list[Any] = []
-        for index, skill in enumerate(list(analysis.get('derived_skills', []))):
-            remove_key = f'remove_derived_skill__{index}'
-            if str(form.get(remove_key) or '').strip() in {'1', 'true', 'yes', 'on'}:
-                continue
-            label_key = f'derived_skill_label__{index}'
-            canonical_key = f'derived_skill_canonical__{index}'
-            category_key = f'derived_skill_category__{index}'
-            if label_key in form:
-                label = clean_text(form.get(label_key))
-                if label:
-                    skill.label = label
-                    skill.surface_form = label
-            if canonical_key in form:
-                canonical = clean_text(form.get(canonical_key))
-                if canonical:
-                    skill.canonical_label = canonical
-            if category_key in form:
-                category = clean_text(form.get(category_key))
-                if category in {'skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'}:
-                    skill.category = category
-            skill.normalized_surface = normalize_for_match(skill.surface_form or skill.label)
-            updated_derived_skills.append(skill)
-
-        manual_detected_skills: list[DerivedSkill] = []
-        seen_manual_detected: set[str] = set()
-        for raw_line in clean_text(form.get('new_derived_skill_labels') or '').splitlines():
-            label, category, canonical = _parse_manual_detected_skill_line(raw_line)
-            if not label:
-                continue
-            key = normalize_for_match(canonical or label)
-            if key in seen_manual_detected:
-                continue
-            seen_manual_detected.add(key)
-            manual_detected_skills.append(
-                DerivedSkill(
-                    label=label,
-                    canonical_label=canonical or label,
-                    category=category,
-                    source_code=f'MANUAL_SKILL_{len(manual_detected_skills) + 1}',
-                    source_type='human_review',
-                    surface_form=label,
-                    normalized_surface=normalize_for_match(label),
-                    provenance='human_review',
-                    confidence=1.0,
-                    explicit=True,
-                    page_start=getattr(anchor, 'page_start', 1) if anchor else 1,
-                    page_end=getattr(anchor, 'page_end', 1) if anchor else 1,
-                    context=label,
-                )
-            )
-
-        updated_derived_skills.extend(manual_detected_skills)
-
-        kept_codes = {competency.code for competency in updated_competencies}
-        analysis['competencies'] = updated_competencies
-        analysis['criteria'] = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code in kept_codes]
-        analysis['derived_skills'] = [skill for skill in updated_derived_skills if getattr(skill, 'source_code', '') not in removed_codes]
-        analysis['tools_methods'] = [skill for skill in analysis['derived_skills'] if getattr(skill, 'category', '') in {'tool', 'method', 'regulatory'}]
-        if analysis.get('report') is not None:
-            analysis['report'].competencies = len(analysis.get('competencies', []))
-            analysis['report'].criteria = len(analysis.get('criteria', []))
-            analysis['report'].derived_skills = len(analysis.get('derived_skills', []))
-            analysis['report'].tools_methods = len(analysis.get('tools_methods', []))
-        for competency in analysis.get('competencies', []):
-            competency.evaluation_criteria = [criterion for criterion in analysis.get('criteria', []) if criterion.competency_code == competency.code]
-        return analysis
+        return referential_editing_service.apply_edits(analysis, form)
 
     def _render_referential_validation(analysis: dict[str, Any], *, source_path: str, departement: str, analysis_id: str | None = None, referential_success: str | None = None, referential_error: str | None = None, rome_query: str | None = None, rome_candidates: list[dict[str, Any]] | None = None, market_target: dict[str, Any] | None = None, market_target_confirmed: bool = False, selected_rome_occupations: list[dict[str, Any]] | None = None):
         preview = _build_referential_preview_payload(analysis, source_path=source_path)
@@ -1113,8 +978,78 @@ def create_app(
         temp_path = Path(temp_file.name)
         temp_file.close()
         uploaded.save(temp_path)
+        departement = clean_text(request.form.get('departement') or '')
         analysis = referential_import_service.analyze(temp_path)
-        return _render_referential_validation(analysis, source_path=str(temp_path), departement=clean_text(request.form.get('departement') or ''))
+        state = _build_referential_state(analysis, source_path=str(temp_path), departement=departement)
+        return redirect(url_for('referential_import_editor', analysis_id=state['analysis_id']))
+
+    @app.get('/referential/import/<analysis_id>/edit')
+    def referential_import_editor(analysis_id: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return _render_home_page(referential_error='Session expiree. Veuillez re-importer le PDF.'), 404
+        return _render_referential_validation(
+            cached['analysis'],
+            source_path=cached['source_path'],
+            departement=cached['departement'],
+            analysis_id=analysis_id,
+            rome_query=cached.get('rome_query'),
+            rome_candidates=cached.get('rome_candidates') or [],
+            market_target=cached.get('market_target') or {},
+            market_target_confirmed=cached.get('market_target_confirmed', False),
+            selected_rome_occupations=cached.get('selected_rome_occupations') or cached.get('market_target', {}).get('selected_rome_occupations', []),
+        )
+
+    @app.post('/referential/import/<analysis_id>/skills/<skill_code>/reject')
+    def referential_import_reject_skill(analysis_id: str, skill_code: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        analysis = cached['analysis']
+        analysis = referential_editing_service.reject_skill(analysis, skill_code)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/skills/<skill_code>/restore')
+    def referential_import_restore_skill(analysis_id: str, skill_code: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        analysis = cached['analysis']
+        analysis = referential_editing_service.restore_skill(analysis, skill_code)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/skills/add')
+    def referential_import_add_skill(analysis_id: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        label = clean_text(request.form.get('label') or request.form.get('new_competency_labels') or '')
+        if not label:
+            return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+        analysis = cached['analysis']
+        analysis = referential_editing_service.add_skill(analysis, label)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/update')
+    def referential_import_update(analysis_id: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        analysis = cached['analysis']
+        analysis = referential_editing_service.apply_edits(analysis, request.form)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
 
     def _apply_referential_validation_edits(analysis: dict[str, Any], form: Any) -> dict[str, Any]:
         return _apply_referential_import_edits(analysis, form)
@@ -1259,20 +1194,27 @@ def create_app(
             payload = _parse_request_payload()
             action = clean_text(payload.get('action'))
             if action == 'validate_referential':
-                export_raw = payload.get('analysis_json')
-                if not export_raw:
-                    raise ValueError('Analyse du référentiel manquante.')
-                try:
-                    export = json.loads(export_raw)
-                except Exception:
-                    raise ValueError('JSON du référentiel invalide.')
-                referential_analysis = analysis_from_export(export)
+                analysis_id = clean_text(payload.get('analysis_id') or '')
+                cached = _referential_state_cache().get(analysis_id) if analysis_id else None
+                if cached is not None:
+                    referential_analysis = cached['analysis']
+                    source_path = cached.get('source_path') or clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
+                    departement = cached.get('departement') or clean_text(payload.get('departement') or '')
+                else:
+                    export_raw = payload.get('analysis_json')
+                    if not export_raw:
+                        raise ValueError('Analyse du référentiel manquante.')
+                    try:
+                        export = json.loads(export_raw)
+                    except Exception:
+                        raise ValueError('JSON du référentiel invalide.')
+                    referential_analysis = analysis_from_export(export)
+                    source_path = clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
+                    departement = clean_text(payload.get('departement') or '')
                 referential_analysis = _apply_referential_validation_edits(referential_analysis, payload)
                 referential_analysis['export'] = build_export_payload(referential_analysis)
                 validated_by = clean_text(payload.get('validated_by') or 'human_review') or 'human_review'
                 referential_import_service.approve(referential_analysis, validated_by=validated_by)
-                source_path = clean_text(payload.get('source_path') or referential_analysis['document'].source_path)
-                departement = clean_text(payload.get('departement') or '')
                 if not departement:
                     raise ValueError('Le departement est obligatoire.')
                 state = _build_referential_state(referential_analysis, source_path=source_path, departement=departement)

@@ -112,39 +112,9 @@
         </label>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Compétences officielles</h2>
-          <span class="muted">Corriger, retirer ou ajouter des compétences</span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Code</th><th>Libellé</th><th>Statut</th><th>Bloc</th><th>Activité</th><th>Confiance</th><th>Supprimer</th></tr></thead>
-            <tbody>
-              {% for item in competencies %}
-              <tr>
-                <td>{{ item.code }}</td>
-                <td><input type="text" form="approve-form" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"></td>
-                <td>
-                  <select form="approve-form" name="competency_status__{{ item.code }}">
-                    {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
-                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
-                    {% endfor %}
-                  </select>
-                </td>
-                <td>{{ item.block_code }}</td>
-                <td>{{ item.activity_code }}</td>
-                <td>{{ item.confidence }}</td>
-                <td class="table-actions"><input form="approve-form" type="checkbox" name="remove_competency__{{ item.code }}"></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <label style="margin-top: 12px;">Ajouter des compétences officielles
-          <textarea form="approve-form" name="new_competency_labels" placeholder="Une compétence par ligne"></textarea>
-        </label>
-      </section>
+      {% with show_admin_actions = true %}
+      {% include 'components/referential_skill_editor.html' %}
+      {% endwith %}
 
       <section class="card">
         <div class="section-heading">

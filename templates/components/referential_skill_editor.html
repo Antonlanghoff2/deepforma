@@ -1,0 +1,187 @@
+<section class="card">
+  <div class="section-heading">
+    <h2>Compétences officielles</h2>
+    <span class="muted">Corriger, retirer ou ajouter des compétences</span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Libellé</th>
+          <th>Statut</th>
+          {% if show_admin_actions %}
+          <th>Bloc</th>
+          <th>Activité</th>
+          <th>Confiance</th>
+          {% endif %}
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in competencies %}
+        {% set is_rejected = item.review_status in ('rejected', 'excluded') %}
+        <tr{% if is_rejected and not show_admin_actions %} class="rejected-row" style="display:none;" data-rejected="true"{% endif %}>
+          <td>{{ item.code }}</td>
+          <td><input type="text" name="competency_label__{{ item.code }}" value="{{ item.official_label }}"{% if is_rejected %} disabled{% endif %}></td>
+          <td>
+            <select name="competency_status__{{ item.code }}">
+              {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
+              <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          {% if show_admin_actions %}
+          <td>{{ item.block_code }}</td>
+          <td>{{ item.activity_code }}</td>
+          <td>{{ item.confidence }}</td>
+          {% endif %}
+          <td class="table-actions">
+            {% if analysis_id and not show_admin_actions %}
+              {% if is_rejected %}
+              <form method="post" action="{{ url_for('referential_import_restore_skill', analysis_id=analysis_id, skill_code=item.code) }}" style="display:inline">
+                <button type="submit" class="btn-restore">Restaurer</button>
+              </form>
+              {% else %}
+              <form method="post" action="{{ url_for('referential_import_reject_skill', analysis_id=analysis_id, skill_code=item.code) }}" style="display:inline">
+                <button type="submit" class="btn-reject">Rejeter</button>
+              </form>
+              {% endif %}
+            {% else %}
+              {% if is_rejected %}
+              <button type="button" class="btn-restore" data-code="{{ item.code }}">Restaurer</button>
+              {% else %}
+              <button type="button" class="btn-reject" data-code="{{ item.code }}">Rejeter</button>
+              {% endif %}
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if not show_admin_actions and analysis_id %}
+  <div style="margin-top: 12px; display: flex; gap: 8px; align-items: end;">
+    <label style="flex:1;">
+      <span>Ajouter une compétence</span>
+      <input type="text" id="new-skill-input" placeholder="Libellé de la compétence">
+    </label>
+    <button type="button" id="btn-add-skill" style="padding: 10px 16px;">Ajouter</button>
+  </div>
+  <details style="margin-top: 12px;">
+    <summary>Compétences rejetées ({{ competencies | selectattr('review_status', 'in', ['rejected', 'excluded']) | list | length }})</summary>
+    <div class="table-wrap" style="margin-top: 8px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Libellé</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in competencies %}
+          {% if item.review_status in ('rejected', 'excluded') %}
+          <tr>
+            <td>{{ item.code }}</td>
+            <td>{{ item.official_label }}</td>
+            <td>{{ item.review_status }}</td>
+            <td>
+              <form method="post" action="{{ url_for('referential_import_restore_skill', analysis_id=analysis_id, skill_code=item.code) }}" style="display:inline">
+                <button type="submit">Restaurer</button>
+              </form>
+            </td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {% endif %}
+
+  {% if show_admin_actions %}
+  <label style="margin-top: 12px;">Ajouter des compétences
+    <textarea name="new_competency_labels" placeholder="Une compétence par ligne"></textarea>
+  </label>
+  <details style="margin-top: 12px;">
+    <summary>Compétences rejetées / supprimées ({{ competencies | selectattr('review_status', 'in', ['rejected', 'excluded']) | list | length }})</summary>
+    <div class="table-wrap" style="margin-top: 8px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Libellé</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in competencies %}
+          {% if item.review_status in ('rejected', 'excluded') %}
+          <tr>
+            <td>{{ item.code }}</td>
+            <td>{{ item.official_label }}</td>
+            <td>{{ item.review_status }}</td>
+            <td><select name="competency_status__{{ item.code }}">
+              {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
+              <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
+              {% endfor %}
+            </select></td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {% endif %}
+</section>
+
+<script>
+(function() {
+  var analysisId = '{{ analysis_id or "" }}';
+  var isAdmin = {{ 'true' if show_admin_actions else 'false' }};
+
+  document.querySelectorAll('.btn-reject').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var code = this.getAttribute('data-code');
+      var select = this.closest('tr').querySelector('select[name="competency_status__' + code + '"]');
+      if (select) { select.value = 'rejected'; }
+      this.closest('tr').style.display = 'none';
+      this.closest('tr').setAttribute('data-rejected', 'true');
+    });
+  });
+
+  document.querySelectorAll('.btn-restore').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var code = this.getAttribute('data-code');
+      var select = this.closest('tr').querySelector('select[name="competency_status__' + code + '"]');
+      if (select) { select.value = 'pending'; }
+      this.closest('tr').style.display = '';
+      this.closest('tr').removeAttribute('data-rejected');
+    });
+  });
+
+  var addBtn = document.getElementById('btn-add-skill');
+  if (addBtn && analysisId && !isAdmin) {
+    addBtn.addEventListener('click', function() {
+      var input = document.getElementById('new-skill-input');
+      var label = input ? input.value.trim() : '';
+      if (!label) return;
+      var form = document.createElement('form');
+      form.method = 'post';
+      form.action = '/referential/import/' + analysisId + '/skills/add';
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = 'label';
+      hidden.value = label;
+      form.appendChild(hidden);
+      document.body.appendChild(form);
+      form.submit();
+    });
+  }
+})();
+</script>

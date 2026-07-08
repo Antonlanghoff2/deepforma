@@ -101,6 +101,34 @@ make evaluate-referential-models
 make test-referential-ml-dl
 ```
 
+### 6. IA recommendations (pedagogical knowledge base)
+
+A CSV of 243 IA‑related pedagogical recommendations is loaded at app startup and matched
+against the skills extracted from the formation text.  Three confidence levels appear on the
+result page:
+
+| Level | Score | Badge |
+|-------|-------|-------|
+| `HIGH` | ≥ 1.0 (exact phrase match) | Vert – *Conseillé* |
+| `MEDIUM` | ≥ 0.82 (inclusion / alias) | Jaune – *À envisager* |
+| `LOW` | < 0.82 | Orange – *À vérifier* |
+
+Matching pipeline: **EXACT** (phrase) → **ALIAS** (phrase via alias) → **INCLUSION** (significant word overlap) → **EMBEDDING** (semantic, optional) → **DEFAULT** (fallback rule).
+
+```bash
+make ia-recommendations-validate   # dry-run import + quality report
+make ia-recommendations-import     # write clean parquet + csv
+make ia-recommendations-demo       # demo against RNCP41966 skills
+```
+
+Key files:
+- `data/raw/recommandations_IA_consolide.csv` – source dataset (BOM UTF‑8, comma‑separated, mixed quoting)
+- `src/data_sources/ia_recommendations.py` – robust CSV loader, normalizer, quality report
+- `src/domain/ia_recommendation_matching.py` – matching service (phrase, alias, inclusion, embedding)
+- `src/domain/models.py` – `IARecommendation`, `IARecommendationMatch` dataclasses
+- `src/services/analysis_result_builder.py` – wired into `build_analysis_result` via `ia_recommendation_records`
+- `tests/test_ia_recommendations.py` – 49 unit tests (loader, normalizer, matching, demo scenario)
+
 ## Key Documentation
 
 - [Architecture](docs/architecture.md)
