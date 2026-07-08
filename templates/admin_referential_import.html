@@ -116,66 +116,11 @@
       {% include 'components/referential_skill_editor.html' %}
       {% endwith %}
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Compétences détectées</h2>
-          <span class="muted">Édition des compétences, méthodes et outils détectés</span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Libellé</th><th>Canonique</th><th>Catégorie</th><th>Source</th><th>Confiance</th><th>Supprimer</th></tr></thead>
-            <tbody>
-              {% for item in derived_skills %}
-              <tr>
-                <td><input type="text" form="approve-form" name="derived_skill_label__{{ loop.index0 }}" value="{{ item.label }}"></td>
-                <td><input type="text" form="approve-form" name="derived_skill_canonical__{{ loop.index0 }}" value="{{ item.canonical_label }}"></td>
-                <td>
-                  <select form="approve-form" name="derived_skill_category__{{ loop.index0 }}">
-                    {% for category in ['skill', 'method', 'tool', 'domain', 'soft_skill', 'knowledge', 'regulatory', 'action'] %}
-                      <option value="{{ category }}" {% if item.category == category %}selected{% endif %}>{{ category }}</option>
-                    {% endfor %}
-                  </select>
-                </td>
-                <td>{{ item.source_code }} · {{ item.source_type }}</td>
-                <td>{{ item.confidence }}</td>
-                <td class="table-actions"><input form="approve-form" type="checkbox" name="remove_derived_skill__{{ loop.index0 }}"></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <label style="margin-top: 12px;">Ajouter des compétences détectées
-          <textarea form="approve-form" name="new_derived_skill_labels" placeholder="Libellé | catégorie | canonique
-Ex: TensorFlow | tool | TensorFlow"></textarea>
-        </label>
-        <p class="help">Le format recommandé est <span class="mono">Libellé | catégorie | canonique</span>. Si la catégorie est omise, elle est interprétée comme <span class="mono">skill</span>.</p>
-      </section>
+      {% with show_admin_actions = true %}
+      {% include 'components/referential_derived_skills_editor.html' %}
+      {% endwith %}
 
-      <section class="card">
-        <h2>Critères</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Code</th><th>Compétence</th><th>Libellé corrigé</th><th>Statut</th><th>Provenance</th></tr></thead>
-            <tbody>
-              {% for item in criteria %}
-              <tr>
-                <td>{{ item.code }}</td>
-                <td>{{ item.competency_code }}</td>
-                <td><input type="text" form="approve-form" name="criterion_label__{{ item.code }}" value="{{ item.criterion_label }}"></td>
-                <td>
-                  <select form="approve-form" name="criterion_status__{{ item.code }}">
-                    {% for status in ['pending', 'approved', 'corrected', 'rejected', 'excluded'] %}
-                      <option value="{{ status }}" {% if item.review_status == status %}selected{% endif %}>{{ status }}</option>
-                    {% endfor %}
-                  </select>
-                </td>
-                <td>{{ item.provenance }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {% include 'components/referential_criteria_editor.html' %}
 
       <section class="card">
         <h2>Export JSON</h2>

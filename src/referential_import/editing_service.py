@@ -129,6 +129,8 @@ class ReferentialEditingService:
                 c for c in analysis.get("criteria", [])
                 if c.competency_code == competency.code
             ]
+
+        self.apply_criterion_edits(analysis, form)
         return analysis
 
     def reject_skill(self, analysis: dict[str, Any], skill_code: str) -> dict[str, Any]:
@@ -177,6 +179,65 @@ class ReferentialEditingService:
                 provenance="human_review",
             )
         )
+        return analysis
+
+    def apply_criterion_edits(self, analysis: dict[str, Any], form: Any) -> dict[str, Any]:
+        for criterion in list(analysis.get("criteria", [])):
+            label_key = f"criterion_label__{criterion.code}"
+            status_key = f"criterion_status__{criterion.code}"
+            if label_key in form:
+                corrected = clean_text(form.get(label_key))
+                if corrected:
+                    criterion.criterion_label = corrected
+                    criterion.normalized_label = corrected
+            if status_key in form:
+                status = clean_text(form.get(status_key))
+                if status:
+                    criterion.review_status = status
+        return analysis
+
+    def reject_derived_skill(self, analysis: dict[str, Any], skill_index: int) -> dict[str, Any]:
+        derived = analysis.get("derived_skills", [])
+        if 0 <= skill_index < len(derived):
+            derived[skill_index].review_status = "rejected"
+        return analysis
+
+    def restore_derived_skill(self, analysis: dict[str, Any], skill_index: int) -> dict[str, Any]:
+        derived = analysis.get("derived_skills", [])
+        if 0 <= skill_index < len(derived):
+            derived[skill_index].review_status = "pending"
+        return analysis
+
+    def add_derived_skill(self, analysis: dict[str, Any], label: str, category: str = "skill", canonical: str = "") -> dict[str, Any]:
+        label = clean_text(label)
+        if not label:
+            return analysis
+        canonical = clean_text(canonical) or label
+        if category not in {"skill", "method", "tool", "domain", "soft_skill", "knowledge", "regulatory", "action"}:
+            category = "skill"
+        derived = analysis.get("derived_skills", [])
+        if any(
+            normalize_for_match(getattr(s, "canonical_label", "") or getattr(s, "label", "") or "")
+            == normalize_for_match(canonical)
+            for s in derived
+        ):
+            return analysis
+        skill = DerivedSkill(
+            label=label,
+            canonical_label=canonical,
+            category=category,
+            source_code=f"MANUAL_SKILL_{len(derived) + 1}",
+            source_type="human_review",
+            surface_form=label,
+            normalized_surface=normalize_for_match(label),
+            provenance="human_review",
+            confidence=1.0,
+            explicit=True,
+            page_start=1,
+            page_end=1,
+            context=label,
+        )
+        derived.append(skill)
         return analysis
 
     def get_active_competencies(self, analysis: dict[str, Any]) -> list[OfficialCompetency]:

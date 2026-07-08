@@ -955,6 +955,28 @@ def create_app(
                     }
                     for competency in analysis.get('competencies', [])
                 ],
+                'derived_skills': [
+                    {
+                        'label': getattr(s, 'label', '') or '',
+                        'canonical_label': getattr(s, 'canonical_label', '') or '',
+                        'category': getattr(s, 'category', '') or '',
+                        'source_code': getattr(s, 'source_code', '') or '',
+                        'source_type': getattr(s, 'source_type', '') or '',
+                        'confidence': getattr(s, 'confidence', 0.0) or 0.0,
+                        'review_status': getattr(s, 'review_status', 'pending') or 'pending',
+                    }
+                    for s in analysis.get('derived_skills', [])
+                ],
+                'criteria': [
+                    {
+                        'code': c.code,
+                        'competency_code': c.competency_code,
+                        'criterion_label': c.criterion_label,
+                        'review_status': c.review_status,
+                        'provenance': c.provenance,
+                    }
+                    for c in analysis.get('criteria', [])
+                ],
                 'rome_query': rome_query or getattr(analysis['document'], 'title', '') or '',
                 'rome_candidates': rome_candidates or [],
                 'market_target': market_target or {},
@@ -1046,6 +1068,47 @@ def create_app(
             return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
         analysis = cached['analysis']
         analysis = referential_editing_service.apply_edits(analysis, request.form)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/derived/<int:skill_index>/reject')
+    def referential_import_reject_derived_skill(analysis_id: str, skill_index: int):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        analysis = cached['analysis']
+        analysis = referential_editing_service.reject_derived_skill(analysis, skill_index)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/derived/<int:skill_index>/restore')
+    def referential_import_restore_derived_skill(analysis_id: str, skill_index: int):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        analysis = cached['analysis']
+        analysis = referential_editing_service.restore_derived_skill(analysis, skill_index)
+        analysis['export'] = build_export_payload(analysis)
+        cached['analysis'] = analysis
+        _referential_state_cache().set(analysis_id, cached)
+        return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+
+    @app.post('/referential/import/<analysis_id>/derived/add')
+    def referential_import_add_derived_skill(analysis_id: str):
+        cached = _referential_state_cache().get(analysis_id)
+        if cached is None:
+            return jsonify({'ok': False, 'error': 'Session expiree.'}), 404
+        label = clean_text(request.form.get('label') or '')
+        category = clean_text(request.form.get('category') or 'skill')
+        canonical = clean_text(request.form.get('canonical') or '')
+        if not label:
+            return redirect(url_for('referential_import_editor', analysis_id=analysis_id))
+        analysis = cached['analysis']
+        analysis = referential_editing_service.add_derived_skill(analysis, label, category, canonical)
         analysis['export'] = build_export_payload(analysis)
         cached['analysis'] = analysis
         _referential_state_cache().set(analysis_id, cached)
@@ -1239,6 +1302,28 @@ def create_app(
                                 'activity_code': competency.activity_code,
                             }
                             for competency in referential_analysis.get('competencies', [])
+                        ],
+                        'derived_skills': [
+                            {
+                                'label': getattr(s, 'label', '') or '',
+                                'canonical_label': getattr(s, 'canonical_label', '') or '',
+                                'category': getattr(s, 'category', '') or '',
+                                'source_code': getattr(s, 'source_code', '') or '',
+                                'source_type': getattr(s, 'source_type', '') or '',
+                                'confidence': getattr(s, 'confidence', 0.0) or 0.0,
+                                'review_status': getattr(s, 'review_status', 'pending') or 'pending',
+                            }
+                            for s in referential_analysis.get('derived_skills', [])
+                        ],
+                        'criteria': [
+                            {
+                                'code': c.code,
+                                'competency_code': c.competency_code,
+                                'criterion_label': c.criterion_label,
+                                'review_status': c.review_status,
+                                'provenance': c.provenance,
+                            }
+                            for c in referential_analysis.get('criteria', [])
                         ],
                         'rome_query': state['rome_query'],
                         'rome_candidates': [],

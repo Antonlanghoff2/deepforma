@@ -64,6 +64,19 @@
         {% with show_admin_actions = false, competencies = referential_validation.competencies, analysis_id = referential_validation.analysis_id %}
         {% include 'components/referential_skill_editor.html' %}
         {% endwith %}
+
+        {% with show_admin_actions = false, derived_skills = referential_validation.derived_skills, criteria = referential_validation.criteria, analysis_id = referential_validation.analysis_id %}
+        {% if derived_skills %}
+        {% include 'components/referential_derived_skills_editor.html' %}
+        {% endif %}
+        {% endwith %}
+
+        {% with criteria = referential_validation.criteria %}
+        {% if criteria %}
+        {% include 'components/referential_criteria_editor.html' %}
+        {% endif %}
+        {% endwith %}
+
         <div class="actions field-full">
           <button type="submit">Valider le référentiel</button>
         </div>
