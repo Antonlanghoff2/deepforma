@@ -248,9 +248,12 @@ def test_pdf_analysis_then_rome_confirmation_and_market_search(monkeypatch):
         },
         content_type='multipart/form-data',
     )
-    assert preview_response.status_code == 200
-    preview_html = preview_response.get_data(as_text=True)
-    assert 'Métier cible pour l’analyse du marché' in preview_html
+    assert preview_response.status_code == 302
+    assert preview_response.headers.get('Location', '').startswith('/referential/import/')
+    preview_follow = client.get(preview_response.headers['Location'])
+    assert preview_follow.status_code == 200
+    preview_html = preview_follow.get_data(as_text=True)
+    assert 'cible' in preview_html
     match = re.search(r'name="analysis_id" value="([^"]+)"', preview_html)
     assert match, preview_html
     analysis_id = match.group(1)
