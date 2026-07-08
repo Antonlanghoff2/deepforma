@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "4f81b8a9d44555603cbb1777",
+    "source_path": "/tmp/tmpt9lh3qw6.pdf",
+    "file_name": "tmpt9lh3qw6.pdf",
+    "sha256": "226a8f0cfc3586f5df2a3cec90ff1c28dddff508c3268df6db65f5ff5846d8bb",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 1,
+    "title": "Conseiller commercial",
+    "provider": "Titre : TP Conseiller commercial",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-08T12:13:16.920253+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "4f81b8a9d44555603cbb1777",
+    "source_hash": "226a8f0cfc3586f5df2a3cec90ff1c28dddff508c3268df6db65f5ff5846d8bb",
+    "pages": 1,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 0,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": true,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}
