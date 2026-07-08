@@ -1,5 +1,5 @@
 {
-  "source_file": "/tmp/pytest-of-bibi/pytest-30/test_output_files_exist0/test_single.xlsx",
+  "source_file": "/tmp/pytest-of-bibi/pytest-38/test_output_files_exist0/test_single.xlsx",
   "total_raw": 1,
   "total_after_cleaning": 1,
   "removed": {
@@ -22,7 +22,7 @@
     "Python": 1
   },
   "output_files": {
-    "parquet": "/tmp/pytest-of-bibi/pytest-30/test_output_files_exist0/output/formations_generalistes.parquet",
-    "jsonl": "/tmp/pytest-of-bibi/pytest-30/test_output_files_exist0/output/formations_generalistes.jsonl"
+    "parquet": "/tmp/pytest-of-bibi/pytest-38/test_output_files_exist0/output/formations_generalistes.parquet",
+    "jsonl": "/tmp/pytest-of-bibi/pytest-38/test_output_files_exist0/output/formations_generalistes.jsonl"
   }
 }
