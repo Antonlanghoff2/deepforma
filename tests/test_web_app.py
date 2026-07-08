@@ -172,7 +172,7 @@ def test_home_page():
     html = response.get_data(as_text=True)
     assert "Analyse d'un référentiel RNCP" in html
     assert 'PDF du référentiel' in html
-    assert 'Territoire (optionnel' in html
+    assert 'Prévisualiser le référentiel' in html
 
 
 def test_empty_form_returns_error():
@@ -803,7 +803,7 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
     assert preview_follow.status_code == 200
     preview_html = preview_follow.get_data(as_text=True)
     assert 'Validation humaine' in preview_html
-    assert 'Compétences à corriger' in preview_html
+    assert 'Compétences officielles' in preview_html
     assert 'Valider le référentiel' in preview_html
 
     validation_payload = {
