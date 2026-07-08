@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "c10c12597be1bbc87038ce2b",
+    "source_path": "/tmp/tmpcha67742.pdf",
+    "file_name": "tmpcha67742.pdf",
+    "sha256": "4b4caa650f83aeab50137f3b4978bfa72e324de4e261c74a2302a5ca4efe4d72",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 3,
+    "title": "Responsable de point de vente en optique",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:53:23.451093+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Gérer la relation client",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Gérer la relation client",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Assurer la gestion financière du point de vente optique",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Assurer la gestion financière du point de vente optique",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_4",
+      "label": "(BC04) : Manager des équipes d'un point de vente optique",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 4 (BC04) : Manager des équipes d'un point de vente optique",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "garantir l'efficience du plan opérationnel.",
+      "canonical_label": "Efficience du plan opérationnel",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "garantir l'efficience du plan opérationnel.",
+      "normalized_surface": "garantir l efficience du plan operationnel",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mise en place du nouveau produit,",
+      "canonical_label": "Du nouveau produit",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "mise en place du nouveau produit,",
+      "normalized_surface": "mise en place du nouveau produit",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "assurer de la continuité et de la qualité de service du magasin.",
+      "canonical_label": "De la continuité et de la qualité de service du magasin",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "assurer de la continuité et de la qualité de service du magasin.",
+      "normalized_surface": "assurer de la continuite et de la qualite de service du magasin",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "c10c12597be1bbc87038ce2b",
+    "source_hash": "4b4caa650f83aeab50137f3b4978bfa72e324de4e261c74a2302a5ca4efe4d72",
+    "pages": 3,
+    "blocks": 3,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 3,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

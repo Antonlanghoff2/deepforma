@@ -1,0 +1,280 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "5299db98e3a6ae181833ed0d",
+    "source_path": "/tmp/tmps1jv2e9x.pdf",
+    "file_name": "tmps1jv2e9x.pdf",
+    "sha256": "855892f114219a984940e30337ad270c5666fc4d845b7c058c3e5523bac394d1",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 5,
+    "title": "Visuel merchandiser",
+    "provider": "Titre : Visuel merchandiser",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:50:12.274325+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Concevoir et mettre en scène l’identité visuelle d’un point de vente",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Concevoir et mettre en scène l’identité visuelle d’un point de vente",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Réaliser un projet de visual merchandising",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Réaliser un projet de visual merchandising",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_4",
+      "label": "(BC04) : Management et pilotage d’un projet de visual merchandising",
+      "page_start": 5,
+      "page_end": 5,
+      "confidence": 0.7,
+      "text": "BLOC 4 (BC04) : Management et pilotage d’un projet de visual merchandising",
+      "review_status": "pending",
+      "source_pages": [
+        5
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Mettre en place un veille,",
+      "canonical_label": "Un veille",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Mettre en place un veille,",
+      "normalized_surface": "mettre en place un veille",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser une étude de marché externe en analysant l’offre,",
+      "canonical_label": "Une étude de marché externe en analysant l’offre",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser une étude de marché externe en analysant l’offre,",
+      "normalized_surface": "realiser une etude de marche externe en analysant l offre",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser une analyse SWOT (forces/faiblesses,",
+      "canonical_label": "Une analyse SWOT (forces/faiblesses",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser une analyse SWOT (forces/faiblesses,",
+      "normalized_surface": "realiser une analyse swot forces faiblesses",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Analyser les différents canaux générateurs de chiffre d’affaires tels que les boutiques,",
+      "canonical_label": "Les différents canaux générateurs de chiffre d’affaires tels que les boutiques",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser les différents canaux générateurs de chiffre d’affaires tels que les boutiques,",
+      "normalized_surface": "analyser les differents canaux generateurs de chiffre d affaires tels que les boutiques",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser une veille sur les fournisseurs,",
+      "canonical_label": "Une veille sur les fournisseurs",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser une veille sur les fournisseurs,",
+      "normalized_surface": "realiser une veille sur les fournisseurs",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser un audit de la marque,",
+      "canonical_label": "Un audit de la marque",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser un audit de la marque,",
+      "normalized_surface": "realiser un audit de la marque",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Concevoir et gérer le projet de scénographie",
+      "canonical_label": "Et gérer le projet de scénographie",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Concevoir et gérer le projet de scénographie",
+      "normalized_surface": "concevoir et gerer le projet de scenographie",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "gérer le projet de scénographie",
+      "canonical_label": "Le projet de scénographie",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "gérer le projet de scénographie",
+      "normalized_surface": "gerer le projet de scenographie",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "coordonner les différents corps de métiers,",
+      "canonical_label": "Les différents corps de métiers",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "coordonner les différents corps de métiers,",
+      "normalized_surface": "coordonner les differents corps de metiers",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "gérer une équipe de montage,",
+      "canonical_label": "Une équipe de montage",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "gérer une équipe de montage,",
+      "normalized_surface": "gerer une equipe de montage",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mise en place d’outils d’identité visuelle,",
+      "canonical_label": "D’outils d’identité visuelle",
+      "category": "skill",
+      "source_code": "SEMANTIC:5",
+      "source_type": "semantic_entity",
+      "surface_form": "mise en place d’outils d’identité visuelle,",
+      "normalized_surface": "mise en place d outils d identite visuelle",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 5,
+      "page_end": 5,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "5299db98e3a6ae181833ed0d",
+    "source_hash": "855892f114219a984940e30337ad270c5666fc4d845b7c058c3e5523bac394d1",
+    "pages": 5,
+    "blocks": 3,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 11,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

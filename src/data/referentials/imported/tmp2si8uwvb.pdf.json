@@ -1,0 +1,190 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "310fcc218ff7a7e470e70627",
+    "source_path": "/tmp/tmp2si8uwvb.pdf",
+    "file_name": "tmp2si8uwvb.pdf",
+    "sha256": "ff722a52397555a8061b5b60bd5b349063aacad86591bb07c0818acf51610196",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 2,
+    "title": "BAC PRO - Technicien conseil vente en alimentation (produits alimentaires et boissons)",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:41:38.740880+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Débattre à l’ère de la mondialisation",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Débattre à l’ère de la mondialisation",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Développer son identité culturelle",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Développer son identité culturelle",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_4",
+      "label": "(BC04) : Agir collectivement dans des situations sociales et professionnelles",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 4 (BC04) : Agir collectivement dans des situations sociales et professionnelles",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_5",
+      "label": "(BC05) : Élaborer une stratégie de valorisation d’un produit du rayon",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 5 (BC05) : Élaborer une stratégie de valorisation d’un produit du rayon",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_6",
+      "label": "(BC06) : Répondre aux attentes de la politique commerciale du point de vente",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 6 (BC06) : Répondre aux attentes de la politique commerciale du point de vente",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_7",
+      "label": "(BC07) : Répondre aux attentes spécifiques d’un client particulier",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 7 (BC07) : Répondre aux attentes spécifiques d’un client particulier",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_8",
+      "label": "(BC08) : Assurer la gestion d’un rayon de produits alimentaires",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 8 (BC08) : Assurer la gestion d’un rayon de produits alimentaires",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_9",
+      "label": "(BC09) : Animer un espace de vente de produits alimentaires",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 9 (BC09) : Animer un espace de vente de produits alimentaires",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Organiser des animations autour des produits alimentaires",
+      "canonical_label": "Des animations autour des produits alimentaires",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Organiser des animations autour des produits alimentaires",
+      "normalized_surface": "organiser des animations autour des produits alimentaires",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "310fcc218ff7a7e470e70627",
+    "source_hash": "ff722a52397555a8061b5b60bd5b349063aacad86591bb07c0818acf51610196",
+    "pages": 2,
+    "blocks": 8,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 1,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

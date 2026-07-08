@@ -1,0 +1,159 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "56cee41f241c33d8ca05a696",
+    "source_path": "/tmp/tmpbdnuwcsb.pdf",
+    "file_name": "tmpbdnuwcsb.pdf",
+    "sha256": "8507f12c36d16f179b4d8f0a4c3a1e413f0f4ed33b49c2fc32b9ea4e5ee4a2c7",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 2,
+    "title": "CQP Conseiller de vente de produits non alimentaires et services",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T16:02:12.694883+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Mettre en rayon libre-service",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Mettre en rayon libre-service",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Gérer les stocks en réserve",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Gérer les stocks en réserve",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_4",
+      "label": "(BC04) : Vendre des produits non alimentaires et des services",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 4 (BC04) : Vendre des produits non alimentaires et des services",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "code": "Analyser",
+      "block_code": "BLOC_4",
+      "label": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin. Conseiller les clients sur les caractéristiques des produits et services recherchés afin d'assurer l'acte d'achat. Présenter le produit ou le service au client en décrivant ses spécificités afin de l'accompagner dans son acte d'achat. Consolider l'acte de vente en magasin ou en ligne afin de conclure l'acte d'achat.",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.82,
+      "text": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin. Conseiller les clients sur les caractéristiques des produits et services recherchés afin d'assurer l'acte d'achat. Présenter le produit ou le service au client en décrivant ses spécificités afin de l'accompagner dans son acte d'achat. Consolider l'acte de vente en magasin ou en ligne afin de conclure l'acte d'achat.",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    }
+  ],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "canonical_label": "La demande client en échangeant avec lui afin d'identifier son besoin",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "normalized_surface": "analyser la demande client en echangeant avec lui afin d identifier son besoin",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "assurer l'acte d'achat.",
+      "canonical_label": "Acte d'achat",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "assurer l'acte d'achat.",
+      "normalized_surface": "assurer l acte d achat",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "56cee41f241c33d8ca05a696",
+    "source_hash": "8507f12c36d16f179b4d8f0a4c3a1e413f0f4ed33b49c2fc32b9ea4e5ee4a2c7",
+    "pages": 2,
+    "blocks": 3,
+    "activities": 1,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 2,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

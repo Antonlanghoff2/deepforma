@@ -1,0 +1,436 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "2f6afce84898493344b4aa76",
+    "source_path": "/tmp/tmpaj4t2a24.pdf",
+    "file_name": "tmpaj4t2a24.pdf",
+    "sha256": "fc0e8d7055c0f43e7176f718757cda332a791059c10ac1a2ef8fe63ca09cee7a",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 4,
+    "title": "BAC PRO - Métiers du commerce et de la vente",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T16:01:45.969854+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Suivre les ventes",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Suivre les ventes",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Fidéliser la clientèle et développer la relation client",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Fidéliser la clientèle et développer la relation client",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_4",
+      "label": "(BC04) : Animer et gérer l'espace commercial (Option A)",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 4 (BC04) : Animer et gérer l'espace commercial (Option A)",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_5",
+      "label": "(BC05) : Prospecter et valoriser l'offre commerciale (Option B)",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.7,
+      "text": "BLOC 5 (BC05) : Prospecter et valoriser l'offre commerciale (Option B)",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "code": "BLOC_6",
+      "label": "(BC06) : Prévention Santé Environnement",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 6 (BC06) : Prévention Santé Environnement",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_7",
+      "label": "(BC07) : Economie Droit",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 7 (BC07) : Economie Droit",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_8",
+      "label": "(BC08) : Mathématiques",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 8 (BC08) : Mathématiques",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_9",
+      "label": "(BC09) : Langue vivante A",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 9 (BC09) : Langue vivante A",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_10",
+      "label": "(BC10) : Langue vivante B",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 10 (BC10) : Langue vivante B",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_11",
+      "label": "(BC11) : Français",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 11 (BC11) : Français",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_12",
+      "label": "(BC12) : Histoire Géographie et Enseignement moral et civique",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 12 (BC12) : Histoire Géographie et Enseignement moral et civique",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_13",
+      "label": "(BC13) : Arts appliqués et cultures artistiques",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 13 (BC13) : Arts appliqués et cultures artistiques",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "code": "BLOC_14",
+      "label": "(BC14) : Education physique et sportive",
+      "page_start": 4,
+      "page_end": 4,
+      "confidence": 0.7,
+      "text": "BLOC 14 (BC14) : Education physique et sportive",
+      "review_status": "pending",
+      "source_pages": [
+        4
+      ]
+    },
+    {
+      "code": "BLOC_15",
+      "label": "(BC15) : Langue vivante étrangère ou régionale (facultatif)",
+      "page_start": 4,
+      "page_end": 4,
+      "confidence": 0.7,
+      "text": "BLOC 15 (BC15) : Langue vivante étrangère ou régionale (facultatif)",
+      "review_status": "pending",
+      "source_pages": [
+        4
+      ]
+    },
+    {
+      "code": "BLOC_16",
+      "label": "(BC16) : Mobilité (facultatif)",
+      "page_start": 4,
+      "page_end": 4,
+      "confidence": 0.7,
+      "text": "BLOC 16 (BC16) : Mobilité (facultatif)",
+      "review_status": "pending",
+      "source_pages": [
+        4
+      ]
+    },
+    {
+      "code": "BLOC_17",
+      "label": "(BC17) : Secteur sportif (facultatif)",
+      "page_start": 4,
+      "page_end": 4,
+      "confidence": 0.7,
+      "text": "BLOC 17 (BC17) : Secteur sportif (facultatif)",
+      "review_status": "pending",
+      "source_pages": [
+        4
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "analyser les informations à des",
+      "canonical_label": "Les informations à des",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "analyser les informations à des",
+      "normalized_surface": "analyser les informations a des",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "organiser l'information Analyser / raisonner : émettre des conjectures ;",
+      "canonical_label": "L'information Analyser / raisonner : émettre des conjectures",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "organiser l'information Analyser / raisonner : émettre des conjectures ;",
+      "normalized_surface": "organiser l information analyser raisonner emettre des conjectures",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Analyser / raisonner : émettre des conjectures ;",
+      "canonical_label": "/ raisonner : émettre des conjectures",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser / raisonner : émettre des conjectures ;",
+      "normalized_surface": "analyser raisonner emettre des conjectures",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser : mettre en œuvre une méthode de résolution,",
+      "canonical_label": "Mettre en œuvre une méthode de résolution",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser : mettre en œuvre une méthode de résolution,",
+      "normalized_surface": "realiser mettre en uvre une methode de resolution",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mettre en œuvre une méthode de résolution,",
+      "canonical_label": "Une méthode de résolution",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "mettre en œuvre une méthode de résolution,",
+      "normalized_surface": "mettre en uvre une methode de resolution",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "utiliser des repères chronologiques et spatiaux : mémoriser et s'approprier les notions,",
+      "canonical_label": "Des repères chronologiques et spatiaux : mémoriser et s'approprier les notions",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "utiliser des repères chronologiques et spatiaux : mémoriser et s'approprier les notions,",
+      "normalized_surface": "utiliser des reperes chronologiques et spatiaux memoriser et s approprier les notions",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mettre en œuvre un cahier des charges simple ;",
+      "canonical_label": "Un cahier des charges simple",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "mettre en œuvre un cahier des charges simple ;",
+      "normalized_surface": "mettre en uvre un cahier des charges simple",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "analyser et traduire graphiquement des références et des intentions ;",
+      "canonical_label": "Et traduire graphiquement des références et des intentions",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "analyser et traduire graphiquement des références et des intentions ;",
+      "normalized_surface": "analyser et traduire graphiquement des references et des intentions",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Comprendre un document écrit,",
+      "canonical_label": "Un document écrit",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "Comprendre un document écrit,",
+      "normalized_surface": "comprendre un document ecrit",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Réaliser partiellement une activité professionnelle,",
+      "canonical_label": "Partiellement une activité professionnelle",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "Réaliser partiellement une activité professionnelle,",
+      "normalized_surface": "realiser partiellement une activite professionnelle",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Assurer le cadrage d'un projet Évaluer un projet d'animation",
+      "canonical_label": "Cadrage d'un projet Évaluer un projet d'animation",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "Assurer le cadrage d'un projet Évaluer un projet d'animation",
+      "normalized_surface": "assurer le cadrage d un projet evaluer un projet d animation",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "2f6afce84898493344b4aa76",
+    "source_hash": "fc0e8d7055c0f43e7176f718757cda332a791059c10ac1a2ef8fe63ca09cee7a",
+    "pages": 4,
+    "blocks": 16,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 11,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

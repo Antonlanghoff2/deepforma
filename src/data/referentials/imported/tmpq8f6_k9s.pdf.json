@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "62ffcf10abb36e82d7c36a55",
+    "source_path": "/tmp/tmpq8f6_k9s.pdf",
+    "file_name": "tmpq8f6_k9s.pdf",
+    "sha256": "32d2d9d91d85cc5a359195f3d59073553f56a6b566006d6012741ade0d16e0e4",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 3,
+    "title": "CQP Commercial itinérant clientèle professionnelle",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:49:25.982393+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Prospecter des clients professionnels et négocier des offres commerciales dans un contexte omnicanal",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Prospecter des clients professionnels et négocier des offres commerciales dans un contexte omnicanal",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Analyser l’évolution de son portefeuille clients et de sa performance économique,",
+      "canonical_label": "L’évolution de son portefeuille clients et de sa performance économique",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser l’évolution de son portefeuille clients et de sa performance économique,",
+      "normalized_surface": "analyser l evolution de son portefeuille clients et de sa performance economique",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Analyser les informations sur le marché B to B,",
+      "canonical_label": "Les informations sur le marché B to B",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser les informations sur le marché B to B,",
+      "normalized_surface": "analyser les informations sur le marche b to b",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "développement et fidélisation,",
+      "canonical_label": "Fidélisation",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "développement et fidélisation,",
+      "normalized_surface": "developpement et fidelisation",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "organisation et la préparation matérielle des contacts et des visites clients / prospects,",
+      "canonical_label": "Et la préparation matérielle des contacts et des visites clients / prospects",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "organisation et la préparation matérielle des contacts et des visites clients / prospects,",
+      "normalized_surface": "organisation et la preparation materielle des contacts et des visites clients prospects",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "connaissance approfondie de son environnement,",
+      "canonical_label": "Approfondie de son environnement",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "connaissance approfondie de son environnement,",
+      "normalized_surface": "connaissance approfondie de son environnement",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "assurer un service optimal au client Proposer le chiffrage de l’offre commerciale,",
+      "canonical_label": "Un service optimal au client Proposer le chiffrage de l’offre commerciale",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "assurer un service optimal au client Proposer le chiffrage de l’offre commerciale,",
+      "normalized_surface": "assurer un service optimal au client proposer le chiffrage de l offre commerciale",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "connaissance et sur une écoute active du client,",
+      "canonical_label": "Et sur une écoute active du client",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "connaissance et sur une écoute active du client,",
+      "normalized_surface": "connaissance et sur une ecoute active du client",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "Analyser les sollicitations en après-vente et les réclamations clients,",
+      "canonical_label": "Les sollicitations en après-vente et les réclamations clients",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Analyser les sollicitations en après-vente et les réclamations clients,",
+      "normalized_surface": "analyser les sollicitations en apres vente et les reclamations clients",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "62ffcf10abb36e82d7c36a55",
+    "source_hash": "32d2d9d91d85cc5a359195f3d59073553f56a6b566006d6012741ade0d16e0e4",
+    "pages": 3,
+    "blocks": 1,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 8,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

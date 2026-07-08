@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "c13e3bd17e948af88c396e45",
+    "source_path": "/tmp/tmpz5q6ikmb.pdf",
+    "file_name": "tmpz5q6ikmb.pdf",
+    "sha256": "66d1d63e49383cc655b25d5d8dcebbd1905674a1e9640af89b43c0a4b29a6032",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 3,
+    "title": "Diplome en management et gestion operationnelle d'entreprise",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:40:22.368313+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "gestion de projets et du développement d'affaires : ingénieur d'affaires,",
+      "canonical_label": "Projets et du développement d'affaires : ingénieur d'affaires",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "gestion de projets et du développement d'affaires : ingénieur d'affaires,",
+      "normalized_surface": "gestion de projets et du developpement d affaires ingenieur d affaires",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "organisation (culture,",
+      "canonical_label": "(culture",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "organisation (culture,",
+      "normalized_surface": "organisation culture",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Gérer au quotidien une équipe Déterminer les conditions favorables (matérielles,",
+      "canonical_label": "Au quotidien une équipe Déterminer les conditions favorables (matérielles",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Gérer au quotidien une équipe Déterminer les conditions favorables (matérielles,",
+      "normalized_surface": "gerer au quotidien une equipe determiner les conditions favorables materielles",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Effectuer une veille sur les secteurs,",
+      "canonical_label": "Une veille sur les secteurs",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Effectuer une veille sur les secteurs,",
+      "normalized_surface": "effectuer une veille sur les secteurs",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "culture d'entreprise Développer des compétences individuelles et collectives",
+      "canonical_label": "Entreprise Développer des compétences individuelles et collectives",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "culture d'entreprise Développer des compétences individuelles et collectives",
+      "normalized_surface": "culture d entreprise developper des competences individuelles et collectives",
+      "provenance": "semantic_match",
+      "confidence": 0.65,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "Développer des compétences individuelles et collectives",
+      "canonical_label": "Des compétences individuelles et collectives",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Développer des compétences individuelles et collectives",
+      "normalized_surface": "developper des competences individuelles et collectives",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "c13e3bd17e948af88c396e45",
+    "source_hash": "66d1d63e49383cc655b25d5d8dcebbd1905674a1e9640af89b43c0a4b29a6032",
+    "pages": 3,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 6,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": true,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "90c0425b2065d76f56530100",
+    "source_path": "/tmp/tmpstnxg9km.pdf",
+    "file_name": "tmpstnxg9km.pdf",
+    "sha256": "945a4edc84d108ad40e336cdc6e8cebbd16cfb819dc2c5bdfa7ac947357211eb",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 6,
+    "title": "Manager entrepreneurial de projet numerique et strategie digitale",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:45:57.030584+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "conception de l’expérience utilisateur),",
+      "canonical_label": "L’expérience utilisateur)",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "conception de l’expérience utilisateur),",
+      "normalized_surface": "conception de l experience utilisateur",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "effectuer dans l’entreprise Évaluer,",
+      "canonical_label": "Dans l’entreprise Évaluer",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "effectuer dans l’entreprise Évaluer,",
+      "normalized_surface": "effectuer dans l entreprise evaluer",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "concevoir une expérience utilisateur optimisée.",
+      "canonical_label": "Une expérience utilisateur optimisée",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "concevoir une expérience utilisateur optimisée.",
+      "normalized_surface": "concevoir une experience utilisateur optimisee",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "assurer de l’identité graphique du projet et de la cohérence graphique des interfaces.",
+      "canonical_label": "De l’identité graphique du projet et de la cohérence graphique des interfaces",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "assurer de l’identité graphique du projet et de la cohérence graphique des interfaces.",
+      "normalized_surface": "assurer de l identite graphique du projet et de la coherence graphique des interfaces",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "application afin de respecter la législation.",
+      "canonical_label": "Afin de respecter la législation",
+      "category": "skill",
+      "source_code": "SEMANTIC:5",
+      "source_type": "semantic_entity",
+      "surface_form": "application afin de respecter la législation.",
+      "normalized_surface": "application afin de respecter la legislation",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 5,
+      "page_end": 5,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "assurer une visibilité en dehors du web et de bénéficier de canaux médiatiques 360°.",
+      "canonical_label": "Une visibilité en dehors du web et de bénéficier de canaux médiatiques 360°",
+      "category": "skill",
+      "source_code": "SEMANTIC:5",
+      "source_type": "semantic_entity",
+      "surface_form": "assurer une visibilité en dehors du web et de bénéficier de canaux médiatiques 360°.",
+      "normalized_surface": "assurer une visibilite en dehors du web et de beneficier de canaux mediatiques 360",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 5,
+      "page_end": 5,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "90c0425b2065d76f56530100",
+    "source_hash": "945a4edc84d108ad40e336cdc6e8cebbd16cfb819dc2c5bdfa7ac947357211eb",
+    "pages": 6,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 6,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

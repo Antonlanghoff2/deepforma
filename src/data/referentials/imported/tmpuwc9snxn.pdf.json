@@ -1,0 +1,284 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "0099fc6583ba14acbf3140a3",
+    "source_path": "/tmp/tmpuwc9snxn.pdf",
+    "file_name": "tmpuwc9snxn.pdf",
+    "sha256": "4781138ccfea9a516295f5e3c2b4cce2ffcf381416d0f44e18b3b366121f5741",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 4,
+    "title": "Chargé de marketing digital et e-commerce",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:58:10.157721+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Produire et gérer les supports numériques nécessaires à la réalisation du plan d'action",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Produire et gérer les supports numériques nécessaires à la réalisation du plan d'action",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Piloter la stratégie de marketing digital et de ventes en ligne dans une démarche RSE",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Piloter la stratégie de marketing digital et de ventes en ligne dans une démarche RSE",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    }
+  ],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Animation de site multimédia,",
+      "canonical_label": "Site multimédia",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Animation de site multimédia,",
+      "normalized_surface": "animation de site multimedia",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Conception de contenus multimédias,",
+      "canonical_label": "Contenus multimédias",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Conception de contenus multimédias,",
+      "normalized_surface": "conception de contenus multimedias",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "réaliser les objectifs fixés dans le respect des règlementations (RGPD,",
+      "canonical_label": "Les objectifs fixés dans le respect des règlementations (RGPD",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "réaliser les objectifs fixés dans le respect des règlementations (RGPD,",
+      "normalized_surface": "realiser les objectifs fixes dans le respect des reglementations rgpd",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "acquérir et fidéliser des clients.",
+      "canonical_label": "Et fidéliser des clients",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "acquérir et fidéliser des clients.",
+      "normalized_surface": "acquerir et fideliser des clients",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Concevoir des contenus multimédias (texte,",
+      "canonical_label": "Des contenus multimédias (texte",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Concevoir des contenus multimédias (texte,",
+      "normalized_surface": "concevoir des contenus multimedias texte",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "développer la visibilité de l'entreprise et démontrer son expertise.",
+      "canonical_label": "La visibilité de l'entreprise et démontrer son expertise",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "développer la visibilité de l'entreprise et démontrer son expertise.",
+      "normalized_surface": "developper la visibilite de l entreprise et demontrer son expertise",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Mettre en place un ou plusieurs outils de communication inclusifs en choisissant,",
+      "canonical_label": "Un ou plusieurs outils de communication inclusifs en choisissant",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Mettre en place un ou plusieurs outils de communication inclusifs en choisissant,",
+      "normalized_surface": "mettre en place un ou plusieurs outils de communication inclusifs en choisissant",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Trello",
+      "canonical_label": "Trello",
+      "category": "tool",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Trello",
+      "normalized_surface": "trello",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_tool_pattern"
+    },
+    {
+      "label": "réalisation des tâches durant le projet de marketing digital et e-commerce.",
+      "canonical_label": "S tâches durant le projet de marketing digital et e-commerce",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "réalisation des tâches durant le projet de marketing digital et e-commerce.",
+      "normalized_surface": "realisation des taches durant le projet de marketing digital et e commerce",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Mettre en place un outil d'amélioration continue (ticketing) de l'expérience client en",
+      "canonical_label": "Un outil d'amélioration continue (ticketing) de l'expérience client en",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Mettre en place un outil d'amélioration continue (ticketing) de l'expérience client en",
+      "normalized_surface": "mettre en place un outil d amelioration continue ticketing de l experience client en",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mise en place et prendre les décisions nécessaires avec la direction et les équipes concernées.",
+      "canonical_label": "Et prendre les décisions nécessaires avec la direction et les équipes concernées",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "mise en place et prendre les décisions nécessaires avec la direction et les équipes concernées.",
+      "normalized_surface": "mise en place et prendre les decisions necessaires avec la direction et les equipes concernees",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "Trello",
+      "canonical_label": "Trello",
+      "category": "tool",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Trello",
+      "normalized_surface": "trello",
+      "provenance": "semantic_match",
+      "confidence": 0.5,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_tool_pattern"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "0099fc6583ba14acbf3140a3",
+    "source_hash": "4781138ccfea9a516295f5e3c2b4cce2ffcf381416d0f44e18b3b366121f5741",
+    "pages": 4,
+    "blocks": 2,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 11,
+    "tools_methods": 1,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

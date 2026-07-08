@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "e1ed4b78fa7cb643894a39b6",
+    "source_path": "/tmp/tmp56ewbfjm.pdf",
+    "file_name": "tmp56ewbfjm.pdf",
+    "sha256": "1754a9cefc4d754cad427caaaad239fd4b5893d7e20656fcede4ab1584a77c81",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 4,
+    "title": "Directeur d'activités",
+    "provider": "Titre : Directeur d'activités",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:38:30.586360+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "Mettre en place une veille et mobiliser des connaissances approfondies concernant les lois,",
+      "canonical_label": "Une veille et mobiliser des connaissances approfondies concernant les lois",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Mettre en place une veille et mobiliser des connaissances approfondies concernant les lois,",
+      "normalized_surface": "mettre en place une veille et mobiliser des connaissances approfondies concernant les lois",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "connaissances approfondies concernant les lois,",
+      "canonical_label": "Approfondies concernant les lois",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "connaissances approfondies concernant les lois,",
+      "normalized_surface": "connaissances approfondies concernant les lois",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "transformer",
+      "canonical_label": "Transformers",
+      "category": "method",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "transformer",
+      "normalized_surface": "transformer",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "taxonomy_alias"
+    },
+    {
+      "label": "connaissances en management,",
+      "canonical_label": "Management",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "connaissances en management,",
+      "normalized_surface": "connaissances en management",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "Développer un sens situationnel et une vision systémique pour identifier les rôles,",
+      "canonical_label": "Un sens situationnel et une vision systémique pour identifier les rôles",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Développer un sens situationnel et une vision systémique pour identifier les rôles,",
+      "normalized_surface": "developper un sens situationnel et une vision systemique pour identifier les roles",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "culture d’entreprise",
+      "canonical_label": "D’entreprise",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "culture d’entreprise",
+      "normalized_surface": "culture d entreprise",
+      "provenance": "semantic_match",
+      "confidence": 0.65,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_knowledge_pattern"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "transformer",
+      "canonical_label": "Transformers",
+      "category": "method",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "transformer",
+      "normalized_surface": "transformer",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "taxonomy_alias"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "e1ed4b78fa7cb643894a39b6",
+    "source_hash": "1754a9cefc4d754cad427caaaad239fd4b5893d7e20656fcede4ab1584a77c81",
+    "pages": 4,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 6,
+    "tools_methods": 1,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

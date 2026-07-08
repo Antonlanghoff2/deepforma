@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "5e6b16529f3d88698eed00fa",
+    "source_path": "/tmp/tmp6wzkhsxj.pdf",
+    "file_name": "tmp6wzkhsxj.pdf",
+    "sha256": "d094f8e15415e0c605d2246774e31e80f281a8e56e0c66053317140f3d286186",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 3,
+    "title": "Conseiller de vente omnicanale mode et beauté",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:48:40.155614+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [
+    {
+      "code": "BLOC_2",
+      "label": "(BC02) : Proposer et animer les services client mode et beauté en phygital (physique + digital)",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.7,
+      "text": "BLOC 2 (BC02) : Proposer et animer les services client mode et beauté en phygital (physique + digital)",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "code": "BLOC_3",
+      "label": "(BC03) : Effectuer les tâches courantes opérationnelles d’un espace spécialisée mode et beauté",
+      "page_start": 3,
+      "page_end": 3,
+      "confidence": 0.7,
+      "text": "BLOC 3 (BC03) : Effectuer les tâches courantes opérationnelles d’un espace spécialisée mode et beauté",
+      "review_status": "pending",
+      "source_pages": [
+        3
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "code": "Accueillir",
+      "block_code": "",
+      "label": "Accueillir une clientèle exigeante, avertie et multiculturelle (parfois autonome) et réussir une prise de contact personnalisée en français et/ou en anglais Effectuer une découverte complète et professionnelle des besoins en restant « centré client » de l’accueil à la prise de congé, en utilisant l’échange, les outils de CRM et de data collectée Ecouter activement, échanger, reformuler, argumenter et convaincre de façon personnalisée en français comme en anglais Répondre aux objections et aux retours clients (SAV), conclure la vente au moment opportun et donner des perspectives d’achats S’adapter au flux dense en point de vente en pratiquant des ventes multi-client.es et en respectant le zoning Contacter les clients à distance et effectuer des ventes, entretenir le lien (call, mail, sms, réseaux sociaux...) Conserver le lien de l’accueil à la prise de congé et veiller à la mise à jour, la complétude et l’exactitude des informations clients (CRM) en appliquant les obligations liées au RGPD Maîtriser le sens des indicateurs de vente (chiffre d’affaires, CA marques enseigne et marque animée, taux de transformation, panier moyen, panier articles, encartage, satisfaction clients,...) et actions correctives Suivre les indicateurs de la course à la performance et s’impliquer dans l’atteinte des",
+      "page_start": 1,
+      "page_end": 1,
+      "confidence": 0.82,
+      "text": "Accueillir une clientèle exigeante, avertie et multiculturelle (parfois autonome) et réussir une prise de contact personnalisée en français et/ou en anglais Effectuer une découverte complète et professionnelle des besoins en restant « centré client » de l’accueil à la prise de congé, en utilisant l’échange, les outils de CRM et de data collectée Ecouter activement, échanger, reformuler, argumenter et convaincre de façon personnalisée en français comme en anglais Répondre aux objections et aux retours clients (SAV), conclure la vente au moment opportun et donner des perspectives d’achats S’adapter au flux dense en point de vente en pratiquant des ventes multi-client.es et en respectant le zoning Contacter les clients à distance et effectuer des ventes, entretenir le lien (call, mail, sms, réseaux sociaux...) Conserver le lien de l’accueil à la prise de congé et veiller à la mise à jour, la complétude et l’exactitude des informations clients (CRM) en appliquant les obligations liées au RGPD Maîtriser le sens des indicateurs de vente (chiffre d’affaires, CA marques enseigne et marque animée, taux de transformation, panier moyen, panier articles, encartage, satisfaction clients,...) et actions correctives Suivre les indicateurs de la course à la performance et s’impliquer dans l’atteinte des",
+      "review_status": "pending",
+      "source_pages": [
+        1
+      ]
+    }
+  ],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "effectuer des ventes,",
+      "canonical_label": "Des ventes",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "effectuer des ventes,",
+      "normalized_surface": "effectuer des ventes",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "gestion de stocks,",
+      "canonical_label": "Stocks",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "gestion de stocks,",
+      "normalized_surface": "gestion de stocks",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "contribuer à alimenter les connaissances et compétences collectives Partager les valeurs,",
+      "canonical_label": "Alimenter les connaissances et compétences collectives Partager les valeurs",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "contribuer à alimenter les connaissances et compétences collectives Partager les valeurs,",
+      "normalized_surface": "contribuer a alimenter les connaissances et competences collectives partager les valeurs",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "connaissances et compétences collectives Partager les valeurs,",
+      "canonical_label": "Et compétences collectives Partager les valeurs",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "connaissances et compétences collectives Partager les valeurs,",
+      "normalized_surface": "connaissances et competences collectives partager les valeurs",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_knowledge_pattern"
+    },
+    {
+      "label": "Animer à distance les différents services digitaux comme (clic & collect,",
+      "canonical_label": "À distance les différents services digitaux comme (clic & collect",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Animer à distance les différents services digitaux comme (clic & collect,",
+      "normalized_surface": "animer a distance les differents services digitaux comme clic collect",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Assurer le service client après-vente,",
+      "canonical_label": "Service client après-vente",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "Assurer le service client après-vente,",
+      "normalized_surface": "assurer le service client apres vente",
+      "provenance": "semantic_match",
+      "confidence": 0.78,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "gérer les retours clients (échange,",
+      "canonical_label": "Les retours clients (échange",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "gérer les retours clients (échange,",
+      "normalized_surface": "gerer les retours clients echange",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Participer à la réalisation des inventaires,",
+      "canonical_label": "La réalisation des inventaires",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Participer à la réalisation des inventaires,",
+      "normalized_surface": "participer a la realisation des inventaires",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "réalisation des inventaires,",
+      "canonical_label": "S inventaires",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "réalisation des inventaires,",
+      "normalized_surface": "realisation des inventaires",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Participer à la veille concurrentielle (benchmark.",
+      "canonical_label": "La veille concurrentielle (benchmark",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Participer à la veille concurrentielle (benchmark.",
+      "normalized_surface": "participer a la veille concurrentielle benchmark",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "5e6b16529f3d88698eed00fa",
+    "source_hash": "d094f8e15415e0c605d2246774e31e80f281a8e56e0c66053317140f3d286186",
+    "pages": 3,
+    "blocks": 2,
+    "activities": 1,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 10,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

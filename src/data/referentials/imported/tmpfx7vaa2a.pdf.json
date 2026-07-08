@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "65809c966251a9df1795aa85",
+    "source_path": "/tmp/tmpfx7vaa2a.pdf",
+    "file_name": "tmpfx7vaa2a.pdf",
+    "sha256": "8d7df98674e729a760f1f4a8f53c547173ffc0edceaf1eddadf7e6f8c8177a69",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 2,
+    "title": "Responsable technico-commercial en agroéquipements",
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:48:08.451728+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [
+    {
+      "code": "A_1",
+      "block_code": "",
+      "label": "activité Activites / competences du bloc",
+      "page_start": 2,
+      "page_end": 2,
+      "confidence": 0.86,
+      "text": "activité Activites / competences du bloc",
+      "review_status": "pending",
+      "source_pages": [
+        2
+      ]
+    }
+  ],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "encadrement et en relation étroite avec les différents services de l’entreprise (atelier,",
+      "canonical_label": "Et en relation étroite avec les différents services de l’entreprise (atelier",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "encadrement et en relation étroite avec les différents services de l’entreprise (atelier,",
+      "normalized_surface": "encadrement et en relation etroite avec les differents services de l entreprise atelier",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "encadrement intermédiaire,",
+      "canonical_label": "Intermédiaire",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "encadrement intermédiaire,",
+      "normalized_surface": "encadrement intermediaire",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "65809c966251a9df1795aa85",
+    "source_hash": "8d7df98674e729a760f1f4a8f53c547173ffc0edceaf1eddadf7e6f8c8177a69",
+    "pages": 2,
+    "blocks": 0,
+    "activities": 1,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 2,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}

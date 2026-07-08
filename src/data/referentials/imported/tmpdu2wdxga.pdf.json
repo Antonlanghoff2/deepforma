@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "a21878502df2e8327a82f187",
+    "source_path": "/tmp/tmpdu2wdxga.pdf",
+    "file_name": "tmpdu2wdxga.pdf",
+    "sha256": "237c4a085db2022646858cb1d940dca5bb4379e8481f71e67fe9988307e36777",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 5,
+    "title": "Manager d'affaires",
+    "provider": "Titre : Manager d'affaires",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-07T15:45:26.366163+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "collaboration avec le service marketing,",
+      "canonical_label": "Le service marketing",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "collaboration avec le service marketing,",
+      "normalized_surface": "collaboration avec le service marketing",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "mise en place et connaître le coût d’acquisition d’un nouveau client Chiffrer,",
+      "canonical_label": "Et connaître le coût d’acquisition d’un nouveau client Chiffrer",
+      "category": "skill",
+      "source_code": "SEMANTIC:2",
+      "source_type": "semantic_entity",
+      "surface_form": "mise en place et connaître le coût d’acquisition d’un nouveau client Chiffrer,",
+      "normalized_surface": "mise en place et connaitre le cout d acquisition d un nouveau client chiffrer",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 2,
+      "page_end": 2,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Comprendre les besoins,",
+      "canonical_label": "Les besoins",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Comprendre les besoins,",
+      "normalized_surface": "comprendre les besoins",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "Mettre en œuvre des techniques inclusives d’animation d’équipes internes et externes,",
+      "canonical_label": "S techniques inclusives d’animation d’équipes internes et externes",
+      "category": "skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "Mettre en œuvre des techniques inclusives d’animation d’équipes internes et externes,",
+      "normalized_surface": "mettre en uvre des techniques inclusives d animation d equipes internes et externes",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "animation d’équipes internes et externes,",
+      "canonical_label": "D’équipes internes et externes",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:3",
+      "source_type": "semantic_entity",
+      "surface_form": "animation d’équipes internes et externes,",
+      "normalized_surface": "animation d equipes internes et externes",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 3,
+      "page_end": 3,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "organisation de visioconférences,",
+      "canonical_label": "Visioconférences",
+      "category": "soft_skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "organisation de visioconférences,",
+      "normalized_surface": "organisation de visioconferences",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": false,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "réalisation du projet (demandes d’autorisation,",
+      "canonical_label": "Du projet (demandes d’autorisation",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "réalisation du projet (demandes d’autorisation,",
+      "normalized_surface": "realisation du projet demandes d autorisation",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "gestion des litiges (client,",
+      "canonical_label": "S litiges (client",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "gestion des litiges (client,",
+      "normalized_surface": "gestion des litiges client",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    },
+    {
+      "label": "participer à l’instruction,",
+      "canonical_label": "L’instruction",
+      "category": "skill",
+      "source_code": "SEMANTIC:4",
+      "source_type": "semantic_entity",
+      "surface_form": "participer à l’instruction,",
+      "normalized_surface": "participer a l instruction",
+      "provenance": "semantic_match",
+      "confidence": 0.75,
+      "explicit": true,
+      "page_start": 4,
+      "page_end": 4,
+      "context": "rule_verb_pattern"
+    }
+  ],
+  "tools_methods": [],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "a21878502df2e8327a82f187",
+    "source_hash": "237c4a085db2022646858cb1d940dca5bb4379e8481f71e67fe9988307e36777",
+    "pages": 5,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 9,
+    "tools_methods": 0,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}
