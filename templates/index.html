@@ -37,7 +37,7 @@
     <section class="card">
       <h2>Validation humaine</h2>
       <p>Confirmez ou corrigez l’intitulé du référentiel et les compétences détectées avant de lancer l’analyse marché. Cette validation est enregistrée comme donnée approuvée et réutilisée pour les prochains exports.</p>
-      <form method="post" action="{{ url_for('analyze') }}" class="form-grid">
+      <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="grid-template-columns:1fr">
         <input type="hidden" name="action" value="validate_referential">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">

@@ -264,6 +264,8 @@ button:focus-visible,
   gap: 18px;
 }
 
+.table-wrap { overflow-x: auto; }
+
 /* Summary stat grid */
 .summary-cards { margin-bottom: 18px; }
 
