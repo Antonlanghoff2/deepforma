@@ -379,3 +379,22 @@ ia-recommendations-validate:
 ia-recommendations-demo:
 	$(PYTHON) scripts/demo_ia_recommendations_rncp41966.py
 
+# ----- CPF IA V10 -----
+IA_CPF_V10_DATASET ?= data/raw/Dataset_IA_V10_CPF.xlsx
+IA_CPF_V10_OUTPUT_DIR ?= data/processed/ia_cpf_v10
+IA_CPF_V10_INSPECT_REPORT ?= data/processed/ia_cpf_v10/inspection.json
+
+import-ia-cpf-v10:
+	$(PYTHON) scripts/import_ia_cpf_v10.py \
+		--input "$(IA_CPF_V10_DATASET)" \
+		--output-dir "$(IA_CPF_V10_OUTPUT_DIR)"
+
+inspect-ia-cpf-v10:
+	$(PYTHON) scripts/import_ia_cpf_v10.py \
+		--input "$(IA_CPF_V10_DATASET)" \
+		--inspect-only \
+		--inspect-output "$(IA_CPF_V10_INSPECT_REPORT)"
+
+test-ia-cpf-v10:
+	$(PYTHON) -m pytest -q tests/test_import_ia_cpf_v10.py
+
