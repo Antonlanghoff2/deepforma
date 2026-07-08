@@ -784,6 +784,77 @@
       </article>
       {% endif %}
 
+      <!-- IA Recommendations -->
+      {% if result_dict.ia_recommendations %}
+      <article class="card wide" aria-label="Recommandations IA">
+        <h2>Recommandations IA <span class="badge badge-yellow">experimentale</span></h2>
+        {% set threshold_review = 0.82 %}
+        {% set ia_recs_high = result_dict.ia_recommendations|selectattr('confidence_label', 'equalto', 'HIGH')|list %}
+        {% set ia_recs_medium = result_dict.ia_recommendations|selectattr('confidence_label', 'equalto', 'MEDIUM')|list %}
+        {% set ia_recs_low = result_dict.ia_recommendations|selectattr('confidence_label', 'equalto', 'LOW')|list %}
+        <div class="rec-list">
+          {% if ia_recs_high %}
+          <details class="collapsible open" open>
+            <summary>Conseilles ({{ ia_recs_high|length }})</summary>
+            {% for rec in ia_recs_high %}
+            <div class="rec-card rec-haute">
+              <div class="rec-header">
+                <span class="badge badge-green">Conseille</span>
+                <span class="rec-skill">{{ rec.skill_original[:80] }}</span>
+              </div>
+              <p class="rec-justification">{{ rec.recommendation[:200] }}</p>
+              <div class="rec-meta">
+                <span>Mot-cle: {{ rec.matched_keyword }}</span>
+                <span>Score: {{ '%.2f'|format(rec.score) }}</span>
+                <span>Methode: {{ rec.match_method }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </details>
+          {% endif %}
+          {% if ia_recs_medium %}
+          <details class="collapsible">
+            <summary>A envisager ({{ ia_recs_medium|length }})</summary>
+            {% for rec in ia_recs_medium %}
+            <div class="rec-card rec-moyenne">
+              <div class="rec-header">
+                <span class="badge badge-yellow">A envisager</span>
+                <span class="rec-skill">{{ rec.skill_original[:80] }}</span>
+              </div>
+              <p class="rec-justification">{{ rec.recommendation[:200] }}</p>
+              <div class="rec-meta">
+                <span>Mot-cle: {{ rec.matched_keyword }}</span>
+                <span>Score: {{ '%.2f'|format(rec.score) }}</span>
+                <span>Methode: {{ rec.match_method }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </details>
+          {% endif %}
+          {% if ia_recs_low %}
+          <details class="collapsible">
+            <summary>A verifier ({{ ia_recs_low|length }})</summary>
+            {% for rec in ia_recs_low %}
+            <div class="rec-card rec-basse">
+              <div class="rec-header">
+                <span class="badge badge-orange">A verifier</span>
+                <span class="rec-skill">{{ rec.skill_original[:80] }}</span>
+              </div>
+              <p class="rec-justification">{{ rec.recommendation[:200] }}</p>
+              <div class="rec-meta">
+                <span>Mot-cle: {{ rec.matched_keyword }}</span>
+                <span>Score: {{ '%.2f'|format(rec.score) }}</span>
+                <span>Methode: {{ rec.match_method }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </details>
+          {% endif %}
+        </div>
+        <p class="meta-info">Recommandations IA generees a partir de la base de connaissances. Score &ge; 1.0 = haute confiance, &ge; 0.82 = confiance moyenne, &lt; 0.82 = a verifier.</p>
+      </article>
+      {% endif %}
+
       <!-- Reliability & Methodology -->
       <article class="card wide" aria-label="Fiabilite et methodologie">
         <h2>Fiabilite et methodologie</h2>

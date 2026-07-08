@@ -23,6 +23,7 @@ from werkzeug.exceptions import RequestEntityTooLarge
 from common.text import clean_text, normalize_for_match, stable_hash
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
+from data_sources.ia_recommendations import load_ia_recommendations_csv
 from domain.models import MarketTarget, PdfAnalysis, RomeOccupation, Territory
 from france_travail.client import FranceTravailAuthError, FranceTravailClient, FranceTravailError, FranceTravailRateLimitError, FranceTravailTimeoutError, SearchCriteria
 from france_travail.normalizer import normalize_offer
@@ -312,6 +313,7 @@ def _build_analysis_result(
     departement: str,
     threshold: float,
     skill_extraction: SkillExtractionInfo | None = None,
+    ia_recommendation_records: list[dict[str, Any]] | None = None,
 ) -> AnalysisResult:
     return build_analysis_result(
         analysis=analysis,
@@ -321,6 +323,7 @@ def _build_analysis_result(
         departement=departement,
         threshold=threshold,
         skill_extraction=skill_extraction,
+        ia_recommendation_records=ia_recommendation_records,
     )
 
 
@@ -358,6 +361,15 @@ def create_app(
         predictor, predictor_error = _load_predictor()
     app.extensions['deepforma_predictor'] = predictor
     app.extensions['deepforma_predictor_error'] = predictor_error
+
+    ia_recommendation_records: list[dict[str, Any]] = []
+    ia_csv_path = PROJECT_ROOT / 'data' / 'raw' / 'recommandations_IA_consolide.csv'
+    if ia_csv_path.exists():
+        try:
+            ia_recommendation_records, _ = load_ia_recommendations_csv(ia_csv_path)
+        except Exception:
+            logger.warning('Impossible de charger les recommandations IA depuis %s', ia_csv_path)
+    app.extensions['ia_recommendation_records'] = ia_recommendation_records
     app.extensions['recommendation_service'] = RecommendationService()
     app.extensions['certification_market_comparator'] = CertificationMarketComparator()
     app.extensions['market_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
@@ -861,6 +873,7 @@ def create_app(
         analysis_result = _build_analysis_result(
             analysis, normalized_offers, recommendation, territorial_stats,
             departement, threshold, skill_extraction=skill_extraction,
+            ia_recommendation_records=app.extensions.get('ia_recommendation_records'),
         )
 
         return {
@@ -1215,6 +1228,7 @@ def create_app(
                 departement,
                 app.config['DEFAULT_THRESHOLD'],
                 skill_extraction=_build_skill_extraction(' '.join(page_texts) if page_texts else getattr(document, 'title', '') or ''),
+                ia_recommendation_records=app.extensions.get('ia_recommendation_records'),
             ),
             'department': departement,
             'keywords': selected_rome_label or (selected_occupations[0]['label'] if selected_occupations else selected_rome_code),

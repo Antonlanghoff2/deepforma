@@ -1,7 +1,32 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any
+
+
+@dataclass(frozen=True, slots=True)
+class IARecommendation:
+    recommendation_id: str
+    keyword: str
+    keyword_normalized: str
+    recommendation: str
+    source_file: str | None = None
+    is_default: bool = False
+    is_active: bool = True
+    category: str | None = None
+    created_at: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class IARecommendationMatch:
+    skill_original: str
+    skill_normalized: str
+    matched_keyword: str
+    recommendation: str
+    score: float
+    match_method: str
+    confidence_label: str
 
 
 @dataclass(frozen=True, slots=True)
