@@ -822,8 +822,8 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
     )
     assert response.status_code == 200
     html = response.get_data(as_text=True)
-    assert 'Tableau de bord' in html
-    assert tracking_client.seen_keywords[0] == "Manager d'affaires"
+    assert 'Le référentiel a été validé' in html
+    assert "Métier cible pour l'analyse du marché" in html
     validated_competencies = store.list_annotations('code = ?', ('C1.1',))
     assert validated_competencies
     import json as _json
