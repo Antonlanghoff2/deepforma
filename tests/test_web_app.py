@@ -172,7 +172,7 @@ def test_home_page():
     html = response.get_data(as_text=True)
     assert "Analyse d'un référentiel RNCP" in html
     assert 'PDF du référentiel' in html
-    assert 'Département' in html
+    assert 'Territoire (optionnel' in html
 
 
 def test_empty_form_returns_error():
@@ -688,11 +688,13 @@ def test_referential_import_preview_on_home_page(monkeypatch):
         data={'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf')},
         content_type='multipart/form-data',
     )
-    assert response.status_code == 200
-    html = response.get_data(as_text=True)
+    assert response.status_code == 302
+    assert response.headers.get('Location', '').startswith('/referential/import/')
+    follow = client.get(response.headers['Location'])
+    assert follow.status_code == 200
+    html = follow.get_data(as_text=True)
     assert "Rapport d'extraction référentiel" in html
     assert 'Déployer Excel' in html
-    assert "Rapport d'extraction référentiel" in html
 
 
 
@@ -795,11 +797,14 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
         },
         content_type='multipart/form-data',
     )
-    assert preview.status_code == 200
-    preview_html = preview.get_data(as_text=True)
+    assert preview.status_code == 302
+    assert preview.headers.get('Location', '').startswith('/referential/import/')
+    preview_follow = client.get(preview.headers['Location'])
+    assert preview_follow.status_code == 200
+    preview_html = preview_follow.get_data(as_text=True)
     assert 'Validation humaine' in preview_html
     assert 'Compétences à corriger' in preview_html
-    assert 'Valider le référentiel et lancer l’analyse' in preview_html
+    assert 'Valider le référentiel' in preview_html
 
     validation_payload = {
         'action': 'validate_referential',
@@ -945,8 +950,9 @@ def test_admin_referential_import_edits_are_persisted(monkeypatch, tmp_path):
     assert output_path.exists()
     output_payload = json.loads(output_path.read_text(encoding='utf-8'))
     assert output_payload['document']['title'] == 'Data Scientist'
-    assert len(output_payload['competencies']) == 1
-    assert output_payload['competencies'][0]['official_label'] == 'Modélisation prédictive'
+    assert len(output_payload['competencies']) == 2
+    assert any(c['review_status'] == 'rejected' for c in output_payload['competencies'])
+    assert any(c['official_label'] == 'Modélisation prédictive' for c in output_payload['competencies'])
     assert len(output_payload['derived_skills']) == 1
     assert output_payload['derived_skills'][0]['canonical_label'] == 'TensorFlow'
     assert output_payload['derived_skills'][0]['category'] == 'tool'

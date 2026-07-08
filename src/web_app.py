@@ -68,10 +68,6 @@ MODEL_SCORE_STD_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_STD_MIN', '0.05'))
 MODEL_SCORE_MAX_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_MAX_MIN', '0.70'))
 MODEL_SCORE_GAP_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_GAP_MIN', '0.05'))
 
-DEPARTMENT_CODES = [
-    f'{code:02d}' for code in range(1, 96)
-] + ['2A', '2B', '971', '972', '973', '974', '976']
-
 EXPERIMENTAL_WARNING = (
     'Resultat experimental. Le modele doit encore etre valide '
     'avant utilisation operationnelle.'
@@ -601,8 +597,6 @@ def create_app(
         uploaded = files.get('pdf') if files is not None else None
         if not uploaded or not getattr(uploaded, 'filename', ''):
             raise ValueError('Le PDF du référentiel est obligatoire.')
-        if not departement:
-            raise ValueError('Le departement est obligatoire.')
         temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.pdf')
         temp_path = Path(temp_file.name)
         temp_file.close()
@@ -901,13 +895,12 @@ def create_app(
     def _render_error(message: str, status_code: int = 400):
         if request.path.startswith('/api/'):
             return jsonify({'ok': False, 'error': message}), status_code
-        return render_template('index.html', error=message, department_options=DEPARTMENT_CODES, default_threshold=app.config['DEFAULT_THRESHOLD']), status_code
+        return render_template('index.html', error=message, default_threshold=app.config['DEFAULT_THRESHOLD']), status_code
 
     def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_validation: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None):
         return render_template(
             'index.html',
             error=error,
-            department_options=DEPARTMENT_CODES,
             default_threshold=app.config['DEFAULT_THRESHOLD'],
             referential_analysis=referential_analysis,
             referential_validation=referential_validation,
@@ -1278,13 +1271,10 @@ def create_app(
                 referential_analysis['export'] = build_export_payload(referential_analysis)
                 validated_by = clean_text(payload.get('validated_by') or 'human_review') or 'human_review'
                 referential_import_service.approve(referential_analysis, validated_by=validated_by)
-                if not departement:
-                    raise ValueError('Le departement est obligatoire.')
                 state = _build_referential_state(referential_analysis, source_path=source_path, departement=departement)
                 context = {'analysis': referential_analysis, 'state': state, 'analysis_result': None}
                 return render_template(
                     'index.html',
-                    department_options=DEPARTMENT_CODES,
                     default_threshold=app.config['DEFAULT_THRESHOLD'],
                     referential_analysis=_build_referential_preview_payload(referential_analysis, source_path=source_path) | {'analysis_id': state['analysis_id']},
                     referential_validation={
@@ -1456,7 +1446,6 @@ def create_app(
                 return render_template(
                     'result.html',
                     **context,
-                    department_options=DEPARTMENT_CODES,
                     result_json=result.to_json(),
                     result_dict=result.to_dict(),
                 )
@@ -1477,7 +1466,6 @@ def create_app(
         return render_template(
             'result.html',
             **context,
-            department_options=DEPARTMENT_CODES,
             result_json=result.to_json(),
             result_dict=result.to_dict(),
         )

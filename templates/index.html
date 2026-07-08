@@ -11,7 +11,7 @@
     <section class="hero">
       <p class="eyebrow">Deepforma</p>
       <h1>Analyse d'un référentiel RNCP</h1>
-      <p class="lead">Chargez le PDF du référentiel, choisissez le département et laissez l'application extraire les compétences officielles avant de comparer au marché local.</p>
+      <p class="lead">Chargez le PDF du référentiel et laissez l'application extraire les compétences officielles avant de comparer au marché local. La zone de recherche France Travail est paramétrable dans la section métier cible.</p>
     </section>
 
     <section class="card">
@@ -23,16 +23,6 @@
         <label class="field field-full">
           <span>PDF du référentiel</span>
           <input type="file" name="pdf" accept="application/pdf" required>
-        </label>
-
-        <label class="field">
-          <span>Département</span>
-          <select name="departement" required>
-            <option value="">Sélectionner un département</option>
-            {% for code in department_options %}
-            <option value="{{ code }}">{{ code }}</option>
-            {% endfor %}
-          </select>
         </label>
 
         <p class="field field-full hint">Le programme de formation est le référentiel PDF. Une validation humaine intervient avant l’analyse marché pour confirmer ou corriger l’intitulé retenu. Les mots-clés marché sont ensuite générés à partir de cette version validée.</p>
@@ -52,7 +42,6 @@
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
         <label class="field field-full">
           <span>Intitulé validé</span>
           <input type="text" name="validated_title" value="{{ referential_validation.validated_title }}" required>
@@ -91,7 +80,6 @@
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
         <label class="field field-full">
           <span>Intitulé du métier cible</span>
           <input type="text" name="rome_query" value="{{ referential_validation.rome_query or referential_validation.validated_title }}" placeholder="Data Scientist, MLOps Engineer...">
@@ -109,11 +97,10 @@
           <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
           <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
           <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-          <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
           <input type="hidden" name="rome_code" value="{{ item.rome_code }}">
           <input type="hidden" name="rome_label" value="{{ item.label }}">
-          <input type="hidden" name="territory_code" value="{{ referential_validation.market_target.territory_code or referential_validation.departement or '' }}">
-          <input type="hidden" name="territory_label" value="{{ referential_validation.market_target.territory_label or referential_validation.departement or '' }}">
+          <input type="hidden" name="territory_code" value="{{ referential_validation.market_target.territory_code or '' }}">
+          <input type="hidden" name="territory_label" value="{{ referential_validation.market_target.territory_label or '' }}">
           <button type="submit" class="chip chip-tool" style="border:none; background:none; cursor:pointer;">
             <span>{{ item.rome_code }}</span>
             <small>{{ item.label }}</small>
@@ -133,7 +120,6 @@
             <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
             <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
             <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-            <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
             <input type="hidden" name="rome_code" value="{{ item.code }}">
             <button type="submit" class="chip chip-tool" style="border:none; background:none; cursor:pointer;">
               <span>{{ item.code }}</span>
@@ -151,7 +137,6 @@
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
         <label class="field">
           <span>Code ROME</span>
           <input type="text" name="rome_code" value="{{ referential_validation.market_target.rome_code or '' }}" placeholder="M1805" required>
@@ -161,8 +146,8 @@
           <input type="text" name="rome_label" value="{{ referential_validation.market_target.rome_label or '' }}" placeholder="Data Scientist">
         </label>
         <label class="field">
-          <span>Territoire</span>
-          <input type="text" name="territory_code" value="{{ referential_validation.market_target.territory_code or referential_validation.departement or '' }}" placeholder="75 ou 75056">
+          <span>Territoire (optionnel, vide = France entière)</span>
+          <input type="text" name="territory_code" value="{{ referential_validation.market_target.territory_code or '' }}" placeholder="75, 75056 ou laisser vide">
         </label>
         <label class="field">
           <span>Libellé territoire</span>
@@ -188,14 +173,13 @@
         {{ item.code }}{% if item.label %} · {{ item.label }}{% endif %}{% if not loop.last %} ; {% endif %}
         {% endfor %}
         <br>
-        <strong>Territoire :</strong> {{ referential_validation.market_target.territory_label or referential_validation.market_target.territory_code or referential_validation.departement }}
+        <strong>Territoire :</strong> {{ referential_validation.market_target.territory_label or referential_validation.market_target.territory_code or 'France entière' }}
       </div>
       <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="margin-top: 1rem;">
         <input type="hidden" name="action" value="run_market_search">
         <input type="hidden" name="analysis_id" value="{{ referential_validation.analysis_id }}">
         <input type="hidden" name="analysis_json" value='{{ referential_validation.analysis_json | e }}'>
         <input type="hidden" name="source_path" value="{{ referential_validation.source_path }}">
-        <input type="hidden" name="departement" value="{{ referential_validation.departement or '' }}">
         <input type="hidden" name="rome_code" value="{{ referential_validation.market_target.rome_code or '' }}">
         <input type="hidden" name="rome_label" value="{{ referential_validation.market_target.rome_label or '' }}">
         <input type="hidden" name="territory_code" value="{{ referential_validation.market_target.territory_code or '' }}">
