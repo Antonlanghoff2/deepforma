@@ -1346,8 +1346,6 @@ def create_app(
                 rome_code = validate_rome_code(clean_text(payload.get('rome_code') or payload.get('selected_rome_code') or ''), service=get_rome_service())
                 rome_job = get_rome_service().get(rome_code)
                 selected = list((state.get('market_target') or {}).get('selected_rome_occupations') or state.get('selected_rome_occupations') or [])
-                if any(clean_text(item.get('code') if isinstance(item, dict) else getattr(item, 'code', '')).replace(' ', '').upper() == rome_code for item in selected):
-                    raise ValueError(f'Le code ROME {rome_code} est déjà sélectionné')
                 if len(selected) >= MAX_ROME_CODES_PER_SEARCH:
                     raise ValueError(f'Vous pouvez sélectionner au maximum {MAX_ROME_CODES_PER_SEARCH} codes ROME')
                 selected.append(_rome_occupation_payload(rome_code, rome_job.label if rome_job and rome_job.label else clean_text(payload.get('rome_label') or '')))
