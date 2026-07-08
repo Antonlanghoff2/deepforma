@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "2dbbe8f34264d27749223bf4",
+    "source_path": "/tmp/tmpt5tq6ldq.pdf",
+    "file_name": "tmpt5tq6ldq.pdf",
+    "sha256": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 1,
+    "title": "data scientist",
+    "provider": "LW-B2B Réf. Formation",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": false,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-07-08T16:42:04.969628+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "ML",
+      "canonical_label": "Machine Learning",
+      "category": "domain",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "ML",
+      "normalized_surface": "ml",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Deep Learning",
+      "canonical_label": "Deep Learning",
+      "category": "domain",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Deep Learning",
+      "normalized_surface": "deep learning",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "NLP",
+      "canonical_label": "NLP",
+      "category": "domain",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "NLP",
+      "normalized_surface": "nlp",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Comprendre l'IA,",
+      "canonical_label": "L'IA",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Comprendre l'IA,",
+      "normalized_surface": "comprendre l ia",
+      "provenance": "semantic_match",
+      "confidence": 0.8,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern",
+      "review_status": "pending"
+    },
+    {
+      "label": "SQL",
+      "canonical_label": "SQL",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "SQL",
+      "normalized_surface": "sql",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern",
+      "review_status": "pending"
+    },
+    {
+      "label": "Python",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Python",
+      "normalized_surface": "python",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern",
+      "review_status": "pending"
+    },
+    {
+      "label": "application (variable) Cas d'usage interne,",
+      "canonical_label": "(variable) Cas d'usage interne",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "application (variable) Cas d'usage interne,",
+      "normalized_surface": "application variable cas d usage interne",
+      "provenance": "semantic_match",
+      "confidence": 0.82,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern",
+      "review_status": "pending"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "SQL",
+      "canonical_label": "SQL",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "SQL",
+      "normalized_surface": "sql",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern",
+      "review_status": "pending"
+    },
+    {
+      "label": "Python",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Python",
+      "normalized_surface": "python",
+      "provenance": "semantic_match",
+      "confidence": 0.6,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_tool_pattern",
+      "review_status": "pending"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "2dbbe8f34264d27749223bf4",
+    "source_hash": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
+    "pages": 1,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 7,
+    "tools_methods": 2,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": []
+}
