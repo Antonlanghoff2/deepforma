@@ -4,6 +4,8 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from typing import Any
 
+from domain.models import IARecommendationMatch
+
 
 @dataclass
 class OpenExtractedSkill:
@@ -193,6 +195,7 @@ class AnalysisResult:
     global_score: dict[str, Any] = field(default_factory=dict)
     missing_skills: list[MarketSkillInfo] = field(default_factory=list)
     recommendations: list[Recommendation] = field(default_factory=list)
+    ia_recommendations: list[IARecommendationMatch] = field(default_factory=list)
     quality: QualityInfo = field(default_factory=QualityInfo)
     model_metadata: ModelMetadata = field(default_factory=ModelMetadata)
     checkpoint_audit: CheckpointAuditInfo = field(default_factory=CheckpointAuditInfo)
@@ -219,6 +222,7 @@ class AnalysisResult:
             "global_score": self.global_score,
             "missing_skills": [asdict(s) for s in self.missing_skills],
             "recommendations": [asdict(r) for r in self.recommendations],
+            "ia_recommendations": [asdict(r) for r in self.ia_recommendations],
             "quality": asdict(self.quality),
             "model_metadata": asdict(self.model_metadata),
             "checkpoint_audit": asdict(self.checkpoint_audit),

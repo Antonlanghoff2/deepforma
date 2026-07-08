@@ -21,6 +21,10 @@ from models.analysis_result import (
     SkillInfo,
     TerritorialMarketInfo,
 )
+from data_sources.ia_recommendations import load_ia_recommendations_csv
+from domain.ia_recommendation_matching import match_ia_recommendations
+from domain.models import IARecommendationMatch
+from pathlib import Path
 from services.skill_normalization import normalize_skill_label
 
 
@@ -32,6 +36,7 @@ def build_analysis_result(
     departement: str,
     threshold: float,
     skill_extraction: SkillExtractionInfo | None = None,
+    ia_recommendation_records: list[dict[str, Any]] | None = None,
 ) -> AnalysisResult:
     result = AnalysisResult()
 
@@ -388,6 +393,29 @@ def build_analysis_result(
         'inference_time_ms': analysis.get('inference_time_ms', 0.0),
         'analyzed_at': datetime.now(timezone.utc).isoformat(),
     }
+
+    ia_matches: list[IARecommendationMatch] = []
+    if ia_recommendation_records is not None:
+        skill_dicts: list[dict[str, str]] = []
+        seen: set[str] = set()
+        for s in skill_extraction.skills:
+            key = normalize_skill_label(s.normalized_label or s.source_label)
+            if key and key not in seen:
+                seen.add(key)
+                skill_dicts.append({"name": s.normalized_label or s.source_label, "normalized_name": key})
+        for s in skill_extraction.tools:
+            key = normalize_skill_label(s.normalized_label or s.source_label)
+            if key and key not in seen:
+                seen.add(key)
+                skill_dicts.append({"name": s.normalized_label or s.source_label, "normalized_name": key})
+        for s in ia_detected_skills:
+            key = normalize_skill_label(s.label)
+            if key and key not in seen:
+                seen.add(key)
+                skill_dicts.append({"name": s.label, "normalized_name": key})
+        if skill_dicts:
+            ia_matches = match_ia_recommendations(skill_dicts, ia_recommendation_records)
+    result.ia_recommendations = ia_matches
 
     return result
 

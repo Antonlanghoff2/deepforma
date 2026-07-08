@@ -365,3 +365,17 @@ build-rome-rncp-training-dataset:
 train-skill-extractor:
 	$(PYTHON) scripts/train_skill_extractor.py --train data/training/skill_extraction/train.jsonl --validation data/training/skill_extraction/validation.jsonl --test data/training/skill_extraction/test.jsonl
 
+ia-recommendations-import:
+	$(PYTHON) scripts/import_ia_recommendations.py \
+		--input data/raw/recommandations_IA_consolide.csv \
+		--output-dir data/processed/ia_recommendations \
+		--write
+
+ia-recommendations-validate:
+	$(PYTHON) scripts/import_ia_recommendations.py \
+		--input data/raw/recommandations_IA_consolide.csv \
+		--dry-run
+
+ia-recommendations-demo:
+	$(PYTHON) scripts/demo_ia_recommendations_rncp41966.py
+
