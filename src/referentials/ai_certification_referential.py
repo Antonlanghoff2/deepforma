@@ -125,6 +125,39 @@ class AICertificationReferential:
             for alias in skill['aliases']:
                 self._alias_index[self.normalize_label(alias)] = skill
 
+            children_raw = skill.get('children', [])
+            if isinstance(children_raw, list):
+                for child in children_raw:
+                    if not isinstance(child, dict):
+                        continue
+                    child_skill = dict(child)
+                    child_skill['id'] = clean_text(child_skill.get('id') or '')
+                    child_skill['label'] = clean_text(child_skill.get('label') or '')
+                    if not child_skill['label'] or not child_skill['id']:
+                        continue
+                    child_skill.setdefault('block', skill.get('block', ''))
+                    child_skill.setdefault('activity', skill.get('activity', ''))
+                    child_skill.setdefault('code', skill.get('code', ''))
+                    child_skill.setdefault('official_description', child_skill['label'])
+                    child_skill['normalized_label'] = clean_text(child_skill.get('normalized_label') or normalize_for_match(child_skill['label']))
+                    child_skill['aliases'] = _normalize_aliases(child_skill.get('aliases') or [])
+                    child_skill['source_page'] = int(child_skill.get('source_page') or skill.get('source_page', 0))
+                    child_skill['active'] = bool(child_skill.get('active', True))
+                    child_skill['category'] = clean_text(child_skill.get('category') or skill.get('category', ''))
+                    child_skill['subcategory'] = clean_text(child_skill.get('subcategory') or '')
+                    child_tk = child_skill.get('technical_keywords') or []
+                    if isinstance(child_tk, str):
+                        child_tk = [child_tk]
+                    child_skill['technical_keywords'] = _normalize_aliases(child_tk)
+                    child_skill['origin_document'] = skill.get('origin_document', '')
+                    child_skill.setdefault('type', 'subskill')
+                    normalized_skills.append(child_skill)
+                    self._skill_by_id[child_skill['id']] = child_skill
+                    self._exact_index[self.normalize_label(child_skill['normalized_label'])] = child_skill
+                    self._exact_index[self.normalize_label(child_skill['label'])] = child_skill
+                    for alias in child_skill['aliases']:
+                        self._alias_index[self.normalize_label(alias)] = child_skill
+
         self._payload = {**payload, 'skills': normalized_skills}
         self._skills = normalized_skills
         self._embedding_ready = False

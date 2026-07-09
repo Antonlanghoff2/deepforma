@@ -611,5 +611,15 @@ class ReferentialImportService:
         )
         output_path = self.output_dir / f"{document.file_name}.json"
         export_payload = analysis.get("export") or build_export_payload(analysis)
+        try:
+            from referentials.referential_registry import convert_imported_to_skills_format, normalize_referential_payload
+            canonical = convert_imported_to_skills_format(export_payload)
+            if canonical.get("skills"):
+                export_payload["skills"] = canonical["skills"]
+                export_payload["metadata"] = {**export_payload.get("metadata", {}), **canonical.get("metadata", {})}
+                export_payload["referential_id"] = canonical.get("referential_id", export_payload.get("referential_id", ""))
+                export_payload["title"] = canonical.get("title", export_payload.get("title", ""))
+        except Exception as exc:
+            LOGGER.warning("Impossible de normaliser vers le schéma canonique: %s", exc)
         output_path.write_text(json.dumps(export_payload, ensure_ascii=False, indent=2), encoding="utf-8")
         return output_path

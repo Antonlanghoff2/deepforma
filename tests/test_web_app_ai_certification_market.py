@@ -83,6 +83,9 @@ def _mock_options(referential_path: Path) -> list:
             source='json_file',
             skill_count=1,
             is_selectable=True,
+            official_skills_count=1,
+            subskills_count=0,
+            exploitable_skills_count=1,
         )
     ]
 
@@ -149,7 +152,7 @@ def test_get_affiche_liste_referentiels(tmp_path, monkeypatch):
     html = response.get_data(as_text=True)
     assert 'Référentiel à comparer' in html
     assert 'Ingénieur en intelligence artificielle' in html
-    assert '1 compétence' in html
+    assert '1 élément exploitable' in html
     assert '<select' in html
 
 

@@ -1,15 +1,49 @@
 from __future__ import annotations
 
 import json
+import logging
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Iterable
 
 from common.text import clean_text, normalize_for_match
+from services.skill_normalization import normalize_skill_label
+
 from .ml_dl_taxonomy import alias_map as ml_dl_alias_map, canonicalize_term
 
+LOGGER = logging.getLogger(__name__)
+
 DEFAULT_SKILLS_PATH = Path(__file__).resolve().parents[2] / 'data' / 'referentials' / 'skills.json'
+
+_REFERENTIAL_KEYS = ('skills', 'competencies', 'competences', 'entries', 'items', 'data')
+
+
+def normalize_skill_entry(entry: Any) -> dict | None:
+    if isinstance(entry, str):
+        text = clean_text(entry)
+        if not text:
+            LOGGER.warning('Entrée chaîne vide ignorée dans le référentiel')
+            return None
+        return {'label': text, 'aliases': [], 'skill_id': text}
+    if isinstance(entry, dict):
+        label = (clean_text(entry.get('label'))
+                 or clean_text(entry.get('name'))
+                 or clean_text(entry.get('skill'))
+                 or clean_text(entry.get('competence'))
+                 or clean_text(entry.get('title')))
+        if not label:
+            LOGGER.warning('Entrée dictionnaire sans label ignorée : %s', entry)
+            return None
+        result = dict(entry)
+        result['label'] = label
+        result.setdefault('aliases', [])
+        if 'skill_id' not in result or not result['skill_id']:
+            result['skill_id'] = label
+        return result
+    LOGGER.warning('Entrée de type %s ignorée dans le référentiel', type(entry).__name__)
+    return None
+
 
 @dataclass(frozen=True, slots=True)
 class NormalizationResult:
@@ -24,21 +58,39 @@ class NormalizationResult:
     def accepted(self) -> bool:
         return bool(self.canonical_name) and self.confidence >= 0.55 and self.ambiguity < 0.18
 
+
 @lru_cache(maxsize=8)
 def load_referential(skills_path: str | Path | None = None) -> list[dict[str, Any]]:
     path = Path(skills_path or DEFAULT_SKILLS_PATH)
     if not path.exists():
         return []
-    return json.loads(path.read_text(encoding='utf-8'))
+    raw = json.loads(path.read_text(encoding='utf-8'))
+    if isinstance(raw, dict):
+        for key in _REFERENTIAL_KEYS:
+            entries = raw.get(key)
+            if isinstance(entries, list):
+                return entries
+        LOGGER.warning('Aucune liste de compétences trouvée dans %s (clés: %s)', path, list(raw.keys()))
+        return []
+    if isinstance(raw, list):
+        return raw
+    LOGGER.warning('Format inattendu dans %s (type: %s)', path, type(raw).__name__)
+    return []
+
 
 class SkillNormalizer:
     def __init__(self, skills_path: str | Path | None = None, *, embedding_model: str | None = None, threshold: float = 0.62) -> None:
         self.skills_path = Path(skills_path or DEFAULT_SKILLS_PATH)
-        self.reference = load_referential(self.skills_path)
+        raw_reference = load_referential(self.skills_path)
+        self.reference: list[dict[str, Any]] = []
         self.embedding_model = embedding_model
         self.threshold = threshold
         self._index: list[tuple[dict[str, Any], str]] = []
-        for skill in self.reference:
+        for entry in raw_reference:
+            skill = normalize_skill_entry(entry)
+            if skill is None:
+                continue
+            self.reference.append(skill)
             label = clean_text(skill.get('label', ''))
             if not label:
                 continue
