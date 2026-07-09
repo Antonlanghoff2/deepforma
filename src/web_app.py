@@ -1669,7 +1669,7 @@ def create_app(
     @app.route('/admin/referential/<referential_id>/delete', methods=['POST'])
     @require_admin_auth
     def admin_referential_delete(referential_id: str):
-        option = get_referential_option(referential_id, include_inactive=True)
+        option = get_referential_option(referential_id)
         if option is None or not option.path:
             return redirect(url_for('admin_ai_certification_market_comparison', error='Référentiel introuvable.'))
         path = Path(option.path)
@@ -1701,8 +1701,7 @@ def create_app(
 
         job_titles_default = 'ingénieur intelligence artificielle,AI Engineer,Machine Learning Engineer,Data Scientist,MLOps Engineer,ingénieur Machine Learning,ingénieur NLP,ingénieur Deep Learning,ingénieur IA générative,Data Engineer IA,chef de projet IA'
         rome_codes_default = 'M1805'
-        referential_options = list_available_referentials()
-        all_referential_options = list_available_referentials(include_inactive=True)
+        referential_options = list_available_referentials(include_inactive=True)
         referential_id = clean_text(request.values.get('referential_id') or '')
         territory = clean_text(request.values.get('territory') or '75056')
         commune = clean_text(request.values.get('commune') or '') or None
@@ -1736,16 +1735,19 @@ def create_app(
                 selected = get_referential_option(referential_id)
                 if selected is None:
                     error = f'Référentiel « {referential_id} » introuvable.'
-                elif selected.status == 'invalid':
-                    error = f'Référentiel « {selected.label} » invalide ou corrompu.'
-                elif selected.status == 'empty':
-                    error = f'Référentiel « {selected.label} » ne contient aucune compétence.'
+                elif not selected.is_selectable:
+                    if selected.status == 'empty':
+                        error = 'Ce référentiel ne contient aucune compétence exploitable. Ajoutez ou validez des compétences avant de lancer la comparaison.'
+                    elif selected.status == 'invalid':
+                        error = 'Le référentiel est invalide et ne peut pas être utilisé.'
+                    else:
+                        error = f'Référentiel « {selected.label} » non disponible ({selected.status}).'
                 elif not selected.path:
                     error = f'Chemin du référentiel « {selected.label} » introuvable.'
                 else:
                     resolved_path = Path(selected.path)
                     if not resolved_path.is_file():
-                        error = f'Fichier du référentiel « {selected.label} » introuvable : {resolved_path}'
+                        error = f'Le fichier du référentiel est introuvable.'
                     else:
                         resolved_path_str = ensure_loadable_path(selected)
                         if resolved_path_str is None:
@@ -1795,7 +1797,6 @@ def create_app(
             error=error,
             referential_id=referential_id,
             referential_options=referential_options,
-            all_referential_options=all_referential_options,
             territory=territory,
             commune=commune or '',
             departement=departement or '',

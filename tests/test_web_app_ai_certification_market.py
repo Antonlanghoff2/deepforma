@@ -82,6 +82,7 @@ def _mock_options(referential_path: Path) -> list:
             status='active',
             source='json_file',
             skill_count=1,
+            is_selectable=True,
         )
     ]
 
@@ -148,7 +149,7 @@ def test_get_affiche_liste_referentiels(tmp_path, monkeypatch):
     html = response.get_data(as_text=True)
     assert 'Référentiel à comparer' in html
     assert 'Ingénieur en intelligence artificielle' in html
-    assert '1 compétences' in html
+    assert '1 compétence' in html
     assert '<select' in html
 
 
@@ -217,6 +218,7 @@ def test_post_referentiel_fichier_absent_pas_500(tmp_path, monkeypatch):
             status='active',
             source='json_file',
             skill_count=1,
+            is_selectable=True,
         )
     ]
     monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
@@ -266,6 +268,7 @@ def test_selection_conservee_apres_erreur(tmp_path, monkeypatch):
             status='active',
             source='json_file',
             skill_count=1,
+            is_selectable=True,
         )
     ]
     monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_options)
@@ -381,6 +384,7 @@ def test_ensure_loadable_path_standard_format(tmp_path):
         status='active',
         source='json_file',
         skill_count=1,
+        is_selectable=True,
     )
     result = ensure_loadable_path(option)
     assert result == str(path)
@@ -397,6 +401,7 @@ def test_ensure_loadable_path_imported_format(tmp_path):
         status='active',
         source='imported_pdf',
         skill_count=2,
+        is_selectable=True,
     )
     result = ensure_loadable_path(option)
     assert result is not None
@@ -420,6 +425,7 @@ def test_ensure_loadable_path_missing_file_returns_none(tmp_path):
         status='active',
         source='json_file',
         skill_count=1,
+        is_selectable=True,
     )
     assert ensure_loadable_path(option) is None
 
@@ -436,6 +442,7 @@ def test_ensure_loadable_path_empty_competencies_returns_none(tmp_path):
         status='active',
         source='imported_pdf',
         skill_count=0,
+        is_selectable=True,
     )
     assert ensure_loadable_path(option) is None
 
@@ -465,6 +472,7 @@ def test_route_importe_converti_et_comparaison_reussit(tmp_path, monkeypatch):
             status='active',
             source='imported_pdf',
             skill_count=2,
+            is_selectable=True,
         )
     ]
     monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
@@ -621,3 +629,220 @@ def test_delete_referential_unknown_returns_redirect(tmp_path, monkeypatch):
         headers=_auth_headers(),
     )
     assert response.status_code == 302
+
+
+# ── Tests pour la source de vérité unique ──────────────────────────────────
+
+
+def test_gestion_liste_tous_les_referentiels(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r1', label='Actif', type='certification', path=str(tmp_path / 'r1.json'), record_id=None, status='active', source='json_file', skill_count=5, is_selectable=True, reason=None),
+        ReferentialOption(id='r2', label='Vide', type='certification', path=str(tmp_path / 'r2.json'), record_id=None, status='empty', source='json_file', skill_count=0, is_selectable=False, reason='Aucune compétence détectée'),
+        ReferentialOption(id='r3', label='Invalide', type='certification', path=str(tmp_path / 'r3.json'), record_id=None, status='invalid', source='json_file', skill_count=0, is_selectable=False, reason='Fichier JSON invalide'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Actif' in html
+    assert 'Vide' in html
+    assert 'Invalide' in html
+    assert 'exploitable' in html
+    assert 'incomplet' in html
+    assert 'invalide' in html
+
+
+def test_comparaison_dropdown_liste_tous_les_referentiels(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r1', label='Actif', type='certification', path=str(tmp_path / 'r1.json'), record_id=None, status='active', source='json_file', skill_count=5, is_selectable=True, reason=None),
+        ReferentialOption(id='r2', label='Vide', type='certification', path=str(tmp_path / 'r2.json'), record_id=None, status='empty', source='json_file', skill_count=0, is_selectable=False, reason='Aucune compétence détectée'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Actif' in html
+    assert 'Vide' in html
+    assert 'disabled' in html
+    assert 'incomplet' in html
+    assert 'Seuls les référentiels contenant au moins une compétence' in html
+
+
+def test_referentiel_actif_selectable(tmp_path, monkeypatch):
+    path = _make_referential(tmp_path / 'test.json')
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r1', label='Actif', type='certification', path=str(path), record_id=None, status='active', source='json_file', skill_count=5, is_selectable=True, reason=None),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert '<option value="r1"' in html
+    assert 'disabled' not in html[html.index('<option value="r1"'):html.index('</option>', html.index('<option value="r1"'))] if '<option value="r1"' in html else True
+
+
+def test_referentiel_vide_desactive_dans_dropdown(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r2', label='Vide', type='certification', path=str(tmp_path / 'r2.json'), record_id=None, status='empty', source='json_file', skill_count=0, is_selectable=False, reason='Aucune compétence détectée'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'disabled' in html
+    assert 'incomplet' in html
+
+
+def test_referentiel_invalide_desactive_dans_dropdown(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r3', label='Invalide', type='certification', path=str(tmp_path / 'r3.json'), record_id=None, status='invalid', source='json_file', skill_count=0, is_selectable=False, reason='Fichier JSON invalide'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'disabled' in html
+    assert 'invalide' in html
+
+
+def test_post_referentiel_empty_retourne_erreur_propre(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r2', label='Vide', type='certification', path=str(tmp_path / 'r2.json'), record_id=None, status='empty', source='json_file', skill_count=0, is_selectable=False, reason='Aucune compétence détectée'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.post(
+        '/admin/ai-certification-market-comparison',
+        data={'referential_id': 'r2', 'territory': '75056'},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'aucune compétence exploitable' in html.lower()
+
+
+def test_post_referentiel_invalide_retourne_erreur_propre(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='r3', label='Invalide', type='certification', path=str(tmp_path / 'r3.json'), record_id=None, status='invalid', source='json_file', skill_count=0, is_selectable=False, reason='Fichier JSON invalide'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.post(
+        '/admin/ai-certification-market-comparison',
+        data={'referential_id': 'r3', 'territory': '75056'},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'invalide' in html.lower()
+    assert '500' not in response.status
+
+
+def test_count_referential_skills_structures(tmp_path):
+    from referentials.referential_registry import count_referential_skills
+    assert count_referential_skills({'skills': [{'id': 'S1'}, {'id': 'S2'}]}) == 2
+    assert count_referential_skills({'competencies': [{'code': 'C1'}]}) == 1
+    assert count_referential_skills({'competences': [{'code': 'C1'}]}) == 1
+    assert count_referential_skills({'criteria': [{'id': 'C1'}]}) == 1
+    assert count_referential_skills({'official_skills': [{'id': 'S1'}]}) == 1
+    assert count_referential_skills({'detected_skills': [{'id': 'S1'}]}) == 1
+    assert count_referential_skills({'subskills': [{'id': 'S1'}]}) == 1
+    assert count_referential_skills({'derived_competencies': [{'id': 'S1'}]}) == 1
+    assert count_referential_skills({'blocks': [{'code': 'B1'}]}) == 1
+    assert count_referential_skills({'blocs': [{'code': 'B1'}]}) == 1
+    assert count_referential_skills({'skills': []}) == 0
+    assert count_referential_skills({'competencies': []}) == 0
+    assert count_referential_skills({}) == 0
+    assert count_referential_skills([]) == 0
+    assert count_referential_skills('not a dict') == 0
+
+
+def test_gestion_et_comparaison_meme_source_de_verite(tmp_path, monkeypatch):
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='a', label='A', type='certification', path=str(tmp_path / 'a.json'), record_id=None, status='active', source='json_file', skill_count=3, is_selectable=True, reason=None),
+        ReferentialOption(id='b', label='B', type='certification', path=str(tmp_path / 'b.json'), record_id=None, status='empty', source='json_file', skill_count=0, is_selectable=False, reason='Aucune compétence détectée'),
+        ReferentialOption(id='c', label='C', type='certification', path=str(tmp_path / 'c.json'), record_id=None, status='invalid', source='json_file', skill_count=0, is_selectable=False, reason='Fichier JSON invalide'),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(predictor=DummyPredictor(), france_travail_client_factory=lambda: DummyOfferClient([]), cache_ttl_seconds=60)
+    client = app.test_client()
+    response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    for label in ('A', 'B', 'C'):
+        assert label in html
+    assert 'disabled' in html
+    assert html.count('<option ') == 4  # 3 referentials + 1 empty placeholder
+
+
+def test_pas_de_fallback_vers_chemin_hardcode(tmp_path, monkeypatch):
+    referential_path = _make_referential(tmp_path / 'referential.json')
+    from referentials.referential_registry import ReferentialOption
+    mock_opts = [
+        ReferentialOption(id='custom_ref', label='Custom', type='certification', path=str(referential_path), record_id=None, status='active', source='json_file', skill_count=1, is_selectable=True, reason=None),
+    ]
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
+    monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([
+            {'offer_id': 'o1', 'title': 'Test', 'description': 'Machine Learning test.', 'creation_date': '2026-07-01T00:00:00+00:00', 'location_label': 'Paris', 'contract_label': 'CDI'},
+        ]),
+        cache_ttl_seconds=60,
+    )
+    monkeypatch.setattr('web_app.write_comparison_outputs', lambda report, output_dir: {'json': tmp_path / 'r.json', 'validation_csv': tmp_path / 'v.csv', 'gaps_csv': tmp_path / 'g.csv'})
+    client = app.test_client()
+    response = client.post(
+        '/admin/ai-certification-market-comparison',
+        data={'referential_id': 'custom_ref', 'territory': '75056', 'commune': '75056', 'departement': '75', 'job_titles': 'Data Scientist', 'rome_codes': 'M1805', 'max_pages': '1', 'max_offers': '10', 'page_size': '10'},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Score global' in html

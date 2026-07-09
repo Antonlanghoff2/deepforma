@@ -25,6 +25,8 @@ class ReferentialOption:
     status: str
     source: str
     skill_count: int = 0
+    is_selectable: bool = False
+    reason: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -36,6 +38,8 @@ class ReferentialOption:
             'status': self.status,
             'source': self.source,
             'skill_count': self.skill_count,
+            'is_selectable': self.is_selectable,
+            'reason': self.reason,
         }
 
 
@@ -65,17 +69,25 @@ def _load_referential_metadata(path: Path) -> dict[str, Any]:
         return {}
 
 
-def _skill_count(payload: dict[str, Any]) -> int:
-    skills = payload.get('skills')
-    if isinstance(skills, list):
-        return len(skills)
-    competencies = payload.get('competencies')
-    if isinstance(competencies, list):
-        return len(competencies)
-    criteria = payload.get('criteria')
-    if isinstance(criteria, list):
-        return len(criteria)
+SKILL_LIKE_KEYS = ('skills', 'competencies', 'competences', 'criteria',
+                   'official_skills', 'detected_skills', 'subskills',
+                   'derived_competencies', 'blocks', 'blocs')
+
+
+def count_referential_skills(payload: dict[str, Any]) -> int:
+    if not isinstance(payload, dict):
+        return 0
+    for key in SKILL_LIKE_KEYS:
+        val = payload.get(key)
+        if isinstance(val, list):
+            count = len(val)
+            if count > 0:
+                return count
     return 0
+
+
+def _skill_count(payload: dict[str, Any]) -> int:
+    return count_referential_skills(payload)
 
 
 def _build_option_from_json(path: Path) -> ReferentialOption | None:
@@ -90,6 +102,8 @@ def _build_option_from_json(path: Path) -> ReferentialOption | None:
             status='invalid',
             source='json_file',
             skill_count=0,
+            is_selectable=False,
+            reason='Fichier JSON invalide',
         )
 
     referential_id = clean_text(payload.get('referential_id') or path.stem)
@@ -108,7 +122,22 @@ def _build_option_from_json(path: Path) -> ReferentialOption | None:
     if not record_id and isinstance(doc, dict):
         record_id = clean_text(doc.get('id', '')) or None
 
-    status = 'active' if skill_count > 0 else 'empty'
+    status: str
+    reason: str | None = None
+    is_selectable: bool = False
+
+    if skill_count > 0:
+        status = 'active'
+        is_selectable = True
+        reason = None
+    elif not payload:
+        status = 'invalid'
+        is_selectable = False
+        reason = 'Fichier JSON invalide'
+    else:
+        status = 'empty'
+        is_selectable = False
+        reason = 'Aucune compétence détectée'
 
     return ReferentialOption(
         id=referential_id,
@@ -119,6 +148,8 @@ def _build_option_from_json(path: Path) -> ReferentialOption | None:
         status=status,
         source='imported_pdf' if 'imported' in str(path) else 'json_file',
         skill_count=skill_count,
+        is_selectable=is_selectable,
+        reason=reason,
     )
 
 
@@ -134,7 +165,7 @@ def _has_skills_format(payload: dict[str, Any]) -> bool:
 
 
 def _usable_for_comparison(option: ReferentialOption) -> bool:
-    return option.status == 'active' and option.skill_count > 0
+    return option.is_selectable
 
 
 def _collect_options(directory: Path, seen_ids: set[str], result: list[ReferentialOption], *, usable_only: bool) -> None:
@@ -187,8 +218,8 @@ def list_available_referentials(*, referentials_dir: str | Path | None = None, i
     return result
 
 
-def get_referential_option(referential_id: str, *, referentials_dir: str | Path | None = None, include_inactive: bool = False) -> ReferentialOption | None:
-    options = list_available_referentials(referentials_dir=referentials_dir, include_inactive=include_inactive)
+def get_referential_option(referential_id: str, *, referentials_dir: str | Path | None = None) -> ReferentialOption | None:
+    options = list_available_referentials(referentials_dir=referentials_dir, include_inactive=True)
     for option in options:
         if option.id == referential_id or option.path and Path(option.path).stem == referential_id:
             return option

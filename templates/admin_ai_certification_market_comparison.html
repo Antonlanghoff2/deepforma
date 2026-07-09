@@ -19,9 +19,13 @@
           <select name="referential_id" required>
             <option value="">Sélectionner un référentiel</option>
             {% for opt in referential_options %}
-            <option value="{{ opt.id }}"{% if referential_id == opt.id %} selected{% endif %}>{{ opt.label }} — {{ opt.skill_count }} compétences</option>
+            <option value="{{ opt.id }}"{% if referential_id == opt.id %} selected{% endif %}{% if not opt.is_selectable %} disabled{% endif %}>
+              {{ opt.label }} — {{ opt.skill_count }} compétence{% if opt.skill_count != 1 %}s{% endif %}
+              {%- if not opt.is_selectable %} — {% if opt.status == 'empty' %}incomplet{% elif opt.status == 'invalid' %}invalide{% else %}{{ opt.status }}{% endif %}{% endif %}
+            </option>
             {% endfor %}
           </select>
+          <small style="display:block;color:#6b7280;margin-top:0.25rem;">Seuls les référentiels contenant au moins une compétence peuvent être utilisés pour la comparaison.</small>
           {% else %}
           <div class="alert alert-warning">Aucun référentiel disponible. Importez ou générez un référentiel avant de lancer une comparaison.</div>
           {% endif %}
@@ -78,23 +82,39 @@
 
     <section class="card">
       <h2>Gestion des référentiels</h2>
-      {% if all_referential_options %}
+      {% if referential_options %}
       <div style="margin-bottom:1rem;">
         <table style="width:100%;border-collapse:collapse;">
           <thead>
             <tr>
               <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Référentiel</th>
               <th style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Comp.</th>
-              <th style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Source</th>
+              <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Statut</th>
               <th style="width:80px;text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;"></th>
             </tr>
           </thead>
           <tbody>
-            {% for opt in all_referential_options %}
+            {% for opt in referential_options %}
             <tr>
-              <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.label }}</td>
+              <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
+                {{ opt.label }}
+                {% if opt.source == 'imported_pdf' %}<small style="color:#6b7280;"> (importé)</small>{% endif %}
+              </td>
               <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.skill_count }}</td>
-              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ 'importé' if opt.source == 'imported_pdf' else 'fichier' }}</td>
+              <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
+                {% if opt.is_selectable %}
+                <span style="color:#059669;">exploitable</span>
+                {% elif opt.status == 'empty' %}
+                <span style="color:#d97706;">incomplet</span>
+                {% if opt.reason %}<small style="display:block;color:#6b7280;">{{ opt.reason }}</small>{% endif %}
+                {% elif opt.status == 'invalid' %}
+                <span style="color:#dc2626;">invalide</span>
+                {% if opt.reason %}<small style="display:block;color:#6b7280;">{{ opt.reason }}</small>{% endif %}
+                {% else %}
+                <span>{{ opt.status }}</span>
+                {% if opt.reason %}<small style="display:block;color:#6b7280;">{{ opt.reason }}</small>{% endif %}
+                {% endif %}
+              </td>
               <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
                 <form method="post" action="{{ url_for('admin_referential_delete', referential_id=opt.id) }}" onsubmit="return confirm('Supprimer « {{ opt.label }} » ?');" style="display:inline;">
                   <button type="submit" style="border:none;background:none;color:#b42318;cursor:pointer;font-size:0.85rem;padding:0;">Supprimer</button>
@@ -108,6 +128,7 @@
       {% else %}
       <p style="margin-bottom:1rem;">Aucun fichier référentiel trouvé.</p>
       {% endif %}
+      <p style="font-size:0.85rem;color:#6b7280;margin-bottom:1rem;">Ce référentiel est listé, mais il n&#39;est pas exploitable tant qu&#39;il ne contient pas de compétence.</p>
       <form method="post" action="{{ url_for('admin_referential_upload') }}" enctype="multipart/form-data" class="form-grid" style="grid-template-columns:1fr auto;">
         <label class="field" style="margin:0;">
           <span>Ajouter un fichier JSON</span>
