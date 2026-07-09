@@ -47,6 +47,7 @@ from referentials.rome_referential import RomeService, validate_rome_code, valid
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.analysis_result_builder import build_analysis_result
 from referentials.referential_registry import (
+    DEFAULT_REFERENTIALS_DIR,
     ensure_loadable_path,
     get_referential_option,
     list_available_referentials,
@@ -1641,6 +1642,45 @@ def create_app(
         analysis = referential_import_service.analyze(temp_path)
         return _render_referential_import_context(analysis, source_path=str(temp_path))
 
+    @app.route('/admin/referential/upload', methods=['POST'])
+    @require_admin_auth
+    def admin_referential_upload():
+        file = request.files.get('file')
+        if not file or not file.filename:
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Aucun fichier sélectionné.'))
+        if not file.filename.lower().endswith('.json'):
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Seuls les fichiers .json sont acceptés.'))
+        try:
+            payload = json.loads(file.read())
+        except Exception:
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Fichier JSON invalide.'))
+        if not isinstance(payload, dict):
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Le fichier doit contenir un objet JSON racine.'))
+        has_skills = 'skills' in payload and isinstance(payload['skills'], list)
+        has_competencies = 'competencies' in payload and isinstance(payload['competencies'], list)
+        if not has_skills and not has_competencies:
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Le fichier doit contenir une clé « skills » ou « competencies ».'))
+        dest = DEFAULT_REFERENTIALS_DIR / file.filename
+        if dest.exists():
+            return redirect(url_for('admin_ai_certification_market_comparison', error=f'Un fichier nommé « {file.filename} » existe déjà.'))
+        dest.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+        return redirect(url_for('admin_ai_certification_market_comparison'))
+
+    @app.route('/admin/referential/<referential_id>/delete', methods=['POST'])
+    @require_admin_auth
+    def admin_referential_delete(referential_id: str):
+        option = get_referential_option(referential_id)
+        if option is None or not option.path:
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Référentiel introuvable.'))
+        path = Path(option.path)
+        if not path.is_file():
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Fichier du référentiel introuvable.'))
+        path.unlink()
+        converted = path.with_suffix('.converted.json')
+        if converted.is_file():
+            converted.unlink()
+        return redirect(url_for('admin_ai_certification_market_comparison'))
+
     @app.route('/admin/ai-certification-market-comparison', methods=['GET', 'POST'])
     @require_admin_auth
     def admin_ai_certification_market_comparison():
@@ -1685,7 +1725,7 @@ def create_app(
         report = None
         output_paths: dict[str, Path] | None = None
         source_queries: list[str] = []
-        error = None
+        error = request.args.get('error') or None
         if request.method == 'POST':
             if not referential_id:
                 error = 'Veuillez sélectionner un référentiel à comparer.'
