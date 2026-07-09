@@ -1,11 +1,7 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Continual Learning Admin</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <style>
+{% extends "base.html" %}
+{% block title %}Continual Learning Admin{% endblock %}
+{% block extra_head %}
+<style>
     body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; }
     .wrap { display: grid; grid-template-columns: 320px 1fr; gap: 20px; padding: 20px; }
     .panel { background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 16px; padding: 16px; }
@@ -33,9 +29,9 @@
     pre { white-space: pre-wrap; word-break: break-word; background: #020617; border-radius: 12px; padding: 12px; border: 1px solid rgba(148, 163, 184, 0.15); }
     @media (max-width: 1100px) { .wrap { grid-template-columns: 1fr; } }
   </style>
-</head>
-<body>
-  <div class="wrap">
+{% endblock %}
+{% block content %}
+<div class="wrap">
     <aside class="panel">
       <h1>Continual learning</h1>
       <p class="muted">Validation humaine des offres France Travail et des annotations.</p>
@@ -342,5 +338,4 @@
       {% endif %}
     </main>
   </div>
-</body>
-</html>
+{% endblock %}

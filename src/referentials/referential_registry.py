@@ -128,8 +128,20 @@ def _resolve_path(relative_or_absolute: str) -> Path:
     return PROJECT_ROOT / candidate
 
 
+def _has_skills_format(payload: dict[str, Any]) -> bool:
+    return 'skills' in payload and isinstance(payload['skills'], list)
+
+
 def _usable_for_comparison(option: ReferentialOption) -> bool:
     return option.status == 'active' and option.skill_count > 0
+
+
+def _scan_directory(directory: Path, seen_ids: set[str], result: list[ReferentialOption]) -> None:
+    for path in _json_paths(directory):
+        option = _build_option_from_json(path)
+        if option and option.id not in seen_ids and _usable_for_comparison(option):
+            seen_ids.add(option.id)
+            result.append(option)
 
 
 def list_available_referentials(*, referentials_dir: str | Path | None = None) -> list[ReferentialOption]:
@@ -161,13 +173,10 @@ def list_available_referentials(*, referentials_dir: str | Path | None = None) -
         except Exception as exc:
             LOGGER.warning('Erreur de lecture de %s : %s', index_path, exc)
 
-    for path in _json_paths(directory):
-        if path.name == 'index.json':
-            continue
-        option = _build_option_from_json(path)
-        if option and option.id not in seen_ids and _usable_for_comparison(option):
-            seen_ids.add(option.id)
-            result.append(option)
+    _scan_directory(directory, seen_ids, result)
+    imported_dir = directory / 'imported'
+    if imported_dir.is_dir():
+        _scan_directory(imported_dir, seen_ids, result)
 
     return result
 
@@ -187,3 +196,98 @@ def resolve_referential_path(referential_id: str, *, referentials_dir: str | Pat
     if option is None:
         return None
     return option.path
+
+
+def convert_imported_to_skills_format(imported_payload: dict[str, Any]) -> dict[str, Any]:
+    competencies = imported_payload.get('competencies', [])
+    if not isinstance(competencies, list):
+        return {}
+
+    doc = imported_payload.get('document', {})
+    doc_title = clean_text(doc.get('title', '') if isinstance(doc, dict) else '') or ''
+    skills: list[dict[str, Any]] = []
+    for comp in competencies:
+        if not isinstance(comp, dict):
+            continue
+        code = clean_text(comp.get('code', ''))
+        label = clean_text(comp.get('official_label', '')) or clean_text(comp.get('normalized_label', ''))
+        normalized = clean_text(comp.get('normalized_label', ''))
+        block_code = clean_text(comp.get('block_code', ''))
+        activity_code = clean_text(comp.get('activity_code', ''))
+        derived = comp.get('derived_skills', [])
+        if isinstance(derived, list):
+            technical_keywords = [clean_text(s) for s in derived if isinstance(s, str) and clean_text(s)]
+        else:
+            technical_keywords = []
+        source_pages = comp.get('source_pages', [])
+        source_page = int(source_pages[0]) if isinstance(source_pages, list) and source_pages else 0
+        if not label:
+            continue
+        skill = {
+            'id': code or f'imported_{len(skills)}',
+            'block': block_code,
+            'block_name': '',
+            'activity': activity_code,
+            'code': code,
+            'label': label,
+            'official_description': label,
+            'normalized_label': normalized or label,
+            'category': '',
+            'subcategory': '',
+            'technical_keywords': technical_keywords,
+            'aliases': [],
+            'source_page': source_page,
+            'active': True,
+        }
+        skills.append(skill)
+
+    blocks = imported_payload.get('blocks', [])
+    block_names: dict[str, str] = {}
+    if isinstance(blocks, list):
+        for b in blocks:
+            bc = clean_text(b.get('code', ''))
+            bl = clean_text(b.get('label', ''))
+            if bc and bl:
+                block_names[bc] = bl
+    for skill in skills:
+        if skill['block'] in block_names:
+            skill['block_name'] = block_names[skill['block']]
+
+    referential_id = clean_text(imported_payload.get('referential_id')) or doc.get('sha256', '') or clean_text(doc.get('file_name', ''))
+    title = clean_text(imported_payload.get('title')) or doc_title or referential_id
+
+    return {
+        'referential_id': referential_id,
+        'title': title,
+        'version': imported_payload.get('schema_version', '1.0'),
+        'skills': skills,
+        'metadata': {
+            'source': 'imported_pdf',
+            'source_path': clean_text(doc.get('source_path', '') if isinstance(doc, dict) else ''),
+            'file_name': clean_text(doc.get('file_name', '') if isinstance(doc, dict) else ''),
+            'record_id': clean_text(doc.get('sha256', '') if isinstance(doc, dict) else ''),
+        },
+    }
+
+
+def ensure_loadable_path(option: ReferentialOption) -> str | None:
+    if not option.path:
+        return None
+    path = Path(option.path)
+    if not path.is_file():
+        return None
+    payload = _load_referential_metadata(path)
+    if not payload:
+        return None
+    if _has_skills_format(payload):
+        return option.path
+    converted = convert_imported_to_skills_format(payload)
+    if not converted.get('skills'):
+        return None
+    converted_path = path.with_suffix('.converted.json')
+    try:
+        converted_path.write_text(json.dumps(converted, ensure_ascii=False, indent=2), encoding='utf-8')
+        return str(converted_path)
+    except Exception as exc:
+        LOGGER.warning('Impossible d\'écrire la conversion %s : %s', converted_path, exc)
+        return None
