@@ -19,6 +19,19 @@
       <div class="alert alert-error">{{ error }}</div>
       {% endif %}
       <form method="post" class="form-grid">
+        <label class="field field-full">
+          <span>Référentiel à comparer</span>
+          {% if referential_options %}
+          <select name="referential_id" required>
+            <option value="">Sélectionner un référentiel</option>
+            {% for opt in referential_options %}
+            <option value="{{ opt.id }}"{% if referential_id == opt.id %} selected{% endif %}>{{ opt.label }} — {{ opt.skill_count }} compétences</option>
+            {% endfor %}
+          </select>
+          {% else %}
+          <div class="alert alert-warning">Aucun référentiel disponible. Importez ou générez un référentiel avant de lancer une comparaison.</div>
+          {% endif %}
+        </label>
         <label class="field">
           <span>Territoire</span>
           <input type="text" name="territory" value="{{ territory }}" placeholder="75056 ou 75">
@@ -64,7 +77,7 @@
           <input type="number" name="page_size" value="{{ page_size }}" min="1" step="1">
         </label>
         <div class="actions field-full">
-          <button type="submit">Lancer la comparaison</button>
+          <button type="submit"{% if not referential_options %} disabled title="Aucun référentiel disponible"{% endif %}>Lancer la comparaison</button>
         </div>
       </form>
     </section>
