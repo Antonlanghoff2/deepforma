@@ -249,6 +249,65 @@ approve-referential-import:
 test:
 	$(PYTHON) -m pytest -q
 
+check-skills-referential:
+	@$(PYTHON) -c "
+import json, sys
+from pathlib import Path
+from skills.skill_normalizer import normalize_skill_entry
+
+path = Path('data/referentials/skills.json')
+if not path.exists():
+    print('FICHIER MANQUANT: data/referentials/skills.json')
+    sys.exit(1)
+
+try:
+    raw = json.loads(path.read_text(encoding='utf-8'))
+except Exception as e:
+    print(f'JSON INVALIDE: {e}')
+    sys.exit(1)
+
+if isinstance(raw, dict):
+    for key in ('skills', 'competencies', 'competences', 'entries', 'items', 'data'):
+        entries = raw.get(key)
+        if isinstance(entries, list):
+            raw = entries
+            break
+    else:
+        print(f'STRUCTURE INVALIDE: aucune liste de competences trouvee (cles: {list(raw.keys())})')
+        sys.exit(1)
+elif not isinstance(raw, list):
+    print(f'FORMAT INATTENDU: {type(raw).__name__}')
+    sys.exit(1)
+
+total = len(raw)
+valid = 0
+ignored = 0
+str_count = 0
+dict_count = 0
+for entry in raw:
+    if isinstance(entry, str):
+        str_count += 1
+    elif isinstance(entry, dict):
+        dict_count += 1
+    result = normalize_skill_entry(entry)
+    if result is not None:
+        valid += 1
+    else:
+        ignored += 1
+
+print(f'FICHIER: {path}')
+print(f'TOTAL ENTREES: {total}')
+print(f'  chaines: {str_count}')
+print(f'  dictionnaires: {dict_count}')
+print(f'VALIDES: {valid}')
+print(f'IGNOREES: {ignored}')
+if valid == 0:
+    print('ATTENTION: aucune entree exploitable')
+if ignored > 0:
+    print(f'ATTENTION: {ignored} entrees ignorees (format incorrect)')
+    sys.exit(1)
+"
+
 test-referential-import:
 	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
 
