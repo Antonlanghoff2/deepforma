@@ -1664,6 +1664,9 @@ def create_app(
                 commune = territory
             elif len(territory) == 2 and territory.isdigit():
                 departement = territory
+        if commune and commune == '75056':
+            commune = None
+            departement = departement or '75'
         radius_km = _parse_int(request.values.get('radius_km'))
         date_min = clean_text(request.values.get('date_min') or '') or None
         date_max = clean_text(request.values.get('date_max') or '') or None

@@ -233,6 +233,18 @@ class FranceTravailClient:
         if headers:
             current_headers.update(headers)
 
+        def _error_detail(response: requests.Response) -> str:
+            try:
+                body = response.json()
+                if isinstance(body, dict):
+                    return str(body.get('message') or body.get('error') or body.get('detail') or body)
+                return str(body)[:200]
+            except Exception:
+                try:
+                    return response.text[:200]
+                except Exception:
+                    return ''
+
         last_exc: Exception | None = None
         for attempt in range(1, MAX_RETRIES + 1):
             try:
@@ -251,7 +263,7 @@ class FranceTravailClient:
                 continue
             if response.status_code in {403, 404}:
                 raise FranceTravailError(
-                    f'Erreur France Travail {response.status_code} sur {path}.'
+                    f'Erreur France Travail {response.status_code} sur {path}. {_error_detail(response)}'
                 )
             if response.status_code in RETRYABLE_STATUS and attempt < MAX_RETRIES:
                 wait = 2 ** (attempt - 1)
@@ -261,8 +273,9 @@ class FranceTravailClient:
             if response.status_code == 429:
                 raise FranceTravailRateLimitError(f'Limite de débit France Travail atteinte sur {path}.')
             if response.status_code >= 400:
+                detail = _error_detail(response)
                 raise FranceTravailError(
-                    f'Erreur France Travail {response.status_code} sur {path}.'
+                    f'Erreur France Travail {response.status_code} sur {path}. {detail}'
                 )
             return response
         if last_exc:
