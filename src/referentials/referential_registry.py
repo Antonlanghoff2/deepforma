@@ -247,7 +247,18 @@ def convert_imported_to_skills_format(imported_payload: dict[str, Any]) -> dict[
         if not isinstance(comp, dict):
             continue
         code = clean_text(comp.get('code', ''))
-        label = clean_text(comp.get('official_label', '')) or clean_text(comp.get('normalized_label', ''))
+        label = (clean_text(comp.get('official_label', ''))
+                 or clean_text(comp.get('normalized_label', ''))
+                 or clean_text(comp.get('label', ''))
+                 or clean_text(comp.get('name', ''))
+                 or clean_text(comp.get('title', ''))
+                 or clean_text(comp.get('competence', ''))
+                 or clean_text(comp.get('intitule', ''))
+                 or clean_text(comp.get('libelle', ''))
+                 or clean_text(comp.get('nom', ''))
+                 or clean_text(comp.get('description', '')))
+        if not label:
+            continue
         normalized = clean_text(comp.get('normalized_label', ''))
         block_code = clean_text(comp.get('block_code', ''))
         activity_code = clean_text(comp.get('activity_code', ''))
@@ -319,12 +330,14 @@ def ensure_loadable_path(option: ReferentialOption) -> str | None:
     if _has_skills_format(payload):
         return option.path
     converted = convert_imported_to_skills_format(payload)
-    if not converted.get('skills'):
-        return None
-    converted_path = path.with_suffix('.converted.json')
-    try:
-        converted_path.write_text(json.dumps(converted, ensure_ascii=False, indent=2), encoding='utf-8')
-        return str(converted_path)
-    except Exception as exc:
-        LOGGER.warning('Impossible d\'écrire la conversion %s : %s', converted_path, exc)
-        return None
+    if converted.get('skills'):
+        converted_path = path.with_suffix('.converted.json')
+        try:
+            converted_path.write_text(json.dumps(converted, ensure_ascii=False, indent=2), encoding='utf-8')
+            return str(converted_path)
+        except Exception as exc:
+            LOGGER.warning('Impossible d\'écrire la conversion %s : %s', converted_path, exc)
+            return None
+    if option.skill_count > 0:
+        return option.path
+    return None
