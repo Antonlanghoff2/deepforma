@@ -1,13 +1,7 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Comparaison référentiel IA / marché</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <main class="shell">
+{% extends "base.html" %}
+{% block title %}Comparaison référentiel IA / marché{% endblock %}
+{% block content %}
+<main class="shell">
     <section class="hero">
       <p class="eyebrow">Deepforma</p>
       <h1>Comparaison du référentiel IA avec le marché</h1>
@@ -219,5 +213,4 @@
     </section>
     {% endif %}
   </main>
-</body>
-</html>
+{% endblock %}

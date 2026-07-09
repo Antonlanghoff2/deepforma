@@ -46,7 +46,11 @@ from referential_import.pdf_loader import load_pdf_document
 from referentials.rome_referential import RomeService, validate_rome_code, validate_rome_codes
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.analysis_result_builder import build_analysis_result
-from referentials.referential_registry import list_available_referentials, get_referential_option
+from referentials.referential_registry import (
+    ensure_loadable_path,
+    get_referential_option,
+    list_available_referentials,
+)
 from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
 from services.market_context import build_market_context, fetch_offers_by_rome, fetch_offers_by_rome_codes, serialize_record
 from services.recommendation_service import RecommendationService
@@ -1701,6 +1705,12 @@ def create_app(
                     resolved_path = Path(selected.path)
                     if not resolved_path.is_file():
                         error = f'Fichier du référentiel « {selected.label} » introuvable : {resolved_path}'
+                    else:
+                        resolved_path_str = ensure_loadable_path(selected)
+                        if resolved_path_str is None:
+                            error = f'Impossible de charger le référentiel « {selected.label} » (format non convertible).'
+                        else:
+                            resolved_path = Path(resolved_path_str)
             if not error:
                 try:
                     client = get_market_client()

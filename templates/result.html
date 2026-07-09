@@ -1,13 +1,7 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Diagnostic Deepforma</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <main class="shell">
+{% extends "base.html" %}
+{% block title %}Diagnostic Deepforma{% endblock %}
+{% block content %}
+<main class="shell">
 
     <!-- Header -->
     <section class="hero compact">
@@ -973,7 +967,8 @@
     </div>
   </main>
 
-  <script>
+{% block extra_scripts %}
+<script>
     const RESULT_DATA = {{ result_json|safe }};
 
     function downloadJSON() {
@@ -1058,5 +1053,5 @@
       }
     });
   </script>
-</body>
-</html>
+{% endblock %}
+{% endblock %}

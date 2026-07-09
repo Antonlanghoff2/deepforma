@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Deepforma{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    nav.top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0 1.5rem;
+      padding: 0.6rem 1.5rem;
+      background: #111827;
+      color: #e2e8f0;
+      font-size: 0.9rem;
+    }
+    nav.top-nav a {
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 0.3rem 0;
+    }
+    nav.top-nav a:hover,
+    nav.top-nav a:focus {
+      color: #fff;
+    }
+    nav.top-nav .brand {
+      font-weight: 700;
+      color: #fff;
+      font-size: 1rem;
+      margin-right: auto;
+    }
+    nav.top-nav .group-label {
+      color: #64748b;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 0.25rem;
+    }
+    @media (max-width: 640px) {
+      nav.top-nav { gap: 0 1rem; }
+      nav.top-nav .brand { width: 100%; margin-bottom: 0.3rem; }
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <nav class="top-nav">
+    <span class="brand">Deepforma</span>
+    <span class="group-label">Public</span>
+    <a href="{{ url_for('index') }}">Accueil</a>
+    <span class="group-label">Admin</span>
+    <a href="{{ url_for('admin_referential_import') }}">Import référentiel</a>
+    <a href="{{ url_for('admin_ai_certification_market_comparison') }}">Comparaison marché</a>
+    <a href="{{ url_for('admin_referential_annotation') }}">Annotation</a>
+    <a href="{{ url_for('admin_continual_learning') }}">Apprentissage continu</a>
+  </nav>
+  {% block content %}{% endblock %}
+</body>
+</html>

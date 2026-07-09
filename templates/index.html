@@ -1,18 +1,12 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Deepforma</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <main class="shell">
-    <section class="hero">
-      <p class="eyebrow">Deepforma</p>
-      <h1>Analyse d'un référentiel RNCP</h1>
-      <p class="lead">Chargez le PDF du référentiel et laissez l'application extraire les compétences officielles avant de comparer au marché local. La zone de recherche France Travail est paramétrable dans la section métier cible.</p>
-    </section>
+{% extends "base.html" %}
+{% block title %}Deepforma — Analyse RNCP{% endblock %}
+{% block content %}
+<main class="shell">
+  <section class="hero">
+    <p class="eyebrow">Deepforma</p>
+    <h1>Analyse d'un référentiel RNCP</h1>
+    <p class="lead">Chargez le PDF du référentiel et laissez l'application extraire les compétences officielles avant de comparer au marché local. La zone de recherche France Travail est paramétrable dans la section métier cible.</p>
+  </section>
 
     <section class="card">
       {% if error %}
@@ -240,5 +234,4 @@
     </section>
     {% endif %}
   </main>
-</body>
-</html>
+{% endblock %}

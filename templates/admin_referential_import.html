@@ -1,10 +1,7 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Import référentiel</title>
-  <style>
+{% extends "base.html" %}
+{% block title %}Import référentiel{% endblock %}
+{% block extra_head %}
+<style>
     :root {
       color-scheme: light;
       --bg: #f4f1ea;
@@ -49,9 +46,9 @@
       header { padding: 22px 16px; }
     }
   </style>
-</head>
-<body>
-  <header>
+{% endblock %}
+{% block content %}
+<header>
     <h1>Import spécialisé des référentiels RNCP</h1>
     <p>Prévisualisation, édition manuelle complète de l’intitulé de poste, des compétences officielles et des compétences détectées, puis approbation explicite.</p>
   </header>
@@ -138,5 +135,4 @@
     </form>
     {% endif %}
   </main>
-</body>
-</html>
+{% endblock %}
