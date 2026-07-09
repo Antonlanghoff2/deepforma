@@ -1,7 +1,7 @@
 {
-  "referential_id": "abc123",
-  "referential_title": "Data Scientist",
-  "referential_version": "1.0",
+  "referential_id": "ingenieur_ia_2025",
+  "referential_title": "Ingénieur en intelligence artificielle",
+  "referential_version": "",
   "territory": "75 / 75",
   "radius_km": null,
   "period": "",
@@ -26,118 +26,15 @@
   "offer_count": 25,
   "analyzed_offer_count": 25,
   "covered_offer_count": 0,
-  "total_market_weight": 73.0134,
+  "total_market_weight": 53.9331,
   "covered_weight": 0,
   "global_coverage_score": 0.0,
-  "block_summaries": [
-    {
-      "block": "BLOC_1",
-      "block_name": "Bloc 1",
-      "skill_count": 1,
-      "covered_skill_count": 0,
-      "total_weight": 0.0,
-      "covered_weight": 0,
-      "market_share_percent": 0.0,
-      "average_skill_share_percent": 0.0
-    }
-  ],
-  "skill_rows": [
-    {
-      "referential_id": "MANUAL_1",
-      "block": "BLOC_1",
-      "block_name": "Bloc 1",
-      "activity": "A1.1",
-      "code": "MANUAL_1",
-      "label": "Modélisation prédictive",
-      "official_description": "Modélisation prédictive",
-      "normalized_label": "Modélisation prédictive",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    }
-  ],
-  "top_demanded_skills": [
-    {
-      "referential_id": "MANUAL_1",
-      "block": "BLOC_1",
-      "block_name": "Bloc 1",
-      "activity": "A1.1",
-      "code": "MANUAL_1",
-      "label": "Modélisation prédictive",
-      "official_description": "Modélisation prédictive",
-      "normalized_label": "Modélisation prédictive",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    }
-  ],
+  "block_summaries": [],
+  "skill_rows": [],
+  "top_demanded_skills": [],
   "covered_skills": [],
-  "missing_skills": [
-    {
-      "referential_id": "MANUAL_1",
-      "block": "BLOC_1",
-      "block_name": "Bloc 1",
-      "activity": "A1.1",
-      "code": "MANUAL_1",
-      "label": "Modélisation prédictive",
-      "official_description": "Modélisation prédictive",
-      "normalized_label": "Modélisation prédictive",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    }
-  ],
-  "low_demand_skills": [
-    {
-      "referential_id": "MANUAL_1",
-      "block": "BLOC_1",
-      "block_name": "Bloc 1",
-      "activity": "A1.1",
-      "code": "MANUAL_1",
-      "label": "Modélisation prédictive",
-      "official_description": "Modélisation prédictive",
-      "normalized_label": "Modélisation prédictive",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    }
-  ],
+  "missing_skills": [],
+  "low_demand_skills": [],
   "unmapped_market_skills": [
     {
       "referential_id": "",
@@ -235,78 +132,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Analyse de données",
-      "official_description": "",
-      "normalized_label": "Analyse de données",
-      "category": "Other",
-      "subcategory": "Analyse de données",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 11,
-      "weighted_score": 6.8530999999999995,
-      "share_percent": 44.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Analyse de données"
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "",
-      "normalized_label": "Python",
-      "category": "analyse des besoins métiers",
-      "subcategory": "Python",
-      "technical_keywords": [
-        "Python",
-        "AWS",
-        "Azure",
-        "GCP",
-        "LLM",
-        "RAG",
-        "LangChain",
-        "LlamaIndex",
-        "GPT",
-        "Git"
-      ],
-      "source_page": 0,
-      "offer_count": 9,
-      "weighted_score": 5.756900000000001,
-      "share_percent": 36.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Python",
-        "Architecte intelligence artificielle (H/F) Description du poste : En tant qu'organisateur de forums de recrutement, Talents Handicap accompagne de très nombreuses entreprises & organisations en France dans leurs recrutements de collaborateurs en situation de handicap. Participant actuellement à l'un de nos forums. L'entreprise Sopra Steria recherche actuellement des profils : Description de l'entreprise Sopra Steria , acteur majeur de la Tech en Europe, avec 51000 collaborateurs dans près de 30 pays, est reconnu pour ses activités de conseil, de services et solutions numériques. Il aide ses clients à mener leur transformation digitale et à obtenir des bénéfices concrets et durables. Le Groupe apporte une réponse globale aux enjeux de compétitivité des grandes entreprises et organisations, en combinant une connaissance approfondie des secteurs d'activité et des technologies à une approche collaborative. Sopra Steria place l'humain au cœur de son action et s'engage auprès de ses clients à tirer le meilleur parti du numérique pour construire un avenir positif. En 2025, le Groupe a réalisé un chiffre d'affaires de 5,6 milliards d'euros. Description du poste Envie de travailler sur les modèles IA les plus avancés ? Nous recrutons des profils passionnés par l'IA générative et les architectures modernes, capables de concevoir des solutions innovantes autour des LLM (Large Language Models), notamment issus de l'écosystème Anthropic (Claude Chez nous, vous interviendrez sur des projets à fort impact dans les secteurs banque / finance , tout en évoluant dans un environnement technologique exigeant et en constante évolution. Votre mission En tant qu'AI Engineer / Consultant IA, vous serez au cœur de la conception et du déploiement de solutions basées sur les modèles de nouvelle génération Concevoir et déployer des solutions IA intégrées aux chaînes de production * Exploiter des modèles type Claude / GPT / open-source * Développer des agents autonomes, pipelines RAG et systèmes multi-agents * Participer à la rédaction de spécifications fonctionnelles et techniques * Optimiser les performances des modèles (prompt engineering, fine-tuning, évaluation) * Assurer l'industrialisation (MLOps / LLMOps) Qualifications Compétences techniques***Expérience en développement ( Python obligatoire Bonne maîtrise des frameworks IA LangChain / LlamaIndex / Hugging Face / APIs Anthropic * Connaissance des architectures RAG, embeddings, agents, orchestration * Sensibilité aux modèles Anthropic / Claude fortement appréciée * Expérience cloud (Azure, AWS ou GCP) Contexte métier***Une expérience en banque / finance / assurance est un plus * Appétence pour les environnements réglementés et complexes Soft skills***Esprit d'analyse et capacité à vulgariser des sujets complexes * Curiosité forte sur les dernières avancées IA * Autonomie et mindset \"builder\" Pourquoi nous rejoindre Projets concrets autour des modèles les plus avancés du marché * Positionnement fort sur les sujets IA & innovation * Environnement ESN : diversité des missions, montée en compétences rapide * Communautés internes IA / partage de knowledge * Forte visibilité client (grands comptes banques / assurance) Informations supplémentaires * Un accord télétravail pour télétravailler jusqu'à 2 jours par semaine selon vos missions. * Un package avantages intéressant : une mutuelle, un CSE, des titres restaurants, un accord d'intéressement, des primes vacances et cooptation. * Des opportunités de carrières multiples : plus de 30 familles de métiers, autant de passerelles à imaginer ensemble. * Plusieurs centaines de formations accessibles en toute autonomie avec Sopra Steria Academy. * La possibilité de s'engager auprès d'une association grâce à notre plateforme d'engagement citoyen. * L'opportunité de rejoindre le collectif Tech'Me UP (formations, conférences, veille, et bien plus encore Employeur inclusif et engagé, notre société œuvre chaque jour pour lutter contre toute forme de discrimination et favoriser un environnement de travail respectueux. C'est pourquoi, attachés à la mixité et à la diversité, nous encourageons toutes les candidatures et tous les profils.***"
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Rédiger un cahier des charges, des spécifications techniques",
       "official_description": "",
       "normalized_label": "Rédiger un cahier des charges, des spécifications techniques",
@@ -366,36 +191,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Gestion de projet",
-      "official_description": "",
-      "normalized_label": "Gestion de projet",
-      "category": "gestion de projet",
-      "subcategory": "Gestion de projet",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 3,
-      "weighted_score": 1.6788,
-      "share_percent": 12.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Gestion de projet"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Software Engineer (H/F)",
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Concevoir une application web",
       "official_description": "",
       "normalized_label": "Concevoir une application web",
@@ -416,96 +211,6 @@
       "example_offers": [
         "Software Engineer (H/F)",
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Communication",
-      "official_description": "",
-      "normalized_label": "Communication",
-      "category": "visualisation et communication",
-      "subcategory": "Communication",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 3,
-      "weighted_score": 1.6476000000000002,
-      "share_percent": 12.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Communication"
-      ],
-      "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)",
-        "Senior Product Manager - AI Platform (H/F)",
-        "Alternance Chargé(e) de communication IA - Paris (F/H) (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "FastAPI",
-      "official_description": "",
-      "normalized_label": "FastAPI",
-      "category": "MLOps",
-      "subcategory": "FastAPI",
-      "technical_keywords": [
-        "FastAPI"
-      ],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.3527,
-      "share_percent": 8.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "FastAPI"
-      ],
-      "example_offers": [
-        "Architecte intelligence artificielle (H/F)",
-        "Développeur intelligence artificielle (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "",
-      "normalized_label": "Machine Learning",
-      "category": "Machine Learning",
-      "subcategory": "Machine Learning",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.2985,
-      "share_percent": 8.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Machine Learning"
-      ],
-      "example_offers": [
-        "Chef de projet automatisation IA (H/F)",
-        "Développeur intelligence artificielle (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1404,34 +1109,6 @@
         "Expert IA (H/F)"
       ],
       "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "API REST",
-      "official_description": "",
-      "normalized_label": "API REST",
-      "category": "Other",
-      "subcategory": "API REST",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.4927,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "API REST"
-      ],
-      "example_offers": [
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "unmapped"
     }
   ],
   "common_skills": [],
@@ -1448,8 +1125,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "Analyse de données"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -1464,8 +1140,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "Analyse de données"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -1480,8 +1155,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "API REST"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -1496,8 +1170,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "Analyse de données"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -1512,8 +1185,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "Analyse de données"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -1528,8 +1200,7 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA",
-        "Analyse de données"
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {

@@ -1,17 +1,10 @@
 type,label,block,category,subcategory,offer_count,weighted_score
-missing,Modélisation prédictive,BLOC_1,,,0,0.0
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.5083
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.5083
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.5083
-unmapped,Analyse de données,,Other,Analyse de données,11,6.8531
-unmapped,Python,,analyse des besoins métiers,Python,9,5.7569
 unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",3,2.4911
 unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.7731
-unmapped,Gestion de projet,,gestion de projet,Gestion de projet,3,1.6788
 unmapped,Concevoir une application web,,Other,Concevoir une application web,2,1.6654
-unmapped,Communication,,visualisation et communication,Communication,3,1.6476
-unmapped,FastAPI,,MLOps,FastAPI,2,1.3527
-unmapped,Machine Learning,,Machine Learning,Machine Learning,2,1.2985
 unmapped,#TDFE2026,,Other,#TDFE2026,1,0.9783
 unmapped,"Analyser les données d'une étude, d'un projet",,Other,"Analyser les données d'une étude, d'un projet",1,0.9474
 unmapped,Anglais technique,,Other,Anglais technique,1,0.9474
@@ -44,4 +37,3 @@ unmapped,Implémenter des solutions de cybersécurité adaptées,,RGPD et sécur
 unmapped,Intégration de systèmes d'intelligence artificielle,,Other,Intégration de systèmes d'intelligence artificielle,1,0.625
 unmapped,Planifier des projets d'IA en tenant compte des contraintes de temps et de budget,,Other,Planifier des projets d'IA en tenant compte des contraintes de temps et de budge,1,0.625
 unmapped,Traiter les données de manière sécurisée et conforme,,Other,Traiter les données de manière sécurisée et conforme,1,0.625
-unmapped,API REST,,Other,API REST,1,0.4927
