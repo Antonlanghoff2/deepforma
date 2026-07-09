@@ -1669,7 +1669,7 @@ def create_app(
     @app.route('/admin/referential/<referential_id>/delete', methods=['POST'])
     @require_admin_auth
     def admin_referential_delete(referential_id: str):
-        option = get_referential_option(referential_id)
+        option = get_referential_option(referential_id, include_inactive=True)
         if option is None or not option.path:
             return redirect(url_for('admin_ai_certification_market_comparison', error='Référentiel introuvable.'))
         path = Path(option.path)
@@ -1795,6 +1795,7 @@ def create_app(
             error=error,
             referential_id=referential_id,
             referential_options=referential_options,
+            all_referential_options=all_referential_options,
             territory=territory,
             commune=commune or '',
             departement=departement or '',

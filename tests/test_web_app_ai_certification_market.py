@@ -100,7 +100,7 @@ def _setup_app(monkeypatch, *, referential_path: Path, offers: list | None = Non
 def test_admin_ai_certification_market_comparison_route(tmp_path, monkeypatch):
     referential_path = _make_referential(tmp_path / 'referential.json')
     mock_opts = _mock_options(referential_path)
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
     app = _setup_app(monkeypatch, referential_path=referential_path, offers=[
         {
@@ -139,7 +139,7 @@ def test_admin_ai_certification_market_comparison_route(tmp_path, monkeypatch):
 def test_get_affiche_liste_referentiels(tmp_path, monkeypatch):
     referential_path = _make_referential(tmp_path / 'referential.json')
     mock_opts = _mock_options(referential_path)
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
     app = _setup_app(monkeypatch, referential_path=referential_path)
     client = app.test_client()
@@ -153,7 +153,7 @@ def test_get_affiche_liste_referentiels(tmp_path, monkeypatch):
 
 
 def test_get_sans_referentiel_affiche_message(tmp_path, monkeypatch):
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: [])
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: [])
     app = _setup_app(monkeypatch, referential_path=tmp_path / 'dummy.json')
     client = app.test_client()
     response = client.get('/admin/ai-certification-market-comparison', headers=_auth_headers())
@@ -166,7 +166,7 @@ def test_get_sans_referentiel_affiche_message(tmp_path, monkeypatch):
 def test_post_sans_referential_id_retourne_erreur(tmp_path, monkeypatch):
     referential_path = _make_referential(tmp_path / 'referential.json')
     mock_opts = _mock_options(referential_path)
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     app = _setup_app(monkeypatch, referential_path=referential_path)
     client = app.test_client()
     response = client.post(
@@ -186,7 +186,7 @@ def test_post_sans_referential_id_retourne_erreur(tmp_path, monkeypatch):
 def test_post_referential_id_inconnu_retourne_erreur(tmp_path, monkeypatch):
     referential_path = _make_referential(tmp_path / 'referential.json')
     mock_opts = _mock_options(referential_path)
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: None)
     app = _setup_app(monkeypatch, referential_path=referential_path)
     client = app.test_client()
@@ -219,7 +219,7 @@ def test_post_referentiel_fichier_absent_pas_500(tmp_path, monkeypatch):
             skill_count=1,
         )
     ]
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
     app = _setup_app(monkeypatch, referential_path=tmp_path / 'dummy.json')
     client = app.test_client()
@@ -239,7 +239,7 @@ def test_post_referentiel_fichier_absent_pas_500(tmp_path, monkeypatch):
 def test_selection_conservee_apres_erreur(tmp_path, monkeypatch):
     referential_path = _make_referential(tmp_path / 'referential.json')
     mock_opts = _mock_options(referential_path)
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: None)
     app = _setup_app(monkeypatch, referential_path=referential_path)
     client = app.test_client()
@@ -268,7 +268,7 @@ def test_selection_conservee_apres_erreur(tmp_path, monkeypatch):
             skill_count=1,
         )
     ]
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_options)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_options)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_options if o.id == rid), None))
     monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
     monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
@@ -467,7 +467,7 @@ def test_route_importe_converti_et_comparaison_reussit(tmp_path, monkeypatch):
             skill_count=2,
         )
     ]
-    monkeypatch.setattr('web_app.list_available_referentials', lambda: mock_opts)
+    monkeypatch.setattr('web_app.list_available_referentials', lambda **kw: mock_opts)
     monkeypatch.setattr('web_app.get_referential_option', lambda rid: next((o for o in mock_opts if o.id == rid), None))
     monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
     monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')

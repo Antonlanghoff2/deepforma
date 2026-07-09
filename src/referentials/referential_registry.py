@@ -137,7 +137,7 @@ def _usable_for_comparison(option: ReferentialOption) -> bool:
     return option.status == 'active' and option.skill_count > 0
 
 
-    def _collect_options(directory: Path, seen_ids: set[str], result: list[ReferentialOption], *, usable_only: bool) -> None:
+def _collect_options(directory: Path, seen_ids: set[str], result: list[ReferentialOption], *, usable_only: bool) -> None:
     for path in _json_paths(directory):
         option = _build_option_from_json(path)
         if option and option.id not in seen_ids:
@@ -187,8 +187,8 @@ def list_available_referentials(*, referentials_dir: str | Path | None = None, i
     return result
 
 
-def get_referential_option(referential_id: str, *, referentials_dir: str | Path | None = None) -> ReferentialOption | None:
-    options = list_available_referentials(referentials_dir=referentials_dir)
+def get_referential_option(referential_id: str, *, referentials_dir: str | Path | None = None, include_inactive: bool = False) -> ReferentialOption | None:
+    options = list_available_referentials(referentials_dir=referentials_dir, include_inactive=include_inactive)
     for option in options:
         if option.id == referential_id or option.path and Path(option.path).stem == referential_id:
             return option
