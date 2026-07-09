@@ -89,6 +89,8 @@ def _territory_query_kwargs(territory: Territory) -> dict[str, str | None]:
     code = clean_text(territory.code or territory.department_code or '')
     if not code:
         return {'departement': None, 'commune': None}
+    if code == '75056':
+        return {'departement': '75', 'commune': None}
     if code.isdigit() and len(code) == 5:
         return {'departement': None, 'commune': code}
     if (code.isdigit() and len(code) in {2, 3}) or code in {'2A', '2B'}:

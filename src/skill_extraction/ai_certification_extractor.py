@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from common.text import clean_text, normalize_for_match
-from referentials.ai_certification_referential import AICertificationReferential
+from referentials.ai_certification_referential import AICertificationReferential, ReferentialSearchResult
 
 
 DEFAULT_REFERENTIAL_PATH = Path(
@@ -256,7 +256,7 @@ class AICertificationSkillExtractor:
             return False
         return any(hint in sentence_norm for hint in ACTION_HINTS) or len(sentence_norm.split()) >= 5
 
-    def _score_sentence(self, sentence: str, skill: dict[str, Any]) -> tuple[str | None, float, str]:
+    def _score_sentence(self, sentence: str, skill: dict[str, Any], *, _semantic_lookup: dict[str, ReferentialSearchResult] | None = None) -> tuple[str | None, float, str]:
         sentence_norm = normalize_for_match(sentence)
         candidates = [skill['label'], skill['official_description'], *skill.get('aliases', [])]
         for candidate in candidates:
@@ -275,13 +275,19 @@ class AICertificationSkillExtractor:
             if candidate_norm in sentence_norm or sentence_norm in candidate_norm:
                 return candidate, max(self.alias_threshold, 0.92), 'alias'
 
-        semantic_hits = self.referential.search_semantic(sentence, top_k=8)
-        for hit in semantic_hits:
-            if hit.referential_id != skill['id']:
-                continue
-            if hit.score >= self.semantic_threshold and self._sentence_is_plausible(sentence):
+        if _semantic_lookup is not None:
+            hit = _semantic_lookup.get(skill['id'])
+            if hit is not None and hit.score >= self.semantic_threshold:
                 match_type = 'semantic' if hit.score < self.implicit_threshold else 'implicit'
                 return skill['official_description'], float(hit.score), match_type
+        else:
+            semantic_hits = self.referential.search_semantic(sentence, top_k=8)
+            for hit in semantic_hits:
+                if hit.referential_id != skill['id']:
+                    continue
+                if hit.score >= self.semantic_threshold and self._sentence_is_plausible(sentence):
+                    match_type = 'semantic' if hit.score < self.implicit_threshold else 'implicit'
+                    return skill['official_description'], float(hit.score), match_type
         return None, 0.0, ''
 
     def extract(self, title: str | None, description: str) -> dict[str, Any]:
@@ -293,10 +299,14 @@ class AICertificationSkillExtractor:
         for sentence in sentences:
             if not self._sentence_is_plausible(sentence):
                 continue
+            semantic_lookup: dict[str, ReferentialSearchResult] | None = None
+            semantic_hits = self.referential.search_semantic(sentence, top_k=8)
+            if semantic_hits:
+                semantic_lookup = {hit.referential_id: hit for hit in semantic_hits if hit.score >= self.semantic_threshold}
             for skill in self.referential.get_all_skills():
                 if not skill.get('active', True):
                     continue
-                candidate_text, score, match_type = self._score_sentence(sentence, skill)
+                candidate_text, score, match_type = self._score_sentence(sentence, skill, _semantic_lookup=semantic_lookup)
                 if not match_type:
                     continue
                 reference_id = skill['id']

@@ -18,10 +18,11 @@ from skills.skill_normalizer import SkillNormalizer
 
 
 class FakeResponse:
-    def __init__(self, status_code=200, json_data=None, headers=None):
+    def __init__(self, status_code=200, json_data=None, headers=None, url=''):
         self.status_code = status_code
         self._json_data = json_data if json_data is not None else {}
         self.headers = headers or {}
+        self.url = url
 
     def json(self):
         return self._json_data
