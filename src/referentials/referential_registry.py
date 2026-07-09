@@ -137,15 +137,17 @@ def _usable_for_comparison(option: ReferentialOption) -> bool:
     return option.status == 'active' and option.skill_count > 0
 
 
-def _scan_directory(directory: Path, seen_ids: set[str], result: list[ReferentialOption]) -> None:
+    def _collect_options(directory: Path, seen_ids: set[str], result: list[ReferentialOption], *, usable_only: bool) -> None:
     for path in _json_paths(directory):
         option = _build_option_from_json(path)
-        if option and option.id not in seen_ids and _usable_for_comparison(option):
+        if option and option.id not in seen_ids:
+            if usable_only and not _usable_for_comparison(option):
+                continue
             seen_ids.add(option.id)
             result.append(option)
 
 
-def list_available_referentials(*, referentials_dir: str | Path | None = None) -> list[ReferentialOption]:
+def list_available_referentials(*, referentials_dir: str | Path | None = None, include_inactive: bool = False) -> list[ReferentialOption]:
     directory = Path(referentials_dir or DEFAULT_REFERENTIALS_DIR)
     if not directory.is_dir():
         LOGGER.warning('Répertoire des référentiels introuvable : %s', directory)
@@ -153,6 +155,7 @@ def list_available_referentials(*, referentials_dir: str | Path | None = None) -
 
     seen_ids: set[str] = set()
     result: list[ReferentialOption] = []
+    usable_only = not include_inactive
 
     index_path = directory / 'index.json'
     if index_path.is_file():
@@ -168,16 +171,18 @@ def list_available_referentials(*, referentials_dir: str | Path | None = None) -
                         LOGGER.warning('Référentiel indexé introuvable : %s', resolved)
                         continue
                     option = _build_option_from_json(resolved)
-                    if option and option.id not in seen_ids and _usable_for_comparison(option):
+                    if option and option.id not in seen_ids:
+                        if usable_only and not _usable_for_comparison(option):
+                            continue
                         seen_ids.add(option.id)
                         result.append(option)
         except Exception as exc:
             LOGGER.warning('Erreur de lecture de %s : %s', index_path, exc)
 
-    _scan_directory(directory, seen_ids, result)
+    _collect_options(directory, seen_ids, result, usable_only=usable_only)
     imported_dir = directory / 'imported'
     if imported_dir.is_dir():
-        _scan_directory(imported_dir, seen_ids, result)
+        _collect_options(imported_dir, seen_ids, result, usable_only=usable_only)
 
     return result
 

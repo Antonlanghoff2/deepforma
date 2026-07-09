@@ -1702,6 +1702,7 @@ def create_app(
         job_titles_default = 'ingénieur intelligence artificielle,AI Engineer,Machine Learning Engineer,Data Scientist,MLOps Engineer,ingénieur Machine Learning,ingénieur NLP,ingénieur Deep Learning,ingénieur IA générative,Data Engineer IA,chef de projet IA'
         rome_codes_default = 'M1805'
         referential_options = list_available_referentials()
+        all_referential_options = list_available_referentials(include_inactive=True)
         referential_id = clean_text(request.values.get('referential_id') or '')
         territory = clean_text(request.values.get('territory') or '75056')
         commune = clean_text(request.values.get('commune') or '') or None
