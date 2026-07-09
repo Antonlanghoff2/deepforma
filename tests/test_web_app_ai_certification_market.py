@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import io
 import json
 from pathlib import Path
 
@@ -507,3 +508,116 @@ def test_route_importe_converti_et_comparaison_reussit(tmp_path, monkeypatch):
     assert 'Comparaison du référentiel IA avec le marché' in html
     assert 'Score global' in html
     assert 'Manager affaires' in html
+
+
+def test_upload_referential_ok(tmp_path, monkeypatch):
+    from referentials.referential_registry import DEFAULT_REFERENTIALS_DIR as _REG_DIR
+    monkeypatch.setattr('web_app.DEFAULT_REFERENTIALS_DIR', tmp_path)
+    monkeypatch.setattr('referentials.referential_registry.DEFAULT_REFERENTIALS_DIR', tmp_path)
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    payload = json.dumps({
+        'referential_id': 'test_ref',
+        'title': 'Test',
+        'skills': [{'id': 'S1', 'label': 'Skill 1'}],
+    })
+    response = client.post(
+        '/admin/referential/upload',
+        data={'file': (io.BytesIO(payload.encode()), 'test_ref.json')},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 302
+    assert (tmp_path / 'test_ref.json').exists()
+
+
+def test_upload_referential_no_file_returns_error(tmp_path, monkeypatch):
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    response = client.post('/admin/referential/upload', data={}, headers=_auth_headers())
+    assert response.status_code == 302
+    assert 'error=' in response.location
+
+
+def test_upload_referential_invalid_json_returns_error(tmp_path, monkeypatch):
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    response = client.post(
+        '/admin/referential/upload',
+        data={'file': (io.BytesIO(b'not json'), 'bad.json')},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 302
+    assert 'error=' in response.location
+
+
+def test_upload_referential_no_skills_returns_error(tmp_path, monkeypatch):
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    payload = json.dumps({'name': 'test'})
+    response = client.post(
+        '/admin/referential/upload',
+        data={'file': (io.BytesIO(payload.encode()), 'no_skills.json')},
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 302
+    assert 'error=' in response.location
+
+
+def test_delete_referential_ok(tmp_path, monkeypatch):
+    from referentials.referential_registry import DEFAULT_REFERENTIALS_DIR
+    monkeypatch.setattr('referentials.referential_registry.DEFAULT_REFERENTIALS_DIR', tmp_path)
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    json_path = _make_referential(tmp_path / 'to_delete.json')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    response = client.post(
+        '/admin/referential/ingenieur_ia_2025/delete',
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 302
+    assert not json_path.exists()
+
+
+def test_delete_referential_unknown_returns_redirect(tmp_path, monkeypatch):
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+    app = create_app(
+        predictor=DummyPredictor(),
+        france_travail_client_factory=lambda: DummyOfferClient([]),
+        cache_ttl_seconds=60,
+    )
+    client = app.test_client()
+    response = client.post(
+        '/admin/referential/nonexistent/delete',
+        headers=_auth_headers(),
+    )
+    assert response.status_code == 302

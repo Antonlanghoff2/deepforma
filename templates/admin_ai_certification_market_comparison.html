@@ -76,6 +76,49 @@
       </form>
     </section>
 
+    <section class="card">
+      <h2>Gestion des référentiels</h2>
+      {% if referential_options %}
+      <div style="margin-bottom:1rem;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Référentiel</th>
+              <th style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Comp.</th>
+              <th style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Source</th>
+              <th style="width:80px;text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for opt in referential_options %}
+            <tr>
+              <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.label }}</td>
+              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.skill_count }}</td>
+              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ 'importé' if opt.source == 'imported_pdf' else 'fichier' }}</td>
+              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
+                <form method="post" action="{{ url_for('admin_referential_delete', referential_id=opt.id) }}" onsubmit="return confirm('Supprimer « {{ opt.label }} » ?');" style="display:inline;">
+                  <button type="submit" style="border:none;background:none;color:#b42318;cursor:pointer;font-size:0.85rem;padding:0;">Supprimer</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p style="margin-bottom:1rem;">Aucun référentiel disponible.</p>
+      {% endif %}
+      <form method="post" action="{{ url_for('admin_referential_upload') }}" enctype="multipart/form-data" class="form-grid" style="grid-template-columns:1fr auto;">
+        <label class="field" style="margin:0;">
+          <span>Ajouter un fichier JSON</span>
+          <input type="file" name="file" accept=".json" required>
+        </label>
+        <div class="actions" style="align-self:end;">
+          <button type="submit">Uploader</button>
+        </div>
+      </form>
+    </section>
+
     {% if report %}
     <section class="card wide">
       <h2>Résumé</h2>

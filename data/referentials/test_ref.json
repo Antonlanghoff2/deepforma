@@ -1,0 +1,10 @@
+{
+  "referential_id": "test_ref",
+  "title": "Test",
+  "skills": [
+    {
+      "id": "S1",
+      "label": "Skill 1"
+    }
+  ]
+}
