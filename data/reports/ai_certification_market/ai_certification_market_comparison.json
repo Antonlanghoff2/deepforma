@@ -1,8 +1,15 @@
 {
+<<<<<<< HEAD
   "referential_id": "ingenieur_ia_2025",
   "referential_title": "Ingénieur en intelligence artificielle",
   "referential_version": "2025-01",
   "territory": "75 / 75",
+=======
+  "referential_id": "abc123",
+  "referential_title": "Data Scientist",
+  "referential_version": "1.0",
+  "territory": "75 / 75056",
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
   "radius_km": null,
   "period": "",
   "job_titles": [
@@ -25,6 +32,7 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
+<<<<<<< HEAD
   "covered_offer_count": 14,
   "total_market_weight": 208.1196,
   "covered_weight": 138.3824,
@@ -34,11 +42,23 @@
       "block": "B1",
       "block_name": "Bloc 1",
       "skill_count": 15,
+=======
+  "covered_offer_count": 0,
+  "total_market_weight": 73.0134,
+  "covered_weight": 0,
+  "global_coverage_score": 0.0,
+  "block_summaries": [
+    {
+      "block": "BLOC_1",
+      "block_name": "Bloc 1",
+      "skill_count": 1,
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "covered_skill_count": 0,
       "total_weight": 0.0,
       "covered_weight": 0,
       "market_share_percent": 0.0,
       "average_skill_share_percent": 0.0
+<<<<<<< HEAD
     },
     {
       "block": "B2",
@@ -89,10 +109,13 @@
       "covered_weight": 66.0567,
       "market_share_percent": 31.74,
       "average_skill_share_percent": 18.67
+=======
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
     }
   ],
   "skill_rows": [
     {
+<<<<<<< HEAD
       "referential_id": "B1-A1-C1",
       "block": "B1",
       "block_name": "Bloc 1",
@@ -103,6 +126,18 @@
       "normalized_label": "recueillir les besoins metiers optimisation du crm ciblage des campagnes marketing",
       "category": "cadrage de projet IA",
       "subcategory": "Analyse des besoins métiers",
+=======
+      "referential_id": "MANUAL_1",
+      "block": "BLOC_1",
+      "block_name": "Bloc 1",
+      "activity": "A1.1",
+      "code": "MANUAL_1",
+      "label": "Modélisation prédictive",
+      "official_description": "Modélisation prédictive",
+      "normalized_label": "Modélisation prédictive",
+      "category": "",
+      "subcategory": "",
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "technical_keywords": [],
       "source_page": 2,
       "offer_count": 0,
@@ -113,6 +148,7 @@
       "evidence_examples": [],
       "example_offers": [],
       "status": "missing"
+<<<<<<< HEAD
     },
     {
       "referential_id": "B1-A1-C2",
@@ -3343,10 +3379,13 @@
         "Software Engineer (H/F)"
       ],
       "status": "covered"
+=======
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
     }
   ],
   "top_demanded_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "B5B-A5-C2",
       "block": "B5B",
       "block_name": "Bloc 5B",
@@ -6526,6 +6565,43 @@
       "normalized_label": "recueillir les besoins metiers optimisation du crm ciblage des campagnes marketing",
       "category": "cadrage de projet IA",
       "subcategory": "Analyse des besoins métiers",
+=======
+      "referential_id": "MANUAL_1",
+      "block": "BLOC_1",
+      "block_name": "Bloc 1",
+      "activity": "A1.1",
+      "code": "MANUAL_1",
+      "label": "Modélisation prédictive",
+      "official_description": "Modélisation prédictive",
+      "normalized_label": "Modélisation prédictive",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 0,
+      "weighted_score": 0.0,
+      "share_percent": 0.0,
+      "coverage_score": 0.0,
+      "match_methods": {},
+      "evidence_examples": [],
+      "example_offers": [],
+      "status": "missing"
+    }
+  ],
+  "covered_skills": [],
+  "missing_skills": [
+    {
+      "referential_id": "MANUAL_1",
+      "block": "BLOC_1",
+      "block_name": "Bloc 1",
+      "activity": "A1.1",
+      "code": "MANUAL_1",
+      "label": "Modélisation prédictive",
+      "official_description": "Modélisation prédictive",
+      "normalized_label": "Modélisation prédictive",
+      "category": "",
+      "subcategory": "",
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "technical_keywords": [],
       "source_page": 2,
       "offer_count": 0,
@@ -6536,6 +6612,7 @@
       "evidence_examples": [],
       "example_offers": [],
       "status": "missing"
+<<<<<<< HEAD
     },
     {
       "referential_id": "B1-A1-C2",
@@ -7246,10 +7323,13 @@
       "evidence_examples": [],
       "example_offers": [],
       "status": "missing"
+=======
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
     }
   ],
   "low_demand_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "B2-A1-C4",
       "block": "B2",
       "block_name": "Bloc 2",
@@ -7570,6 +7650,20 @@
       "subcategory": "Conformité",
       "technical_keywords": [],
       "source_page": 14,
+=======
+      "referential_id": "MANUAL_1",
+      "block": "BLOC_1",
+      "block_name": "Bloc 1",
+      "activity": "A1.1",
+      "code": "MANUAL_1",
+      "label": "Modélisation prédictive",
+      "official_description": "Modélisation prédictive",
+      "normalized_label": "Modélisation prédictive",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "offer_count": 0,
       "weighted_score": 0.0,
       "share_percent": 0.0,
@@ -7698,6 +7792,7 @@
         "Ingénieur en intelligence artificielle H/F (H/F)",
         "Ingénieur IA - Alternance - H/F/X (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+<<<<<<< HEAD
       ],
       "status": "unmapped"
     },
@@ -8784,12 +8879,13 @@
       ],
       "example_offers": [
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+=======
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       ],
       "status": "unmapped"
-    }
-  ],
-  "common_skills": [
+    },
     {
+<<<<<<< HEAD
       "referential_id": "B5B-A5-C2",
       "block": "B5B",
       "block_name": "Bloc 5B",
@@ -8823,6 +8919,186 @@
       "match_methods": {
         "exact": 1,
         "alias": 1
+=======
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Python",
+      "official_description": "",
+      "normalized_label": "Python",
+      "category": "analyse des besoins métiers",
+      "subcategory": "Python",
+      "technical_keywords": [
+        "Python",
+        "AWS",
+        "Azure",
+        "GCP",
+        "LLM",
+        "RAG",
+        "LangChain",
+        "LlamaIndex",
+        "GPT",
+        "Git"
+      ],
+      "source_page": 0,
+      "offer_count": 9,
+      "weighted_score": 5.756900000000001,
+      "share_percent": 36.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Python",
+        "Architecte intelligence artificielle (H/F) Description du poste : En tant qu'organisateur de forums de recrutement, Talents Handicap accompagne de très nombreuses entreprises & organisations en France dans leurs recrutements de collaborateurs en situation de handicap. Participant actuellement à l'un de nos forums. L'entreprise Sopra Steria recherche actuellement des profils : Description de l'entreprise Sopra Steria , acteur majeur de la Tech en Europe, avec 51000 collaborateurs dans près de 30 pays, est reconnu pour ses activités de conseil, de services et solutions numériques. Il aide ses clients à mener leur transformation digitale et à obtenir des bénéfices concrets et durables. Le Groupe apporte une réponse globale aux enjeux de compétitivité des grandes entreprises et organisations, en combinant une connaissance approfondie des secteurs d'activité et des technologies à une approche collaborative. Sopra Steria place l'humain au cœur de son action et s'engage auprès de ses clients à tirer le meilleur parti du numérique pour construire un avenir positif. En 2025, le Groupe a réalisé un chiffre d'affaires de 5,6 milliards d'euros. Description du poste Envie de travailler sur les modèles IA les plus avancés ? Nous recrutons des profils passionnés par l'IA générative et les architectures modernes, capables de concevoir des solutions innovantes autour des LLM (Large Language Models), notamment issus de l'écosystème Anthropic (Claude Chez nous, vous interviendrez sur des projets à fort impact dans les secteurs banque / finance , tout en évoluant dans un environnement technologique exigeant et en constante évolution. Votre mission En tant qu'AI Engineer / Consultant IA, vous serez au cœur de la conception et du déploiement de solutions basées sur les modèles de nouvelle génération Concevoir et déployer des solutions IA intégrées aux chaînes de production * Exploiter des modèles type Claude / GPT / open-source * Développer des agents autonomes, pipelines RAG et systèmes multi-agents * Participer à la rédaction de spécifications fonctionnelles et techniques * Optimiser les performances des modèles (prompt engineering, fine-tuning, évaluation) * Assurer l'industrialisation (MLOps / LLMOps) Qualifications Compétences techniques***Expérience en développement ( Python obligatoire Bonne maîtrise des frameworks IA LangChain / LlamaIndex / Hugging Face / APIs Anthropic * Connaissance des architectures RAG, embeddings, agents, orchestration * Sensibilité aux modèles Anthropic / Claude fortement appréciée * Expérience cloud (Azure, AWS ou GCP) Contexte métier***Une expérience en banque / finance / assurance est un plus * Appétence pour les environnements réglementés et complexes Soft skills***Esprit d'analyse et capacité à vulgariser des sujets complexes * Curiosité forte sur les dernières avancées IA * Autonomie et mindset \"builder\" Pourquoi nous rejoindre Projets concrets autour des modèles les plus avancés du marché * Positionnement fort sur les sujets IA & innovation * Environnement ESN : diversité des missions, montée en compétences rapide * Communautés internes IA / partage de knowledge * Forte visibilité client (grands comptes banques / assurance) Informations supplémentaires * Un accord télétravail pour télétravailler jusqu'à 2 jours par semaine selon vos missions. * Un package avantages intéressant : une mutuelle, un CSE, des titres restaurants, un accord d'intéressement, des primes vacances et cooptation. * Des opportunités de carrières multiples : plus de 30 familles de métiers, autant de passerelles à imaginer ensemble. * Plusieurs centaines de formations accessibles en toute autonomie avec Sopra Steria Academy. * La possibilité de s'engager auprès d'une association grâce à notre plateforme d'engagement citoyen. * L'opportunité de rejoindre le collectif Tech'Me UP (formations, conférences, veille, et bien plus encore Employeur inclusif et engagé, notre société œuvre chaque jour pour lutter contre toute forme de discrimination et favoriser un environnement de travail respectueux. C'est pourquoi, attachés à la mixité et à la diversité, nous encourageons toutes les candidatures et tous les profils.***"
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Rédiger un cahier des charges, des spécifications techniques",
+      "official_description": "",
+      "normalized_label": "Rédiger un cahier des charges, des spécifications techniques",
+      "category": "Other",
+      "subcategory": "Rédiger un cahier des charges, des spécifications techniques",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.4911,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Rédiger un cahier des charges, des spécifications techniques"
+      ],
+      "example_offers": [
+        "Software Engineer (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Recueillir et analyser les besoins client",
+      "official_description": "",
+      "normalized_label": "Recueillir et analyser les besoins client",
+      "category": "Other",
+      "subcategory": "Recueillir et analyser les besoins client",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 2,
+      "weighted_score": 1.7731,
+      "share_percent": 8.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Recueillir et analyser les besoins client"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)",
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Gestion de projet",
+      "official_description": "",
+      "normalized_label": "Gestion de projet",
+      "category": "gestion de projet",
+      "subcategory": "Gestion de projet",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 1.6788,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Gestion de projet"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)",
+        "Software Engineer (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir une application web",
+      "official_description": "",
+      "normalized_label": "Concevoir une application web",
+      "category": "Other",
+      "subcategory": "Concevoir une application web",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 2,
+      "weighted_score": 1.6654,
+      "share_percent": 8.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir une application web"
+      ],
+      "example_offers": [
+        "Software Engineer (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Communication",
+      "official_description": "",
+      "normalized_label": "Communication",
+      "category": "visualisation et communication",
+      "subcategory": "Communication",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 1.6476000000000002,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       },
       "evidence_examples": [
         "Vous avez de bonnes bases en développement logiciel : clean code, versioning, CI/CD.",
@@ -8830,13 +9106,20 @@
         "Vous appliquerez les principes DevOps : automatisation des tests et des déploiements dans le cloud avec des pipelines CI/CD et infrastructure-as-code (Terraform), empaquetage des applications dans des conteneurs (Docker), mise en œuvre de facilitateurs pour l'observabilité des données (DBT)."
       ],
       "example_offers": [
+<<<<<<< HEAD
         "Ingénieur IA Générative & Agents IA (H/F)",
         "Chef de projet automatisation IA (H/F)",
         "Software Engineer (H/F)"
+=======
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)",
+        "Senior Product Manager - AI Platform (H/F)",
+        "Alternance Chargé(e) de communication IA - Paris (F/H) (H/F)"
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       ],
-      "status": "covered"
+      "status": "unmapped"
     },
     {
+<<<<<<< HEAD
       "referential_id": "B5B-A5-C1",
       "block": "B5B",
       "block_name": "Bloc 5B",
@@ -9431,10 +9714,993 @@
         "Ingénieur IA Générative & Agents IA (H/F)",
         "Software Engineer (H/F)",
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+=======
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "FastAPI",
+      "official_description": "",
+      "normalized_label": "FastAPI",
+      "category": "MLOps",
+      "subcategory": "FastAPI",
+      "technical_keywords": [
+        "FastAPI"
       ],
-      "status": "covered"
+      "source_page": 0,
+      "offer_count": 2,
+      "weighted_score": 1.3527,
+      "share_percent": 8.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "FastAPI"
+      ],
+      "example_offers": [
+        "Architecte intelligence artificielle (H/F)",
+        "Développeur intelligence artificielle (H/F)"
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Machine Learning",
+      "official_description": "",
+      "normalized_label": "Machine Learning",
+      "category": "Machine Learning",
+      "subcategory": "Machine Learning",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 2,
+      "weighted_score": 1.2985,
+      "share_percent": 8.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Machine Learning"
+      ],
+      "example_offers": [
+        "Chef de projet automatisation IA (H/F)",
+        "Développeur intelligence artificielle (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "#TDFE2026",
+      "official_description": "",
+      "normalized_label": "#TDFE2026",
+      "category": "Other",
+      "subcategory": "#TDFE2026",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9783,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "#TDFE2026"
+      ],
+      "example_offers": [
+        "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Analyser les données d'une étude, d'un projet",
+      "official_description": "",
+      "normalized_label": "Analyser les données d'une étude, d'un projet",
+      "category": "Other",
+      "subcategory": "Analyser les données d'une étude, d'un projet",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Analyser les données d'une étude, d'un projet"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Anglais technique",
+      "official_description": "",
+      "normalized_label": "Anglais technique",
+      "category": "Other",
+      "subcategory": "Anglais technique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Anglais technique"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Automatisation de notes de calcul (Excel VBA)",
+      "official_description": "",
+      "normalized_label": "Automatisation de notes de calcul (Excel VBA)",
+      "category": "Other",
+      "subcategory": "Automatisation de notes de calcul (Excel VBA)",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Automatisation de notes de calcul (Excel VBA)"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Comprendre, interpréter des données et documents techniques",
+      "official_description": "",
+      "normalized_label": "Comprendre, interpréter des données et documents techniques",
+      "category": "Other",
+      "subcategory": "Comprendre, interpréter des données et documents techniques",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Comprendre, interpréter des données et documents techniques"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Création d'outils numériques pour automatisation",
+      "official_description": "",
+      "normalized_label": "Création d'outils numériques pour automatisation",
+      "category": "Other",
+      "subcategory": "Création d'outils numériques pour automatisation",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Création d'outils numériques pour automatisation"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Intelligence artificielle appliqué au génie civil",
+      "official_description": "",
+      "normalized_label": "Intelligence artificielle appliqué au génie civil",
+      "category": "Other",
+      "subcategory": "Intelligence artificielle appliqué au génie civil",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Intelligence artificielle appliqué au génie civil"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Langages de programmation informatique",
+      "official_description": "",
+      "normalized_label": "Langages de programmation informatique",
+      "category": "Other",
+      "subcategory": "Langages de programmation informatique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Langages de programmation informatique"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO)",
+      "official_description": "",
+      "normalized_label": "Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO)",
+      "category": "Other",
+      "subcategory": "Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO)",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO)"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)",
+      "official_description": "",
+      "normalized_label": "Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)",
+      "category": "Other",
+      "subcategory": "Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spéci",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Normes de la construction",
+      "official_description": "",
+      "normalized_label": "Normes de la construction",
+      "category": "Other",
+      "subcategory": "Normes de la construction",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Normes de la construction"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Préparer et animer une réunion, un groupe de travail, un atelier",
+      "official_description": "",
+      "normalized_label": "Préparer et animer une réunion, un groupe de travail, un atelier",
+      "category": "cadrage de projet IA",
+      "subcategory": "Préparer et animer une réunion, un groupe de travail, un atelier",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Préparer et animer une réunion, un groupe de travail, un atelier"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Résistance Des Matériaux (RDM)",
+      "official_description": "",
+      "normalized_label": "Résistance Des Matériaux (RDM)",
+      "category": "Other",
+      "subcategory": "Résistance Des Matériaux (RDM)",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Résistance Des Matériaux (RDM)"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Travaux publics, génie civil",
+      "official_description": "",
+      "normalized_label": "Travaux publics, génie civil",
+      "category": "Other",
+      "subcategory": "Travaux publics, génie civil",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Travaux publics, génie civil"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir et réaliser des éléments graphiques et visuels",
+      "official_description": "",
+      "normalized_label": "Concevoir et réaliser des éléments graphiques et visuels",
+      "category": "Other",
+      "subcategory": "Concevoir et réaliser des éléments graphiques et visuels",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.8257,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir et réaliser des éléments graphiques et visuels"
+      ],
+      "example_offers": [
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir un site web",
+      "official_description": "",
+      "normalized_label": "Concevoir un site web",
+      "category": "Other",
+      "subcategory": "Concevoir un site web",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.8257,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir un site web"
+      ],
+      "example_offers": [
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Déployer, intégrer un logiciel, un système d'informations, une application",
+      "official_description": "",
+      "normalized_label": "Déployer, intégrer un logiciel, un système d'informations, une application",
+      "category": "Other",
+      "subcategory": "Déployer, intégrer un logiciel, un système d'informations, une application",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.8257,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Déployer, intégrer un logiciel, un système d'informations, une application"
+      ],
+      "example_offers": [
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Paramétrer un logiciel, un outil, un système numérique",
+      "official_description": "",
+      "normalized_label": "Paramétrer un logiciel, un outil, un système numérique",
+      "category": "Other",
+      "subcategory": "Paramétrer un logiciel, un outil, un système numérique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.8257,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Paramétrer un logiciel, un outil, un système numérique"
+      ],
+      "example_offers": [
+        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir l'architecture d'un système, d'un réseau",
+      "official_description": "",
+      "normalized_label": "Concevoir l'architecture d'un système, d'un réseau",
+      "category": "Other",
+      "subcategory": "Concevoir l'architecture d'un système, d'un réseau",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.7563,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir l'architecture d'un système, d'un réseau"
+      ],
+      "example_offers": [
+        "Software Engineer (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
+      "official_description": "",
+      "normalized_label": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
+      "category": "Other",
+      "subcategory": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Analyser les besoins des clients pour proposer des solutions d'IA adaptées"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "official_description": "",
+      "normalized_label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "category": "Other",
+      "subcategory": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Analyser les tendances du marché pour anticiper les évolutions de l'IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
+      "official_description": "",
+      "normalized_label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
+      "category": "Other",
+      "subcategory": "Assurer la maintenance et l'actualisation des systèmes d'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Assurer la maintenance et l'actualisation des systèmes d'IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
+      "official_description": "",
+      "normalized_label": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
+      "category": "Other",
+      "subcategory": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Communiquer clairement les concepts d'IA aux parties prenantes non techniques"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir des algorithmes d'apprentissage automatique",
+      "official_description": "",
+      "normalized_label": "Concevoir des algorithmes d'apprentissage automatique",
+      "category": "Machine Learning",
+      "subcategory": "Concevoir des algorithmes d'apprentissage automatique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développement de produits basés sur l'IA",
+      "official_description": "",
+      "normalized_label": "Développement de produits basés sur l'IA",
+      "category": "Other",
+      "subcategory": "Développement de produits basés sur l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développement de produits basés sur l'IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Evaluation de modèles d'IA",
+      "official_description": "",
+      "normalized_label": "Evaluation de modèles d'IA",
+      "category": "Other",
+      "subcategory": "Evaluation de modèles d'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Evaluation de modèles d'IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Gestion de projets IA",
+      "official_description": "",
+      "normalized_label": "Gestion de projets IA",
+      "category": "gestion de projet",
+      "subcategory": "Gestion de projets IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Gestion de projets IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Gérer les risques associés aux technologies d'IA",
+      "official_description": "",
+      "normalized_label": "Gérer les risques associés aux technologies d'IA",
+      "category": "Other",
+      "subcategory": "Gérer les risques associés aux technologies d'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Gérer les risques associés aux technologies d'IA"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Implémenter des solutions de cybersécurité adaptées",
+      "official_description": "",
+      "normalized_label": "Implémenter des solutions de cybersécurité adaptées",
+      "category": "RGPD et sécurité",
+      "subcategory": "Sécurité",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Implémenter des solutions de cybersécurité adaptées"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Intégration de systèmes d'intelligence artificielle",
+      "official_description": "",
+      "normalized_label": "Intégration de systèmes d'intelligence artificielle",
+      "category": "Other",
+      "subcategory": "Intégration de systèmes d'intelligence artificielle",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Intégration de systèmes d'intelligence artificielle"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget",
+      "official_description": "",
+      "normalized_label": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget",
+      "category": "Other",
+      "subcategory": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budge",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Traiter les données de manière sécurisée et conforme",
+      "official_description": "",
+      "normalized_label": "Traiter les données de manière sécurisée et conforme",
+      "category": "Other",
+      "subcategory": "Traiter les données de manière sécurisée et conforme",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.625,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Traiter les données de manière sécurisée et conforme"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "API REST",
+      "official_description": "",
+      "normalized_label": "API REST",
+      "category": "Other",
+      "subcategory": "API REST",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.4927,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "API REST"
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "unmapped"
     }
   ],
+  "common_skills": [],
   "example_offers": [
     {
       "offer_id": "210PBYW",
@@ -9460,6 +10726,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-02T09:56:29.249Z",
+<<<<<<< HEAD
       "matches": [
         "Développer des modèles d’apprentissage profond",
         "Développer un modèle d’apprentissage",
@@ -9468,6 +10735,8 @@
         "Utiliser des langages de modélisation formels",
         "Élaborer différents scénarios"
       ],
+=======
+      "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -9476,6 +10745,56 @@
       ]
     },
     {
+      "offer_id": "208QPCF",
+      "title": "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+      "location_label": "75 - Paris (Dept.)",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-05-22T11:10:31.866Z",
+      "matches": [],
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA",
+        "API REST"
+      ]
+    },
+    {
+      "offer_id": "210GJZN",
+      "title": "Ingénieur IA Générative & Agents IA (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-06-24T11:39:13.539Z",
+      "matches": [],
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA",
+        "Analyse de données"
+      ]
+    },
+    {
+      "offer_id": "210RVVH",
+      "title": "DEVELOPPEUR IA ET AUTOMATISATION (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-03T10:14:53.416Z",
+      "matches": [],
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA",
+        "Analyse de données"
+      ]
+    },
+    {
+<<<<<<< HEAD
       "offer_id": "208QPCF",
       "title": "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
       "location_label": "75 - Paris (Dept.)",
@@ -9493,10 +10812,21 @@
         "Utiliser des langages de modélisation formels",
         "Élaborer différents scénarios"
       ],
+=======
+      "offer_id": "210PRHT",
+      "title": "Chef de projet automatisation IA (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-01T14:38:16.903Z",
+      "matches": [],
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
         "Optimiser les performances des systèmes d'IA",
+<<<<<<< HEAD
         "API REST"
       ]
     },
@@ -9528,10 +10858,35 @@
     {
       "offer_id": "210RVVH",
       "title": "DEVELOPPEUR IA ET AUTOMATISATION (H/F)",
+=======
+        "Analyse de données"
+      ]
+    },
+    {
+      "offer_id": "208HJGN",
+      "title": "Expert IA (H/F)",
+      "location_label": "75 - PARIS 12",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-05-15T10:41:57.967Z",
+      "matches": [],
+      "unmatched": [
+        "Développement de produits basés sur l'IA",
+        "Evaluation de modèles d'IA",
+        "Gestion de projets IA",
+        "Intégration de systèmes d'intelligence artificielle"
+      ]
+    },
+    {
+      "offer_id": "210THCF",
+      "title": "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)",
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "location_label": "75 - PARIS",
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+<<<<<<< HEAD
       "date": "2026-07-03T10:14:53.416Z",
       "matches": [
         "Concevoir des"
@@ -9595,6 +10950,8 @@
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+=======
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
       "date": "2026-07-06T09:51:26.387Z",
       "matches": [],
       "unmatched": [

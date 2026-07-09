@@ -1,4 +1,5 @@
 type,label,block,category,subcategory,offer_count,weighted_score
+<<<<<<< HEAD
 missing,"Recueillir les besoins métiers (optimisation du CRM, ciblage des campagnes marketing, ...)",B1,cadrage de projet IA,Analyse des besoins métiers,0,0.0
 missing,Structurer le processus d'identification des exigences métier,B1,analyse des besoins métiers,Structurer le processus d'identification des exigences métier,0,0.0
 missing,Effectuer une veille des outils et des tendances émergentes,B1,Other,Effectuer une veille des outils et des tendances émergentes,0,0.0
@@ -32,6 +33,9 @@ missing,Mesurer les écarts/non conformités,B4,gouvernance et éthique,Conformi
 missing,Mesurer les impacts des données analysées,B4,Other,Mesurer les impacts des données analysées,0,0.0
 missing,Concevoir des démonstrations interactives ou des prototypes,B4,Other,Concevoir des démonstrations interactives ou des prototypes,0,0.0
 missing,Collaborer avec les spécialistes,B4,Other,Collaborer avec les spécialistes,0,0.0
+=======
+missing,Modélisation prédictive,BLOC_1,,,0,0.0
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.5083
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.5083
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.5083
@@ -42,6 +46,11 @@ unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser
 unmapped,Gestion de projet,,gestion de projet,Gestion de projet,3,1.6788
 unmapped,Concevoir une application web,,Other,Concevoir une application web,2,1.6654
 unmapped,Communication,,visualisation et communication,Communication,3,1.6476
+<<<<<<< HEAD
+=======
+unmapped,FastAPI,,MLOps,FastAPI,2,1.3527
+unmapped,Machine Learning,,Machine Learning,Machine Learning,2,1.2985
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
 unmapped,#TDFE2026,,Other,#TDFE2026,1,0.9783
 unmapped,"Analyser les données d'une étude, d'un projet",,Other,"Analyser les données d'une étude, d'un projet",1,0.9474
 unmapped,Anglais technique,,Other,Anglais technique,1,0.9474
@@ -65,6 +74,10 @@ unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adapt
 unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.625
 unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.625
 unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.625
+<<<<<<< HEAD
+=======
+unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.625
+>>>>>>> 67a4c055dbac5cb37a65a6e3e45c3db4a5d1ed6d
 unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.625
 unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.625
 unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.625

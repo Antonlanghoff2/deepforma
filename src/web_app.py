@@ -1669,7 +1669,7 @@ def create_app(
     @app.route('/admin/referential/<referential_id>/delete', methods=['POST'])
     @require_admin_auth
     def admin_referential_delete(referential_id: str):
-        option = get_referential_option(referential_id)
+        option = get_referential_option(referential_id, include_inactive=True)
         if option is None or not option.path:
             return redirect(url_for('admin_ai_certification_market_comparison', error='Référentiel introuvable.'))
         path = Path(option.path)
@@ -1702,6 +1702,7 @@ def create_app(
         job_titles_default = 'ingénieur intelligence artificielle,AI Engineer,Machine Learning Engineer,Data Scientist,MLOps Engineer,ingénieur Machine Learning,ingénieur NLP,ingénieur Deep Learning,ingénieur IA générative,Data Engineer IA,chef de projet IA'
         rome_codes_default = 'M1805'
         referential_options = list_available_referentials()
+        all_referential_options = list_available_referentials(include_inactive=True)
         referential_id = clean_text(request.values.get('referential_id') or '')
         territory = clean_text(request.values.get('territory') or '75056')
         commune = clean_text(request.values.get('commune') or '') or None
@@ -1794,6 +1795,7 @@ def create_app(
             error=error,
             referential_id=referential_id,
             referential_options=referential_options,
+            all_referential_options=all_referential_options,
             territory=territory,
             commune=commune or '',
             departement=departement or '',

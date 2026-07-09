@@ -78,7 +78,7 @@
 
     <section class="card">
       <h2>Gestion des référentiels</h2>
-      {% if referential_options %}
+      {% if all_referential_options %}
       <div style="margin-bottom:1rem;">
         <table style="width:100%;border-collapse:collapse;">
           <thead>
@@ -90,7 +90,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for opt in referential_options %}
+            {% for opt in all_referential_options %}
             <tr>
               <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.label }}</td>
               <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.skill_count }}</td>
@@ -106,7 +106,7 @@
         </table>
       </div>
       {% else %}
-      <p style="margin-bottom:1rem;">Aucun référentiel disponible.</p>
+      <p style="margin-bottom:1rem;">Aucun fichier référentiel trouvé.</p>
       {% endif %}
       <form method="post" action="{{ url_for('admin_referential_upload') }}" enctype="multipart/form-data" class="form-grid" style="grid-template-columns:1fr auto;">
         <label class="field" style="margin:0;">
