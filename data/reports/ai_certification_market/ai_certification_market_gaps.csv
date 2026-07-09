@@ -1,4 +1,5 @@
 type,label,block,category,subcategory,offer_count,weighted_score
+<<<<<<< HEAD
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.5083
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.5083
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.5083
@@ -37,3 +38,28 @@ unmapped,Implémenter des solutions de cybersécurité adaptées,,RGPD et sécur
 unmapped,Intégration de systèmes d'intelligence artificielle,,Other,Intégration de systèmes d'intelligence artificielle,1,0.625
 unmapped,Planifier des projets d'IA en tenant compte des contraintes de temps et de budget,,Other,Planifier des projets d'IA en tenant compte des contraintes de temps et de budge,1,0.625
 unmapped,Traiter les données de manière sécurisée et conforme,,Other,Traiter les données de manière sécurisée et conforme,1,0.625
+=======
+missing,Compétences extraites du référentiel,,,,0,0.0
+missing,Définir ou redéfinir la mission,,skill,,0,0.0
+missing,Pérennité Définir les objectifs à court,,skill,,0,0.0
+missing,Décliner une stratégie de moyens (RH,,soft_skill,,0,0.0
+missing,Présenter la stratégie à la Direction Générale,,soft_skill,,0,0.0
+missing,Ou la BU en les associant collectivement,,skill,,0,0.0
+missing,Mener un audit de l’organisation en répertoriant l’existant,,skill,,0,0.0
+missing,L’implémentation de nouvelles technologies telles que l'automatisation,,soft_skill,,0,0.0
+missing,Nouvelles technologies telles que l'automatisation,,skill,,0,0.0
+missing,Et au respect des dispositions légales,,skill,,0,0.0
+missing,De la contractualisation avec des prestataires,,skill,,0,0.0
+missing,S approvisionnements et ainsi améliorer le niveau de satisfaction client,,skill,,0,0.0
+missing,La politique de recrutement,,soft_skill,,0,0.0
+missing,Accompagner l’intégration des collaborateurs,,soft_skill,,0,0.0
+missing,Transformers,,method,,0,0.0
+missing,Auprès des tiers (clients,,soft_skill,,0,0.0
+missing,Les situations de crise en mobilisant une cellule dédiée,,skill,,0,0.0
+unmapped,Proposer des améliorations pour optimiser les processus,,Other,Proposer des améliorations pour optimiser les processus,2,1.4704
+unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.4704
+unmapped,"Elaborer, suivre et piloter un budget",,Other,"Elaborer, suivre et piloter un budget",1,0.35
+unmapped,P&L,,Other,P&L,1,0.35
+unmapped,Présenter un budget,,Other,Présenter un budget,1,0.35
+unmapped,Superviser la gestion financière,,Other,Superviser la gestion financière,1,0.35
+>>>>>>> 8a986cc039bffd17134dd8ececa80d197182535b

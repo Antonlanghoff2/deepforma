@@ -1658,8 +1658,13 @@ def create_app(
             return redirect(url_for('admin_ai_certification_market_comparison', error='Le fichier doit contenir un objet JSON racine.'))
         has_skills = 'skills' in payload and isinstance(payload['skills'], list)
         has_competencies = 'competencies' in payload and isinstance(payload['competencies'], list)
-        if not has_skills and not has_competencies:
-            return redirect(url_for('admin_ai_certification_market_comparison', error='Le fichier doit contenir une clé « skills » ou « competencies ».'))
+        has_derived = 'derived_skills' in payload and isinstance(payload['derived_skills'], list)
+        has_children_keys = any(
+            key in payload and isinstance(payload[key], list)
+            for key in ('subskills', 'sous_competences', 'sous_compétences', 'detected_skills', 'compétences')
+        )
+        if not has_skills and not has_competencies and not has_derived and not has_children_keys:
+            return redirect(url_for('admin_ai_certification_market_comparison', error='Le fichier doit contenir une clé « skills », « competencies », « derived_skills » ou une clé de sous-compétences reconnue.'))
         dest = DEFAULT_REFERENTIALS_DIR / file.filename
         if dest.exists():
             return redirect(url_for('admin_ai_certification_market_comparison', error=f'Un fichier nommé « {file.filename} » existe déjà.'))

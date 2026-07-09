@@ -311,6 +311,12 @@ if ignored > 0:
 test-referential-import:
 	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
 
+migrate-referentials-schema:
+	$(PYTHON) scripts/migrate_referentials_to_canonical_schema.py --input-dir "data/referentials" --output-report "reports/referential_schema_migration.json"
+
+check-referentials-schema:
+	$(PYTHON) scripts/migrate_referentials_to_canonical_schema.py --input-dir "data/referentials" --check-only
+
 deploy-referential-models:
 	$(PYTHON) scripts/deploy_referential_models.py --source-root "$(REFERENTIAL_SECTION_MODEL_OUTPUT)/.." --target-root "$(DEPLOY_ROOT)/models"
 DEPLOY_SCRIPTS := scripts/deploy_ubuntu.sh scripts/update_production.sh scripts/rollback_production.sh

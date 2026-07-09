@@ -20,7 +20,8 @@
             <option value="">Sélectionner un référentiel</option>
             {% for opt in referential_options %}
             <option value="{{ opt.id }}"{% if referential_id == opt.id %} selected{% endif %}{% if not opt.is_selectable %} disabled{% endif %}>
-              {{ opt.label }} — {{ opt.skill_count }} compétence{% if opt.skill_count != 1 %}s{% endif %}
+              {{ opt.label }} — {{ opt.exploitable_skills_count }} élément{% if opt.exploitable_skills_count != 1 %}s{% endif %} exploitable{% if opt.exploitable_skills_count != 1 %}s{% endif %}
+              {%- if opt.official_skills_count or opt.subskills_count %} ({{ opt.official_skills_count }} officielle{% if opt.official_skills_count != 1 %}s{% endif %}, {{ opt.subskills_count }} sous-compétence{% if opt.subskills_count != 1 %}s{% endif %}){% endif %}
               {%- if not opt.is_selectable %} — {% if opt.status == 'empty' %}incomplet{% elif opt.status == 'invalid' %}invalide{% else %}{{ opt.status }}{% endif %}{% endif %}
             </option>
             {% endfor %}
@@ -100,7 +101,12 @@
                 {{ opt.label }}
                 {% if opt.source == 'imported_pdf' %}<small style="color:#6b7280;"> (importé)</small>{% endif %}
               </td>
-              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">{{ opt.skill_count }}</td>
+              <td style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
+                {{ opt.exploitable_skills_count }}
+                {% if opt.official_skills_count or opt.subskills_count %}
+                <small style="display:block;color:#6b7280;font-size:0.75rem;">{{ opt.official_skills_count }} off. · {{ opt.subskills_count }} sous-comp.</small>
+                {% endif %}
+              </td>
               <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
                 {% if opt.is_selectable %}
                 <span style="color:#059669;">exploitable</span>
