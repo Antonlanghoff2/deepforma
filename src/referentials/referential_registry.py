@@ -96,6 +96,7 @@ def _build_option_from_json(path: Path) -> ReferentialOption | None:
     title = (
         clean_text(payload.get('title'))
         or clean_text(payload.get('metadata', {}).get('title', ''))
+        or clean_text(payload.get('document', {}).get('title', ''))
         or clean_text(payload.get('document', {}).get('file_name', ''))
         or path.stem
     )
