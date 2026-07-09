@@ -1,0 +1,189 @@
+from __future__ import annotations
+
+import json
+import logging
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+from common.text import clean_text
+
+LOGGER = logging.getLogger(__name__)
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_REFERENTIALS_DIR = PROJECT_ROOT / 'data' / 'referentials'
+DEFAULT_INDEX_PATH = DEFAULT_REFERENTIALS_DIR / 'index.json'
+
+
+@dataclass(frozen=True)
+class ReferentialOption:
+    id: str
+    label: str
+    type: str
+    path: str | None
+    record_id: str | None
+    status: str
+    source: str
+    skill_count: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            'id': self.id,
+            'label': self.label,
+            'type': self.type,
+            'path': self.path,
+            'record_id': self.record_id,
+            'status': self.status,
+            'source': self.source,
+            'skill_count': self.skill_count,
+        }
+
+
+EXCLUDED_PATTERNS = ('.metadata.', 'index.json')
+
+
+def _json_paths(directory: Path) -> list[Path]:
+    if not directory.is_dir():
+        return []
+    paths = []
+    for p in directory.glob('*.json'):
+        name = p.name
+        if any(pattern in name for pattern in EXCLUDED_PATTERNS):
+            continue
+        paths.append(p)
+    return sorted(paths, key=lambda p: p.stat().st_mtime, reverse=True)
+
+
+def _load_referential_metadata(path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding='utf-8'))
+        if not isinstance(payload, dict):
+            return {}
+        return payload
+    except Exception as exc:
+        LOGGER.warning('Impossible de lire le référentiel %s : %s', path, exc)
+        return {}
+
+
+def _skill_count(payload: dict[str, Any]) -> int:
+    skills = payload.get('skills')
+    if isinstance(skills, list):
+        return len(skills)
+    competencies = payload.get('competencies')
+    if isinstance(competencies, list):
+        return len(competencies)
+    criteria = payload.get('criteria')
+    if isinstance(criteria, list):
+        return len(criteria)
+    return 0
+
+
+def _build_option_from_json(path: Path) -> ReferentialOption | None:
+    payload = _load_referential_metadata(path)
+    if not payload:
+        return ReferentialOption(
+            id=path.stem,
+            label=path.stem,
+            type='unknown',
+            path=str(path),
+            record_id=None,
+            status='invalid',
+            source='json_file',
+            skill_count=0,
+        )
+
+    referential_id = clean_text(payload.get('referential_id') or path.stem)
+    title = (
+        clean_text(payload.get('title'))
+        or clean_text(payload.get('metadata', {}).get('title', ''))
+        or clean_text(payload.get('document', {}).get('file_name', ''))
+        or path.stem
+    )
+    skill_count = _skill_count(payload)
+    ref_type = clean_text(payload.get('type') or payload.get('metadata', {}).get('type', 'certification')) or 'certification'
+    doc = payload.get('document', {})
+    source_pdf = clean_text(doc.get('source_path', '') if isinstance(doc, dict) else '')
+    record_id = clean_text(doc.get('sha256', '') if isinstance(doc, dict) else '') or None
+    if not record_id and isinstance(doc, dict):
+        record_id = clean_text(doc.get('id', '')) or None
+
+    status = 'active' if skill_count > 0 else 'empty'
+
+    return ReferentialOption(
+        id=referential_id,
+        label=title,
+        type=ref_type,
+        path=str(path),
+        record_id=record_id,
+        status=status,
+        source='imported_pdf' if 'imported' in str(path) else 'json_file',
+        skill_count=skill_count,
+    )
+
+
+def _resolve_path(relative_or_absolute: str) -> Path:
+    candidate = Path(relative_or_absolute)
+    if candidate.is_absolute():
+        return candidate
+    return PROJECT_ROOT / candidate
+
+
+def _usable_for_comparison(option: ReferentialOption) -> bool:
+    return option.status == 'active' and option.skill_count > 0
+
+
+def list_available_referentials(*, referentials_dir: str | Path | None = None) -> list[ReferentialOption]:
+    directory = Path(referentials_dir or DEFAULT_REFERENTIALS_DIR)
+    if not directory.is_dir():
+        LOGGER.warning('Répertoire des référentiels introuvable : %s', directory)
+        return []
+
+    seen_ids: set[str] = set()
+    result: list[ReferentialOption] = []
+
+    index_path = directory / 'index.json'
+    if index_path.is_file():
+        try:
+            entries = json.loads(index_path.read_text(encoding='utf-8'))
+            if isinstance(entries, list):
+                for entry in entries:
+                    raw_path = entry.get('path', '')
+                    if not raw_path:
+                        continue
+                    resolved = _resolve_path(raw_path)
+                    if not resolved.is_file():
+                        LOGGER.warning('Référentiel indexé introuvable : %s', resolved)
+                        continue
+                    option = _build_option_from_json(resolved)
+                    if option and option.id not in seen_ids and _usable_for_comparison(option):
+                        seen_ids.add(option.id)
+                        result.append(option)
+        except Exception as exc:
+            LOGGER.warning('Erreur de lecture de %s : %s', index_path, exc)
+
+    for path in _json_paths(directory):
+        if path.name == 'index.json':
+            continue
+        option = _build_option_from_json(path)
+        if option and option.id not in seen_ids and _usable_for_comparison(option):
+            seen_ids.add(option.id)
+            result.append(option)
+
+    return result
+
+
+def get_referential_option(referential_id: str, *, referentials_dir: str | Path | None = None) -> ReferentialOption | None:
+    options = list_available_referentials(referentials_dir=referentials_dir)
+    for option in options:
+        if option.id == referential_id or option.path and Path(option.path).stem == referential_id:
+            return option
+        if option.record_id == referential_id:
+            return option
+    return None
+
+
+def resolve_referential_path(referential_id: str, *, referentials_dir: str | Path | None = None) -> str | None:
+    option = get_referential_option(referential_id, referentials_dir=referentials_dir)
+    if option is None:
+        return None
+    return option.path

@@ -46,6 +46,7 @@ from referential_import.pdf_loader import load_pdf_document
 from referentials.rome_referential import RomeService, validate_rome_code, validate_rome_codes
 from skills.open_extractor import extract_skills as open_extract_skills
 from services.analysis_result_builder import build_analysis_result
+from referentials.referential_registry import list_available_referentials, get_referential_option
 from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
 from services.market_context import build_market_context, fetch_offers_by_rome, fetch_offers_by_rome_codes, serialize_record
 from services.recommendation_service import RecommendationService
@@ -1656,6 +1657,8 @@ def create_app(
 
         job_titles_default = 'ingénieur intelligence artificielle,AI Engineer,Machine Learning Engineer,Data Scientist,MLOps Engineer,ingénieur Machine Learning,ingénieur NLP,ingénieur Deep Learning,ingénieur IA générative,Data Engineer IA,chef de projet IA'
         rome_codes_default = 'M1805'
+        referential_options = list_available_referentials()
+        referential_id = clean_text(request.values.get('referential_id') or '')
         territory = clean_text(request.values.get('territory') or '75056')
         commune = clean_text(request.values.get('commune') or '') or None
         departement = clean_text(request.values.get('departement') or '') or None
@@ -1680,44 +1683,67 @@ def create_app(
         source_queries: list[str] = []
         error = None
         if request.method == 'POST':
-            try:
-                client = get_market_client()
-                offers, source_queries = collect_market_offers(
-                    client,
-                    commune=commune,
-                    departement=departement,
-                    distance_km=radius_km,
-                    date_min=date_min,
-                    date_max=date_max,
-                    job_titles=job_titles,
-                    rome_codes=rome_codes,
-                    max_pages=max_pages,
-                    max_offers=max_offers,
-                    page_size=page_size,
-                )
-                comparator: CertificationMarketComparator = app.extensions['certification_market_comparator']
-                territory_label = ' / '.join([part for part in [commune, departement, territory] if part])
-                report = comparator.compare(
-                    offers,
-                    territory=territory_label,
-                    radius_km=radius_km,
-                    date_min=date_min,
-                    date_max=date_max,
-                    job_titles=job_titles,
-                    rome_codes=rome_codes,
-                    source_queries=source_queries,
-                )
-                output_paths = write_comparison_outputs(report, PROJECT_ROOT / 'data' / 'reports' / 'ai_certification_market')
-            except ValueError as exc:
-                error = str(exc)
-            except RuntimeError as exc:
-                error = str(exc)
+            if not referential_id:
+                error = 'Veuillez sélectionner un référentiel à comparer.'
+            elif not referential_options:
+                error = 'Aucun référentiel disponible. Importez ou générez un référentiel avant de lancer une comparaison.'
+            else:
+                selected = get_referential_option(referential_id)
+                if selected is None:
+                    error = f'Référentiel « {referential_id} » introuvable.'
+                elif selected.status == 'invalid':
+                    error = f'Référentiel « {selected.label} » invalide ou corrompu.'
+                elif selected.status == 'empty':
+                    error = f'Référentiel « {selected.label} » ne contient aucune compétence.'
+                elif not selected.path:
+                    error = f'Chemin du référentiel « {selected.label} » introuvable.'
+                else:
+                    resolved_path = Path(selected.path)
+                    if not resolved_path.is_file():
+                        error = f'Fichier du référentiel « {selected.label} » introuvable : {resolved_path}'
+            if not error:
+                try:
+                    client = get_market_client()
+                    offers, source_queries = collect_market_offers(
+                        client,
+                        commune=commune,
+                        departement=departement,
+                        distance_km=radius_km,
+                        date_min=date_min,
+                        date_max=date_max,
+                        job_titles=job_titles,
+                        rome_codes=rome_codes,
+                        max_pages=max_pages,
+                        max_offers=max_offers,
+                        page_size=page_size,
+                    )
+                    territory_label = ' / '.join([part for part in [commune, departement, territory] if part])
+                    comparator = CertificationMarketComparator(
+                        referential_path=resolved_path,
+                    )
+                    report = comparator.compare(
+                        offers,
+                        territory=territory_label,
+                        radius_km=radius_km,
+                        date_min=date_min,
+                        date_max=date_max,
+                        job_titles=job_titles,
+                        rome_codes=rome_codes,
+                        source_queries=source_queries,
+                    )
+                    output_paths = write_comparison_outputs(report, PROJECT_ROOT / 'data' / 'reports' / 'ai_certification_market')
+                except ValueError as exc:
+                    error = str(exc)
+                except RuntimeError as exc:
+                    error = str(exc)
         return render_template(
             'admin_ai_certification_market_comparison.html',
             report=report.to_dict() if report else None,
             report_obj=report,
             output_paths=output_paths,
             error=error,
+            referential_id=referential_id,
+            referential_options=referential_options,
             territory=territory,
             commune=commune or '',
             departement=departement or '',
