@@ -10,7 +10,6 @@ missing,"Mesurer la performance de la stratégie de prospection en mettant en pl
 missing,"Valoriser le portefeuille clients actuel en réalisant une cartographie des clients actuels en s’appuyant sur les données du CRM pour déterminer les priorités commerciales et mettre en place des actions de fidélisation destinées aux clients à forte valeur ajoutée afin de développer les ventes actuelles. Mise en situation professionnelle simulée individuelle écrite et orale. Sur la base d’un cahier des charges fictif et de documents annexes fournis par le certificateur, le candidat rédige une réponse complète à une demande d’appel d’offre.",BLOC_2,,,0,0.0
 missing,"Communiquer régulièrement de façon individualisée avec les clients en adaptant le message aux spécificités des canaux et supports choisis (physique, à distance, numérique, etc.) pour créer une expérience client personnalisée, augmenter le CLV et réduire le taux d’attrition.",BLOC_2,,,0,0.0
 missing,"Chiffrer, en concertation avec la hiérarchie et l’équipe-métier dédiée, les propositions aux appels d’offres sélectionnées en amont, pour rédiger les réponses et constituer un dossier conforme au cahier des charges du donneur d’ordre. Fidélisation des clients existants : • • • Gestion du portefeuille clients existant Suivi de la clientèle à forte valeur ajoutée (grand compte ou client clé) Augmentation de la Customer Lifetime Value (CLV) et réduction du taux d’attrition",BLOC_2,,,0,0.0
-missing,"Comprendre les besoins, les enjeux et les acteurs impliqués dans le projet d’achat du prospect en utilisant les techniques d’écoute active, en prenant en compte les situations de handicap et en instaurant un climat de confiance pour coconstruire (avec le prospect et l’équipe) une offre adaptée au projet B2B ou B2C.",BLOC_2,,,0,0.0
 missing,"Négocier, en français et/ou en anglais, avec les différentes parties concernées, les solutions techniques, financières et/ou logistiques complexes en s’appuyant sur les éléments de l’USP préparés en amont pour traiter de façon inclusive les objections des différents interlocuteurs dans une position de conseil afin de trouver une solution",BLOC_2,,,0,0.0
 missing,"Conclure la négociation par une transaction respectueuse des intérêts des deux parties et du triptyque (QCD) Qualité- Coût-Délai, en utilisant une technique de closing adaptée à la situation pour obtenir un accord définitif de la part du client et des recommandations actives de clients potentiels.",BLOC_2,,,0,0.0
 missing,Informer les équipes internes et externes sur l’importance des affaires en cours et sur les stratégies à employer en expliquant et en organisant la contribution individuelle de chacun pour atteindre les objectifs fixés dans le respect des engagements sociaux et sociétaux de l’entreprise et des réglementations afin de fédérer autour des défis (objectifs/résultats attendus).,BLOC_3,,,0,0.0
@@ -25,47 +24,42 @@ missing,"Elaborer un processus de gestion des litiges (client, fournisseurs, par
 missing,Concevoir des outils de pilotage et de suivi (tableaux de bord) en choisissant les indicateurs de la performance intégrant les notions de Qualité-coût/rentabilité-délai et les engagements sociaux et sociétaux pour vérifier l’harmonisation de la stratégie et des activités opérationnelles mises en œuvre et leur efficacité.,BLOC_4,,,0,0.0
 missing,"Synthétiser, en utilisant des outils de bureautique, les données des résultats et les conditions dans lesquelles ils ont été réalisés en rédigeant un rapport d’activité pour évaluer la rentabilité de son activité et prendre des décisions éclairées permettant d’améliorer la croissance. fiscales, réglementaires et juridiques. Le groupe étudie les documents fournis en annexe, corrige les erreurs et identifie les manquants. Partie 3 : compte-rendu d’activité comprenant : • La conception des outils de pilotage ; • L’analyse des résultats économiques et sociaux ; • Une synthèse des résultats au sein d’un reporting ; • Une proposition d’optimisation des écarts. plainte client), collecte des données utiles au traitement de la plainte tels que les éléments de preuves, l’analyse de la plainte, la proposition de solution, la communication au plaignant, la mise en œuvre de la solution, le suivi de la résolution du litige.",BLOC_4,,,0,0.0
 missing,"Rédiger un plan de gestion de crise en déterminant les crises les plus susceptibles de nuire à l’activité et leur impact commercial, social, sociétal pour préparer l’équipe et réduire au maximum les dommages à long terme causés à l’activité. Le plan de gestion de crise comprend de façon précise, lisible et détaillée : •",BLOC_4,,,0,0.0
-unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.5083
-unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.5083
-unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.5083
-unmapped,Analyse de données,,Other,Analyse de données,11,6.8531
-unmapped,Python,,analyse des besoins métiers,Python,9,5.7569
-unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",3,2.4911
-unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.7731
-unmapped,Gestion de projet,,gestion de projet,Gestion de projet,3,1.6788
-unmapped,Concevoir une application web,,Other,Concevoir une application web,2,1.6654
-unmapped,FastAPI,,MLOps,FastAPI,2,1.3527
-unmapped,Machine Learning,,Machine Learning,Machine Learning,2,1.2985
-unmapped,#TDFE2026,,Other,#TDFE2026,1,0.9783
-unmapped,"Analyser les données d'une étude, d'un projet",,Other,"Analyser les données d'une étude, d'un projet",1,0.9474
-unmapped,Anglais technique,,Other,Anglais technique,1,0.9474
-unmapped,Automatisation de notes de calcul (Excel VBA),,Other,Automatisation de notes de calcul (Excel VBA),1,0.9474
-unmapped,"Comprendre, interpréter des données et documents techniques",,Other,"Comprendre, interpréter des données et documents techniques",1,0.9474
-unmapped,Création d'outils numériques pour automatisation,,Other,Création d'outils numériques pour automatisation,1,0.9474
-unmapped,Intelligence artificielle appliqué au génie civil,,Other,Intelligence artificielle appliqué au génie civil,1,0.9474
-unmapped,Langages de programmation informatique,,Other,Langages de programmation informatique,1,0.9474
-unmapped,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),,Other,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),1,0.9474
-unmapped,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)",,Other,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spéci",1,0.9474
-unmapped,Normes de la construction,,Other,Normes de la construction,1,0.9474
-unmapped,"Préparer et animer une réunion, un groupe de travail, un atelier",,cadrage de projet IA,"Préparer et animer une réunion, un groupe de travail, un atelier",1,0.9474
-unmapped,Résistance Des Matériaux (RDM),,Other,Résistance Des Matériaux (RDM),1,0.9474
-unmapped,"Travaux publics, génie civil",,Other,"Travaux publics, génie civil",1,0.9474
-unmapped,Concevoir et réaliser des éléments graphiques et visuels,,Other,Concevoir et réaliser des éléments graphiques et visuels,1,0.8257
-unmapped,Concevoir un site web,,Other,Concevoir un site web,1,0.8257
-unmapped,"Déployer, intégrer un logiciel, un système d'informations, une application",,Other,"Déployer, intégrer un logiciel, un système d'informations, une application",1,0.8257
-unmapped,"Paramétrer un logiciel, un outil, un système numérique",,Other,"Paramétrer un logiciel, un outil, un système numérique",1,0.8257
-unmapped,"Concevoir l'architecture d'un système, d'un réseau",,Other,"Concevoir l'architecture d'un système, d'un réseau",1,0.7563
-unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,,Other,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,1,0.625
-unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.625
-unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.625
-unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.625
-unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.625
-unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.625
-unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.625
-unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.625
-unmapped,Gérer les risques associés aux technologies d'IA,,Other,Gérer les risques associés aux technologies d'IA,1,0.625
-unmapped,Implémenter des solutions de cybersécurité adaptées,,RGPD et sécurité,Sécurité,1,0.625
-unmapped,Intégration de systèmes d'intelligence artificielle,,Other,Intégration de systèmes d'intelligence artificielle,1,0.625
-unmapped,Planifier des projets d'IA en tenant compte des contraintes de temps et de budget,,Other,Planifier des projets d'IA en tenant compte des contraintes de temps et de budge,1,0.625
-unmapped,Traiter les données de manière sécurisée et conforme,,Other,Traiter les données de manière sécurisée et conforme,1,0.625
-unmapped,API REST,,Other,API REST,1,0.4927
+unmapped,#TDEF2026,,Other,#TDEF2026,1,0.9375
+unmapped,"Aisance relationnelle, adaptabilité",,Other,"Aisance relationnelle, adaptabilité",1,0.9375
+unmapped,Capacité d'analyse réflexive,,Other,Capacité d'analyse réflexive,1,0.9375
+unmapped,Concevoir l'ingénierie de formation et les séquences pédagogiques,,Other,Concevoir l'ingénierie de formation et les séquences pédagogiques,1,0.9375
+unmapped,"Créer, organiser ou coordonner un évènement",,Other,"Créer, organiser ou coordonner un évènement",1,0.9375
+unmapped,Esprit d'équipe,,Other,Esprit d'équipe,1,0.9375
+unmapped,Faciliter et créer les conditions de la coopération,,Other,Faciliter et créer les conditions de la coopération,1,0.9375
+unmapped,Faire preuve de sens commercial et d'aisance relationnelle,,Other,Faire preuve de sens commercial et d'aisance relationnelle,1,0.9375
+unmapped,Rigueur,,Other,Rigueur,1,0.9375
+unmapped,Sens de l'écoute,,Other,Sens de l'écoute,1,0.9375
+unmapped,Techniques de communication et de négociation,,visualisation et communication,Techniques de communication et de négociation,1,0.9375
+unmapped,Cadre réglementaire environnemental,,Other,Cadre réglementaire environnemental,1,0.8824
+unmapped,Négocier des solutions techniques ou financières avec un client,,Other,Négocier des solutions techniques ou financières avec un client,1,0.8824
+unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,1,0.8824
+unmapped,Administrer une vente e-commerce,,Other,Administrer une vente e-commerce,1,0.6429
+unmapped,Amazon Ads,,Other,Amazon Ads,1,0.6429
+unmapped,Amazon Brand Registry,,Other,Amazon Brand Registry,1,0.6429
+unmapped,Amazon FBA,,Other,Amazon FBA,1,0.6429
+unmapped,Amazon Seller Central,,Other,Amazon Seller Central,1,0.6429
+unmapped,Analyser des échanges communautaires en ligne,,Other,Analyser des échanges communautaires en ligne,1,0.6429
+unmapped,Analyser les comportements d'achat sur une plateforme en ligne,,Other,Analyser les comportements d'achat sur une plateforme en ligne,1,0.6429
+unmapped,Analyser les données de vente pour prévoir les tendances,,Other,Analyser les données de vente pour prévoir les tendances,1,0.6429
+unmapped,"Animer un réseau, une communauté",,Other,"Animer un réseau, une communauté",1,0.6429
+unmapped,Arabe Professionnel,,Other,Arabe Professionnel,1,0.6429
+unmapped,Assurer le suivi des commandes et des livraisons,,Other,Assurer le suivi des commandes et des livraisons,1,0.6429
+unmapped,Collaborer avec des équipes multidisciplinaires,,Other,Collaborer avec des équipes multidisciplinaires,1,0.6429
+unmapped,Connaissance du marché du Narguilé,,Other,Connaissance du marché du Narguilé,1,0.6429
+unmapped,E-commerce,,Other,E-commerce,1,0.6429
+unmapped,Espagnol profesionnel,,Other,Espagnol profesionnel,1,0.6429
+unmapped,Gérer les retours des clients pour améliorer les services,,Other,Gérer les retours des clients pour améliorer les services,1,0.6429
+unmapped,Gérer les réclamations en ligne avec réactivité et efficacité,,Other,Gérer les réclamations en ligne avec réactivité et efficacité,1,0.6429
+unmapped,Italien Professionel,,Other,Italien Professionel,1,0.6429
+unmapped,Marketplace Europe,,Other,Marketplace Europe,1,0.6429
+unmapped,SEO AM,,Other,SEO AM,1,0.6429
+unmapped,Stratégies de vente en ligne,,cadrage de projet IA,Stratégie,1,0.6429
+unmapped,Surveiller les stocks virtuels pour ajuster les offres,,Other,Surveiller les stocks virtuels pour ajuster les offres,1,0.6429
+unmapped,Utilisation de CRM pour le e-commerce,,Other,Utilisation de CRM pour le e-commerce,1,0.6429
+unmapped,Gestion de projet,,gestion de projet,Gestion de projet,1,0.625
+unmapped,Analyse de données,,Other,Analyse de données,1,0.5974
