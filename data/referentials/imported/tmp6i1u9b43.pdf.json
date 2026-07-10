@@ -252,7 +252,7 @@
       "source_page": null,
       "source_text": "",
       "confidence": 1.0,
-      "status": "pending",
+      "status": "rejected",
       "children": [
         {
           "id": "derived_sub_0",
@@ -265,7 +265,7 @@
           "source_page": 1,
           "source_text": "ML",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -280,7 +280,7 @@
           "source_page": 1,
           "source_text": "Deep Learning",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -295,7 +295,7 @@
           "source_page": 1,
           "source_text": "NLP",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -310,7 +310,7 @@
           "source_page": 1,
           "source_text": "Comprendre l'IA,",
           "confidence": 0.8,
-          "status": "pending",
+          "status": "rejected",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -325,7 +325,7 @@
           "source_page": 1,
           "source_text": "SQL",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -340,7 +340,7 @@
           "source_page": 1,
           "source_text": "Python",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -355,7 +355,7 @@
           "source_page": 1,
           "source_text": "application (variable) Cas d'usage interne,",
           "confidence": 0.82,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         }
@@ -374,5 +374,7 @@
     "record_id": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5"
   },
   "referential_id": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
-  "title": "FORMATION ENTREPRISE Le Wagon"
+  "title": "FORMATION ENTREPRISE Le Wagon",
+  "annotation_validated": true,
+  "validated_at": "2026-07-10T16:01:20.798261+00:00"
 }
