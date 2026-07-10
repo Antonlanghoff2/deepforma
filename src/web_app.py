@@ -2106,22 +2106,24 @@ def create_app(
         candidates_annotation_store.save(candidates_rows)
 
     def _update_referential_from_annotations(records: list[dict[str, Any]], document_id: str) -> None:
-        """When a document is validated, update the referential JSON to reflect approved skills."""
+        """When a document is validated, update or create the referential JSON with approved skills."""
         doc_records = [r for r in records if clean_text(r.get('document_id') or '') == document_id]
         if not doc_records:
             return
         approved_labels: set[str] = set()
+        all_skills: list[dict[str, Any]] = []
         for rec in doc_records:
             for skill in rec.get('skills', []):
                 if skill.get('status') in ('approved', 'validated'):
                     label = clean_text(skill.get('label') or skill.get('canonical_label') or '')
                     if label:
                         approved_labels.add(label.lower().strip())
+                all_skills.append(dict(skill))
         if not approved_labels:
             return
         imported_dir = PROJECT_ROOT / 'data' / 'referentials' / 'imported'
-        if not imported_dir.is_dir():
-            return
+        imported_dir.mkdir(parents=True, exist_ok=True)
+        existing_path = None
         for json_path in imported_dir.glob('*.json'):
             try:
                 data = json.loads(json_path.read_text(encoding='utf-8'))
@@ -2131,37 +2133,92 @@ def create_app(
             data_doc_id = clean_text(data.get('document_id') or doc.get('id') or '')
             if data_doc_id != document_id:
                 continue
+            existing_path = json_path
             skills = data.get('skills', [])
-            if not isinstance(skills, list):
-                continue
-            updated = False
-            for skill in skills:
-                if not isinstance(skill, dict):
-                    continue
-                children = skill.get('children', [])
-                if isinstance(children, list):
-                    for child in children:
+            if isinstance(skills, list):
+                for skill in skills:
+                    if not isinstance(skill, dict):
+                        continue
+                    for child in skill.get('children', []):
                         if not isinstance(child, dict):
                             continue
-                        child_label = clean_text(child.get('label') or '').lower().strip()
-                        if child_label and child_label in approved_labels:
-                            if child.get('status') != 'validated':
-                                child['status'] = 'validated'
-                                updated = True
-                        elif child_label and child_label not in approved_labels:
-                            if child.get('status') not in ('rejected',):
-                                child['status'] = 'rejected'
-                                updated = True
-                skill_label = clean_text(skill.get('label') or '').lower().strip()
-                if skill_label and skill_label in approved_labels:
-                    if skill.get('status') != 'validated':
+                        cl = clean_text(child.get('label') or '').lower().strip()
+                        if cl and cl in approved_labels:
+                            child['status'] = 'validated'
+                        elif cl:
+                            child['status'] = 'rejected'
+                    sl = clean_text(skill.get('label') or '').lower().strip()
+                    if sl and sl in approved_labels:
                         skill['status'] = 'validated'
-                        updated = True
-            if updated:
-                data['annotation_validated'] = True
-                data['validated_at'] = datetime.now(timezone.utc).isoformat()
-                json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
-            break
+                    elif sl:
+                        skill['status'] = 'rejected'
+            data['annotation_validated'] = True
+            data['validated_at'] = datetime.now(timezone.utc).isoformat()
+            json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+            return
+        first_rec = doc_records[0]
+        source_file = clean_text(first_rec.get('source_file') or '') or f'{document_id}.pdf'
+        sha256 = clean_text(first_rec.get('sha256') or '') or document_id
+        title = clean_text(first_rec.get('title') or '') or source_file
+        seen: set[str] = set()
+        canonical_skills: list[dict[str, Any]] = []
+        for sk in all_skills:
+            label = clean_text(sk.get('label') or sk.get('canonical_label') or '')
+            nl = label.lower().strip()
+            if not label or nl in seen:
+                continue
+            seen.add(nl)
+            skill_status = 'validated' if nl in approved_labels else 'rejected'
+            canonical_skills.append({
+                'id': clean_text(sk.get('skill_id') or '') or f'ann_{len(canonical_skills)}',
+                'label': label,
+                'type': 'official_skill',
+                'description': label,
+                'aliases': [],
+                'category': clean_text(sk.get('category') or ''),
+                'block': '',
+                'source_page': 0,
+                'source_text': '',
+                'confidence': float(sk.get('confidence', 1.0)),
+                'status': skill_status,
+                'children': [],
+                'parent_id': None,
+                'code': clean_text(sk.get('skill_id') or ''),
+                'block_name': '',
+                'activity': '',
+                'official_description': label,
+                'normalized_label': nl,
+                'subcategory': '',
+                'technical_keywords': [],
+                'active': skill_status == 'validated',
+            })
+        referential_payload = {
+            'schema_version': '1.0',
+            'referential_id': sha256,
+            'title': title,
+            'version': '1.0',
+            'annotation_validated': True,
+            'validated_at': datetime.now(timezone.utc).isoformat(),
+            'skills': canonical_skills,
+            'metadata': {
+                'source': 'annotation_validated',
+                'source_file': source_file,
+                'document_id': document_id,
+                'official_skills_count': len(canonical_skills),
+                'subskills_count': 0,
+                'exploitable_skills_count': len(canonical_skills),
+                'skills_count': len(canonical_skills),
+            },
+            'document': {
+                'id': document_id,
+                'file_name': source_file,
+                'sha256': sha256,
+                'title': title,
+            },
+        }
+        safe_name = re.sub(r'[^a-zA-Z0-9_\-]', '_', source_file.replace('.pdf', ''))[:60]
+        out_path = imported_dir / f'{safe_name}_{document_id[:8]}.json'
+        out_path.write_text(json.dumps(referential_payload, ensure_ascii=False, indent=2), encoding='utf-8')
 
     def _highlight_referential_text(text: str, entities: list[dict[str, Any]] | None) -> Markup:
         safe_text = clean_text(text)

@@ -316,7 +316,7 @@
       "source_page": null,
       "source_text": "",
       "confidence": 1.0,
-      "status": "pending",
+      "status": "rejected",
       "children": [
         {
           "id": "derived_sub_0",
@@ -329,7 +329,7 @@
           "source_page": 1,
           "source_text": "Machine Learning",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -344,7 +344,7 @@
           "source_page": 1,
           "source_text": "Docker",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -359,7 +359,7 @@
           "source_page": 1,
           "source_text": "FastAPI",
           "confidence": 0.97,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -374,7 +374,7 @@
           "source_page": 1,
           "source_text": "Python",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -389,7 +389,7 @@
           "source_page": 1,
           "source_text": "Airflow",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -404,7 +404,7 @@
           "source_page": 1,
           "source_text": "Spark",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         },
@@ -419,7 +419,7 @@
           "source_page": 1,
           "source_text": "Kubernetes",
           "confidence": 0.6,
-          "status": "pending",
+          "status": "validated",
           "children": [],
           "parent_id": "generated_group_0"
         }
@@ -438,5 +438,7 @@
     "record_id": "c36e2d3be3e190d234fc901997f01abd1fddf98f1bc46b92bf19099ff3e1bc52"
   },
   "referential_id": "c36e2d3be3e190d234fc901997f01abd1fddf98f1bc46b92bf19099ff3e1bc52",
-  "title": "Machine learning open classroom"
+  "title": "Machine learning open classroom",
+  "annotation_validated": true,
+  "validated_at": "2026-07-10T16:01:20.798734+00:00"
 }
