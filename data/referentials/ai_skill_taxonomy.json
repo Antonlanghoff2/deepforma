@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "taxonomy_id": "ai_skill_taxonomy",
+  "title": "Taxonomie IA Deepforma",
+  "description": "Taxonomie des compétences en intelligence artificielle pour le référentiel Deepforma",
+  "labels": [
+    {
+      "id": "automatisation",
+      "label": "Automatisation",
+      "description": "Automatisation des processus et des tâches répétitives",
+      "aliases": ["automation", "automatisation des processus"],
+      "parent_id": null
+    },
+    {
+      "id": "big_data",
+      "label": "Big Data",
+      "description": "Traitement et analyse de grands volumes de données",
+      "aliases": ["données massives", "big data analytics"],
+      "parent_id": null
+    },
+    {
+      "id": "computer_vision",
+      "label": "Computer Vision",
+      "description": "Vision par ordinateur et traitement d'images",
+      "aliases": ["vision par ordinateur", "traitement d'images", "image recognition"],
+      "parent_id": null
+    },
+    {
+      "id": "data_engineering",
+      "label": "Data Engineering",
+      "description": "Ingénierie des données et pipelines ETL",
+      "aliases": ["ingénierie des données", "data pipeline", "ETL"],
+      "parent_id": null
+    },
+    {
+      "id": "data_science",
+      "label": "Data Science",
+      "description": "Science des données et analyse statistique",
+      "aliases": ["science des données", "data analysis"],
+      "parent_id": null
+    },
+    {
+      "id": "deep_learning",
+      "label": "Deep Learning",
+      "description": "Apprentissage profond et réseaux de neurones",
+      "aliases": ["apprentissage profond", "réseaux de neurones profonds", "neural networks"],
+      "parent_id": null
+    },
+    {
+      "id": "gestion_projet_ia",
+      "label": "Gestion de projet IA",
+      "description": "Gestion de projets d'intelligence artificielle",
+      "aliases": ["project management IA", "gestion de projet ML"],
+      "parent_id": null
+    },
+    {
+      "id": "ia_generative",
+      "label": "IA générative",
+      "description": "Intelligence artificielle générative (LLM, GPT, etc.)",
+      "aliases": ["generative AI", "LLM", "GPT", "modèles génératifs"],
+      "parent_id": null
+    },
+    {
+      "id": "machine_learning",
+      "label": "Machine Learning",
+      "description": "Apprentissage automatique et modèles prédictifs",
+      "aliases": ["apprentissage automatique", "ML", "modèles prédictifs"],
+      "parent_id": null
+    },
+    {
+      "id": "nlp",
+      "label": "NLP",
+      "description": "Traitement du langage naturel",
+      "aliases": ["natural language processing", "traitement du langage naturel", "NLU", "NLG"],
+      "parent_id": null
+    },
+    {
+      "id": "no_code_low_code",
+      "label": "No-code / Low-code",
+      "description": "Développement sans code ou avec peu de code",
+      "aliases": ["no-code", "low-code", "développement low-code"],
+      "parent_id": null
+    },
+    {
+      "id": "prompt_engineering",
+      "label": "Prompt Engineering",
+      "description": "Ingénierie des prompts pour modèles de langage",
+      "aliases": ["ingénierie des prompts", "prompt design"],
+      "parent_id": null
+    },
+    {
+      "id": "python_ia",
+      "label": "Python pour l'IA",
+      "description": "Programmation Python appliquée à l'intelligence artificielle",
+      "aliases": ["Python ML", "Python IA", "Python data science"],
+      "parent_id": null
+    },
+    {
+      "id": "rag",
+      "label": "RAG",
+      "description": "Retrieval-Augmented Generation",
+      "aliases": ["retrieval-augmented generation", "génération augmentée par récupération"],
+      "parent_id": null
+    },
+    {
+      "id": "reinforcement_learning",
+      "label": "Reinforcement Learning",
+      "description": "Apprentissage par renforcement",
+      "aliases": ["apprentissage par renforcement", "RL"],
+      "parent_id": null
+    },
+    {
+      "id": "series_temporelles",
+      "label": "Séries temporelles",
+      "description": "Analyse et prédiction de séries temporelles",
+      "aliases": ["time series", "analyse temporelle", "prédiction temporelle"],
+      "parent_id": null
+    },
+    {
+      "id": "visualisation",
+      "label": "Visualisation",
+      "description": "Visualisation de données et tableaux de bord",
+      "aliases": ["data visualization", "visualisation de données", "dashboards"],
+      "parent_id": null
+    },
+    {
+      "id": "ethique_ia",
+      "label": "Éthique de l'IA",
+      "description": "Éthique et responsabilité en intelligence artificielle",
+      "aliases": ["AI ethics", "IA responsable", "éthique IA"],
+      "parent_id": null
+    }
+  ],
+  "metadata": {
+    "created_at": "2026-07-10",
+    "updated_at": "2026-07-10",
+    "version": "1.0.0",
+    "author": "Deepforma",
+    "total_labels": 18
+  }
+}

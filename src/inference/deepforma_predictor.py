@@ -420,34 +420,97 @@ class DeepformaPredictor:
 
     def _load_taxonomy(self, path: str | Path | None) -> dict | None:
         if path is None:
-            return None
+            logger.info('Aucun chemin de taxonomie fourni, utilisation du fallback')
+            return self._build_fallback_taxonomy()
         p = Path(path)
         if not p.exists():
-            logger.warning('Taxonomie non trouvee: %s', p)
-            return None
+            logger.warning(
+                'Taxonomie IA absente: %s. Fallback sur les labels du checkpoint.',
+                p
+            )
+            return self._build_fallback_taxonomy()
         try:
             tax = json.loads(p.read_text(encoding='utf-8'))
-            logger.info('Taxonomie chargee: %s (version %s, %d familles)',
-                         p, tax.get('version', 'N/A'), len(tax.get('families', [])))
+            # Supporter les deux formats : ancien (families/skills) et nouveau (labels)
+            if 'families' in tax:
+                logger.info('Taxonomie chargee: %s (version %s, %d familles)',
+                             p, tax.get('version', 'N/A'), len(tax.get('families', [])))
+            elif 'labels' in tax:
+                logger.info('Taxonomie chargee: %s (version %s, %d labels)',
+                             p, tax.get('schema_version', 'N/A'), len(tax.get('labels', [])))
+            else:
+                logger.warning('Format de taxonomie non reconnu dans %s, utilisation du fallback', p)
+                return self._build_fallback_taxonomy()
             return tax
         except Exception as e:
-            logger.warning('Echec chargement taxonomie: %s', e)
-            return None
+            logger.warning('Echec chargement taxonomie: %s, utilisation du fallback', e)
+            return self._build_fallback_taxonomy()
+    
+    def _build_fallback_taxonomy(self) -> dict:
+        """Construit une taxonomie minimale à partir des labels du modèle."""
+        if not hasattr(self, 'labels') or not self.labels:
+            return {}
+        
+        # Créer une famille unique "IA" contenant tous les labels
+        skills = []
+        for label in self.labels:
+            skills.append({
+                'id': label.lower().replace(' ', '_').replace('/', '_'),
+                'label': label,
+            })
+        
+        fallback = {
+            'schema_version': '1.0',
+            'taxonomy_id': 'fallback_from_checkpoint',
+            'title': 'Taxonomie IA Deepforma (fallback)',
+            'description': 'Taxonomie générée automatiquement à partir des labels du modèle',
+            'families': [
+                {
+                    'id': 'ia',
+                    'label': 'Intelligence Artificielle',
+                    'skills': skills,
+                }
+            ],
+            'metadata': {
+                'generated_from': 'checkpoint_labels',
+                'total_labels': len(self.labels),
+            }
+        }
+        logger.info('Taxonomie fallback construite avec %d labels du checkpoint', len(self.labels))
+        return fallback
 
     def _build_family_map(self) -> dict[str, dict]:
         """Build {skill_id: {family_id, family_label, skill_label}} from taxonomy."""
         mapping: dict[str, dict] = {}
         if not self.taxonomy:
             return mapping
-        for family in self.taxonomy.get('families', []):
-            for skill in family.get('skills', []):
-                skill_id = skill['id']
+        
+        # Supporter le format ancien (families/skills)
+        if 'families' in self.taxonomy:
+            for family in self.taxonomy.get('families', []):
+                for skill in family.get('skills', []):
+                    skill_id = skill['id']
+                    mapping[skill_id] = {
+                        'family_id': family['id'],
+                        'family_label': family['label'],
+                        'skill_label': skill['label'],
+                        'skill_id': skill_id,
+                    }
+        
+        # Supporter le format nouveau (labels)
+        elif 'labels' in self.taxonomy:
+            # Créer une famille unique pour tous les labels
+            family_id = 'ia'
+            family_label = 'Intelligence Artificielle'
+            for label_info in self.taxonomy.get('labels', []):
+                skill_id = label_info['id']
                 mapping[skill_id] = {
-                    'family_id': family['id'],
-                    'family_label': family['label'],
-                    'skill_label': skill['label'],
+                    'family_id': family_id,
+                    'family_label': family_label,
+                    'skill_label': label_info['label'],
                     'skill_id': skill_id,
                 }
+        
         return mapping
 
     def _group_predictions_by_family(

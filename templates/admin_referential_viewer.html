@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Visualisation PDF - {{ referential_title or 'Référentiel' }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .viewer-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 100px);
+        background: #f5f5f5;
+    }
+    
+    .viewer-header {
+        background: white;
+        padding: 15px 20px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .viewer-header h2 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+    
+    .viewer-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .viewer-controls button {
+        padding: 8px 16px;
+        border: 1px solid #ddd;
+        background: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9em;
+    }
+    
+    .viewer-controls button:hover {
+        background: #f0f0f0;
+    }
+    
+    .viewer-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .page-info {
+        font-size: 0.9em;
+        color: #666;
+    }
+    
+    .viewer-content {
+        flex: 1;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px;
+    }
+    
+    #pdf-canvas {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        max-width: 100%;
+    }
+    
+    .no-pdf {
+        text-align: center;
+        padding: 50px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .no-pdf h3 {
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .no-pdf p {
+        color: #999;
+        margin-bottom: 20px;
+    }
+    
+    .back-link {
+        display: inline-block;
+        margin-top: 15px;
+        color: #0066cc;
+        text-decoration: none;
+    }
+    
+    .back-link:hover {
+        text-decoration: underline;
+    }
+    
+    .loading {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="viewer-container">
+    <div class="viewer-header">
+        <h2>
+            {% if referential_title %}
+                {{ referential_title }}
+            {% else %}
+                Visualisation PDF
+            {% endif %}
+        </h2>
+        <div class="viewer-controls">
+            <button id="prev-page" disabled>← Précédent</button>
+            <span class="page-info">
+                Page <span id="page-num">1</span> / <span id="page-count">-</span>
+            </span>
+            <button id="next-page" disabled>Suivant →</button>
+            <button id="zoom-out">-</button>
+            <button id="zoom-in">+</button>
+            <a href="{{ url_for('admin_referential_annotation') }}" class="back-link">← Retour</a>
+        </div>
+    </div>
+    
+    <div class="viewer-content">
+        {% if pdf_filename %}
+            <canvas id="pdf-canvas"></canvas>
+            <div id="loading" class="loading">Chargement du PDF...</div>
+        {% else %}
+            <div class="no-pdf">
+                <h3>PDF non disponible</h3>
+                <p>Le fichier PDF original n'a pas été trouvé dans le répertoire des référentiels.</p>
+                <p>Assurez-vous que le PDF est présent dans <code>data/raw/referentiel/</code></p>
+                <a href="{{ url_for('admin_referential_annotation') }}" class="back-link">← Retour à l'annotation</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if pdf_filename %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+    // Configuration de PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    
+    const url = "{{ url_for('admin_referential_pdf', filename=pdf_filename) }}";
+    
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.5;
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+    const loadingDiv = document.getElementById('loading');
+    
+    // Charger le PDF
+    pdfjsLib.getDocument(url).promise.then(function(pdf) {
+        pdfDoc = pdf;
+        document.getElementById('page-count').textContent = pdf.numPages;
+        loadingDiv.style.display = 'none';
+        canvas.style.display = 'block';
+        
+        // Rendre la première page
+        renderPage(pageNum);
+        
+        // Activer les boutons
+        document.getElementById('next-page').disabled = pdf.numPages <= 1;
+    }).catch(function(error) {
+        console.error('Erreur lors du chargement du PDF:', error);
+        loadingDiv.innerHTML = '<p style="color: red;">Erreur lors du chargement du PDF</p>';
+    });
+    
+    // Rendre une page
+    function renderPage(num) {
+        pageRendering = true;
+        
+        pdfDoc.getPage(num).then(function(page) {
+            const viewport = page.getViewport({ scale: scale });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            
+            const renderTask = page.render(renderContext);
+            
+            renderTask.promise.then(function() {
+                pageRendering = false;
+                
+                if (pageNumPending !== null) {
+                    renderPage(pageNumPending);
+                    pageNumPending = null;
+                }
+            });
+            
+            document.getElementById('page-num').textContent = num;
+            
+            // Mettre à jour les boutons
+            document.getElementById('prev-page').disabled = num <= 1;
+            document.getElementById('next-page').disabled = num >= pdfDoc.numPages;
+        });
+    }
+    
+    // Navigation
+    document.getElementById('prev-page').addEventListener('click', function() {
+        if (pageNum <= 1) return;
+        pageNum--;
+        queueRenderPage(pageNum);
+    });
+    
+    document.getElementById('next-page').addEventListener('click', function() {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        queueRenderPage(pageNum);
+    });
+    
+    function queueRenderPage(num) {
+        if (pageRendering) {
+            pageNumPending = num;
+        } else {
+            renderPage(num);
+        }
+    }
+    
+    // Zoom
+    document.getElementById('zoom-in').addEventListener('click', function() {
+        scale += 0.25;
+        renderPage(pageNum);
+    });
+    
+    document.getElementById('zoom-out').addEventListener('click', function() {
+        if (scale > 0.5) {
+            scale -= 0.25;
+            renderPage(pageNum);
+        }
+    });
+    
+    // Navigation au clavier
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            document.getElementById('prev-page').click();
+        } else if (e.key === 'ArrowRight') {
+            document.getElementById('next-page').click();
+        } else if (e.key === '+' || e.key === '=') {
+            document.getElementById('zoom-in').click();
+        } else if (e.key === '-') {
+            document.getElementById('zoom-out').click();
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

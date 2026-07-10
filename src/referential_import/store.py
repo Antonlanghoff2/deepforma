@@ -14,16 +14,25 @@ from .models import DerivedSkill, EvaluationCriterion, ImportIssue, ImportReport
 class ReferentialImportStore:
     def __init__(self, db_path: str | Path | None = None) -> None:
         self.db_path = Path(db_path or Path("data/referentials/referential_imports.sqlite3"))
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self._initialized = False
         self._init_db()
 
     def _connect(self) -> sqlite3.Connection:
+        """Ouvre une connexion SQLite. La base doit déjà être initialisée."""
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 
     def _init_db(self) -> None:
-        with self._connect() as conn:
+        """Initialise la base de données et crée les tables si nécessaire."""
+        if self._initialized:
+            return
+        
+        # Créer le dossier parent si nécessaire
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Utiliser sqlite3.connect() directement pour éviter la récursion
+        with sqlite3.connect(self.db_path) as conn:
             conn.executescript(
                 """
                 PRAGMA journal_mode=WAL;
@@ -86,6 +95,8 @@ class ReferentialImportStore:
                 );
                 """
             )
+        
+        self._initialized = True
 
     def has_document(self, sha256: str, importer_version: str) -> bool:
         with self._connect() as conn:

@@ -622,4 +622,13 @@ class ReferentialImportService:
         except Exception as exc:
             LOGGER.warning("Impossible de normaliser vers le schéma canonique: %s", exc)
         output_path.write_text(json.dumps(export_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        
+        # Générer automatiquement les candidats d'annotation
+        try:
+            from scripts.generate_annotation_candidates_from_imported import generate_annotation_candidates_from_imported
+            generate_annotation_candidates_from_imported(self.output_dir)
+            LOGGER.info("Candidats d'annotation générés pour %s", document.file_name)
+        except Exception as exc:
+            LOGGER.warning("Impossible de générer les candidats d'annotation: %s", exc)
+        
         return output_path

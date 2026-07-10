@@ -144,6 +144,30 @@
           <button type="submit">Uploader</button>
         </div>
       </form>
+      
+      <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #e5e7eb;">
+        <h3 style="font-size:0.95rem;margin-bottom:0.75rem;">Actions avancées</h3>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <form method="post" action="{{ url_for('admin_generate_annotation_candidates') }}" onsubmit="return confirm('Générer les candidats d\'annotation à partir des référentiels importés ?');">
+            <button type="submit" style="background:#059669;color:white;padding:0.5rem 1rem;border:none;border-radius:0.375rem;cursor:pointer;font-size:0.85rem;">
+              Générer candidats d'annotation
+            </button>
+          </form>
+          <form method="post" action="{{ url_for('admin_referential_reset') }}" onsubmit="return confirm('⚠️ ATTENTION : Cette action va effacer tous les référentiels importés et les annotations. Continuer ?');">
+            <label style="display:inline-flex;align-items:center;gap:0.5rem;margin-right:0.75rem;font-size:0.85rem;">
+              <input type="checkbox" name="keep_base" style="width:auto;margin:0;">
+              Garder les référentiels de base
+            </label>
+            <button type="submit" style="background:#dc2626;color:white;padding:0.5rem 1rem;border:none;border-radius:0.375rem;cursor:pointer;font-size:0.85rem;">
+              Réinitialiser tous les référentiels
+            </button>
+          </form>
+        </div>
+        <p style="font-size:0.75rem;color:#6b7280;margin-top:0.5rem;">
+          <strong>Générer candidats d'annotation :</strong> Crée des candidats pour la page d'annotation à partir des référentiels importés.<br>
+          <strong>Réinitialiser :</strong> Efface tous les imports, annotations et la base de données. Utile pour repartir de zéro.
+        </p>
+      </div>
     </section>
 
     {% if report %}
