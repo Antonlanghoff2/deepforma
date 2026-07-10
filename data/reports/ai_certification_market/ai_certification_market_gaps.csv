@@ -1,40 +1,7 @@
 type,label,block,category,subcategory,offer_count,weighted_score
-<<<<<<< HEAD
-missing,"Recueillir les besoins métiers (optimisation du CRM, ciblage des campagnes marketing, ...)",B1,cadrage de projet IA,Analyse des besoins métiers,0,0.0
-missing,Structurer le processus d'identification des exigences métier,B1,analyse des besoins métiers,Structurer le processus d'identification des exigences métier,0,0.0
-missing,Effectuer une veille des outils et des tendances émergentes,B1,Other,Effectuer une veille des outils et des tendances émergentes,0,0.0
-missing,Établir une roadmap,B1,gestion de projet,Pilotage,0,0.0
-missing,Identifier les aspects du projet IA qui pourraient ne pas être conformes,B1,cadrage de projet IA,Stratégie,0,0.0
-missing,"Évaluer la responsabilité civile découlant de l'utilisation des systèmes IA, notamment",B1,cadrage de projet IA,Stratégie,0,0.0
-missing,"Examiner le projet IA, ses vulnérabilités, celles de ses systèmes informatiques, les",B1,cadrage de projet IA,Stratégie,0,0.0
-missing,Évaluer les risques éthiques liés à l'utilisation de l'IA,B1,gouvernance et éthique,Éthique,0,0.0
-missing,Rechercher les biais potentiels dans les données d'entraînement ou dans les algorithmes,B1,gouvernance et éthique,Éthique,0,0.0
-missing,"Examiner les impacts potentiels du projet IA sur l'économie, l'environnement et d'autres",B1,Other,"Examiner les impacts potentiels du projet IA sur l'économie, l'environnement et",0,0.0
-missing,Identifier les risques potentiels,B1,Other,Identifier les risques potentiels,0,0.0
-missing,Identifier les modules ou les composants de l'application existante qui sont fortement,B1,Other,Identifier les modules ou les composants de l'application existante qui sont for,0,0.0
-missing,Séparer les fonctionnalités IA,B1,gouvernance et éthique,Séparer les fonctionnalités IA,0,0.0
-missing,Utiliser des standards ouverts et des formats de données interopérables,B1,Other,Utiliser des standards ouverts et des formats de données interopérables,0,0.0
-missing,Élaborer un plan,B1,Other,Élaborer un plan,0,0.0
-missing,Traiter les données manquantes et gérer les valeurs aberrantes,B2,RGPD et sécurité,RGPD,0,0.0
-missing,"Nettoyer des données temporelles et gérer les lacunes dans les séries temporelles,",B2,préparation des données,Nettoyage,0,0.0
-missing,Atténuer les effets des valeurs extrêmes,B2,Other,Atténuer les effets des valeurs extrêmes,0,0.0
-missing,Discrétiser les variables continues,B2,Other,Discrétiser les variables continues,0,0.0
-missing,Évaluer les sources de données,B2,data quality,Évaluer les sources de données,0,0.0
-missing,Réduire la dimension des données,B2,Other,Réduire la dimension des données,0,0.0
-missing,Définir une stratégie de qualité de la donnée,B2,cadrage de projet IA,Stratégie,0,0.0
-missing,Valider les volumes de données collectées,B2,gouvernance et éthique,Éthique,0,0.0
-missing,Identifier les points de connexion entre le système d'IA et l'existant; et,B2,Other,Identifier les points de connexion entre le système d'IA et l'existant; et,0,0.0
-missing,Pré-traiter les données,B2,Other,Pré-traiter les données,0,0.0
-missing,Valider l’évolution du travail de l’équipe et/ou des prestataires,B3,gestion de projet,Pilotage,0,0.0
-missing,"Encadrer une équipe projet intelligence artificielle, dont certains membres peuvent être",B3,Other,"Encadrer une équipe projet intelligence artificielle, dont certains membres peuv",0,0.0
-missing,Traduire des données chiffrées,B4,analyse des besoins métiers,Traduire des données chiffrées,0,0.0
-missing,Présenter les données analysées de manière visuelle et avec clarté,B4,visualisation et communication,Dataviz,0,0.0
-missing,Mesurer les écarts/non conformités,B4,gouvernance et éthique,Conformité,0,0.0
-missing,Mesurer les impacts des données analysées,B4,Other,Mesurer les impacts des données analysées,0,0.0
-missing,Concevoir des démonstrations interactives ou des prototypes,B4,Other,Concevoir des démonstrations interactives ou des prototypes,0,0.0
-missing,Collaborer avec les spécialistes,B4,Other,Collaborer avec les spécialistes,0,0.0
-=======
->>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
+missing,Compétences extraites du référentiel,,,,0,0.0
+missing,Power BI,,tool,,0,0.0
+missing,Tableau,,tool,,0,0.0
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.4378
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.4378
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.4378
@@ -63,10 +30,7 @@ unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adapt
 unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.6207
 unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.6207
 unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.6207
-<<<<<<< HEAD
-=======
 unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.6207
->>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
 unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.6207
 unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.6207
 unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.6207

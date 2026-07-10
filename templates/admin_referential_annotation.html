@@ -11,8 +11,9 @@
     .muted { color: var(--muted); font-size: 0.95rem; }
     .panel { background: var(--panel); border: 1px solid rgba(15, 23, 42, 0.08); border-radius: 16px; padding: 16px; box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08); margin-bottom: 16px; }
     .nav { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; }
-    .nav a { display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 12px; }
-    .nav a:hover { background: rgba(255,255,255,0.1); }
+    .nav a { display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 12px; transition: all 0.2s; }
+    .nav a:hover { background: rgba(255,255,255,0.1); transform: translateX(2px); }
+    .nav a.active { background: rgba(14, 165, 233, 0.2); border-color: rgba(14, 165, 233, 0.4); }
     .nav strong { display:block; color: #fff; }
     .badge { display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:4px 10px; font-size: 0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
     .badge.ner { background: rgba(14, 165, 233, 0.15); color: #7dd3fc; }
@@ -23,75 +24,329 @@
     .badge.validated { background: rgba(59, 130, 246, 0.15); color: #93c5fd; }
     .grid { display:grid; gap:12px; }
     .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .entity-box, .label-box { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #fff; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .entity-box, .label-box { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #fff; transition: all 0.2s; }
+    .entity-box:hover, .label-box:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .entity-box + .entity-box, .label-box + .label-box { margin-top: 10px; }
-    .entity-highlight { background: rgba(250, 204, 21, 0.32); border-bottom: 2px solid rgba(180, 83, 9, 0.55); padding: 0 2px; border-radius: 4px; }
+    .entity-highlight { background: rgba(250, 204, 21, 0.32); border-bottom: 2px solid rgba(180, 83, 9, 0.55); padding: 0 2px; border-radius: 4px; cursor: help; }
     .entity-highlight span { display:block; font-size:0.72rem; font-weight:700; color: #7c2d12; line-height: 1.1; }
     .text-preview { white-space: pre-wrap; line-height: 1.65; font-size: 1rem; }
     label { display:block; font-size: 0.9rem; font-weight: 600; margin-top: 8px; }
-    input, select, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); font: inherit; background: #fff; }
+    input, select, textarea, button { width: 100%; box-sizing: border-box; margin-top: 6px; padding: 9px 10px; border-radius: 10px; border: 1px solid var(--line); font: inherit; background: #fff; transition: all 0.2s; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
     textarea { min-height: 78px; }
     button { cursor:pointer; font-weight:700; }
+    button:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     .actions { display:flex; gap:8px; margin-top: 10px; }
     .actions > * { flex:1; }
     .danger { background:#fff1f2; color: var(--danger); border-color:#fecdd3; }
+    .danger:hover { background:#fee4e2; }
     .success { background:#ecfdf5; color:#047857; border-color:#bbf7d0; }
+    .success:hover { background:#d1fae5; }
     .inline { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     .inline > * { flex:1; min-width: 180px; }
     table { width:100%; border-collapse: collapse; }
     th, td { text-align:left; padding:8px 0; border-bottom:1px solid var(--line); vertical-align: top; }
-    code { background:#f1f5f9; padding:2px 5px; border-radius:6px; }
-  </style>
+    code { background:#f1f5f9; padding:2px 5px; border-radius:6px; font-size: 0.85em; }
+    
+    /* Filtres */
+    .filters { background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .filters h3 { margin: 0 0 12px; font-size: 1rem; }
+    .filter-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+    .filter-row:last-child { margin-bottom: 0; }
+    
+    /* Statistiques */
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .stat-card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; text-align: center; }
+    .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    
+    /* Pagination */
+    .pagination { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 16px; flex-wrap: wrap; }
+    .pagination a, .pagination span { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; text-decoration: none; color: var(--ink); background: #fff; transition: all 0.2s; }
+    .pagination a:hover { background: #f1f5f9; border-color: var(--accent); }
+    .pagination .active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .pagination .disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    /* Raccourcis clavier */
+    .shortcuts { background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin-top: 16px; font-size: 0.85rem; }
+    .shortcuts h4 { margin: 0 0 8px; font-size: 0.9rem; }
+    .shortcut { display: flex; justify-content: space-between; padding: 4px 0; }
+    .shortcut kbd { background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
+    
+    /* Sélection de texte */
+    .text-selectable { cursor: text; user-select: text; }
+    .text-selectable::selection { background: rgba(14, 165, 233, 0.3); }
+</style>
 {% endblock %}
 {% block content %}
 <div class="wrap">
     <aside>
       <h1>Annotations référentielles</h1>
       <p class="muted">NER, multilabel et validation manuelle par bloc candidat.</p>
+      
       {% if error %}<div class="panel" style="background:#fef2f2;color:#991b1b;">{{ error }}</div>{% endif %}
       {% if success %}<div class="panel" style="background:#ecfdf5;color:#065f46;">{{ success }}</div>{% endif %}
+      
       <ul class="nav">
         {% for record in records %}
         <li>
-          <a href="{{ url_for('admin_referential_annotation', record_id=record.record_id) }}">
-            <strong>{{ record.source_file }} · p{{ record.page }} · {{ record.section }}</strong>
-            <span class="muted">{{ record.kind }} | {{ record.status }} | {{ record.record_id }}</span>
+          <a href="{{ url_for('admin_referential_annotation', record_id=record.record_id, kind=filter_kind, status=filter_status, source=filter_source, page=page) }}" 
+             {% if selected and selected.record_id == record.record_id %}class="active"{% endif %}>
+            <strong>{{ record.source_file }}{% if record.kind == 'candidates' %} · {{ record.skills_count }} comp.{% else %} · p{{ record.page }} · {{ record.section }}{% endif %}</strong>
+            <span class="muted">{{ record.kind }} | {{ record.status }} | {{ record.record_id[:12] }}...</span>
+            {% if record.kind == 'candidates' %}
+            <div style="margin-top: 8px;">
+              <a href="{{ url_for('admin_referential_viewer', referential_id=record.document_id) }}" 
+                 style="display: inline-block; padding: 4px 8px; background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 6px; font-size: 0.75rem; text-decoration: none; color: #7dd3fc;">
+                📄 Voir le PDF
+              </a>
+            </div>
+            {% endif %}
           </a>
         </li>
         {% endfor %}
       </ul>
+      
+      {% if total_pages > 1 %}
+      <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('admin_referential_annotation', record_id=selected.record_id if selected else '', kind=filter_kind, status=filter_status, source=filter_source, page=page-1) }}">← Précédent</a>
+        {% else %}
+        <span class="disabled">← Précédent</span>
+        {% endif %}
+        
+        <span>Page {{ page }} / {{ total_pages }}</span>
+        
+        {% if page < total_pages %}
+        <a href="{{ url_for('admin_referential_annotation', record_id=selected.record_id if selected else '', kind=filter_kind, status=filter_status, source=filter_source, page=page+1) }}">Suivant →</a>
+        {% else %}
+        <span class="disabled">Suivant →</span>
+        {% endif %}
+      </div>
+      {% endif %}
+      
+      <div class="shortcuts">
+        <h4>Raccourcis clavier</h4>
+        <div class="shortcut"><span>Annotation précédente</span> <kbd>←</kbd></div>
+        <div class="shortcut"><span>Annotation suivante</span> <kbd>→</kbd></div>
+        <div class="shortcut"><span>Approuver entité</span> <kbd>A</kbd></div>
+        <div class="shortcut"><span>Rejeter entité</span> <kbd>R</kbd></div>
+      </div>
     </aside>
     <main>
+      <!-- Statistiques -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value">{{ total_count }}</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: #f59e0b;">{{ pending_count }}</div>
+          <div class="stat-label">En attente</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: #10b981;">{{ approved_count }}</div>
+          <div class="stat-label">Approuvées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: #ef4444;">{{ rejected_count }}</div>
+          <div class="stat-label">Rejetées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" style="color: #3b82f6;">{{ validated_count }}</div>
+          <div class="stat-label">Validées</div>
+        </div>
+      </div>
+      
+      <!-- Filtres -->
+      <form method="get" action="{{ url_for('admin_referential_annotation') }}" class="filters">
+        <h3>Filtres</h3>
+        <div class="filter-row">
+          <label>
+            Type
+            <select name="kind">
+              <option value="">Tous</option>
+              <option value="ner" {% if filter_kind == 'ner' %}selected{% endif %}>NER</option>
+              <option value="multilabel" {% if filter_kind == 'multilabel' %}selected{% endif %}>Multilabel</option>
+              <option value="candidates" {% if filter_kind == 'candidates' %}selected{% endif %}>Candidats (importés)</option>
+            </select>
+          </label>
+          <label>
+            Statut
+            <select name="status">
+              <option value="">Tous</option>
+              <option value="pending" {% if filter_status == 'pending' %}selected{% endif %}>En attente</option>
+              <option value="approved" {% if filter_status == 'approved' %}selected{% endif %}>Approuvé</option>
+              <option value="rejected" {% if filter_status == 'rejected' %}selected{% endif %}>Rejeté</option>
+              <option value="validated" {% if filter_status == 'validated' %}selected{% endif %}>Validé</option>
+            </select>
+          </label>
+          <label>
+            Fichier source
+            <select name="source">
+              <option value="">Tous</option>
+              {% for source in sources %}
+              <option value="{{ source }}" {% if filter_source == source %}selected{% endif %}>{{ source }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="success">Appliquer les filtres</button>
+          <a href="{{ url_for('admin_referential_annotation') }}" style="text-align:center; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--ink);">Réinitialiser</a>
+        </div>
+      </form>
+      
       {% if selected %}
       <section class="panel">
         <div class="inline" style="margin-bottom: 8px;">
           <div>
-            <h2>{{ selected.source_file }}</h2>
-            <p class="muted">Record: <code>{{ selected.record_id }}</code> · Document: <code>{{ selected.document_id }}</code> · Page {{ selected.page }} · Section {{ selected.section }}</p>
+            <h2>{{ selected.title or selected.source_file }}</h2>
+            <p class="muted">
+              Record: <code>{{ selected.record_id }}</code> · 
+              Document: <code>{{ selected.document_id }}</code>
+              {% if selected.kind == 'candidates' %}
+               · {{ selected.skills_count }} compétences
+              {% else %}
+               · Page {{ selected.page }} · Section {{ selected.section }}
+              {% endif %}
+            </p>
           </div>
           <div style="text-align:right;">
             <span class="badge {{ selected.kind }}">{{ selected.kind }}</span>
             <span class="badge {{ selected.status }}">{{ selected.status }}</span>
+            {% if selected.kind == 'candidates' %}
+            <div style="margin-top: 8px;">
+              <a href="{{ url_for('admin_referential_viewer', referential_id=selected.document_id) }}" 
+                 class="btn" style="display: inline-block; padding: 6px 12px; background: #0f766e; color: white; border-radius: 6px; text-decoration: none; font-size: 0.85rem;">
+                📄 Voir le PDF
+              </a>
+            </div>
+            {% endif %}
           </div>
         </div>
+        {% if selected.kind != 'candidates' %}
         <div class="panel" style="margin:0; background:#fafafa;">
-          <div class="text-preview">{{ selected.highlighted_text | safe }}</div>
+          <div class="text-preview text-selectable">{{ selected.highlighted_text | safe }}</div>
         </div>
+        {% endif %}
       </section>
 
-      {% if selected.kind == 'ner' %}
+      {% if selected.kind == 'candidates' %}
       <section class="panel">
         <div class="inline" style="align-items:center; justify-content:space-between;">
-          <h3 style="margin-bottom:0;">Entités détectées</h3>
+          <h3 style="margin-bottom:0;">Compétences extraites ({{ selected.skills | length }})</h3>
           <div class="actions" style="max-width: 320px; margin-top:0;">
             <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
               <button type="submit" name="action" value="approve_all_entities" class="success">Approuver tout</button>
             </form>
             <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
+              <button type="submit" name="action" value="reject_all_entities" class="danger">Rejeter tout</button>
+            </form>
+          </div>
+        </div>
+        {% if selected.skills %}
+        <div class="grid">
+          {% for skill in selected.skills %}
+          <div class="entity-box {{ skill.status | default('pending') }}">
+            <div class="inline">
+              <div>
+                <strong>{{ skill.label }}</strong>
+                <div class="muted">{{ skill.category }} · {{ skill.source }} · confiance: {{ skill.confidence }}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge {{ skill.status | default('pending') }}">{{ skill.status | default('pending') }}</span>
+              </div>
+            </div>
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="entity_id" value="{{ skill.skill_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
+              <label>
+                Type validé
+                <select name="approved_label">
+                  <option value="">--</option>
+                  {% for label in entity_labels %}
+                  <option value="{{ label }}" {% if skill.category == label %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+              <label>
+                Nom canonique
+                <input type="text" name="canonical_name" value="{{ skill.label }}">
+              </label>
+              <div class="actions">
+                <button type="submit" name="action" value="approve_entity" class="success">Accepter</button>
+                <button type="submit" name="action" value="reject_entity" class="danger">Rejeter</button>
+                <button type="submit" name="action" value="delete_entity" class="danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette compétence ?')">🗑️ Supprimer</button>
+              </div>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">Aucune compétence extraite de ce référentiel.</p>
+        {% endif %}
+        
+        <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="panel" style="margin-top:12px;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+          <input type="hidden" name="filter_status" value="{{ filter_status }}">
+          <input type="hidden" name="filter_source" value="{{ filter_source }}">
+          <input type="hidden" name="page" value="{{ page }}">
+          <h4>Ajouter une compétence</h4>
+          <div class="grid cols-2">
+            <label>Libellé <input type="text" name="text" placeholder="Python, Machine Learning..." required></label>
+            <label>Catégorie <select name="entity_label">{% for label in entity_labels %}<option value="{{ label }}">{{ label }}</option>{% endfor %}</select></label>
+          </div>
+          <div class="grid cols-2">
+            <label>Nom canonique <input type="text" name="canonical_name" placeholder="Nom normalisé (optionnel)"></label>
+          </div>
+          <div class="actions">
+            <button type="submit" name="action" value="add_entity" class="success">➕ Ajouter</button>
+          </div>
+        </form>
+      </section>
+      {% elif selected.kind == 'ner' %}
+      <section class="panel">
+        <div class="inline" style="align-items:center; justify-content:space-between;">
+          <h3 style="margin-bottom:0;">Entités détectées ({{ selected.entities | length }})</h3>
+          <div class="actions" style="max-width: 320px; margin-top:0;">
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
+              <button type="submit" name="action" value="approve_all_entities" class="success">Approuver tout</button>
+            </form>
+            <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
               <button type="submit" name="action" value="reject_all_entities" class="danger">Rejeter tout</button>
             </form>
           </div>
@@ -113,6 +368,10 @@
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="record_id" value="{{ selected.record_id }}">
               <input type="hidden" name="entity_id" value="{{ entity.entity_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
               <label>
                 Type validé
                 <select name="approved_label">
@@ -133,6 +392,7 @@
               <div class="actions">
                 <button type="submit" name="action" value="approve_entity" class="success">Accepter</button>
                 <button type="submit" name="action" value="reject_entity" class="danger">Rejeter</button>
+                <button type="submit" name="action" value="delete_entity" class="danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette entité ?')">🗑️ Supprimer</button>
               </div>
             </form>
           </div>
@@ -144,14 +404,18 @@
         <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" class="panel" style="margin-top:12px;">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+          <input type="hidden" name="filter_status" value="{{ filter_status }}">
+          <input type="hidden" name="filter_source" value="{{ filter_source }}">
+          <input type="hidden" name="page" value="{{ page }}">
           <h4>Ajouter / corriger une entité</h4>
           <div class="grid cols-2">
-            <label>Texte <input type="text" name="text" placeholder="SVM"></label>
+            <label>Texte <input type="text" name="text" placeholder="SVM" required></label>
             <label>Type <select name="entity_label">{% for label in entity_labels %}<option value="{{ label }}">{{ label }}</option>{% endfor %}</select></label>
           </div>
           <div class="grid cols-2">
-            <label>Début <input type="number" name="start" min="0" value="0"></label>
-            <label>Fin <input type="number" name="end" min="0" value="0"></label>
+            <label>Début <input type="number" name="start" min="0" value="0" required></label>
+            <label>Fin <input type="number" name="end" min="0" value="0" required></label>
           </div>
           <div class="grid cols-2">
             <label>Nom canonique <input type="text" name="canonical_name" value=""></label>
@@ -170,11 +434,19 @@
             <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
               <button type="submit" name="action" value="approve_all_labels" class="success">Approuver tout</button>
             </form>
             <form method="post" action="{{ url_for('admin_referential_annotation_action') }}" style="flex:1; margin:0;">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+              <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+              <input type="hidden" name="filter_status" value="{{ filter_status }}">
+              <input type="hidden" name="filter_source" value="{{ filter_source }}">
+              <input type="hidden" name="page" value="{{ page }}">
               <button type="submit" name="action" value="reject_all_labels" class="danger">Rejeter tout</button>
             </form>
           </div>
@@ -182,6 +454,10 @@
         <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+          <input type="hidden" name="filter_status" value="{{ filter_status }}">
+          <input type="hidden" name="filter_source" value="{{ filter_source }}">
+          <input type="hidden" name="page" value="{{ page }}">
           <label>
             Familles validées
             <select name="approved_labels" multiple size="5">
@@ -207,6 +483,10 @@
         <form method="post" action="{{ url_for('admin_referential_annotation_action') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <input type="hidden" name="record_id" value="{{ selected.record_id }}">
+          <input type="hidden" name="filter_kind" value="{{ filter_kind }}">
+          <input type="hidden" name="filter_status" value="{{ filter_status }}">
+          <input type="hidden" name="filter_source" value="{{ filter_source }}">
+          <input type="hidden" name="page" value="{{ page }}">
           <button type="submit" name="action" value="validate_document" class="success">Valider tous les blocs du document</button>
         </form>
       </section>
@@ -215,4 +495,54 @@
       {% endif %}
     </main>
   </div>
+  
+  <script>
+    // Raccourcis clavier
+    document.addEventListener('keydown', function(e) {
+      // Ignorer si on est dans un input/textarea/select
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+        return;
+      }
+      
+      const currentRecordId = '{{ selected.record_id if selected else "" }}';
+      const navLinks = Array.from(document.querySelectorAll('.nav a'));
+      const currentIndex = navLinks.findIndex(a => a.href.includes(currentRecordId));
+      
+      // Flèche gauche : annotation précédente
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        e.preventDefault();
+        navLinks[currentIndex - 1].click();
+      }
+      
+      // Flèche droite : annotation suivante
+      if (e.key === 'ArrowRight' && currentIndex < navLinks.length - 1) {
+        e.preventDefault();
+        navLinks[currentIndex + 1].click();
+      }
+    });
+    
+    // Validation des positions d'entité
+    document.querySelectorAll('form[action*="add_entity"]').forEach(form => {
+      form.addEventListener('submit', function(e) {
+        const text = form.querySelector('input[name="text"]').value;
+        const start = parseInt(form.querySelector('input[name="start"]').value);
+        const end = parseInt(form.querySelector('input[name="end"]').value);
+        const previewText = document.querySelector('.text-preview').textContent;
+        
+        if (start < 0 || end <= start || end > previewText.length) {
+          e.preventDefault();
+          alert('Positions invalides. Vérifiez que début < fin et que fin ne dépasse pas la longueur du texte.');
+          return false;
+        }
+        
+        const selectedText = previewText.substring(start, end);
+        if (selectedText !== text) {
+          if (!confirm(`Le texte sélectionné ("${selectedText}") ne correspond pas au texte saisi ("${text}"). Continuer ?`)) {
+            e.preventDefault();
+            return false;
+          }
+        }
+      });
+    });
+  </script>
 {% endblock %}

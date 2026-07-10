@@ -45,6 +45,7 @@ from referential_import.import_service import analysis_from_export, build_export
 from referential_import.pdf_loader import load_pdf_document
 from referentials.rome_referential import RomeService, validate_rome_code, validate_rome_codes
 from skills.open_extractor import extract_skills as open_extract_skills
+from skill_extraction.training_skill_extractor import extract_training_skills
 from services.analysis_result_builder import build_analysis_result
 from referentials.referential_registry import (
     DEFAULT_REFERENTIALS_DIR,
@@ -269,6 +270,65 @@ def _check_ia_classifier_quality(skills_result: dict[str, Any]) -> IAClassificat
 
 
 def _build_skill_extraction(text: str) -> SkillExtractionInfo:
+    # Essayer d'abord avec l'extracteur de formation pour les textes structurés
+    training_skills = extract_training_skills(text)
+    
+    # Si l'extracteur de formation trouve au moins 5 compétences, l'utiliser
+    if len(training_skills) >= 5:
+        skills = []
+        tools = []
+        knowledge = []
+        seen_labels: set[str] = set()
+        
+        for skill_data in training_skills:
+            label = skill_data.get('label', '')
+            key = label.lower()
+            if key in seen_labels:
+                continue
+            seen_labels.add(key)
+            
+            # Déterminer le type de compétence
+            skill_type = 'technical_skill'
+            label_lower = label.lower()
+            
+            # Détecter les outils
+            tool_keywords = ['python', 'sql', 'power bi', 'tableau', 'matplotlib', 'seaborn', 
+                           'plotly', 'numpy', 'pandas', 'excel', 'r', 'spark', 'tensorflow',
+                           'pytorch', 'docker', 'kubernetes', 'aws', 'azure', 'gcp']
+            if any(tool in label_lower for tool in tool_keywords):
+                skill_type = 'tool'
+            
+            # Détecter les connaissances
+            knowledge_keywords = ['statistique', 'math', 'théorie', 'concept', 'principe']
+            if any(kw in label_lower for kw in knowledge_keywords):
+                skill_type = 'knowledge'
+            
+            item = OpenExtractedSkill(
+                source_label=skill_data.get('raw_label', label),
+                normalized_label=label,
+                type=skill_type,
+                source_text=skill_data.get('source_sentence', ''),
+                start=0,
+                end=0,
+                confidence=skill_data.get('confidence', 0.85),
+                method=skill_data.get('extraction_method', 'training_extractor'),
+                referential_id=None,
+                referential_source=skill_data.get('source_section', ''),
+            )
+            
+            if skill_type == 'tool':
+                tools.append(item)
+            elif skill_type == 'knowledge':
+                knowledge.append(item)
+            else:
+                skills.append(item)
+        
+        total = len(skills) + len(tools) + len(knowledge)
+        status = 'success' if total >= 3 else 'partial'
+        return SkillExtractionInfo(status=status, skills=skills, tools=tools,
+                                  knowledge_items=knowledge)
+    
+    # Sinon, utiliser l'ancien extracteur
     extracted = open_extract_skills(text)
     if not extracted:
         return SkillExtractionInfo(
@@ -990,6 +1050,11 @@ def create_app(
     def index():
         return _render_home_page()
 
+    @app.get('/referential/import')
+    def referential_import_get():
+        """Redirige vers la page admin d'import de référentiel."""
+        return redirect(url_for('admin_referential_import'))
+
     @app.post('/referential/import')
     def referential_import_preview():
         uploaded = request.files.get('pdf')
@@ -1686,6 +1751,113 @@ def create_app(
             converted.unlink()
         return redirect(url_for('admin_ai_certification_market_comparison'))
 
+    @app.route('/admin/referential/reset', methods=['POST'])
+    @require_admin_auth
+    def admin_referential_reset():
+        """Reset tous les référentiels importés et les annotations."""
+        try:
+            from scripts.reset_referentials import reset_referentials
+            keep_base = request.form.get('keep_base') == 'on'
+            stats = reset_referentials(dry_run=False, keep_base=keep_base)
+            
+            # Régénérer les candidats d'annotation si on a gardé des fichiers
+            if not keep_base:
+                try:
+                    from scripts.generate_annotation_candidates_from_imported import generate_annotation_candidates_from_imported
+                    generate_annotation_candidates_from_imported()
+                except Exception as exc:
+                    LOGGER.warning("Impossible de régénérer les candidats d'annotation: %s", exc)
+            
+            message = f"Reset terminé. {stats['imported_files']} fichiers importés, {stats['annotation_files']} fichiers d'annotation, {stats['database']} base de données supprimés."
+            return redirect(url_for('admin_ai_certification_market_comparison', success=message))
+        except Exception as exc:
+            LOGGER.error("Erreur lors du reset: %s", exc)
+            return redirect(url_for('admin_ai_certification_market_comparison', error=f'Erreur lors du reset: {exc}'))
+
+    @app.route('/admin/referential/generate-annotation-candidates', methods=['POST'])
+    @require_admin_auth
+    def admin_generate_annotation_candidates():
+        """Génère les candidats d'annotation à partir des référentiels importés."""
+        try:
+            from scripts.generate_annotation_candidates_from_imported import generate_annotation_candidates_from_imported
+            stats = generate_annotation_candidates_from_imported()
+            message = f"Génération terminée. {stats['candidates_generated']} candidats générés à partir de {stats['files_processed']} fichiers."
+            return redirect(url_for('admin_referential_annotation', success=message))
+        except Exception as exc:
+            LOGGER.error("Erreur lors de la génération: %s", exc)
+            return redirect(url_for('admin_referential_annotation', error=f'Erreur lors de la génération: {exc}'))
+
+    @app.route('/admin/referential-pdf/<path:filename>')
+    @require_admin_auth
+    def admin_referential_pdf(filename: str):
+        """Sert les fichiers PDF depuis le répertoire des référentiels."""
+        from flask import send_from_directory
+        
+        # Répertoire où sont stockés les PDF
+        pdf_dir = PROJECT_ROOT / 'data' / 'raw' / 'referentiel'
+        
+        if not pdf_dir.exists():
+            return redirect(url_for('admin_referential_annotation', error='Répertoire PDF introuvable'))
+        
+        # Chercher le fichier PDF
+        pdf_path = pdf_dir / filename
+        
+        if not pdf_path.exists() or not pdf_path.is_file():
+            return redirect(url_for('admin_referential_annotation', error=f'PDF introuvable: {filename}'))
+        
+        return send_from_directory(
+            directory=str(pdf_dir),
+            path=filename,
+            mimetype='application/pdf'
+        )
+
+    @app.route('/admin/referential-viewer')
+    @require_admin_auth
+    def admin_referential_viewer():
+        """Page de visualisation des PDF avec PDF.js."""
+        referential_id = request.args.get('referential_id', '')
+        
+        # Trouver le PDF correspondant au référentiel
+        pdf_filename = None
+        referential_title = None
+        
+        if referential_id:
+            # Chercher dans les référentiels importés
+            imported_dir = PROJECT_ROOT / 'data' / 'referentials' / 'imported'
+            if imported_dir.exists():
+                for json_file in imported_dir.glob('*.json'):
+                    try:
+                        with open(json_file, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                        
+                        doc_id = data.get('document', {}).get('id', '')
+                        if doc_id == referential_id:
+                            referential_title = data.get('document', {}).get('title', '')
+                            
+                            # Chercher le PDF correspondant par hash
+                            sha256 = data.get('document', {}).get('sha256', '')
+                            if sha256:
+                                import hashlib
+                                pdf_dir = PROJECT_ROOT / 'data' / 'raw' / 'referentiel'
+                                if pdf_dir.exists():
+                                    for pdf_path in pdf_dir.glob('*.pdf'):
+                                        with open(pdf_path, 'rb') as pf:
+                                            pdf_hash = hashlib.sha256(pf.read()).hexdigest()
+                                        if pdf_hash == sha256:
+                                            pdf_filename = pdf_path.name
+                                            break
+                            break
+                    except Exception as e:
+                        LOGGER.warning(f"Erreur lors de la lecture de {json_file}: {e}")
+                        continue
+        
+        return render_template(
+            'admin_referential_viewer.html',
+            pdf_filename=pdf_filename,
+            referential_id=referential_id,
+            referential_title=referential_title,
+        )
+
     @app.route('/admin/ai-certification-market-comparison', methods=['GET', 'POST'])
     @require_admin_auth
     def admin_ai_certification_market_comparison():
@@ -1819,15 +1991,18 @@ def create_app(
 
     ner_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_ner_candidates.jsonl')
     multilabel_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_multilabel_candidates.jsonl')
+    candidates_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_candidates.jsonl')
     app.extensions['referential_ner_annotation_store'] = ner_annotation_store
     app.extensions['referential_multilabel_annotation_store'] = multilabel_annotation_store
+    app.extensions['referential_candidates_annotation_store'] = candidates_annotation_store
 
     REFERENTIAL_ENTITY_LABELS = ['SKILL', 'METHOD', 'TOOL', 'DOMAIN', 'SOFT_SKILL', 'OTHER']
     REFERENTIAL_FAMILY_LABELS = ['Machine Learning', 'Deep Learning', 'NLP', 'MLOps', 'Other']
 
     def _referential_annotation_records() -> list[dict[str, Any]]:
         records: list[dict[str, Any]] = []
-        for kind, store in (('ner', ner_annotation_store), ('multilabel', multilabel_annotation_store)):
+        # Charger depuis les 3 sources
+        for kind, store in (('ner', ner_annotation_store), ('multilabel', multilabel_annotation_store), ('candidates', candidates_annotation_store)):
             for record in store.load():
                 item = dict(record)
                 item['kind'] = kind
@@ -1852,8 +2027,10 @@ def create_app(
     def _persist_referential_records(records: list[dict[str, Any]]) -> None:
         ner_rows = [dict(record) for record in records if clean_text(record.get('kind')) == 'ner']
         multilabel_rows = [dict(record) for record in records if clean_text(record.get('kind')) == 'multilabel']
+        candidates_rows = [dict(record) for record in records if clean_text(record.get('kind')) == 'candidates']
         ner_annotation_store.save(ner_rows)
         multilabel_annotation_store.save(multilabel_rows)
+        candidates_annotation_store.save(candidates_rows)
 
     def _highlight_referential_text(text: str, entities: list[dict[str, Any]] | None) -> Markup:
         safe_text = clean_text(text)
@@ -1891,35 +2068,151 @@ def create_app(
         parts.append(str(escape(safe_text[cursor:])))
         return Markup(''.join(parts))
 
-    def _render_referential_annotation_index(*, selected_record_id: str | None = None, success: str | None = None, error: str | None = None):
-        records = _referential_annotation_records()
+    def _render_referential_annotation_index(
+        *,
+        selected_record_id: str | None = None,
+        success: str | None = None,
+        error: str | None = None,
+        filter_kind: str | None = None,
+        filter_status: str | None = None,
+        filter_source: str | None = None,
+        page: int = 1,
+        per_page: int = 50,
+    ):
+        all_records = _referential_annotation_records()
+        
+        # Appliquer les filtres
+        records = all_records
+        if filter_kind:
+            records = [r for r in records if clean_text(r.get('kind') or '') == filter_kind]
+        if filter_status:
+            records = [r for r in records if clean_text(r.get('status') or '') == filter_status]
+        if filter_source:
+            records = [r for r in records if clean_text(r.get('source_file') or '') == filter_source]
+        
+        # Calculer les statistiques
+        total_count = len(all_records)
+        filtered_count = len(records)
+        pending_count = sum(1 for r in all_records if clean_text(r.get('status') or '') == 'pending')
+        approved_count = sum(1 for r in all_records if clean_text(r.get('status') or '') == 'approved')
+        rejected_count = sum(1 for r in all_records if clean_text(r.get('status') or '') == 'rejected')
+        validated_count = sum(1 for r in all_records if clean_text(r.get('status') or '') == 'validated')
+        
+        # Pagination
+        total_pages = max(1, (filtered_count + per_page - 1) // per_page)
+        page = max(1, min(page, total_pages))
+        start_idx = (page - 1) * per_page
+        end_idx = start_idx + per_page
+        paginated_records = records[start_idx:end_idx]
+        
+        # Trouver l'enregistrement sélectionné
         selected = None
         if selected_record_id:
-            selected = next((record for record in records if clean_text(record.get('record_id') or '') == clean_text(selected_record_id)), None)
-        if selected is None and records:
-            selected = records[0]
+            selected = next((record for record in all_records if clean_text(record.get('record_id') or '') == clean_text(selected_record_id)), None)
+        if selected is None and paginated_records:
+            selected = paginated_records[0]
         if selected is not None:
             selected = dict(selected)
             selected['highlighted_text'] = _highlight_referential_text(selected.get('text', ''), selected.get('entities', []))
+        
+        # Récupérer les sources uniques pour le filtre
+        sources = sorted(set(clean_text(r.get('source_file') or '') for r in all_records if clean_text(r.get('source_file') or '')))
+        
         return render_template(
             'admin_referential_annotation.html',
-            records=records,
+            records=paginated_records,
             selected=selected,
             success=success,
             error=error,
             section_labels=['TITLE', 'PROVIDER', 'REFERENCE', 'DURATION', 'LEVEL', 'FORMAT', 'PRICE', 'CPF', 'CERTIFICATION', 'PUBLIC', 'PREREQUISITES', 'OBJECTIVES', 'PROGRAM', 'MODULE', 'SKILLS', 'TOOLS', 'DOMAINS', 'FOOTER', 'OTHER'],
             entity_labels=REFERENTIAL_ENTITY_LABELS,
             family_labels=REFERENTIAL_FAMILY_LABELS,
+            filter_kind=filter_kind or '',
+            filter_status=filter_status or '',
+            filter_source=filter_source or '',
+            sources=sources,
+            page=page,
+            per_page=per_page,
+            total_pages=total_pages,
+            total_count=total_count,
+            filtered_count=filtered_count,
+            pending_count=pending_count,
+            approved_count=approved_count,
+            rejected_count=rejected_count,
+            validated_count=validated_count,
         )
 
     @app.get('/admin/referential-annotation')
     @require_admin_auth
     def admin_referential_annotation():
-        return _render_referential_annotation_index(selected_record_id=request.args.get('record_id'))
+        return _render_referential_annotation_index(
+            selected_record_id=request.args.get('record_id'),
+            filter_kind=request.args.get('kind'),
+            filter_status=request.args.get('status'),
+            filter_source=request.args.get('source'),
+            page=int(request.args.get('page') or 1),
+            per_page=int(request.args.get('per_page') or 50),
+        )
 
     def _update_annotation_status(record: dict[str, Any], *, action: str, form: Any) -> None:
         kind = clean_text(record.get('kind') or 'ner')
-        if kind == 'ner':
+        
+        # Gestion des compétences candidates (kind == 'candidates')
+        if kind == 'candidates':
+            if action in {'approve_entity', 'approve_all_entities'}:
+                entity_id = clean_text(form.get('entity_id') or '')
+                approved_label = clean_text(form.get('approved_label') or '')
+                canonical_name = clean_text(form.get('canonical_name') or '')
+                
+                for skill in record.get('skills', []):
+                    skill_id = clean_text(skill.get('skill_id') or '')
+                    if action == 'approve_all_entities' or (skill_id and skill_id == entity_id):
+                        skill['status'] = 'approved'
+                        if approved_label:
+                            skill['category'] = approved_label
+                        if canonical_name:
+                            skill['canonical_label'] = canonical_name
+                            
+            elif action in {'reject_entity', 'reject_all_entities'}:
+                entity_id = clean_text(form.get('entity_id') or '')
+                for skill in record.get('skills', []):
+                    skill_id = clean_text(skill.get('skill_id') or '')
+                    if action == 'reject_all_entities' or (skill_id and skill_id == entity_id):
+                        skill['status'] = 'rejected'
+                        
+            elif action == 'delete_entity':
+                entity_id = clean_text(form.get('entity_id') or '')
+                if entity_id:
+                    record['skills'] = [
+                        skill for skill in record.get('skills', [])
+                        if clean_text(skill.get('skill_id') or '') != entity_id
+                    ]
+                    # Mettre à jour le compteur
+                    record['skills_count'] = len(record['skills'])
+                    
+            elif action == 'add_entity':
+                label = clean_text(form.get('text') or '')
+                category = clean_text(form.get('entity_label') or 'SKILL')
+                canonical_name = clean_text(form.get('canonical_name') or label)
+                
+                if label:
+                    new_skill = {
+                        'skill_id': f"manual-skill-{len(record.get('skills', [])) + 1}",
+                        'label': label,
+                        'canonical_label': canonical_name,
+                        'category': category,
+                        'confidence': 1.0,
+                        'source': 'manual',
+                        'status': 'approved',
+                    }
+                    record.setdefault('skills', []).append(new_skill)
+                    record['skills_count'] = len(record['skills'])
+                    
+            elif action == 'validate_document':
+                record['status'] = 'validated'
+                
+        # Gestion des entités NER (kind == 'ner')
+        elif kind == 'ner':
             if action in {'approve_entity', 'approve_all_entities'}:
                 entity_id = clean_text(form.get('entity_id') or '')
                 approved_label = clean_text(form.get('approved_label') or '')
@@ -1937,6 +2230,13 @@ def create_app(
                 for entity in record.get('entities', []):
                     if action == 'reject_all_entities' or clean_text(entity.get('entity_id') or '') == entity_id:
                         entity['status'] = 'rejected'
+            elif action == 'delete_entity':
+                entity_id = clean_text(form.get('entity_id') or '')
+                if entity_id:
+                    record['entities'] = [
+                        entity for entity in record.get('entities', [])
+                        if clean_text(entity.get('entity_id') or '') != entity_id
+                    ]
             elif action == 'add_entity':
                 text_value = clean_text(form.get('text') or '')
                 if text_value:
@@ -1959,6 +2259,8 @@ def create_app(
                     })
             elif action == 'validate_document':
                 pass
+                
+        # Gestion multilabel (kind == 'multilabel')
         else:
             if action in {'approve_multilabel', 'save_multilabel', 'approve_all_labels'}:
                 if action == 'approve_all_labels':
@@ -2000,7 +2302,20 @@ def create_app(
                     records[idx] = item
                     records[idx]['status'] = 'validated'
         _persist_referential_records(records)
-        return redirect(url_for('admin_referential_annotation', record_id=record_id))
+        
+        # Préserver les filtres dans le redirect
+        query_params = []
+        if request.form.get('filter_kind'):
+            query_params.append(f'kind={request.form.get("filter_kind")}')
+        if request.form.get('filter_status'):
+            query_params.append(f'status={request.form.get("filter_status")}')
+        if request.form.get('filter_source'):
+            query_params.append(f'source={request.form.get("filter_source")}')
+        if request.form.get('page'):
+            query_params.append(f'page={request.form.get("page")}')
+        
+        query_string = f'&{("&".join(query_params))}' if query_params else ''
+        return redirect(url_for('admin_referential_annotation', record_id=record_id) + query_string)
 
     continual_store = ContinualLearningStore(PROJECT_ROOT / 'data' / 'continual_learning' / 'continual_learning.sqlite3')
     app.extensions['continual_learning_store'] = continual_store

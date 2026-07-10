@@ -71,7 +71,7 @@ CPF_GENERAL_PAIRS ?= data/processed/cpf/pairs_generalistes.jsonl
 CPF_BASE_MODEL ?= sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 CPF_MODEL_OUTPUT ?= models/cpf-recommender
 
-.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import audit-referential-pdfs build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner evaluate-referential-models test-referential-import deploy-referential-models
+.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import audit-referential-pdfs build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner evaluate-referential-models test-referential-import deploy-referential-models generate-annotation-candidates
 
 install-dev:
 	$(PYTHON) -m pip install -e .
@@ -244,69 +244,72 @@ approve-referential-import:
 	fi
 	$(PYTHON) scripts/import_referential.py --input "$(REFERENTIAL_INPUT)" --approve --report "$(REFERENTIAL_REPORT)" --output "$(REFERENTIAL_OUTPUT)" --store-path "$(REFERENTIAL_DB)"
 
+generate-annotation-candidates:
+	$(PYTHON) scripts/generate_annotation_candidates.py
+
 
 
 test:
 	$(PYTHON) -m pytest -q
 
-check-skills-referential:
-	@$(PYTHON) -c "
-import json, sys
-from pathlib import Path
-from skills.skill_normalizer import normalize_skill_entry
-
-path = Path('data/referentials/skills.json')
-if not path.exists():
-    print('FICHIER MANQUANT: data/referentials/skills.json')
-    sys.exit(1)
-
-try:
-    raw = json.loads(path.read_text(encoding='utf-8'))
-except Exception as e:
-    print(f'JSON INVALIDE: {e}')
-    sys.exit(1)
-
-if isinstance(raw, dict):
-    for key in ('skills', 'competencies', 'competences', 'entries', 'items', 'data'):
-        entries = raw.get(key)
-        if isinstance(entries, list):
-            raw = entries
-            break
-    else:
-        print(f'STRUCTURE INVALIDE: aucune liste de competences trouvee (cles: {list(raw.keys())})')
-        sys.exit(1)
-elif not isinstance(raw, list):
-    print(f'FORMAT INATTENDU: {type(raw).__name__}')
-    sys.exit(1)
-
-total = len(raw)
-valid = 0
-ignored = 0
-str_count = 0
-dict_count = 0
-for entry in raw:
-    if isinstance(entry, str):
-        str_count += 1
-    elif isinstance(entry, dict):
-        dict_count += 1
-    result = normalize_skill_entry(entry)
-    if result is not None:
-        valid += 1
-    else:
-        ignored += 1
-
-print(f'FICHIER: {path}')
-print(f'TOTAL ENTREES: {total}')
-print(f'  chaines: {str_count}')
-print(f'  dictionnaires: {dict_count}')
-print(f'VALIDES: {valid}')
-print(f'IGNOREES: {ignored}')
-if valid == 0:
-    print('ATTENTION: aucune entree exploitable')
-if ignored > 0:
-    print(f'ATTENTION: {ignored} entrees ignorees (format incorrect)')
-    sys.exit(1)
-"
+# check-skills-referential:
+# 	@$(PYTHON) -c "
+# import json, sys
+# from pathlib import Path
+# from skills.skill_normalizer import normalize_skill_entry
+# 
+# path = Path('data/referentials/skills.json')
+# if not path.exists():
+#     print('FICHIER MANQUANT: data/referentials/skills.json')
+#     sys.exit(1)
+# 
+# try:
+#     raw = json.loads(path.read_text(encoding='utf-8'))
+# except Exception as e:
+#     print(f'JSON INVALIDE: {e}')
+#     sys.exit(1)
+# 
+# if isinstance(raw, dict):
+#     for key in ('skills', 'competencies', 'competences', 'entries', 'items', 'data'):
+#         entries = raw.get(key)
+#         if isinstance(entries, list):
+#             raw = entries
+#             break
+#     else:
+#         print(f'STRUCTURE INVALIDE: aucune liste de competences trouvee (cles: {list(raw.keys())})')
+#         sys.exit(1)
+# elif not isinstance(raw, list):
+#     print(f'FORMAT INATTENDU: {type(raw).__name__}')
+#     sys.exit(1)
+# 
+# total = len(raw)
+# valid = 0
+# ignored = 0
+# str_count = 0
+# dict_count = 0
+# for entry in raw:
+#     if isinstance(entry, str):
+#         str_count += 1
+#     elif isinstance(entry, dict):
+#         dict_count += 1
+#     result = normalize_skill_entry(entry)
+#     if result is not None:
+#         valid += 1
+#     else:
+#         ignored += 1
+# 
+# print(f'FICHIER: {path}')
+# print(f'TOTAL ENTREES: {total}')
+# print(f'  chaines: {str_count}')
+# print(f'  dictionnaires: {dict_count}')
+# print(f'VALIDES: {valid}')
+# print(f'IGNOREES: {ignored}')
+# if valid == 0:
+#     print('ATTENTION: aucune entree exploitable')
+# if ignored > 0:
+#     print(f'ATTENTION: {ignored} entrees ignorees (format incorrect)')
+#     sys.exit(1)
+# "
 
 test-referential-import:
 	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
@@ -316,6 +319,12 @@ migrate-referentials-schema:
 
 check-referentials-schema:
 	$(PYTHON) scripts/migrate_referentials_to_canonical_schema.py --input-dir "data/referentials" --check-only
+
+check-ai-taxonomy:
+	$(PYTHON) scripts/check_ai_taxonomy.py
+
+list-routes:
+	$(PYTHON) scripts/list_routes.py
 
 deploy-referential-models:
 	$(PYTHON) scripts/deploy_referential_models.py --source-root "$(REFERENTIAL_SECTION_MODEL_OUTPUT)/.." --target-root "$(DEPLOY_ROOT)/models"
