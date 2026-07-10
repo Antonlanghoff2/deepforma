@@ -10,92 +10,113 @@ from common.text import clean_text
 
 from .models import DerivedSkill, EvaluationCriterion, ImportIssue, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
 
+DEFAULT_DB_PATH = Path("data/referentials/referential_imports.sqlite3")
+
+_CREATE_TABLES_SQL = """
+CREATE TABLE IF NOT EXISTS imports (
+    id TEXT PRIMARY KEY,
+    source_path TEXT NOT NULL,
+    file_name TEXT NOT NULL,
+    sha256 TEXT NOT NULL,
+    schema_version TEXT NOT NULL,
+    importer_version TEXT NOT NULL,
+    page_count INTEGER NOT NULL,
+    review_status TEXT NOT NULL,
+    created_at TEXT,
+    validated_at TEXT,
+    validated_by TEXT,
+    document_json TEXT NOT NULL,
+    report_json TEXT NOT NULL,
+    UNIQUE(sha256, importer_version)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_imports_raw_hash_version
+ON imports(sha256, importer_version);
+CREATE TABLE IF NOT EXISTS blocks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    UNIQUE(document_sha256, code)
+);
+CREATE TABLE IF NOT EXISTS activities (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    UNIQUE(document_sha256, code)
+);
+CREATE TABLE IF NOT EXISTS competencies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    UNIQUE(document_sha256, code)
+);
+CREATE TABLE IF NOT EXISTS criteria (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    UNIQUE(document_sha256, code)
+);
+CREATE TABLE IF NOT EXISTS derived_skills (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS issues (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_sha256 TEXT NOT NULL,
+    severity TEXT NOT NULL,
+    code TEXT NOT NULL,
+    payload_json TEXT NOT NULL
+);
+"""
+
 
 class ReferentialImportStore:
     def __init__(self, db_path: str | Path | None = None) -> None:
-        self.db_path = Path(db_path or Path("data/referentials/referential_imports.sqlite3"))
+        self.db_path = Path(db_path or DEFAULT_DB_PATH)
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self._initialized = False
         self._init_db()
 
     def _connect(self) -> sqlite3.Connection:
-        """Ouvre une connexion SQLite. La base doit déjà être initialisée."""
         conn = sqlite3.connect(self.db_path)
         conn.row_factory = sqlite3.Row
         return conn
 
     def _init_db(self) -> None:
-        """Initialise la base de données et crée les tables si nécessaire."""
         if self._initialized:
             return
-        
-        # Créer le dossier parent si nécessaire
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Utiliser sqlite3.connect() directement pour éviter la récursion
         with sqlite3.connect(self.db_path) as conn:
-            conn.executescript(
-                """
-                PRAGMA journal_mode=WAL;
-                CREATE TABLE IF NOT EXISTS imports (
-                    id TEXT PRIMARY KEY,
-                    source_path TEXT NOT NULL,
-                    file_name TEXT NOT NULL,
-                    sha256 TEXT NOT NULL,
-                    schema_version TEXT NOT NULL,
-                    importer_version TEXT NOT NULL,
-                    page_count INTEGER NOT NULL,
-                    review_status TEXT NOT NULL,
-                    created_at TEXT,
-                    validated_at TEXT,
-                    validated_by TEXT,
-                    document_json TEXT NOT NULL,
-                    report_json TEXT NOT NULL,
-                    UNIQUE(sha256, importer_version)
-                );
-                CREATE TABLE IF NOT EXISTS blocks (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL,
-                    UNIQUE(document_sha256, code)
-                );
-                CREATE TABLE IF NOT EXISTS activities (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL,
-                    UNIQUE(document_sha256, code)
-                );
-                CREATE TABLE IF NOT EXISTS competencies (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL,
-                    UNIQUE(document_sha256, code)
-                );
-                CREATE TABLE IF NOT EXISTS criteria (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL,
-                    UNIQUE(document_sha256, code)
-                );
-                CREATE TABLE IF NOT EXISTS derived_skills (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL
-                );
-                CREATE TABLE IF NOT EXISTS issues (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    document_sha256 TEXT NOT NULL,
-                    severity TEXT NOT NULL,
-                    code TEXT NOT NULL,
-                    payload_json TEXT NOT NULL
-                );
-                """
-            )
-        
+            conn.executescript("PRAGMA journal_mode=WAL;")
+            existing = {
+                row[0]
+                for row in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+            conn.executescript(_CREATE_TABLES_SQL)
+            if "referential_imports" in existing and "imports" not in existing:
+                conn.executescript(
+                    """
+                    INSERT OR IGNORE INTO imports
+                        (id, source_path, file_name, sha256, schema_version,
+                         importer_version, page_count, review_status,
+                         created_at, validated_at, validated_by,
+                         document_json, report_json)
+                    SELECT
+                        id, source_path, file_name, sha256, schema_version,
+                        importer_version, page_count, review_status,
+                        created_at, validated_at, validated_by,
+                        document_json, report_json
+                    FROM referential_imports;
+                    """
+                )
+            conn.commit()
         self._initialized = True
 
     def has_document(self, sha256: str, importer_version: str) -> bool:

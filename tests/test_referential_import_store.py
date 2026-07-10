@@ -1,4 +1,5 @@
 """Tests de non-régression pour ReferentialImportStore."""
+import sqlite3
 import tempfile
 from pathlib import Path
 
@@ -8,109 +9,169 @@ from referential_import.store import ReferentialImportStore
 
 
 def test_store_initialization_no_recursion():
-    """Test que l'initialisation du store ne cause pas de récursion infinie."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
-        
-        # Première instanciation - ne doit pas lever RecursionError
         store1 = ReferentialImportStore(db_path)
-        assert db_path.exists(), "La base de données doit être créée"
-        
-        # Deuxième instanciation - ne doit pas lever RecursionError
+        assert db_path.exists()
+
         store2 = ReferentialImportStore(db_path)
-        assert db_path.exists(), "La base de données doit toujours exister"
+        assert db_path.exists()
 
 
 def test_store_initialization_creates_parent_directory():
-    """Test que le store crée le dossier parent s'il n'existe pas."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        # Chemin avec sous-dossier inexistant
         db_path = Path(tmpdir) / "subdir" / "nested" / "test.sqlite3"
-        
-        # Le dossier parent n'existe pas encore
         assert not db_path.parent.exists()
-        
-        # L'instanciation doit créer le dossier et la base
         store = ReferentialImportStore(db_path)
-        
-        assert db_path.parent.exists(), "Le dossier parent doit être créé"
-        assert db_path.exists(), "La base de données doit être créée"
+        assert db_path.parent.exists()
+        assert db_path.exists()
 
 
 def test_store_tables_exist():
-    """Test que toutes les tables requises sont créées."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
-        store = ReferentialImportStore(db_path)
-        
-        # Vérifier que les tables existent
-        import sqlite3
+        ReferentialImportStore(db_path)
         conn = sqlite3.connect(db_path)
-        cursor = conn.cursor()
-        
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        tables = {row[0] for row in cursor.fetchall()}
-        
-        expected_tables = {
-            'imports', 'blocks', 'activities', 
-            'competencies', 'criteria', 'derived_skills', 'issues'
-        }
-        
+        tables = {row[0] for row in conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'"
+        ).fetchall()}
         conn.close()
-        
-        assert expected_tables.issubset(tables), f"Tables manquantes: {expected_tables - tables}"
+        expected = {"imports", "blocks", "activities", "competencies",
+                     "criteria", "derived_skills", "issues"}
+        assert expected.issubset(tables), f"Missing: {expected - tables}"
 
 
 def test_store_multiple_instances_same_db():
-    """Test que plusieurs instances peuvent accéder à la même base."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
-        
-        # Créer plusieurs instances
-        store1 = ReferentialImportStore(db_path)
-        store2 = ReferentialImportStore(db_path)
-        store3 = ReferentialImportStore(db_path)
-        
-        # Toutes doivent fonctionner sans erreur
-        result1 = store1.list_imports()
-        result2 = store2.list_imports()
-        result3 = store3.list_imports()
-        
-        assert isinstance(result1, list)
-        assert isinstance(result2, list)
-        assert isinstance(result3, list)
+        s1 = ReferentialImportStore(db_path)
+        s2 = ReferentialImportStore(db_path)
+        s3 = ReferentialImportStore(db_path)
+        for s in (s1, s2, s3):
+            assert isinstance(s.list_imports(), list)
 
 
-def test_store_has_document_method():
-    """Test que la méthode has_document fonctionne après initialisation."""
+def test_store_has_document_returns_false_on_new_db():
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
         store = ReferentialImportStore(db_path)
-        
-        # Tester avec un hash qui n'existe pas
+        assert store.has_document("fake_hash", "v1.0") is False
+
+
+def test_store_has_document_method():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / "test.sqlite3"
+        store = ReferentialImportStore(db_path)
         result = store.has_document("fake_hash", "v1.0")
         assert result is False
 
 
 def test_store_list_imports_empty():
-    """Test que list_imports retourne une liste vide pour une nouvelle base."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
         store = ReferentialImportStore(db_path)
-        
-        imports = store.list_imports()
-        assert imports == []
+        assert store.list_imports() == []
 
 
 def test_store_initialized_flag():
-    """Test que le flag _initialized est correctement géré."""
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = Path(tmpdir) / "test.sqlite3"
         store = ReferentialImportStore(db_path)
-        
-        # Le flag doit être True après initialisation
         assert store._initialized is True
-        
-        # Appeler _init_db() à nouveau ne doit pas causer de problème
         store._init_db()
         assert store._initialized is True
+
+
+def test_non_regression_no_recursion_noOperationalError():
+    with tempfile.TemporaryDirectory() as tmp:
+        store = ReferentialImportStore(Path(tmp) / "db" / "imports.sqlite3")
+        assert store.has_document("abc", "test-version") is False
+
+
+def test_has_document_after_insert():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / "test.sqlite3"
+        store = ReferentialImportStore(db_path)
+        sha256 = "deadbeef" * 8
+        version = "1.0"
+        assert store.has_document(sha256, version) is False
+
+        with store._connect() as conn:
+            conn.execute(
+                """INSERT INTO imports
+                   (id, source_path, file_name, sha256, schema_version,
+                    importer_version, page_count, review_status,
+                    created_at, validated_at, validated_by,
+                    document_json, report_json)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                ("id1", "/tmp/test.pdf", "test.pdf", sha256,
+                 "1.0", version, 1, "imported", "2025-01-01",
+                 None, None, "{}", "{}"),
+            )
+            conn.commit()
+        assert store.has_document(sha256, version) is True
+        assert store.has_document(sha256, "other") is False
+
+
+def test_existing_empty_db_migrated():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / "test.sqlite3"
+        db_path.touch()
+        assert db_path.stat().st_size == 0
+        store = ReferentialImportStore(db_path)
+        assert db_path.stat().st_size > 0
+        assert store.has_document("x", "y") is False
+
+
+def test_existing_referential_imports_table_migrated():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / "test.sqlite3"
+        conn = sqlite3.connect(db_path)
+        conn.executescript(
+            """
+            CREATE TABLE referential_imports (
+                id TEXT PRIMARY KEY,
+                source_path TEXT,
+                file_name TEXT,
+                sha256 TEXT,
+                schema_version TEXT,
+                importer_version TEXT,
+                page_count INTEGER,
+                review_status TEXT,
+                created_at TEXT,
+                validated_at TEXT,
+                validated_by TEXT,
+                document_json TEXT,
+                report_json TEXT
+            );
+            INSERT INTO referential_imports
+                (id, source_path, file_name, sha256, schema_version,
+                 importer_version, page_count, review_status, created_at,
+                 document_json, report_json)
+            VALUES
+                ('mig1', '/a.pdf', 'a.pdf', 'hash_aaa', '1.0', 'v1', 1,
+                 'imported', '2025-01-01', '{}', '{}');
+            """
+        )
+        conn.close()
+
+        store = ReferentialImportStore(db_path)
+        assert store.has_document("hash_aaa", "v1") is True
+        imports = store.list_imports()
+        assert len(imports) == 1
+        assert imports[0]["id"] == "mig1"
+
+
+def test_connect_never_calls_init_db():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        db_path = Path(tmpdir) / "test.sqlite3"
+        store = ReferentialImportStore(db_path)
+        store._initialized = False
+        with store._connect() as conn:
+            tables = {
+                row[0]
+                for row in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+        assert "imports" in tables

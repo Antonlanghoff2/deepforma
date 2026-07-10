@@ -94,7 +94,7 @@
         <li>
           <a href="{{ url_for('admin_referential_annotation', record_id=record.record_id, kind=filter_kind, status=filter_status, source=filter_source, page=page) }}" 
              {% if selected and selected.record_id == record.record_id %}class="active"{% endif %}>
-            <strong>{{ record.source_file }}{% if record.kind == 'candidates' %} · {{ record.skills_count }} comp.{% else %} · p{{ record.page }} · {{ record.section }}{% endif %}</strong>
+            <strong>{{ record.title or record.source_file }}{% if record.kind == 'candidates' %} · {{ record.skills_count }} comp.{% else %} · p{{ record.page }} · {{ record.section }}{% endif %}</strong>
             <span class="muted">{{ record.kind }} | {{ record.status }} | {{ record.record_id[:12] }}...</span>
             {% if record.kind == 'candidates' %}
             <div style="margin-top: 8px;">

@@ -314,6 +314,9 @@ test:
 test-referential-import:
 	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
 
+debug-referential-import-store:
+	$(PYTHON) scripts/debug_referential_import_store.py $(REFERENTIAL_DB)
+
 migrate-referentials-schema:
 	$(PYTHON) scripts/migrate_referentials_to_canonical_schema.py --input-dir "data/referentials" --output-report "reports/referential_schema_migration.json"
 
