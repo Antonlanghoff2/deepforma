@@ -47,6 +47,7 @@ class ReferentialOption:
     official_skills_count: int = 0
     subskills_count: int = 0
     exploitable_skills_count: int = 0
+    annotation_validated: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -63,6 +64,7 @@ class ReferentialOption:
             'official_skills_count': self.official_skills_count,
             'subskills_count': self.subskills_count,
             'exploitable_skills_count': self.exploitable_skills_count,
+            'annotation_validated': self.annotation_validated,
         }
 
 
@@ -430,6 +432,7 @@ def _build_option_from_json(path: Path) -> ReferentialOption | None:
         official_skills_count=counts['official_skills_count'],
         subskills_count=counts['subskills_count'],
         exploitable_skills_count=counts['exploitable_skills_count'],
+        annotation_validated=bool(payload.get('annotation_validated')),
     )
 
 

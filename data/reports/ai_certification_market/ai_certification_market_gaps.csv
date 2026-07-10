@@ -1,8 +1,8 @@
 type,label,block,category,subcategory,offer_count,weighted_score
 missing,Compétences extraites du référentiel,,,,0,0.0
-missing,FastAPI,,tool,,0,0.0
-missing,Airflow,,tool,,0,0.0
-missing,Spark,,tool,,0,0.0
+missing,Deep Learning,,domain,,0,0.0
+missing,NLP,,domain,,0,0.0
+missing,(variable) Cas d'usage interne,,skill,,0,0.0
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.4378
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.4378
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.4378
@@ -28,11 +28,9 @@ unmapped,Concevoir un site web,,Other,Concevoir un site web,1,0.8182
 unmapped,"Déployer, intégrer un logiciel, un système d'informations, une application",,Other,"Déployer, intégrer un logiciel, un système d'informations, une application",1,0.8182
 unmapped,"Paramétrer un logiciel, un outil, un système numérique",,Other,"Paramétrer un logiciel, un outil, un système numérique",1,0.8182
 unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,,Other,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,1,0.6207
-unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.6207
 unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.6207
 unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.6207
 unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.6207
-unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.6207
 unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.6207
 unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.6207
 unmapped,Gérer les risques associés aux technologies d'IA,,Other,Gérer les risques associés aux technologies d'IA,1,0.6207

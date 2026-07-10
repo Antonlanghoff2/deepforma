@@ -5,7 +5,7 @@
     <section class="hero">
       <p class="eyebrow">Deepforma</p>
       <h1>Comparaison du référentiel IA avec le marché</h1>
-      <p class="lead">Compare le référentiel « Ingénieur en intelligence artificielle (MS) » aux offres France Travail d’un territoire, avec preuve textuelle et écarts exploitables.</p>
+      <p class="lead">Compare le référentiel « Ingénieur en intelligence artificielle (MS) » aux offres France Travail d'un territoire, avec preuve textuelle et écarts exploitables.</p>
     </section>
 
     <section class="card">
@@ -21,6 +21,7 @@
             {% for opt in referential_options %}
             <option value="{{ opt.id }}"{% if referential_id == opt.id %} selected{% endif %}{% if not opt.is_selectable %} disabled{% endif %}>
               {{ opt.label }} — {{ opt.exploitable_skills_count }} élément{% if opt.exploitable_skills_count != 1 %}s{% endif %} exploitable{% if opt.exploitable_skills_count != 1 %}s{% endif %}
+              {%- if opt.annotation_validated %} ✓ validé{% endif %}
               {%- if opt.official_skills_count or opt.subskills_count %} ({{ opt.official_skills_count }} officielle{% if opt.official_skills_count != 1 %}s{% endif %}, {{ opt.subskills_count }} sous-compétence{% if opt.subskills_count != 1 %}s{% endif %}){% endif %}
               {%- if not opt.is_selectable %} — {% if opt.status == 'empty' %}incomplet{% elif opt.status == 'invalid' %}invalide{% else %}{{ opt.status }}{% endif %}{% endif %}
             </option>
@@ -91,6 +92,7 @@
               <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Référentiel</th>
               <th style="text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Comp.</th>
               <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Statut</th>
+              <th style="text-align:left;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;">Annotation</th>
               <th style="width:80px;text-align:right;padding:0.4rem 0.5rem;border-bottom:1px solid #d1d5db;"></th>
             </tr>
           </thead>
@@ -126,6 +128,13 @@
                   <button type="submit" style="border:none;background:none;color:#b42318;cursor:pointer;font-size:0.85rem;padding:0;">Supprimer</button>
                 </form>
               </td>
+              <td style="padding:0.4rem 0.5rem;border-bottom:1px solid #e5e7eb;">
+                {% if opt.annotation_validated %}
+                <span style="color:#059669;font-weight:500;">validé</span>
+                {% else %}
+                <span style="color:#9ca3af;">non validé</span>
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -144,7 +153,7 @@
           <button type="submit">Uploader</button>
         </div>
       </form>
-      
+
       <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #e5e7eb;">
         <h3 style="font-size:0.95rem;margin-bottom:0.75rem;">Actions avancées</h3>
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
@@ -171,34 +180,141 @@
     </section>
 
     {% if report %}
+
+    {# ── Résumé ── #}
     <section class="card wide">
       <h2>Résumé</h2>
       <div class="stat-grid">
         <div class="stat-block"><span class="stat-value">{{ report.offer_count }}</span><span class="stat-label">Offres analysées</span></div>
         <div class="stat-block"><span class="stat-value">{{ report.covered_offer_count }}</span><span class="stat-label">Offres couvertes</span></div>
-        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(report.global_coverage_score) }}%</span><span class="stat-label">Score global</span></div>
-        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(report.covered_weight) }}</span><span class="stat-label">Poids couvert</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.1f'|format(report.global_coverage_score) }}%</span><span class="stat-label">Score couverture</span></div>
+        <div class="stat-block"><span class="stat-value">{{ '%.2f'|format(report.covered_weight) }} / {{ '%.2f'|format(report.total_market_weight) }}</span><span class="stat-label">Poids couvert / total</span></div>
+        <div class="stat-block"><span class="stat-value">{{ report.referential_title or report.referential_id }}</span><span class="stat-label">Référentiel</span></div>
       </div>
       <p class="meta-info">Territoire: {{ report.territory }} · Période: {{ report.period or 'Non renseignée' }} · Titres: {{ report.job_titles|length }} · ROME: {{ report.rome_codes|length }}</p>
+      {% if report.warnings %}
+      <div style="margin-top:0.75rem;">
+        {% for w in report.warnings %}
+        <div class="alert alert-warning" style="margin-bottom:0.25rem;">{{ w }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% if output_paths %}
-      <p class="meta-info">Exports: {{ output_paths.json }}, {{ output_paths.validation_csv }}, {{ output_paths.gaps_csv }}</p>
+      <p class="meta-info" style="margin-top:0.5rem;">Exports: <code>{{ output_paths.json }}</code> · <code>{{ output_paths.validation_csv }}</code> · <code>{{ output_paths.gaps_csv }}</code></p>
+      {% endif %}
+      {% if source_queries %}
+      <details class="collapsible" style="margin-top:0.5rem;">
+        <summary>Requêtes France Travail utilisées ({{ source_queries|length }})</summary>
+        <ul style="margin:0.5rem 0 0 1.5rem;font-size:0.85rem;color:#6b7280;">
+          {% for q in source_queries %}
+          <li><code>{{ q }}</code></li>
+          {% endfor %}
+        </ul>
+      </details>
       {% endif %}
     </section>
 
+    {# ── Recommandations IA ── #}
+    {% if ai_recommendations %}
+    <section class="card wide">
+      <h2>Recommandations IA</h2>
+      {% set recs_ajouter = ai_recommendations|selectattr('type', 'equalto', 'competence_a_ajouter')|list %}
+      {% set recs_hors = ai_recommendations|selectattr('type', 'equalto', 'competite_hors_referentiel')|list %}
+      {% set recs_sous = ai_recommendations|selectattr('type', 'equalto', 'contenu_sous_represente')|list %}
+      {% if recs_ajouter %}
+      <details class="collapsible open" open>
+        <summary>Compétences à ajouter au référentiel ({{ recs_ajouter|length }})</summary>
+        <div class="rec-list">
+          {% for rec in recs_ajouter %}
+          <div class="rec-card rec-{{ rec.priorite }}">
+            <div class="rec-header">
+              <span class="badge badge-{{ 'red' if rec.priorite == 'haute' else 'yellow' }}">{{ rec.priorite }}</span>
+              <span class="rec-type">{{ rec.type|replace('_', ' ') }}</span>
+              <span class="rec-skill">{{ rec.skill }}</span>
+            </div>
+            <p class="rec-justification">{{ rec.justification }}</p>
+            <div class="rec-meta">
+              <span>Impact: {{ rec.impact_estime }}</span>
+              {% if rec.offer_count > 0 %}
+              <span>{{ rec.offer_count }} offres ({{ rec.offer_percent }}%)</span>
+              {% endif %}
+              <span>Confiance: {{ rec.niveau_confiance }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+      {% if recs_hors %}
+      <details class="collapsible open" open>
+        <summary>Compétences hors référentiel ({{ recs_hors|length }})</summary>
+        <div class="rec-list">
+          {% for rec in recs_hors %}
+          <div class="rec-card rec-moyenne">
+            <div class="rec-header">
+              <span class="badge badge-yellow">{{ rec.priorite }}</span>
+              <span class="rec-type">hors référentiel</span>
+              <span class="rec-skill">{{ rec.skill }}</span>
+            </div>
+            <p class="rec-justification">{{ rec.justification }}</p>
+            <div class="rec-meta">
+              <span>{{ rec.offer_count }} offres ({{ rec.offer_percent }}%)</span>
+              <span>Confiance: {{ rec.niveau_confiance }}</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+      {% if recs_sous %}
+      <details class="collapsible">
+        <summary>Contenus sous-représentés marché ({{ recs_sous|length }})</summary>
+        <div class="rec-list">
+          {% for rec in recs_sous %}
+          <div class="rec-card rec-basse">
+            <div class="rec-header">
+              <span class="badge badge-green">{{ rec.priorite }}</span>
+              <span class="rec-type">sous-représenté</span>
+              <span class="rec-skill">{{ rec.skill }}</span>
+            </div>
+            <p class="rec-justification">{{ rec.justification }}</p>
+            <div class="rec-meta">
+              <span>{{ rec.offer_count }} offres ({{ rec.offer_percent }}%)</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+      <p class="meta-info" style="margin-top:0.5rem;">Recommandations générées automatiquement à partir des écarts référentiel / marché. Impact élevé = ≥5 offres, moyen = 2-4, faible = ≤1.</p>
+    </section>
+    {% endif %}
+
+    {# ── Score par bloc ── #}
     <section class="card wide">
       <h2>Score par bloc</h2>
       <div style="overflow:auto;">
         <table class="comparison-table">
           <thead>
-            <tr><th>Bloc</th><th>Compétences</th><th>Couverts</th><th>Poids</th><th>Part marché</th><th>Score</th></tr>
+            <tr><th>Bloc</th><th>Compétences</th><th>Couvertes</th><th>Taux</th><th>Poids total</th><th>Poids couvert</th><th>Part marché</th><th>Score moyen</th></tr>
           </thead>
           <tbody>
             {% for block in report.block_summaries %}
+            {% set pct = (block.covered_skill_count / block.skill_count * 100) if block.skill_count else 0 %}
             <tr>
               <td>{{ block.block }}{% if block.block_name %} · {{ block.block_name }}{% endif %}</td>
               <td>{{ block.skill_count }}</td>
               <td>{{ block.covered_skill_count }}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:0.4rem;">
+                  <div style="width:60px;height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;">
+                    <div style="width:{{ '%.0f'|format(pct) }}%;height:100%;background:{{ '#059669' if pct >= 70 else '#d97706' if pct >= 40 else '#dc2626' }};"></div>
+                  </div>
+                  <span style="font-size:0.8rem;">{{ '%.0f'|format(pct) }}%</span>
+                </div>
+              </td>
               <td>{{ '%.2f'|format(block.total_weight) }}</td>
+              <td>{{ '%.2f'|format(block.covered_weight) }}</td>
               <td>{{ '%.1f'|format(block.market_share_percent) }}%</td>
               <td>{{ '%.1f'|format(block.average_skill_share_percent) }}%</td>
             </tr>
@@ -208,34 +324,40 @@
       </div>
     </section>
 
+    {# ── Compétences demandées ── #}
     <section class="card wide">
-      <h2>Compétences demandées</h2>
+      <h2>Compétences les plus demandées</h2>
       <div class="chips">
         {% for skill in report.top_demanded_skills[:24] %}
-        <div class="chip {% if skill.status == 'covered' %}chip-tool{% else %}chip-low{% endif %}" tabindex="0">
+        <div class="chip {% if skill.status == 'covered' %}chip-tool{% else %}chip-low{% endif %}" tabindex="0"
+             title="Offres: {{ skill.offer_count }} · Poids: {{ '%.2f'|format(skill.weighted_score) }} · Catégorie: {{ skill.category or 'N/A' }}">
           <span>{{ skill.label }}</span>
-          <small>{{ skill.offer_count }} offres · {{ '%.1f'|format(skill.share_percent) }}%</small>
+          <small>{{ skill.offer_count }} offres · {{ '%.1f'|format(skill.share_percent) }}%{% if skill.category %} · {{ skill.category }}{% endif %}</small>
         </div>
         {% endfor %}
       </div>
     </section>
 
+    {# ── Compétences couvertes (détaillées) ── #}
     <section class="card wide">
-      <h2>Compétences couvertes</h2>
+      <h2>Compétences couvertes ({{ report.covered_skills|length }})</h2>
       <div style="overflow:auto;">
         <table class="comparison-table">
           <thead>
-            <tr><th>Compétence</th><th>Catégorie</th><th>Sous-catégorie</th><th>Offres</th><th>Poids</th><th>Preuves</th></tr>
+            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Sous-cat.</th><th>Offres</th><th>Part</th><th>Poids</th><th>Méthodes</th><th>Preuves</th></tr>
           </thead>
           <tbody>
-            {% for skill in report.covered_skills[:20] %}
+            {% for skill in report.covered_skills[:30] %}
             <tr>
-              <td>{{ skill.label }}</td>
+              <td style="font-weight:500;">{{ skill.label }}</td>
+              <td>{{ skill.block }}</td>
               <td>{{ skill.category or '—' }}</td>
               <td>{{ skill.subcategory or '—' }}</td>
               <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.1f'|format(skill.share_percent) }}%</td>
               <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
-              <td>{% if skill.evidence_examples %}{{ skill.evidence_examples[0] }}{% else %}—{% endif %}</td>
+              <td style="font-size:0.75rem;">{% if skill.match_methods %}{% for method, count in skill.match_methods.items() %}{{ method }}({{ count }}){% if not loop.last %}, {% endif %}{% endfor %}{% else %}—{% endif %}</td>
+              <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.8rem;" title="{{ skill.evidence_examples|join(' | ') if skill.evidence_examples else '' }}">{% if skill.evidence_examples %}{{ skill.evidence_examples[0] }}{% else %}—{% endif %}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -243,20 +365,75 @@
       </div>
     </section>
 
+    {# ── Compétences manquantes ── #}
     <section class="card wide">
-      <h2>Compétences manquantes</h2>
+      <h2>Compétences manquantes du référentiel ({{ report.missing_skills|length }})</h2>
+      <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.75rem;">Compétences présentes dans le référentiel mais absentes des offres marché analysées.</p>
       <div style="overflow:auto;">
         <table class="comparison-table">
           <thead>
-            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Offres</th><th>Poids</th></tr>
+            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Sous-cat.</th><th>Description officielle</th><th>Mots-clés techniques</th></tr>
           </thead>
           <tbody>
-            {% for skill in report.missing_skills[:20] %}
+            {% for skill in report.missing_skills[:30] %}
+            <tr>
+              <td style="font-weight:500;">{{ skill.label }}</td>
+              <td>{{ skill.block }}</td>
+              <td>{{ skill.category or '—' }}</td>
+              <td>{{ skill.subcategory or '—' }}</td>
+              <td style="max-width:250px;font-size:0.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ skill.official_description }}">{{ skill.official_description or '—' }}</td>
+              <td style="font-size:0.75rem;">{% if skill.technical_keywords %}{{ skill.technical_keywords|join(', ') }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {# ── Compétences présentes hors référentiel ── #}
+    <section class="card wide">
+      <h2>Compétences marché hors référentiel ({{ report.unmapped_market_skills|length }})</h2>
+      <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.75rem;">Compétences détectées dans les offres mais absentes du référentiel. Possibles candidats à ajouter.</p>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Compétence</th><th>Catégorie</th><th>Sous-catégorie</th><th>Offres</th><th>Part marché</th><th>Poids</th><th>Preuves</th></tr>
+          </thead>
+          <tbody>
+            {% for skill in report.unmapped_market_skills[:24] %}
+            <tr>
+              <td style="font-weight:500;">{{ skill.label }}</td>
+              <td>{{ skill.category or '—' }}</td>
+              <td>{{ skill.subcategory or '—' }}</td>
+              <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.1f'|format(skill.share_percent) }}%</td>
+              <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
+              <td style="max-width:250px;font-size:0.8rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ skill.evidence_examples|join(' | ') if skill.evidence_examples else '' }}">{% if skill.evidence_examples %}{{ skill.evidence_examples[0] }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {# ── Compétences les moins demandées ── #}
+    {% if report.low_demand_skills %}
+    <section class="card wide">
+      <h2>Compétences les moins demandées</h2>
+      <p style="font-size:0.85rem;color:#6b7280;margin-bottom:0.75rem;">Compétences du référentiel avec la plus faible présence marché. Peuvent être dépriorisées dans la formation.</p>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Offres</th><th>Part marché</th><th>Poids</th></tr>
+          </thead>
+          <tbody>
+            {% for skill in report.low_demand_skills[:15] %}
             <tr>
               <td>{{ skill.label }}</td>
               <td>{{ skill.block }}</td>
               <td>{{ skill.category or '—' }}</td>
               <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.1f'|format(skill.share_percent) }}%</td>
               <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
             </tr>
             {% endfor %}
@@ -264,23 +441,40 @@
         </table>
       </div>
     </section>
+    {% endif %}
 
+    {# ── Compétences les plus fréquentes ── #}
+    {% if report.common_skills %}
     <section class="card wide">
-      <h2>Compétences présentes hors référentiel</h2>
-      <div class="chips">
-        {% for skill in report.unmapped_market_skills[:24] %}
-        <div class="chip chip-low" tabindex="0">
-          <span>{{ skill.label }}</span>
-          <small>{{ skill.category or 'Other' }}</small>
-        </div>
-        {% endfor %}
+      <h2>Compétences les plus fréquentes</h2>
+      <div style="overflow:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr><th>Compétence</th><th>Bloc</th><th>Catégorie</th><th>Offres</th><th>Part marché</th><th>Poids</th><th>Exemples offres</th></tr>
+          </thead>
+          <tbody>
+            {% for skill in report.common_skills[:15] %}
+            <tr>
+              <td style="font-weight:500;">{{ skill.label }}</td>
+              <td>{{ skill.block }}</td>
+              <td>{{ skill.category or '—' }}</td>
+              <td>{{ skill.offer_count }}</td>
+              <td>{{ '%.1f'|format(skill.share_percent) }}%</td>
+              <td>{{ '%.2f'|format(skill.weighted_score) }}</td>
+              <td style="font-size:0.8rem;">{% if skill.example_offers %}{{ skill.example_offers|join(', ') }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </section>
+    {% endif %}
 
+    {# ── Exemples d'offres ── #}
     <section class="card wide">
-      <h2>Exemples d’offres</h2>
+      <h2>Exemples d'offres ({{ report.example_offers|length }})</h2>
       <div class="rec-list">
-        {% for offer in report.example_offers[:8] %}
+        {% for offer in report.example_offers[:10] %}
         <article class="rec-card">
           <div class="rec-header">
             <span class="badge badge-green">Offre</span>
@@ -290,16 +484,58 @@
             <span>{{ offer.offer_id }}</span>
             <span>{{ offer.location_label or 'Non renseigné' }}</span>
             <span>{{ offer.contract_label or 'Non renseigné' }}</span>
-            <span>{{ offer.rome_code or 'ROME non renseigné' }}</span>
+            <span>{{ offer.rome_code or '—' }}{% if offer.rome_label %} · {{ offer.rome_label }}{% endif %}</span>
+            {% if offer.date %}<span>{{ offer.date }}</span>{% endif %}
           </div>
-          <p class="rec-justification">Matches: {{ offer.matches|join(', ') if offer.matches else 'Aucun' }}</p>
+          <p class="rec-justification">Compétences matchées: {{ offer.matches|join(', ') if offer.matches else 'Aucune' }}</p>
           {% if offer.unmatched %}
-          <p class="rec-justification">Hors référentiel: {{ offer.unmatched|join(', ') }}</p>
+          <p class="rec-justification" style="color:#b45309;">Hors référentiel: {{ offer.unmatched|join(', ') }}</p>
           {% endif %}
         </article>
         {% endfor %}
       </div>
     </section>
+
+    {# ── Toutes les compétences (vue complète) ── #}
+    {% if report.skill_rows %}
+    <section class="card wide">
+      <details>
+        <summary style="cursor:pointer;font-size:1rem;font-weight:600;">Vue complète — toutes les compétences ({{ report.skill_rows|length }})</summary>
+        <div style="overflow:auto;margin-top:0.75rem;">
+          <table class="comparison-table" style="font-size:0.8rem;">
+            <thead>
+              <tr><th>ID</th><th>Bloc</th><th>Activité</th><th>Compétence</th><th>Catégorie</th><th>Offres</th><th>Part</th><th>Poids</th><th>Score</th><th>Statut</th></tr>
+            </thead>
+            <tbody>
+              {% for skill in report.skill_rows %}
+              <tr style="{% if skill.status == 'missing' %}background:#fef2f2;{% elif skill.status == 'covered' %}background:#ecfdf5;{% endif %}">
+                <td>{{ skill.referential_id[:20] if skill.referential_id else '—' }}</td>
+                <td>{{ skill.block }}</td>
+                <td>{{ skill.activity or '—' }}</td>
+                <td>{{ skill.label }}</td>
+                <td>{{ skill.category or '—' }}</td>
+                <td>{{ skill.offer_count }}</td>
+                <td>{{ '%.1f'|format(skill.share_percent) }}%</td>
+                <td>{{ '%.3f'|format(skill.weighted_score) }}</td>
+                <td>{{ '%.2f'|format(skill.coverage_score) }}%</td>
+                <td>
+                  {% if skill.status == 'covered' %}
+                  <span style="color:#059669;font-weight:500;">couvert</span>
+                  {% elif skill.status == 'missing' %}
+                  <span style="color:#dc2626;font-weight:500;">manquant</span>
+                  {% else %}
+                  <span>{{ skill.status }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+    {% endif %}
+
     {% else %}
     <section class="card">
       <h2>Aperçu</h2>

@@ -1858,6 +1858,76 @@ def create_app(
             referential_title=referential_title,
         )
 
+    def _build_market_comparison_recommendations(report: Any) -> list[dict[str, Any]]:
+        recs: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        offer_count = report.offer_count or 1
+        for skill in report.missing_skills[:8]:
+            key = skill.get('label', '') if isinstance(skill, dict) else getattr(skill, 'label', '')
+            if key in seen:
+                continue
+            seen.add(key)
+            oc = skill.get('offer_count', 0) if isinstance(skill, dict) else getattr(skill, 'offer_count', 0)
+            share = skill.get('share_percent', 0) if isinstance(skill, dict) else getattr(skill, 'share_percent', 0)
+            recs.append({
+                'type': 'competence_a_ajouter',
+                'skill': key,
+                'justification': (
+                    f"Compétence demandée dans {oc} offres locales "
+                    f"({share:.1f}%) mais absente du référentiel."
+                ),
+                'impact_estime': 'élevé' if oc >= 5 else 'moyen',
+                'offer_count': oc,
+                'offer_percent': round(share, 1),
+                'priorite': 'haute' if oc >= 5 else 'moyenne',
+                'niveau_confiance': 'forte' if oc >= 10 else 'moyenne',
+            })
+        for skill in report.unmapped_market_skills[:6]:
+            key = skill.get('label', '') if isinstance(skill, dict) else getattr(skill, 'label', '')
+            if key in seen:
+                continue
+            seen.add(key)
+            oc = skill.get('offer_count', 0) if isinstance(skill, dict) else getattr(skill, 'offer_count', 0)
+            share = skill.get('share_percent', 0) if isinstance(skill, dict) else getattr(skill, 'share_percent', 0)
+            cat = skill.get('category', '') if isinstance(skill, dict) else getattr(skill, 'category', '')
+            recs.append({
+                'type': 'competite_hors_referentiel',
+                'skill': key,
+                'justification': (
+                    f"Compétence présente dans {oc} offres marché "
+                    f"({share:.1f}%) mais absente du référentiel. "
+                    f"Catégorie: {cat or 'Non classée'}."
+                ),
+                'impact_estime': 'moyen',
+                'offer_count': oc,
+                'offer_percent': round(share, 1),
+                'priorite': 'moyenne',
+                'niveau_confiance': 'moyenne',
+            })
+        for skill in report.low_demand_skills[:5]:
+            key = skill.get('label', '') if isinstance(skill, dict) else getattr(skill, 'label', '')
+            if key in seen:
+                continue
+            seen.add(key)
+            oc = skill.get('offer_count', 0) if isinstance(skill, dict) else getattr(skill, 'offer_count', 0)
+            share = skill.get('share_percent', 0) if isinstance(skill, dict) else getattr(skill, 'share_percent', 0)
+            recs.append({
+                'type': 'contenu_sous_represente',
+                'skill': key,
+                'justification': (
+                    f"Compétence du référentiel avec faible présence marché "
+                    f"({oc} offres, {share:.1f}%). Prioriser le référentiel sur les compétences à forte demande."
+                ),
+                'impact_estime': 'faible',
+                'offer_count': oc,
+                'offer_percent': round(share, 1),
+                'priorite': 'basse',
+                'niveau_confiance': 'moyenne',
+            })
+        priorities = {'haute': 0, 'moyenne': 1, 'basse': 2}
+        recs.sort(key=lambda r: (priorities.get(r['priorite'], 99), -r['offer_count']))
+        return recs
+
     @app.route('/admin/ai-certification-market-comparison', methods=['GET', 'POST'])
     @require_admin_auth
     def admin_ai_certification_market_comparison():
@@ -1902,6 +1972,7 @@ def create_app(
         report = None
         output_paths: dict[str, Path] | None = None
         source_queries: list[str] = []
+        ai_recs: list[dict[str, Any]] = []
         error = request.args.get('error') or None
         if request.method == 'POST':
             if not referential_id:
@@ -1962,6 +2033,7 @@ def create_app(
                         source_queries=source_queries,
                     )
                     output_paths = write_comparison_outputs(report, PROJECT_ROOT / 'data' / 'reports' / 'ai_certification_market')
+                    ai_recs = _build_market_comparison_recommendations(report)
                 except ValueError as exc:
                     error = str(exc)
                 except RuntimeError as exc:
@@ -1987,6 +2059,7 @@ def create_app(
             page_size=page_size,
             dry_run=str(request.values.get('dry_run') or '').lower() in {'1', 'true', 'yes', 'on'},
             source_queries=source_queries,
+            ai_recommendations=ai_recs if not error else [],
         )
 
     ner_annotation_store = AnnotationStore(PROJECT_ROOT / 'data' / 'annotation' / 'referential_ner_candidates.jsonl')
@@ -2031,6 +2104,64 @@ def create_app(
         ner_annotation_store.save(ner_rows)
         multilabel_annotation_store.save(multilabel_rows)
         candidates_annotation_store.save(candidates_rows)
+
+    def _update_referential_from_annotations(records: list[dict[str, Any]], document_id: str) -> None:
+        """When a document is validated, update the referential JSON to reflect approved skills."""
+        doc_records = [r for r in records if clean_text(r.get('document_id') or '') == document_id]
+        if not doc_records:
+            return
+        approved_labels: set[str] = set()
+        for rec in doc_records:
+            for skill in rec.get('skills', []):
+                if skill.get('status') in ('approved', 'validated'):
+                    label = clean_text(skill.get('label') or skill.get('canonical_label') or '')
+                    if label:
+                        approved_labels.add(label.lower().strip())
+        if not approved_labels:
+            return
+        imported_dir = PROJECT_ROOT / 'data' / 'referentials' / 'imported'
+        if not imported_dir.is_dir():
+            return
+        for json_path in imported_dir.glob('*.json'):
+            try:
+                data = json.loads(json_path.read_text(encoding='utf-8'))
+            except Exception:
+                continue
+            doc = data.get('document', {}) if isinstance(data.get('document'), dict) else {}
+            data_doc_id = clean_text(data.get('document_id') or doc.get('id') or '')
+            if data_doc_id != document_id:
+                continue
+            skills = data.get('skills', [])
+            if not isinstance(skills, list):
+                continue
+            updated = False
+            for skill in skills:
+                if not isinstance(skill, dict):
+                    continue
+                children = skill.get('children', [])
+                if isinstance(children, list):
+                    for child in children:
+                        if not isinstance(child, dict):
+                            continue
+                        child_label = clean_text(child.get('label') or '').lower().strip()
+                        if child_label and child_label in approved_labels:
+                            if child.get('status') != 'validated':
+                                child['status'] = 'validated'
+                                updated = True
+                        elif child_label and child_label not in approved_labels:
+                            if child.get('status') not in ('rejected',):
+                                child['status'] = 'rejected'
+                                updated = True
+                skill_label = clean_text(skill.get('label') or '').lower().strip()
+                if skill_label and skill_label in approved_labels:
+                    if skill.get('status') != 'validated':
+                        skill['status'] = 'validated'
+                        updated = True
+            if updated:
+                data['annotation_validated'] = True
+                data['validated_at'] = datetime.now(timezone.utc).isoformat()
+                json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
+            break
 
     def _highlight_referential_text(text: str, entities: list[dict[str, Any]] | None) -> Markup:
         safe_text = clean_text(text)
@@ -2301,6 +2432,7 @@ def create_app(
                 if clean_text(item.get('document_id') or '') == document_id:
                     records[idx] = item
                     records[idx]['status'] = 'validated'
+            _update_referential_from_annotations(records, document_id)
         _persist_referential_records(records)
         
         # Préserver les filtres dans le redirect

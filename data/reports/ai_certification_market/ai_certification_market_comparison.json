@@ -1,8 +1,8 @@
 {
-  "referential_id": "c36e2d3be3e190d234fc901997f01abd1fddf98f1bc46b92bf19099ff3e1bc52",
-  "referential_title": "Machine learning open classroom",
+  "referential_id": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
+  "referential_title": "FORMATION ENTREPRISE Le Wagon",
   "referential_version": "",
-  "territory": "75 / 75056",
+  "territory": "75 / 75",
   "radius_km": null,
   "period": "",
   "job_titles": [
@@ -25,10 +25,10 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
-  "covered_offer_count": 10,
-  "total_market_weight": 64.2233,
-  "covered_weight": 13.0389,
-  "global_coverage_score": 20.3,
+  "covered_offer_count": 17,
+  "total_market_weight": 67.4738,
+  "covered_weight": 17.5308,
+  "global_coverage_score": 25.98,
   "block_summaries": [
     {
       "block": "Other",
@@ -80,7 +80,7 @@
       "offer_count": 1,
       "weighted_score": 0.8725,
       "share_percent": 4.0,
-      "coverage_score": 1.36,
+      "coverage_score": 1.29,
       "match_methods": {
         "exact": 1
       },
@@ -98,31 +98,21 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Docker",
-      "official_description": "Docker",
-      "normalized_label": "docker",
-      "category": "tool",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
-      "offer_count": 3,
-      "weighted_score": 2.3643,
-      "share_percent": 12.0,
-      "coverage_score": 3.68,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Des bases en ML/MLOps, Docker, cloud, monitoring et observabilité, notamment Datadog ou Langfuse, sont également attendues.",
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous mettez en place et maintenez les chaînes d’intégration continue (CI/CD) dans un contexte DevOps Vous encadrez et accompagnez l’équipe de développement dans un environnement cloud dédié.Vous restez à jour des dernières avancées en IA générative et l’intégration des nouvelles technologies associéesVous êtes acteur(rice)s de notre communauté technique et contribuez à la veille technologiqueVous travaillez dans un environnement technique riche et innovant : Langages de programmation : Java, Javascript, HTML, CSS, PythonFront : Angular, React, Vue.jsOutils cloud & DevOps : AWS (S3, Lambda, EC2, CloudFront), GCP, Azure, Docker, Kubernetes, TerraformPratiques IA Gen : Intégration d'API IA, optimisation des performances, gestion de l'état global, accessibilitéOutils de développement : Git, Gitlab, StoryBook"
-      ],
-      "example_offers": [
-        "Ingénieur IA Générative & Agents IA (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Tech Lead Java – IA Générative - Services Financiers - Ile de France (H/F)"
-      ],
-      "status": "covered"
+      "offer_count": 0,
+      "weighted_score": 0.0,
+      "share_percent": 0.0,
+      "coverage_score": 0.0,
+      "match_methods": {},
+      "evidence_examples": [],
+      "example_offers": [],
+      "status": "missing"
     },
     {
       "referential_id": "derived_sub_2",
@@ -130,10 +120,10 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "FastAPI",
-      "official_description": "FastAPI",
-      "normalized_label": "fastapi",
-      "category": "tool",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -152,6 +142,69 @@
       "block_name": "",
       "activity": "",
       "code": "",
+      "label": "L'IA",
+      "official_description": "L'IA",
+      "normalized_label": "l ia",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 12,
+      "weighted_score": 9.5553,
+      "share_percent": 48.0,
+      "coverage_score": 14.16,
+      "match_methods": {
+        "exact": 1,
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
+        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
+        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 2,
+      "weighted_score": 1.5283,
+      "share_percent": 8.0,
+      "coverage_score": 2.27,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
+        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
+      ],
+      "example_offers": [
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_5",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
       "label": "Python",
       "official_description": "Python",
       "normalized_label": "python",
@@ -162,7 +215,96 @@
       "offer_count": 7,
       "weighted_score": 5.5747,
       "share_percent": 28.0,
-      "coverage_score": 8.68,
+      "coverage_score": 8.26,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_6",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "(variable) Cas d'usage interne",
+      "official_description": "(variable) Cas d'usage interne",
+      "normalized_label": "variable cas d usage interne",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 0,
+      "weighted_score": 0.0,
+      "share_percent": 0.0,
+      "coverage_score": 0.0,
+      "match_methods": {},
+      "evidence_examples": [],
+      "example_offers": [],
+      "status": "missing"
+    }
+  ],
+  "top_demanded_skills": [
+    {
+      "referential_id": "derived_sub_3",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "L'IA",
+      "official_description": "L'IA",
+      "normalized_label": "l ia",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 12,
+      "weighted_score": 9.5553,
+      "share_percent": 48.0,
+      "coverage_score": 14.16,
+      "match_methods": {
+        "exact": 1,
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
+        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
+        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_5",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 7,
+      "weighted_score": 5.5747,
+      "share_percent": 28.0,
+      "coverage_score": 8.26,
       "match_methods": {
         "exact": 1
       },
@@ -184,171 +326,27 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Airflow",
-      "official_description": "Airflow",
-      "normalized_label": "airflow",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Spark",
-      "official_description": "Spark",
-      "normalized_label": "spark",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_6",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Kubernetes",
-      "official_description": "Kubernetes",
-      "normalized_label": "kubernetes",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 5,
-      "weighted_score": 4.2274,
-      "share_percent": 20.0,
-      "coverage_score": 6.58,
+      "offer_count": 2,
+      "weighted_score": 1.5283,
+      "share_percent": 8.0,
+      "coverage_score": 2.27,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous pouvez être amené à travailler sur des systèmes distribués ou Kubernetes à très grande échelle, sur des produits comme Real User Monitoring ou Cloud Security Management, ou encore au sein d'équipes internes qui facilitent le développement et le déploiement des applications.",
-        "Mettre en œuvre des architectures cloud natives basées sur Kubernetes."
-      ],
-      "example_offers": [
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)",
-        "Architecte intelligence artificielle (H/F)"
-      ],
-      "status": "covered"
-    }
-  ],
-  "top_demanded_skills": [
-    {
-      "referential_id": "derived_sub_3",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.68,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
         "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_6",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Kubernetes",
-      "official_description": "Kubernetes",
-      "normalized_label": "kubernetes",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 5,
-      "weighted_score": 4.2274,
-      "share_percent": 20.0,
-      "coverage_score": 6.58,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous pouvez être amené à travailler sur des systèmes distribués ou Kubernetes à très grande échelle, sur des produits comme Real User Monitoring ou Cloud Security Management, ou encore au sein d'équipes internes qui facilitent le développement et le déploiement des applications.",
-        "Mettre en œuvre des architectures cloud natives basées sur Kubernetes."
-      ],
-      "example_offers": [
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)",
-        "Architecte intelligence artificielle (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Docker",
-      "official_description": "Docker",
-      "normalized_label": "docker",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 3,
-      "weighted_score": 2.3643,
-      "share_percent": 12.0,
-      "coverage_score": 3.68,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Des bases en ML/MLOps, Docker, cloud, monitoring et observabilité, notamment Datadog ou Langfuse, sont également attendues.",
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous mettez en place et maintenez les chaînes d’intégration continue (CI/CD) dans un contexte DevOps Vous encadrez et accompagnez l’équipe de développement dans un environnement cloud dédié.Vous restez à jour des dernières avancées en IA générative et l’intégration des nouvelles technologies associéesVous êtes acteur(rice)s de notre communauté technique et contribuez à la veille technologiqueVous travaillez dans un environnement technique riche et innovant : Langages de programmation : Java, Javascript, HTML, CSS, PythonFront : Angular, React, Vue.jsOutils cloud & DevOps : AWS (S3, Lambda, EC2, CloudFront), GCP, Azure, Docker, Kubernetes, TerraformPratiques IA Gen : Intégration d'API IA, optimisation des performances, gestion de l'état global, accessibilitéOutils de développement : Git, Gitlab, StoryBook"
-      ],
-      "example_offers": [
-        "Ingénieur IA Générative & Agents IA (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Tech Lead Java – IA Générative - Services Financiers - Ile de France (H/F)"
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
       ],
       "status": "covered"
     },
@@ -368,7 +366,7 @@
       "offer_count": 1,
       "weighted_score": 0.8725,
       "share_percent": 4.0,
-      "coverage_score": 1.36,
+      "coverage_score": 1.29,
       "match_methods": {
         "exact": 1
       },
@@ -381,15 +379,15 @@
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_4",
+      "referential_id": "derived_sub_6",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Airflow",
-      "official_description": "Airflow",
-      "normalized_label": "airflow",
-      "category": "tool",
+      "label": "(variable) Cas d'usage interne",
+      "official_description": "(variable) Cas d'usage interne",
+      "normalized_label": "variable cas d usage interne",
+      "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -425,15 +423,15 @@
       "status": "missing"
     },
     {
-      "referential_id": "derived_sub_2",
+      "referential_id": "derived_sub_1",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "FastAPI",
-      "official_description": "FastAPI",
-      "normalized_label": "fastapi",
-      "category": "tool",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -447,15 +445,15 @@
       "status": "missing"
     },
     {
-      "referential_id": "derived_sub_5",
+      "referential_id": "derived_sub_2",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Spark",
-      "official_description": "Spark",
-      "normalized_label": "spark",
-      "category": "tool",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -486,7 +484,7 @@
       "offer_count": 1,
       "weighted_score": 0.8725,
       "share_percent": 4.0,
-      "coverage_score": 1.36,
+      "coverage_score": 1.29,
       "match_methods": {
         "exact": 1
       },
@@ -499,39 +497,70 @@
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_1",
+      "referential_id": "derived_sub_3",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Docker",
-      "official_description": "Docker",
-      "normalized_label": "docker",
-      "category": "tool",
+      "label": "L'IA",
+      "official_description": "L'IA",
+      "normalized_label": "l ia",
+      "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
-      "offer_count": 3,
-      "weighted_score": 2.3643,
-      "share_percent": 12.0,
-      "coverage_score": 3.68,
+      "offer_count": 12,
+      "weighted_score": 9.5553,
+      "share_percent": 48.0,
+      "coverage_score": 14.16,
       "match_methods": {
-        "exact": 1
+        "exact": 1,
+        "implicit": 1
       },
       "evidence_examples": [
-        "Des bases en ML/MLOps, Docker, cloud, monitoring et observabilité, notamment Datadog ou Langfuse, sont également attendues.",
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous mettez en place et maintenez les chaînes d’intégration continue (CI/CD) dans un contexte DevOps Vous encadrez et accompagnez l’équipe de développement dans un environnement cloud dédié.Vous restez à jour des dernières avancées en IA générative et l’intégration des nouvelles technologies associéesVous êtes acteur(rice)s de notre communauté technique et contribuez à la veille technologiqueVous travaillez dans un environnement technique riche et innovant : Langages de programmation : Java, Javascript, HTML, CSS, PythonFront : Angular, React, Vue.jsOutils cloud & DevOps : AWS (S3, Lambda, EC2, CloudFront), GCP, Azure, Docker, Kubernetes, TerraformPratiques IA Gen : Intégration d'API IA, optimisation des performances, gestion de l'état global, accessibilitéOutils de développement : Git, Gitlab, StoryBook"
+        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
+        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
+        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
       ],
       "example_offers": [
-        "Ingénieur IA Générative & Agents IA (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Tech Lead Java – IA Générative - Services Financiers - Ile de France (H/F)"
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_3",
+      "referential_id": "derived_sub_4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 2,
+      "weighted_score": 1.5283,
+      "share_percent": 8.0,
+      "coverage_score": 2.27,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
+        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
+      ],
+      "example_offers": [
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_5",
       "block": "",
       "block_name": "",
       "activity": "",
@@ -546,7 +575,7 @@
       "offer_count": 7,
       "weighted_score": 5.5747,
       "share_percent": 28.0,
-      "coverage_score": 8.68,
+      "coverage_score": 8.26,
       "match_methods": {
         "exact": 1
       },
@@ -559,38 +588,6 @@
         "Ingénieur en intelligence artificielle H/F (H/F)",
         "Ingénieur IA - Alternance - H/F/X (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_6",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Kubernetes",
-      "official_description": "Kubernetes",
-      "normalized_label": "kubernetes",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 5,
-      "weighted_score": 4.2274,
-      "share_percent": 20.0,
-      "coverage_score": 6.58,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous pouvez être amené à travailler sur des systèmes distribués ou Kubernetes à très grande échelle, sur des produits comme Real User Monitoring ou Cloud Security Management, ou encore au sein d'équipes internes qui facilitent le développement et le déploiement des applications.",
-        "Mettre en œuvre des architectures cloud natives basées sur Kubernetes."
-      ],
-      "example_offers": [
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)",
-        "Architecte intelligence artificielle (H/F)"
       ],
       "status": "covered"
     }
@@ -619,15 +616,37 @@
       "status": "missing"
     },
     {
+      "referential_id": "derived_sub_1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 0,
+      "weighted_score": 0.0,
+      "share_percent": 0.0,
+      "coverage_score": 0.0,
+      "match_methods": {},
+      "evidence_examples": [],
+      "example_offers": [],
+      "status": "missing"
+    },
+    {
       "referential_id": "derived_sub_2",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "FastAPI",
-      "official_description": "FastAPI",
-      "normalized_label": "fastapi",
-      "category": "tool",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -641,37 +660,15 @@
       "status": "missing"
     },
     {
-      "referential_id": "derived_sub_4",
+      "referential_id": "derived_sub_6",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Airflow",
-      "official_description": "Airflow",
-      "normalized_label": "airflow",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Spark",
-      "official_description": "Spark",
-      "normalized_label": "spark",
-      "category": "tool",
+      "label": "(variable) Cas d'usage interne",
+      "official_description": "(variable) Cas d'usage interne",
+      "normalized_label": "variable cas d usage interne",
+      "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -687,15 +684,15 @@
   ],
   "low_demand_skills": [
     {
-      "referential_id": "derived_sub_4",
+      "referential_id": "derived_sub_6",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Airflow",
-      "official_description": "Airflow",
-      "normalized_label": "airflow",
-      "category": "tool",
+      "label": "(variable) Cas d'usage interne",
+      "official_description": "(variable) Cas d'usage interne",
+      "normalized_label": "variable cas d usage interne",
+      "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -731,15 +728,15 @@
       "status": "missing"
     },
     {
-      "referential_id": "derived_sub_2",
+      "referential_id": "derived_sub_1",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "FastAPI",
-      "official_description": "FastAPI",
-      "normalized_label": "fastapi",
-      "category": "tool",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -753,15 +750,15 @@
       "status": "missing"
     },
     {
-      "referential_id": "derived_sub_5",
+      "referential_id": "derived_sub_2",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Spark",
-      "official_description": "Spark",
-      "normalized_label": "spark",
-      "category": "tool",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
@@ -790,7 +787,7 @@
       "offer_count": 1,
       "weighted_score": 0.8725,
       "share_percent": 4.0,
-      "coverage_score": 1.36,
+      "coverage_score": 1.29,
       "match_methods": {
         "exact": 1
       },
@@ -803,71 +800,37 @@
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_1",
+      "referential_id": "derived_sub_4",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Docker",
-      "official_description": "Docker",
-      "normalized_label": "docker",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
-      "offer_count": 3,
-      "weighted_score": 2.3643,
-      "share_percent": 12.0,
-      "coverage_score": 3.68,
+      "offer_count": 2,
+      "weighted_score": 1.5283,
+      "share_percent": 8.0,
+      "coverage_score": 2.27,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Des bases en ML/MLOps, Docker, cloud, monitoring et observabilité, notamment Datadog ou Langfuse, sont également attendues.",
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous mettez en place et maintenez les chaînes d’intégration continue (CI/CD) dans un contexte DevOps Vous encadrez et accompagnez l’équipe de développement dans un environnement cloud dédié.Vous restez à jour des dernières avancées en IA générative et l’intégration des nouvelles technologies associéesVous êtes acteur(rice)s de notre communauté technique et contribuez à la veille technologiqueVous travaillez dans un environnement technique riche et innovant : Langages de programmation : Java, Javascript, HTML, CSS, PythonFront : Angular, React, Vue.jsOutils cloud & DevOps : AWS (S3, Lambda, EC2, CloudFront), GCP, Azure, Docker, Kubernetes, TerraformPratiques IA Gen : Intégration d'API IA, optimisation des performances, gestion de l'état global, accessibilitéOutils de développement : Git, Gitlab, StoryBook"
+        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
+        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
       ],
       "example_offers": [
-        "Ingénieur IA Générative & Agents IA (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Tech Lead Java – IA Générative - Services Financiers - Ile de France (H/F)"
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_6",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Kubernetes",
-      "official_description": "Kubernetes",
-      "normalized_label": "kubernetes",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 5,
-      "weighted_score": 4.2274,
-      "share_percent": 20.0,
-      "coverage_score": 6.58,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous pouvez être amené à travailler sur des systèmes distribués ou Kubernetes à très grande échelle, sur des produits comme Real User Monitoring ou Cloud Security Management, ou encore au sein d'équipes internes qui facilitent le développement et le déploiement des applications.",
-        "Mettre en œuvre des architectures cloud natives basées sur Kubernetes."
-      ],
-      "example_offers": [
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)",
-        "Architecte intelligence artificielle (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_3",
+      "referential_id": "derived_sub_5",
       "block": "",
       "block_name": "",
       "activity": "",
@@ -882,7 +845,7 @@
       "offer_count": 7,
       "weighted_score": 5.5747,
       "share_percent": 28.0,
-      "coverage_score": 8.68,
+      "coverage_score": 8.26,
       "match_methods": {
         "exact": 1
       },
@@ -895,6 +858,39 @@
         "Ingénieur en intelligence artificielle H/F (H/F)",
         "Ingénieur IA - Alternance - H/F/X (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_3",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "L'IA",
+      "official_description": "L'IA",
+      "normalized_label": "l ia",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 12,
+      "weighted_score": 9.5553,
+      "share_percent": 48.0,
+      "coverage_score": 14.16,
+      "match_methods": {
+        "exact": 1,
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
+        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
+        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
       ],
       "status": "covered"
     }
@@ -1614,34 +1610,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "official_description": "",
-      "normalized_label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "category": "Other",
-      "subcategory": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.6207,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Analyser les tendances du marché pour anticiper les évolutions de l'IA"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
       "official_description": "",
       "normalized_label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
@@ -1714,34 +1682,6 @@
       },
       "evidence_examples": [
         "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Développement de produits basés sur l'IA",
-      "official_description": "",
-      "normalized_label": "Développement de produits basés sur l'IA",
-      "category": "Other",
-      "subcategory": "Développement de produits basés sur l'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.6207,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Développement de produits basés sur l'IA"
       ],
       "example_offers": [
         "Expert IA (H/F)"
@@ -1952,6 +1892,39 @@
       "block_name": "",
       "activity": "",
       "code": "",
+      "label": "L'IA",
+      "official_description": "L'IA",
+      "normalized_label": "l ia",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 12,
+      "weighted_score": 9.5553,
+      "share_percent": 48.0,
+      "coverage_score": 14.16,
+      "match_methods": {
+        "exact": 1,
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
+        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
+        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "derived_sub_5",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
       "label": "Python",
       "official_description": "Python",
       "normalized_label": "python",
@@ -1962,7 +1935,7 @@
       "offer_count": 7,
       "weighted_score": 5.5747,
       "share_percent": 28.0,
-      "coverage_score": 8.68,
+      "coverage_score": 8.26,
       "match_methods": {
         "exact": 1
       },
@@ -1979,66 +1952,32 @@
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_6",
+      "referential_id": "derived_sub_4",
       "block": "",
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Kubernetes",
-      "official_description": "Kubernetes",
-      "normalized_label": "kubernetes",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 1,
-      "offer_count": 5,
-      "weighted_score": 4.2274,
-      "share_percent": 20.0,
-      "coverage_score": 6.58,
+      "offer_count": 2,
+      "weighted_score": 1.5283,
+      "share_percent": 8.0,
+      "coverage_score": 2.27,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous pouvez être amené à travailler sur des systèmes distribués ou Kubernetes à très grande échelle, sur des produits comme Real User Monitoring ou Cloud Security Management, ou encore au sein d'équipes internes qui facilitent le développement et le déploiement des applications.",
-        "Mettre en œuvre des architectures cloud natives basées sur Kubernetes."
+        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
+        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
       ],
       "example_offers": [
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)",
-        "Architecte intelligence artificielle (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Docker",
-      "official_description": "Docker",
-      "normalized_label": "docker",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 3,
-      "weighted_score": 2.3643,
-      "share_percent": 12.0,
-      "coverage_score": 3.68,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Des bases en ML/MLOps, Docker, cloud, monitoring et observabilité, notamment Datadog ou Langfuse, sont également attendues.",
-        "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
-        "Vous mettez en place et maintenez les chaînes d’intégration continue (CI/CD) dans un contexte DevOps Vous encadrez et accompagnez l’équipe de développement dans un environnement cloud dédié.Vous restez à jour des dernières avancées en IA générative et l’intégration des nouvelles technologies associéesVous êtes acteur(rice)s de notre communauté technique et contribuez à la veille technologiqueVous travaillez dans un environnement technique riche et innovant : Langages de programmation : Java, Javascript, HTML, CSS, PythonFront : Angular, React, Vue.jsOutils cloud & DevOps : AWS (S3, Lambda, EC2, CloudFront), GCP, Azure, Docker, Kubernetes, TerraformPratiques IA Gen : Intégration d'API IA, optimisation des performances, gestion de l'état global, accessibilitéOutils de développement : Git, Gitlab, StoryBook"
-      ],
-      "example_offers": [
-        "Ingénieur IA Générative & Agents IA (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Tech Lead Java – IA Générative - Services Financiers - Ile de France (H/F)"
+        "Ingénieur IA - Alternance - H/F/X (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
       ],
       "status": "covered"
     },
@@ -2058,7 +1997,7 @@
       "offer_count": 1,
       "weighted_score": 0.8725,
       "share_percent": 4.0,
-      "coverage_score": 1.36,
+      "coverage_score": 1.29,
       "match_methods": {
         "exact": 1
       },
@@ -2081,6 +2020,7 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T09:52:13.485Z",
       "matches": [
+        "L'IA",
         "Python"
       ],
       "unmatched": [
@@ -2098,7 +2038,8 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-02T09:56:29.249Z",
       "matches": [
-        "Python"
+        "Python",
+        "SQL"
       ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
@@ -2115,6 +2056,7 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-22T11:10:31.866Z",
       "matches": [
+        "L'IA",
         "Python"
       ],
       "unmatched": [
@@ -2132,7 +2074,6 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-24T11:39:13.539Z",
       "matches": [
-        "Docker",
         "Python"
       ],
       "unmatched": [
@@ -2149,7 +2090,9 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-03T10:14:53.416Z",
-      "matches": [],
+      "matches": [
+        "L'IA"
+      ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -2165,6 +2108,7 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T14:38:16.903Z",
       "matches": [
+        "L'IA",
         "Machine Learning"
       ],
       "unmatched": [
@@ -2181,12 +2125,19 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-15T10:41:57.967Z",
-      "matches": [],
+      "matches": [
+        "L'IA",
+        "L'IA",
+        "L'IA",
+        "L'IA",
+        "L'IA",
+        "L'IA"
+      ],
       "unmatched": [
-        "Développement de produits basés sur l'IA",
         "Evaluation de modèles d'IA",
         "Gestion de projets IA",
-        "Intégration de systèmes d'intelligence artificielle"
+        "Intégration de systèmes d'intelligence artificielle",
+        "Développer des modèles prédictifs pour l'analyse de données"
       ]
     },
     {
