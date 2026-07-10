@@ -1,65 +1,38 @@
 type,label,block,category,subcategory,offer_count,weighted_score
-<<<<<<< HEAD
-unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.5083
-unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.5083
-unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.5083
-unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",3,2.4911
-unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.7731
-unmapped,Concevoir une application web,,Other,Concevoir une application web,2,1.6654
-unmapped,#TDFE2026,,Other,#TDFE2026,1,0.9783
-unmapped,"Analyser les données d'une étude, d'un projet",,Other,"Analyser les données d'une étude, d'un projet",1,0.9474
-unmapped,Anglais technique,,Other,Anglais technique,1,0.9474
-unmapped,Automatisation de notes de calcul (Excel VBA),,Other,Automatisation de notes de calcul (Excel VBA),1,0.9474
-unmapped,"Comprendre, interpréter des données et documents techniques",,Other,"Comprendre, interpréter des données et documents techniques",1,0.9474
-unmapped,Création d'outils numériques pour automatisation,,Other,Création d'outils numériques pour automatisation,1,0.9474
-unmapped,Intelligence artificielle appliqué au génie civil,,Other,Intelligence artificielle appliqué au génie civil,1,0.9474
-unmapped,Langages de programmation informatique,,Other,Langages de programmation informatique,1,0.9474
-unmapped,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),,Other,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),1,0.9474
-unmapped,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)",,Other,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spéci",1,0.9474
-unmapped,Normes de la construction,,Other,Normes de la construction,1,0.9474
-unmapped,"Préparer et animer une réunion, un groupe de travail, un atelier",,cadrage de projet IA,"Préparer et animer une réunion, un groupe de travail, un atelier",1,0.9474
-unmapped,Résistance Des Matériaux (RDM),,Other,Résistance Des Matériaux (RDM),1,0.9474
-unmapped,"Travaux publics, génie civil",,Other,"Travaux publics, génie civil",1,0.9474
-unmapped,Concevoir et réaliser des éléments graphiques et visuels,,Other,Concevoir et réaliser des éléments graphiques et visuels,1,0.8257
-unmapped,Concevoir un site web,,Other,Concevoir un site web,1,0.8257
-unmapped,"Déployer, intégrer un logiciel, un système d'informations, une application",,Other,"Déployer, intégrer un logiciel, un système d'informations, une application",1,0.8257
-unmapped,"Paramétrer un logiciel, un outil, un système numérique",,Other,"Paramétrer un logiciel, un outil, un système numérique",1,0.8257
-unmapped,"Concevoir l'architecture d'un système, d'un réseau",,Other,"Concevoir l'architecture d'un système, d'un réseau",1,0.7563
-unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,,Other,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,1,0.625
-unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.625
-unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.625
-unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.625
-unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.625
-unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.625
-unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.625
-unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.625
-unmapped,Gérer les risques associés aux technologies d'IA,,Other,Gérer les risques associés aux technologies d'IA,1,0.625
-unmapped,Implémenter des solutions de cybersécurité adaptées,,RGPD et sécurité,Sécurité,1,0.625
-unmapped,Intégration de systèmes d'intelligence artificielle,,Other,Intégration de systèmes d'intelligence artificielle,1,0.625
-unmapped,Planifier des projets d'IA en tenant compte des contraintes de temps et de budget,,Other,Planifier des projets d'IA en tenant compte des contraintes de temps et de budge,1,0.625
-unmapped,Traiter les données de manière sécurisée et conforme,,Other,Traiter les données de manière sécurisée et conforme,1,0.625
-=======
-missing,Compétences extraites du référentiel,,,,0,0.0
-missing,Définir ou redéfinir la mission,,skill,,0,0.0
-missing,Pérennité Définir les objectifs à court,,skill,,0,0.0
-missing,Décliner une stratégie de moyens (RH,,soft_skill,,0,0.0
-missing,Présenter la stratégie à la Direction Générale,,soft_skill,,0,0.0
-missing,Ou la BU en les associant collectivement,,skill,,0,0.0
-missing,Mener un audit de l’organisation en répertoriant l’existant,,skill,,0,0.0
-missing,L’implémentation de nouvelles technologies telles que l'automatisation,,soft_skill,,0,0.0
-missing,Nouvelles technologies telles que l'automatisation,,skill,,0,0.0
-missing,Et au respect des dispositions légales,,skill,,0,0.0
-missing,De la contractualisation avec des prestataires,,skill,,0,0.0
-missing,S approvisionnements et ainsi améliorer le niveau de satisfaction client,,skill,,0,0.0
-missing,La politique de recrutement,,soft_skill,,0,0.0
-missing,Accompagner l’intégration des collaborateurs,,soft_skill,,0,0.0
-missing,Transformers,,method,,0,0.0
-missing,Auprès des tiers (clients,,soft_skill,,0,0.0
-missing,Les situations de crise en mobilisant une cellule dédiée,,skill,,0,0.0
-unmapped,Proposer des améliorations pour optimiser les processus,,Other,Proposer des améliorations pour optimiser les processus,2,1.4704
-unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.4704
-unmapped,"Elaborer, suivre et piloter un budget",,Other,"Elaborer, suivre et piloter un budget",1,0.35
-unmapped,P&L,,Other,P&L,1,0.35
-unmapped,Présenter un budget,,Other,Présenter un budget,1,0.35
-unmapped,Superviser la gestion financière,,Other,Superviser la gestion financière,1,0.35
->>>>>>> 8a986cc039bffd17134dd8ececa80d197182535b
+unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.4378
+unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.4378
+unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.4378
+unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,2,1.7557
+unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",2,1.7182
+unmapped,#TDFE2026,,Other,#TDFE2026,1,0.9677
+unmapped,"Analyser les données d'une étude, d'un projet",,Other,"Analyser les données d'une étude, d'un projet",1,0.9375
+unmapped,Anglais technique,,Other,Anglais technique,1,0.9375
+unmapped,Automatisation de notes de calcul (Excel VBA),,Other,Automatisation de notes de calcul (Excel VBA),1,0.9375
+unmapped,"Comprendre, interpréter des données et documents techniques",,Other,"Comprendre, interpréter des données et documents techniques",1,0.9375
+unmapped,Création d'outils numériques pour automatisation,,Other,Création d'outils numériques pour automatisation,1,0.9375
+unmapped,Intelligence artificielle appliqué au génie civil,,Other,Intelligence artificielle appliqué au génie civil,1,0.9375
+unmapped,Langages de programmation informatique,,Other,Langages de programmation informatique,1,0.9375
+unmapped,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),,Other,Logiciels de conception ou dessin assisté par ordinateur (CAO/DAO),1,0.9375
+unmapped,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spécifiques (donneur d'ordre)",,Other,"Maîtrise des outils numériques standards (calcul, modélisation 3D, CAO) et spéci",1,0.9375
+unmapped,Normes de la construction,,Other,Normes de la construction,1,0.9375
+unmapped,"Préparer et animer une réunion, un groupe de travail, un atelier",,cadrage de projet IA,"Préparer et animer une réunion, un groupe de travail, un atelier",1,0.9375
+unmapped,Résistance Des Matériaux (RDM),,Other,Résistance Des Matériaux (RDM),1,0.9375
+unmapped,"Travaux publics, génie civil",,Other,"Travaux publics, génie civil",1,0.9375
+unmapped,Concevoir une application web,,Other,Concevoir une application web,1,0.9
+unmapped,Concevoir et réaliser des éléments graphiques et visuels,,Other,Concevoir et réaliser des éléments graphiques et visuels,1,0.8182
+unmapped,Concevoir un site web,,Other,Concevoir un site web,1,0.8182
+unmapped,"Déployer, intégrer un logiciel, un système d'informations, une application",,Other,"Déployer, intégrer un logiciel, un système d'informations, une application",1,0.8182
+unmapped,"Paramétrer un logiciel, un outil, un système numérique",,Other,"Paramétrer un logiciel, un outil, un système numérique",1,0.8182
+unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,,Other,Analyser les besoins des clients pour proposer des solutions d'IA adaptées,1,0.6207
+unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.6207
+unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.6207
+unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.6207
+unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.6207
+unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.6207
+unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.6207
+unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.6207
+unmapped,Gérer les risques associés aux technologies d'IA,,Other,Gérer les risques associés aux technologies d'IA,1,0.6207
+unmapped,Implémenter des solutions de cybersécurité adaptées,,RGPD et sécurité,Sécurité,1,0.6207
+unmapped,Intégration de systèmes d'intelligence artificielle,,Other,Intégration de systèmes d'intelligence artificielle,1,0.6207
+unmapped,Planifier des projets d'IA en tenant compte des contraintes de temps et de budget,,Other,Planifier des projets d'IA en tenant compte des contraintes de temps et de budge,1,0.6207
+unmapped,Traiter les données de manière sécurisée et conforme,,Other,Traiter les données de manière sécurisée et conforme,1,0.6207

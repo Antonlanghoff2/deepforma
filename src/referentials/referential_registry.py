@@ -520,8 +520,10 @@ def convert_imported_to_skills_format(imported_payload: dict[str, Any]) -> dict[
     if not isinstance(competencies, list):
         competencies = []
 
-    doc = imported_payload.get('document', {})
-    doc_title = clean_text(doc.get('title', '') if isinstance(doc, dict) else '') or ''
+    doc = imported_payload.get('document') or {}
+    if not isinstance(doc, dict):
+        doc = {}
+    doc_title = clean_text(doc.get('title', '')) or ''
     skills: list[dict[str, Any]] = []
     for comp in competencies:
         if not isinstance(comp, dict):
