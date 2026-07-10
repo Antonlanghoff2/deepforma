@@ -151,8 +151,8 @@ class ReferentialEditingService:
         label = clean_text(label)
         if not label:
             return analysis
-        anchor = analysis.get("competencies", [None])[0]
         competencies = analysis.get("competencies", [])
+        anchor = competencies[0] if competencies else None
         if any(
             normalize_for_match(getattr(c, "official_label", "") or "") == normalize_for_match(label)
             for c in competencies

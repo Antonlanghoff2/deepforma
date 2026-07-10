@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "referential_id": "ingenieur_ia_2025",
   "referential_title": "Ingénieur en intelligence artificielle",
   "referential_version": "2025-01",
+=======
+  "referential_id": "3120fbe0193b12eabe28c49be2b9d3f9399eac11fe906bb48e858d0b89a2a46e",
+  "referential_title": "Data analyst Le Wagon",
+  "referential_version": "",
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
   "territory": "75 / 75",
   "radius_km": null,
   "period": "",
@@ -25,6 +31,7 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
+<<<<<<< HEAD
   "covered_offer_count": 14,
   "total_market_weight": 214.0819,
   "covered_weight": 163.5182,
@@ -89,10 +96,27 @@
       "covered_weight": 85.4824,
       "market_share_percent": 39.93,
       "average_skill_share_percent": 22.22
+=======
+  "covered_offer_count": 1,
+  "total_market_weight": 52.0569,
+  "covered_weight": 0.8725,
+  "global_coverage_score": 1.68,
+  "block_summaries": [
+    {
+      "block": "MANUAL",
+      "block_name": "Bloc ANUAL",
+      "skill_count": 1,
+      "covered_skill_count": 1,
+      "total_weight": 0.8725,
+      "covered_weight": 0.8725,
+      "market_share_percent": 1.68,
+      "average_skill_share_percent": 4.0
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
     }
   ],
   "skill_rows": [
     {
+<<<<<<< HEAD
       "referential_id": "B1-A1-C1",
       "block": "B1",
       "block_name": "Bloc 1",
@@ -684,6 +708,24 @@
       "weighted_score": 0.8725,
       "share_percent": 4.0,
       "coverage_score": 0.41,
+=======
+      "referential_id": "MANUAL_1",
+      "block": "MANUAL",
+      "block_name": "",
+      "activity": "MANUAL",
+      "code": "MANUAL_1",
+      "label": "Machine learning",
+      "official_description": "Machine learning",
+      "normalized_label": "Machine learning",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 1,
+      "weighted_score": 0.8725,
+      "share_percent": 4.0,
+      "coverage_score": 1.68,
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "match_methods": {
         "exact": 1
       },
@@ -694,6 +736,7 @@
         "Chef de projet automatisation IA (H/F)"
       ],
       "status": "covered"
+<<<<<<< HEAD
     },
     {
       "referential_id": "B2-A3-C3",
@@ -3342,10 +3385,13 @@
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
       ],
       "status": "covered"
+=======
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
     }
   ],
   "top_demanded_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "B5B-A5-C2",
       "block": "B5B",
       "block_name": "Bloc 5B",
@@ -3974,10 +4020,29 @@
       "weighted_score": 4.2643,
       "share_percent": 20.0,
       "coverage_score": 1.99,
+=======
+      "referential_id": "MANUAL_1",
+      "block": "MANUAL",
+      "block_name": "",
+      "activity": "MANUAL",
+      "code": "MANUAL_1",
+      "label": "Machine learning",
+      "official_description": "Machine learning",
+      "normalized_label": "Machine learning",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 1,
+      "weighted_score": 0.8725,
+      "share_percent": 4.0,
+      "coverage_score": 1.68,
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
+<<<<<<< HEAD
         "Vous avez de bonnes bases en développement logiciel : clean code, versioning, CI/CD.",
         "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
         "Industrialiser les déploiements via des pipelines CI/CD et des outils d'Infrastructure as Code."
@@ -3986,12 +4051,19 @@
         "Ingénieur IA Générative & Agents IA (H/F)",
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
         "Architecte intelligence artificielle (H/F)"
+=======
+        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
+      ],
+      "example_offers": [
+        "Chef de projet automatisation IA (H/F)"
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       ],
       "status": "covered"
     }
   ],
   "covered_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "B2-A1-C3",
       "block": "B2",
       "block_name": "Bloc 2",
@@ -4095,6 +4167,24 @@
       "weighted_score": 0.8725,
       "share_percent": 4.0,
       "coverage_score": 0.41,
+=======
+      "referential_id": "MANUAL_1",
+      "block": "MANUAL",
+      "block_name": "",
+      "activity": "MANUAL",
+      "code": "MANUAL_1",
+      "label": "Machine learning",
+      "official_description": "Machine learning",
+      "normalized_label": "Machine learning",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 1,
+      "weighted_score": 0.8725,
+      "share_percent": 4.0,
+      "coverage_score": 1.68,
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "match_methods": {
         "exact": 1
       },
@@ -4103,6 +4193,7 @@
       ],
       "example_offers": [
         "Chef de projet automatisation IA (H/F)"
+<<<<<<< HEAD
       ],
       "status": "covered"
     },
@@ -6507,10 +6598,13 @@
         "Ingénieur IA Générative & Agents IA (H/F)",
         "Chef de projet automatisation IA (H/F)",
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+=======
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       ],
       "status": "covered"
     }
   ],
+<<<<<<< HEAD
   "missing_skills": [
     {
       "referential_id": "B1-A1-C1",
@@ -7575,6 +7669,37 @@
       "evidence_examples": [],
       "example_offers": [],
       "status": "missing"
+=======
+  "missing_skills": [],
+  "low_demand_skills": [
+    {
+      "referential_id": "MANUAL_1",
+      "block": "MANUAL",
+      "block_name": "",
+      "activity": "MANUAL",
+      "code": "MANUAL_1",
+      "label": "Machine learning",
+      "official_description": "Machine learning",
+      "normalized_label": "Machine learning",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 1,
+      "weighted_score": 0.8725,
+      "share_percent": 4.0,
+      "coverage_score": 1.68,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
+      ],
+      "example_offers": [
+        "Chef de projet automatisation IA (H/F)"
+      ],
+      "status": "covered"
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
     }
   ],
   "unmapped_market_skills": [
@@ -8376,6 +8501,37 @@
       "block_name": "",
       "activity": "",
       "code": "",
+<<<<<<< HEAD
+=======
+      "label": "Concevoir des algorithmes d'apprentissage automatique",
+      "official_description": "",
+      "normalized_label": "Concevoir des algorithmes d'apprentissage automatique",
+      "category": "Machine Learning",
+      "subcategory": "Concevoir des algorithmes d'apprentissage automatique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.6207,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "label": "Développement de produits basés sur l'IA",
       "official_description": "",
       "normalized_label": "Développement de produits basés sur l'IA",
@@ -8597,6 +8753,7 @@
   ],
   "common_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "B5B-A5-C2",
       "block": "B5B",
       "block_name": "Bloc 5B",
@@ -9225,10 +9382,29 @@
       "weighted_score": 4.2643,
       "share_percent": 20.0,
       "coverage_score": 1.99,
+=======
+      "referential_id": "MANUAL_1",
+      "block": "MANUAL",
+      "block_name": "",
+      "activity": "MANUAL",
+      "code": "MANUAL_1",
+      "label": "Machine learning",
+      "official_description": "Machine learning",
+      "normalized_label": "Machine learning",
+      "category": "",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 1,
+      "offer_count": 1,
+      "weighted_score": 0.8725,
+      "share_percent": 4.0,
+      "coverage_score": 1.68,
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
+<<<<<<< HEAD
         "Vous avez de bonnes bases en développement logiciel : clean code, versioning, CI/CD.",
         "Conception de la nouvelle architecture (V2) : développement de microservices en Go (Golang), contrats d'API inter-services en gRPC / Protocol Buffers, persistance PostgreSQL via GORM (une base par service), conteneurisation Docker et déploiement Kubernetes, chaîne CI/CD & GitOps (GitHub Actions, ArgoCD, Harbor).",
         "Industrialiser les déploiements via des pipelines CI/CD et des outils d'Infrastructure as Code."
@@ -9237,6 +9413,12 @@
         "Ingénieur IA Générative & Agents IA (H/F)",
         "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
         "Architecte intelligence artificielle (H/F)"
+=======
+        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
+      ],
+      "example_offers": [
+        "Chef de projet automatisation IA (H/F)"
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       ],
       "status": "covered"
     }
@@ -9265,6 +9447,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-02T09:56:29.249Z",
+<<<<<<< HEAD
       "matches": [
         "Développer des modèles d’apprentissage profond",
         "Développer un modèle d’apprentissage",
@@ -9273,6 +9456,9 @@
         "Utiliser des langages de modélisation formels",
         "Élaborer différents scénarios"
       ],
+=======
+      "matches": [],
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -9287,6 +9473,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-22T11:10:31.866Z",
+<<<<<<< HEAD
       "matches": [
         "Concevoir des",
         "Développer des modèles d’apprentissage profond",
@@ -9297,6 +9484,9 @@
         "Utiliser des langages de modélisation formels",
         "Élaborer différents scénarios"
       ],
+=======
+      "matches": [],
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -9353,6 +9543,7 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T14:38:16.903Z",
       "matches": [
+<<<<<<< HEAD
         "Adopter une approche itérative",
         "Analyser les flux de données à travers l'application",
         "Analyser les résultats de l'évaluation et sélectionner les modèles qui ont obtenu",
@@ -9361,6 +9552,9 @@
         "Comparer les performances des modèles combinés avec celles des modèles individuels",
         "Compiler des modèles de manière continue",
         "Concevoir et implémenter des modèles d'apprentissage adaptés à la vision par ordinateur,"
+=======
+        "Machine learning"
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
       ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
@@ -9376,6 +9570,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-15T10:41:57.967Z",
+<<<<<<< HEAD
       "matches": [
         "Concevoir des",
         "Concevoir des",
@@ -9398,6 +9593,26 @@
       "date": "2026-07-06T09:51:26.387Z",
       "matches": [],
       "unmatched": [
+=======
+      "matches": [],
+      "unmatched": [
+        "Développement de produits basés sur l'IA",
+        "Evaluation de modèles d'IA",
+        "Gestion de projets IA",
+        "Intégration de systèmes d'intelligence artificielle"
+      ]
+    },
+    {
+      "offer_id": "210THCF",
+      "title": "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-06T09:51:26.387Z",
+      "matches": [],
+      "unmatched": [
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
         "Optimiser les performances des systèmes d'IA",

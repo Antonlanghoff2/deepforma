@@ -1,4 +1,5 @@
 type,label,block,category,subcategory,offer_count,weighted_score
+<<<<<<< HEAD
 missing,"Recueillir les besoins métiers (optimisation du CRM, ciblage des campagnes marketing, ...)",B1,cadrage de projet IA,Analyse des besoins métiers,0,0.0
 missing,Structurer le processus d'identification des exigences métier,B1,analyse des besoins métiers,Structurer le processus d'identification des exigences métier,0,0.0
 missing,Effectuer une veille des outils et des tendances émergentes,B1,Other,Effectuer une veille des outils et des tendances émergentes,0,0.0
@@ -32,6 +33,8 @@ missing,Mesurer les écarts/non conformités,B4,gouvernance et éthique,Conformi
 missing,Mesurer les impacts des données analysées,B4,Other,Mesurer les impacts des données analysées,0,0.0
 missing,Concevoir des démonstrations interactives ou des prototypes,B4,Other,Concevoir des démonstrations interactives ou des prototypes,0,0.0
 missing,Collaborer avec les spécialistes,B4,Other,Collaborer avec les spécialistes,0,0.0
+=======
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.4378
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.4378
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.4378
@@ -60,6 +63,10 @@ unmapped,Analyser les besoins des clients pour proposer des solutions d'IA adapt
 unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.6207
 unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.6207
 unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.6207
+<<<<<<< HEAD
+=======
+unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.6207
+>>>>>>> 1af375f97dcb0ef8cbfab85d3d8404713c65d674
 unmapped,Développement de produits basés sur l'IA,,Other,Développement de produits basés sur l'IA,1,0.6207
 unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.6207
 unmapped,Gestion de projets IA,,gestion de projet,Gestion de projets IA,1,0.6207

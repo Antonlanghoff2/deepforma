@@ -254,3 +254,64 @@ def test_dst_mle_referential_pdf_regression(tmp_path):
     expected = {'Python', 'PyTorch', 'Docker', 'Kubernetes', 'MLflow', 'Cloud', 'MLOps'}
     assert expected.issubset(skill_labels)
     assert not any('Compilation à fins de recherche' in item.label for item in analysis['derived_skills'])
+
+
+def test_add_skill_with_empty_competencies():
+    from referential_import.editing_service import ReferentialEditingService
+    from referential_import.models import OfficialCompetency
+    
+    service = ReferentialEditingService()
+    
+    analysis = {
+        "competencies": [],
+        "derived_skills": [],
+        "criteria": [],
+    }
+    
+    result = service.add_skill(analysis, "Nouvelle compétence")
+    
+    assert len(result["competencies"]) == 1
+    assert result["competencies"][0].code == "MANUAL_1"
+    assert result["competencies"][0].official_label == "Nouvelle compétence"
+    assert result["competencies"][0].block_code == "MANUAL"
+    assert result["competencies"][0].activity_code == "MANUAL"
+    assert result["competencies"][0].page_start == 1
+    assert result["competencies"][0].page_end == 1
+    assert result["competencies"][0].review_status == "approved"
+    assert result["competencies"][0].provenance == "human_review"
+
+
+def test_add_skill_with_existing_competencies():
+    from referential_import.editing_service import ReferentialEditingService
+    from referential_import.models import OfficialCompetency
+    
+    service = ReferentialEditingService()
+    
+    existing = OfficialCompetency(
+        code="C1.1",
+        official_label="Compétence existante",
+        normalized_label="competence existante",
+        block_code="BLOC_1",
+        activity_code="A1.1",
+        page_start=5,
+        page_end=5,
+        confidence=0.95,
+        source_pages=[5],
+    )
+    
+    analysis = {
+        "competencies": [existing],
+        "derived_skills": [],
+        "criteria": [],
+    }
+    
+    result = service.add_skill(analysis, "Nouvelle compétence")
+    
+    assert len(result["competencies"]) == 2
+    assert result["competencies"][0].code == "C1.1"
+    assert result["competencies"][1].code == "MANUAL_1"
+    assert result["competencies"][1].official_label == "Nouvelle compétence"
+    assert result["competencies"][1].block_code == "BLOC_1"
+    assert result["competencies"][1].activity_code == "A1.1"
+    assert result["competencies"][1].page_start == 5
+    assert result["competencies"][1].page_end == 5
