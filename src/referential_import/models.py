@@ -42,6 +42,16 @@ class ReferentialDocument(Serializable):
     importer_version: str = "0.1.0"
     page_count: int = 0
     title: str = ""
+    document_title: str = ""
+    certification_title: str = ""
+    target_job_title: str = ""
+    rncp_code: str = ""
+    title_type: str = ""
+    title_confidence: float = 0.0
+    title_source_page: int | None = None
+    title_source_text: str = ""
+    title_candidates: list[dict[str, Any]] = field(default_factory=list)
+    title_warnings: list[str] = field(default_factory=list)
     provider: str = ""
     reference: str = ""
     duration_hours: int | None = None

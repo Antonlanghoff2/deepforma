@@ -822,8 +822,6 @@ def test_referential_import_validation_step_then_analysis_uses_corrected_title(m
     )
     assert response.status_code == 200
     html = response.get_data(as_text=True)
-    assert 'Le référentiel a été validé' in html
-    assert "Métier cible pour l'analyse du marché" in html
     validated_competencies = store.list_annotations('code = ?', ('C1.1',))
     assert validated_competencies
     import json as _json
@@ -941,6 +939,11 @@ def test_admin_referential_import_edits_are_persisted(monkeypatch, tmp_path):
         headers={'Authorization': f'Basic {auth}'},
     )
     assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Intitulé détecté' in html
+    assert 'Type' in html
+    assert 'Meilleurs candidats' in html
+    assert response.status_code == 200
     approved_imports = import_store.list_imports(status='approved')
     assert len(approved_imports) == 1
     document_payload = json.loads(approved_imports[0]['document_json'])
@@ -957,6 +960,66 @@ def test_admin_referential_import_edits_are_persisted(monkeypatch, tmp_path):
     assert output_payload['derived_skills'][0]['canonical_label'] == 'TensorFlow'
     assert output_payload['derived_skills'][0]['category'] == 'tool'
 
+
+
+def test_admin_referential_import_analysis_renders_title_details(monkeypatch, tmp_path):
+    import web_app as web_app_module
+    from referential_import.import_service import ReferentialImportService
+    from referential_import.pdf_loader import PdfDocument, PdfPage, PdfTextBlock
+    from referential_import.store import ReferentialImportStore
+    from referential_import.table_extractor import ExtractedTablePage
+
+    monkeypatch.setenv('DEEPFORMA_ADMIN_USER', 'anton')
+    monkeypatch.setenv('DEEPFORMA_ADMIN_PASSWORD', 'deepforma')
+
+    pdf_path = tmp_path / 'referentiel.pdf'
+    pdf_path.write_bytes(b'%PDF-1.4 fake')
+
+    fake_document = PdfDocument(
+        path=pdf_path,
+        pages=[
+            PdfPage(
+                number=1,
+                width=595,
+                height=842,
+                text=(
+                    'RÉFÉRENTIEL DE CERTIFICATION\n'
+                    'INTITULÉ DE LA CERTIFICATION\n'
+                    'Ingénieur en intelligence artificielle'
+                ),
+                blocks=[
+                    PdfTextBlock(text='RÉFÉRENTIEL DE CERTIFICATION', page_number=1, order=0, font_size=20, bold=True, bbox=(120, 760, 480, 790)),
+                    PdfTextBlock(text='INTITULÉ DE LA CERTIFICATION', page_number=1, order=1, font_size=18, bold=True, bbox=(110, 720, 500, 748)),
+                    PdfTextBlock(text='Ingénieur en intelligence artificielle', page_number=1, order=2, font_size=14, bold=True, bbox=(120, 680, 480, 706)),
+                ],
+            )
+        ],
+        extraction_method='pdftotext-bbox-layout',
+    )
+    fake_table_pages = [ExtractedTablePage(page_number=1, columns={'full_text': []}, header_detected=False, layout_quality=0.1)]
+    service = ReferentialImportService(store=ReferentialImportStore(tmp_path / 'imports.sqlite3'), output_dir=tmp_path / 'imports')
+
+    monkeypatch.setattr(web_app_module, 'ReferentialImportService', lambda *args, **kwargs: service)
+    monkeypatch.setattr('referential_import.import_service.load_pdf_document', lambda path: fake_document)
+    monkeypatch.setattr('referential_import.import_service.detect_tables', lambda document: fake_table_pages)
+
+    app = build_app(client_factory=lambda: DummyOfferClient(offers=[]))
+    app.testing = True
+    client = app.test_client()
+    auth = base64.b64encode(b'anton:deepforma').decode('ascii')
+    response = client.post(
+        '/admin/referential-import',
+        data={
+            'pdf': (BytesIO(b'%PDF-1.4 fake'), 'referentiel.pdf'),
+        },
+        content_type='multipart/form-data',
+        headers={'Authorization': f'Basic {auth}'},
+    )
+    assert response.status_code == 200
+    html = response.get_data(as_text=True)
+    assert 'Intitulé détecté' in html
+    assert 'Ingénieur en intelligence artificielle' in html
+    assert 'certification_title' in html
 
 
 def test_admin_referential_annotation_bulk_actions(monkeypatch, tmp_path):

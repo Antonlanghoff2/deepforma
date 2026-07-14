@@ -312,7 +312,7 @@ test:
 # "
 
 test-referential-import:
-	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py
+	$(PYTHON) -m pytest -q tests/test_referential_learning.py tests/test_referential_import.py tests/test_referential_import_title_extractor.py
 
 debug-referential-import-store:
 	$(PYTHON) scripts/debug_referential_import_store.py $(REFERENTIAL_DB)

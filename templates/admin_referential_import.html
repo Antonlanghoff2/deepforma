@@ -93,6 +93,56 @@
       </p>
     </section>
 
+    <section class="card">
+      <div class="section-heading">
+        <h2>Intitulé détecté</h2>
+        <span class="muted">Utilisé comme base, puis modifiable manuellement</span>
+      </div>
+      {% set title_info = analysis.title_extraction if analysis.title_extraction is defined else None %}
+      <div class="grid">
+        <div><strong>Intitulé retenu</strong><br>{{ document.title or 'Non détecté' }}</div>
+        <div><strong>Type</strong><br>{{ title_info.title_type if title_info else 'unknown' }}</div>
+        <div><strong>Confiance</strong><br>{{ '%.2f'|format(title_info.confidence) if title_info else '0.00' }}</div>
+        <div><strong>Page source</strong><br>{{ title_info.source_page if title_info and title_info.source_page is not none else '—' }}</div>
+        <div><strong>Intitulé certification</strong><br>{{ document.certification_title or '—' }}</div>
+        <div><strong>Intitulé métier cible</strong><br>{{ document.target_job_title or '—' }}</div>
+        <div><strong>Document title</strong><br>{{ document.document_title or '—' }}</div>
+        <div><strong>RNCP</strong><br>{{ document.rncp_code or '—' }}</div>
+      </div>
+      <p><strong>Texte source:</strong> {{ title_info.source_text if title_info and title_info.source_text else '—' }}</p>
+      <p><strong>Warnings titre:</strong>
+        {% if title_info and title_info.warnings %}
+          {% for warning in title_info.warnings %}
+            <span class="pill">{{ warning }}</span>
+          {% endfor %}
+        {% else %}
+          <span class="muted">Aucun</span>
+        {% endif %}
+      </p>
+      <div class="stack">
+        <div>
+          <strong>Meilleurs candidats</strong>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Texte</th><th>Score</th><th>Page</th><th>Raisons</th></tr>
+              </thead>
+              <tbody>
+                {% for candidate in (title_info.candidates[:5] if title_info and title_info.candidates else []) %}
+                <tr>
+                  <td>{{ candidate.text }}</td>
+                  <td>{{ '%.2f'|format(candidate.score) }}</td>
+                  <td>{{ candidate.page if candidate.page is not none else '—' }}</td>
+                  <td>{{ candidate.reasons|join(', ') }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <form id="approve-form" method="post" class="stack">
       <input type="hidden" name="analysis_json" value='{{ analysis_json | e }}'>
       <input type="hidden" name="source_path" value="{{ source_path }}">

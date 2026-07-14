@@ -1,28 +1,57 @@
 {
-  "source_file": "/tmp/pytest-of-bibi/pytest-48/test_output_files_exist0/test_single.xlsx",
-  "total_raw": 1,
-  "total_after_cleaning": 1,
+  "source_file": "data/raw/Dataset_Generaliste_CPF_V4.xlsx",
+  "total_raw": 27694,
+  "total_after_cleaning": 26484,
   "removed": {
     "sans_titre": 0,
     "sans_texte_ni_competences": 0,
-    "doublons_exacts": 0
+    "doublons_exacts": 1210
   },
   "fields": {
-    "num_with_title": 1,
-    "num_with_source_text": 1,
-    "num_with_skills": 1,
-    "num_with_rome_codes": 1,
-    "num_with_tags": 1,
-    "num_with_price": 1
+    "num_with_title": 26484,
+    "num_with_source_text": 26484,
+    "num_with_skills": 23718,
+    "num_with_rome_codes": 15423,
+    "num_with_tags": 26484,
+    "num_with_price": 26478
   },
-  "unique_certification_codes": 1,
-  "unique_providers": 1,
-  "unique_sectors": 1,
+  "unique_certification_codes": 1986,
+  "unique_providers": 5176,
+  "unique_sectors": 20,
   "top_skills": {
-    "Python": 1
+    "Formation en transports": 438,
+    "Formation en sécurite des biens et des personnes": 431,
+    "Formation en animation sportive": 376,
+    "Formation en finances": 353,
+    "Formation en santé": 349,
+    "Formation en spécialités pluritechnologiques génie civil": 325,
+    "Formation en ressources humaines": 312,
+    "Formation en comptabilite": 306,
+    "Formation en commerce": 301,
+    "Formation en travail social": 298,
+    "Formation en coiffure": 293,
+    "Formation en spécialités plurivalentes des échanges et de la gestion": 288,
+    "Formation en enseignement": 278,
+    "Formation en agro-alimentaire": 264,
+    "Formation en spécialites plurivalentes de la communication et de l'information": 260,
+    "Formation en secrétariat": 257,
+    "Formation en informatique": 209,
+    "Nos formateurs experts accompagnent nos apprenants dans la maîtrise des connaissances et des pratiques profess": 162,
+    "la gestion administrative": 144,
+    "Formation en langues vivantes": 134,
+    "un vocabulaire adapté au contexte": 134,
+    "Risques liés à l'utilisation des engins de chantier": 131,
+    "et utiliser un vocabulaire adapté au contexte": 129,
+    "les principales structures grammaticales nécessaires pour construire des phrases": 127,
+    "vos compétences linguistiques à l'oral et à l'écrit": 127,
+    "Formation en mécanique générale et de précision": 124,
+    "Formation en bâtiment : finitions": 101,
+    "un court texte et en dégager le sens global et des détails spécifiques": 84,
+    "les opérations comptables au quotidien": 80,
+    "la gestion administrative et comptable des clients": 58
   },
   "output_files": {
-    "parquet": "/tmp/pytest-of-bibi/pytest-48/test_output_files_exist0/output/formations_generalistes.parquet",
-    "jsonl": "/tmp/pytest-of-bibi/pytest-48/test_output_files_exist0/output/formations_generalistes.jsonl"
+    "parquet": "data/processed/cpf/formations_generalistes.parquet",
+    "jsonl": "data/processed/cpf/formations_generalistes.jsonl"
   }
 }

@@ -13,6 +13,7 @@ from common.text import clean_text, normalize_for_match
 
 from .competency_parser import CompetencyContext, parse_competency_and_criteria_lines
 from .models import DerivedSkill, EvaluationCriterion, ImportIssue, ImportReport, OfficialCompetency, ReferentialActivity, ReferentialBlock, ReferentialDocument
+from .title_extractor import extract_referential_title
 from .pdf_loader import load_pdf_document
 from .skill_decomposer import decompose_competency
 from .store import ReferentialImportStore
@@ -72,6 +73,7 @@ def analysis_from_export(export: dict[str, Any]) -> dict[str, Any]:
     derived_skills = [_skill_from_dict(item) for item in export.get('derived_skills', [])]
     tools_methods = [_skill_from_dict(item) for item in export.get('tools_methods', [])]
     report = _report_from_dict(export['report'])
+    title_extraction = export.get('title_extraction')
     return {
         'document': document,
         'blocks': blocks,
@@ -82,6 +84,7 @@ def analysis_from_export(export: dict[str, Any]) -> dict[str, Any]:
         'tools_methods': tools_methods,
         'report': report,
         'export': export,
+        'title_extraction': title_extraction,
         'duplicate_document': report.duplicate_document,
     }
 
@@ -95,6 +98,7 @@ def build_export_payload(analysis: dict[str, Any]) -> dict[str, Any]:
     derived_skills = analysis.get('derived_skills', [])
     tools_methods = analysis.get('tools_methods', [])
     report: ImportReport = analysis['report']
+    title_extraction = analysis.get('title_extraction')
     return {
         'schema_version': '1.0',
         'document': document.to_dict(),
@@ -105,6 +109,7 @@ def build_export_payload(analysis: dict[str, Any]) -> dict[str, Any]:
         'derived_skills': [item.to_dict() for item in derived_skills],
         'tools_methods': [item.to_dict() for item in tools_methods],
         'report': report.to_dict(),
+        'title_extraction': title_extraction.to_dict() if hasattr(title_extraction, 'to_dict') else title_extraction,
         'warnings': [item.to_dict() for item in report.warnings],
         'errors': [item.to_dict() for item in report.errors],
     }
@@ -365,8 +370,25 @@ class ReferentialImportService:
         raw_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
         document_id = self._document_id(pdf_path, raw_hash)
         duplicate_document = self.store.has_document(raw_hash, IMPORTER_VERSION)
+        title_extraction = extract_referential_title(document_loader, file_name=pdf_path.name)
         metadata = _extract_document_metadata(document_loader.pages)
-        inferred_title = metadata.get("title") or self._infer_document_title(document_loader.pages)
+        priority_title = (
+            title_extraction.certification_title
+            or title_extraction.target_job_title
+            or title_extraction.document_title
+            or title_extraction.title
+        )
+        inferred_title = priority_title or clean_text(pdf_path.stem) or pdf_path.name
+        if priority_title == title_extraction.certification_title and priority_title:
+            inferred_title_type = "certification_title"
+        elif priority_title == title_extraction.target_job_title and priority_title:
+            inferred_title_type = "target_job_title"
+        elif priority_title == title_extraction.document_title and priority_title:
+            inferred_title_type = "document_title"
+        elif priority_title == title_extraction.title and priority_title:
+            inferred_title_type = title_extraction.title_type or "document_title"
+        else:
+            inferred_title_type = "filename" if inferred_title == clean_text(pdf_path.stem) or inferred_title == pdf_path.name else title_extraction.title_type or "filename"
         table_pages = detect_tables(document_loader)
         LOGGER.info("[referential-import] table pages=%s", len(table_pages))
 
@@ -536,6 +558,16 @@ class ReferentialImportService:
             importer_version=IMPORTER_VERSION,
             page_count=len(document_loader.pages),
             title=inferred_title,
+            document_title=title_extraction.document_title or inferred_title,
+            certification_title=title_extraction.certification_title,
+            target_job_title=title_extraction.target_job_title,
+            rncp_code=title_extraction.rncp_code,
+            title_type=inferred_title_type,
+            title_confidence=title_extraction.confidence if inferred_title_type != "filename" else 0.35,
+            title_source_page=title_extraction.source_page,
+            title_source_text=title_extraction.source_text or "",
+            title_candidates=[candidate.to_dict() for candidate in title_extraction.candidates],
+            title_warnings=list(title_extraction.warnings),
             provider=metadata.get("provider", ""),
             reference=metadata.get("reference", ""),
             duration_hours=metadata.get("duration_hours"),
@@ -550,6 +582,7 @@ class ReferentialImportService:
         export_payload = {
             "schema_version": "1.0",
             "document": document.to_dict(),
+            "title_extraction": title_extraction.to_dict(),
             "blocks": [item.to_dict() for item in blocks],
             "competencies": [item.to_dict() for item in competencies],
             "criteria": [item.to_dict() for item in criteria],
@@ -561,6 +594,7 @@ class ReferentialImportService:
         }
         analysis = {
             "document": document,
+            "title_extraction": title_extraction,
             "blocks": blocks,
             "activities": activities,
             "competencies": competencies,
@@ -574,6 +608,10 @@ class ReferentialImportService:
             "metadata": metadata,
             "semantic_annotation": semantic_annotation,
         }
+        if title_extraction.warnings:
+            report.warnings.extend(
+                [ImportIssue(severity='warning', code='title_extraction', message=warning) for warning in title_extraction.warnings]
+            )
         analysis["export"] = build_export_payload(analysis)
         LOGGER.info(
             "[referential-import] validation status=%s blocks=%s activities=%s competencies=%s criteria=%s derived=%s",

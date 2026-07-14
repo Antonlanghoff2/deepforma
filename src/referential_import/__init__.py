@@ -11,6 +11,7 @@ from .models import (
     ReferentialBlock,
     ReferentialDocument,
 )
+from .title_extractor import ExtractedReferentialTitle, TitleCandidate, extract_referential_title
 
 __all__ = [
     "DerivedSkill",
@@ -22,4 +23,7 @@ __all__ = [
     "ReferentialBlock",
     "ReferentialDocument",
     "ReferentialImportService",
+    "ExtractedReferentialTitle",
+    "TitleCandidate",
+    "extract_referential_title",
 ]

@@ -21,6 +21,10 @@ class PdfTextBlock:
     page_number: int = 0
     line_number: int = 0
     order: int = 0
+    font_size: float | None = None
+    font_name: str | None = None
+    bold: bool | None = None
+    italic: bool | None = None
 
 
 @dataclass(slots=True)
