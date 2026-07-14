@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "referential_id": "3f794e5a8edcc55379ef11cc7dd70eb51bdc7c4ea1889e15cc949481a734c4e9",
+  "title": "Data Analyst",
+  "version": "1.0",
+  "annotation_validated": true,
+  "validated_at": "2026-07-10T16:39:55.054649+00:00",
+  "skills": [
+    {
+      "id": "SEMANTIC:1",
+      "label": "Python",
+      "type": "official_skill",
+      "description": "Python",
+      "aliases": [],
+      "category": "tool",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.5,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:1",
+      "block_name": "",
+      "activity": "",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    },
+    {
+      "id": "SEMANTIC:1",
+      "label": "SQL",
+      "type": "official_skill",
+      "description": "SQL",
+      "aliases": [],
+      "category": "tool",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.5,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:1",
+      "block_name": "",
+      "activity": "",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    }
+  ],
+  "metadata": {
+    "source": "annotation_validated",
+    "source_file": "tmp736l6jfr.pdf",
+    "document_id": "d4a4953a8df45ee3fa4f226c",
+    "official_skills_count": 2,
+    "subskills_count": 0,
+    "exploitable_skills_count": 2,
+    "skills_count": 2
+  },
+  "document": {
+    "id": "d4a4953a8df45ee3fa4f226c",
+    "file_name": "tmp736l6jfr.pdf",
+    "sha256": "3f794e5a8edcc55379ef11cc7dd70eb51bdc7c4ea1889e15cc949481a734c4e9",
+    "title": "Data Analyst"
+  }
+}

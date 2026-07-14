@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "referential_id": "8ea35d0bb3e1689388e6f4da5c616fd66935b1b0ae15d96b7c48ac9135e8bc9c",
+  "title": "Vendeur conseil omnicanal",
+  "version": "1.0",
+  "annotation_validated": true,
+  "validated_at": "2026-07-10T16:58:20.148047+00:00",
+  "skills": [
+    {
+      "id": "SEMANTIC:2",
+      "label": "Collaboration à l'aménagement physique,",
+      "type": "official_skill",
+      "description": "Collaboration à l'aménagement physique,",
+      "aliases": [],
+      "category": "soft_skill",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.8,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:2",
+      "block_name": "",
+      "activity": "",
+      "official_description": "Collaboration à l'aménagement physique,",
+      "normalized_label": "collaboration à l'aménagement physique,",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    },
+    {
+      "id": "SEMANTIC:3",
+      "label": "Réaliser l'encaissement du règlement du client",
+      "type": "official_skill",
+      "description": "Réaliser l'encaissement du règlement du client",
+      "aliases": [],
+      "category": "skill",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.82,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:3",
+      "block_name": "",
+      "activity": "",
+      "official_description": "Réaliser l'encaissement du règlement du client",
+      "normalized_label": "réaliser l'encaissement du règlement du client",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    }
+  ],
+  "metadata": {
+    "source": "annotation_validated",
+    "source_file": "tmpd8evlh32.pdf",
+    "document_id": "b02e3ad6a43e3eb546c710ba",
+    "official_skills_count": 2,
+    "subskills_count": 0,
+    "exploitable_skills_count": 2,
+    "skills_count": 2
+  },
+  "document": {
+    "id": "b02e3ad6a43e3eb546c710ba",
+    "file_name": "tmpd8evlh32.pdf",
+    "sha256": "8ea35d0bb3e1689388e6f4da5c616fd66935b1b0ae15d96b7c48ac9135e8bc9c",
+    "title": "Vendeur conseil omnicanal"
+  }
+}

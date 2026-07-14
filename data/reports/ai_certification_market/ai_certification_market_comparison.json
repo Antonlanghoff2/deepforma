@@ -1,8 +1,8 @@
 {
-  "referential_id": "d5f84750a715a75e926c2ecbb889a45af742ad4e9193ec2d88793d60352e93a5",
-  "referential_title": "FORMATION ENTREPRISE Le Wagon",
-  "referential_version": "",
-  "territory": "75 / 75",
+  "referential_id": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+  "referential_title": "Data Analyst",
+  "referential_version": "1.0",
+  "territory": "75 / 75056",
   "radius_km": null,
   "period": "",
   "job_titles": [
@@ -25,15 +25,15 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
-  "covered_offer_count": 17,
-  "total_market_weight": 67.4738,
-  "covered_weight": 17.5308,
-  "global_coverage_score": 25.98,
+  "covered_offer_count": 3,
+  "total_market_weight": 56.006,
+  "covered_weight": 2.3598,
+  "global_coverage_score": 4.21,
   "block_summaries": [
     {
       "block": "Other",
       "block_name": "Bloc ther",
-      "skill_count": 8,
+      "skill_count": 6,
       "covered_skill_count": 0,
       "total_weight": 0,
       "covered_weight": 0,
@@ -43,854 +43,777 @@
   ],
   "skill_rows": [
     {
-      "referential_id": "generated_group_0",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "Compétences extraites du référentiel",
-      "official_description": "",
-      "normalized_label": "competences extraites du referentiel",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "Machine Learning",
-      "normalized_label": "machine learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 1,
-      "weighted_score": 0.8725,
-      "share_percent": 4.0,
-      "coverage_score": 1.29,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
-      ],
-      "example_offers": [
-        "Chef de projet automatisation IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
+      "code": "SEMANTIC:1",
       "label": "Deep Learning",
       "official_description": "Deep Learning",
       "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_2",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "NLP",
-      "official_description": "NLP",
-      "normalized_label": "nlp",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_3",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "L'IA",
-      "official_description": "L'IA",
-      "normalized_label": "l ia",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 12,
-      "weighted_score": 9.5553,
-      "share_percent": 48.0,
-      "coverage_score": 14.16,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
-        "exact": 1,
-        "implicit": 1
+        "exact": 1
       },
       "evidence_examples": [
-        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
-        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
-        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
-        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "SQL",
-      "official_description": "SQL",
-      "normalized_label": "sql",
-      "category": "tool",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
+      "normalized_label": "transformer",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 2,
-      "weighted_score": 1.5283,
-      "share_percent": 8.0,
-      "coverage_score": 2.27,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.26,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_6",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "(variable) Cas d'usage interne",
-      "official_description": "(variable) Cas d'usage interne",
-      "normalized_label": "variable cas d usage interne",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
       "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     }
   ],
   "top_demanded_skills": [
     {
-      "referential_id": "derived_sub_3",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "L'IA",
-      "official_description": "L'IA",
-      "normalized_label": "l ia",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 12,
-      "weighted_score": 9.5553,
-      "share_percent": 48.0,
-      "coverage_score": 14.16,
-      "match_methods": {
-        "exact": 1,
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
-        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
-        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
-        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.26,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "SQL",
-      "official_description": "SQL",
-      "normalized_label": "sql",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 2,
-      "weighted_score": 1.5283,
-      "share_percent": 8.0,
-      "coverage_score": 2.27,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
-      ],
-      "example_offers": [
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "Machine Learning",
-      "normalized_label": "machine learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 1,
-      "weighted_score": 0.8725,
-      "share_percent": 4.0,
-      "coverage_score": 1.29,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
-      ],
-      "example_offers": [
-        "Chef de projet automatisation IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_6",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "(variable) Cas d'usage interne",
-      "official_description": "(variable) Cas d'usage interne",
-      "normalized_label": "variable cas d usage interne",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "generated_group_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Compétences extraites du référentiel",
-      "official_description": "",
-      "normalized_label": "competences extraites du referentiel",
-      "category": "",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     },
     {
-      "referential_id": "derived_sub_1",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
+      "code": "SEMANTIC:1",
       "label": "Deep Learning",
       "official_description": "Deep Learning",
       "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     },
     {
-      "referential_id": "derived_sub_2",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "NLP",
-      "official_description": "NLP",
-      "normalized_label": "nlp",
-      "category": "domain",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
+      "normalized_label": "transformer",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     }
   ],
   "covered_skills": [
     {
-      "referential_id": "derived_sub_0",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "Machine Learning",
-      "normalized_label": "machine learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 1,
-      "weighted_score": 0.8725,
-      "share_percent": 4.0,
-      "coverage_score": 1.29,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
-      ],
-      "example_offers": [
-        "Chef de projet automatisation IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_3",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "L'IA",
-      "official_description": "L'IA",
-      "normalized_label": "l ia",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 12,
-      "weighted_score": 9.5553,
-      "share_percent": 48.0,
-      "coverage_score": 14.16,
-      "match_methods": {
-        "exact": 1,
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
-        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
-        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
-        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "SQL",
-      "official_description": "SQL",
-      "normalized_label": "sql",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 2,
-      "weighted_score": 1.5283,
-      "share_percent": 8.0,
-      "coverage_score": 2.27,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
-      ],
-      "example_offers": [
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.26,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    }
-  ],
-  "missing_skills": [
-    {
-      "referential_id": "generated_group_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Compétences extraites du référentiel",
-      "official_description": "",
-      "normalized_label": "competences extraites du referentiel",
-      "category": "",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
+      "code": "SEMANTIC:1",
       "label": "Deep Learning",
       "official_description": "Deep Learning",
       "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     },
     {
-      "referential_id": "derived_sub_2",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "NLP",
-      "official_description": "NLP",
-      "normalized_label": "nlp",
-      "category": "domain",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
+      "normalized_label": "transformer",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     },
     {
-      "referential_id": "derived_sub_6",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "(variable) Cas d'usage interne",
-      "official_description": "(variable) Cas d'usage interne",
-      "normalized_label": "variable cas d usage interne",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
       "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     }
   ],
+  "missing_skills": [],
   "low_demand_skills": [
     {
-      "referential_id": "derived_sub_6",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "(variable) Cas d'usage interne",
-      "official_description": "(variable) Cas d'usage interne",
-      "normalized_label": "variable cas d usage interne",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "generated_group_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Compétences extraites du référentiel",
-      "official_description": "",
-      "normalized_label": "competences extraites du referentiel",
-      "category": "",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
     },
     {
-      "referential_id": "derived_sub_1",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
+      "code": "SEMANTIC:1",
       "label": "Deep Learning",
       "official_description": "Deep Learning",
       "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_2",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "NLP",
-      "official_description": "NLP",
-      "normalized_label": "nlp",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "derived_sub_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "Machine Learning",
-      "normalized_label": "machine learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 1,
-      "weighted_score": 0.8725,
-      "share_percent": 4.0,
-      "coverage_score": 1.29,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Chef de projet automatisation IA (H/F)"
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "SQL",
-      "official_description": "SQL",
-      "normalized_label": "sql",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 2,
-      "weighted_score": 1.5283,
-      "share_percent": 8.0,
-      "coverage_score": 2.27,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.26,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_3",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "L'IA",
-      "official_description": "L'IA",
-      "normalized_label": "l ia",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
       "category": "skill",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 12,
-      "weighted_score": 9.5553,
-      "share_percent": 48.0,
-      "coverage_score": 14.16,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
-        "exact": 1,
-        "implicit": 1
+        "exact": 1
       },
       "evidence_examples": [
-        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
-        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
-        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
-        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
+      "normalized_label": "transformer",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     }
@@ -910,7 +833,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 9,
-      "weighted_score": 7.4378,
+      "weighted_score": 7.3824,
       "share_percent": 36.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -940,7 +863,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 9,
-      "weighted_score": 7.4378,
+      "weighted_score": 7.3824,
       "share_percent": 36.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -970,7 +893,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 9,
-      "weighted_score": 7.4378,
+      "weighted_score": 7.3824,
       "share_percent": 36.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1000,7 +923,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.7557,
+      "weighted_score": 1.7313999999999998,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1029,7 +952,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.7182,
+      "weighted_score": 1.6947,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1050,6 +973,90 @@
       "block_name": "",
       "activity": "",
       "code": "",
+      "label": "Java",
+      "official_description": "",
+      "normalized_label": "Java",
+      "category": "Other",
+      "subcategory": "Java",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 1.0,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Java"
+      ],
+      "example_offers": [
+        "Ingénieur Software IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Kotlin",
+      "official_description": "",
+      "normalized_label": "Kotlin",
+      "category": "Other",
+      "subcategory": "Kotlin",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 1.0,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Kotlin"
+      ],
+      "example_offers": [
+        "Ingénieur Software IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Produit",
+      "official_description": "",
+      "normalized_label": "Produit",
+      "category": "Other",
+      "subcategory": "Produit",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 1.0,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Produit"
+      ],
+      "example_offers": [
+        "Ingénieur Software IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
       "label": "#TDFE2026",
       "official_description": "",
       "normalized_label": "#TDFE2026",
@@ -1058,7 +1065,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9677,
+      "weighted_score": 0.9474,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1086,7 +1093,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1114,7 +1121,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1142,7 +1149,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1170,7 +1177,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1198,7 +1205,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1226,7 +1233,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1254,7 +1261,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1282,7 +1289,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1310,7 +1317,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1338,7 +1345,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1366,7 +1373,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1394,7 +1401,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1422,7 +1429,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9278,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1450,7 +1457,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9,
+      "weighted_score": 0.8911,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1478,7 +1485,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8182,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1506,7 +1513,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8182,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1534,7 +1541,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8182,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1562,7 +1569,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8182,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1590,7 +1597,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1598,6 +1605,34 @@
       },
       "evidence_examples": [
         "Analyser les besoins des clients pour proposer des solutions d'IA adaptées"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "official_description": "",
+      "normalized_label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "category": "Other",
+      "subcategory": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.6122,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Analyser les tendances du marché pour anticiper les évolutions de l'IA"
       ],
       "example_offers": [
         "Expert IA (H/F)"
@@ -1618,7 +1653,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1646,7 +1681,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1674,7 +1709,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1682,6 +1717,34 @@
       },
       "evidence_examples": [
         "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développement de produits basés sur l'IA",
+      "official_description": "",
+      "normalized_label": "Développement de produits basés sur l'IA",
+      "category": "Other",
+      "subcategory": "Développement de produits basés sur l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.6122,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développement de produits basés sur l'IA"
       ],
       "example_offers": [
         "Expert IA (H/F)"
@@ -1702,7 +1765,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1730,7 +1793,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1758,7 +1821,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1786,7 +1849,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1814,7 +1877,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1842,7 +1905,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1870,7 +1933,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6207,
+      "weighted_score": 0.6122,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1887,125 +1950,194 @@
   ],
   "common_skills": [
     {
-      "referential_id": "derived_sub_3",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "L'IA",
-      "official_description": "L'IA",
-      "normalized_label": "l ia",
-      "category": "skill",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 12,
-      "weighted_score": 9.5553,
-      "share_percent": 48.0,
-      "coverage_score": 14.16,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
-        "exact": 1,
-        "implicit": 1
+        "exact": 1
       },
       "evidence_examples": [
-        "Dans le cadre du renforcement de ses équipes, nous recherchons un Ingénieur en intelligence artificielle H/F en CDI Vous interviendrez sur des projets innovants autour de l'IA, de l'IA générative et de la valorisation de la donnée.",
-        "Votre rôle n'est pas administratif : vous êtes le Lead Technique sur l'IA Générative.",
-        "Vous êtes chargé(e) de tester, construire et déployer des solutions concrètes basées sur l'IA et l'automatisation pour améliorer le fonctionnement des équipes."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
-        "DEVELOPPEUR IA ET AUTOMATISATION (H/F)"
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "derived_sub_5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "",
-      "label": "Python",
-      "official_description": "Python",
-      "normalized_label": "python",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 7,
-      "weighted_score": 5.5747,
-      "share_percent": 28.0,
-      "coverage_score": 8.26,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- développer des composants en Python et/ou Java",
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "SQL",
-      "official_description": "SQL",
-      "normalized_label": "sql",
-      "category": "tool",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 2,
-      "weighted_score": 1.5283,
-      "share_percent": 8.0,
-      "coverage_score": 2.27,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Pour t'épanouir dans ce poste, il est nécessaire : Tu disposes de bonnes bases en Python, te permettant de développer, tester et itérer rapidement sur des solutions Tu as une compréhension solide des LLM (prompt engineering, utilisation d'APIs, identification de cas d'usage concrets) Tu maîtrises les concepts liés au RAG (embeddings, recherche sémantique, bases de données vectorielles) Tu maîtrises les outils d'orchestration et d'automatisation comme n8n ainsi que les frameworks agentiques tels que LangGraph Tu comprends le fonctionnement des APIs et les logiques d'intégration entre différents outils et systèmes Tu as des bases en SQL pour interroger et exploiter des bases de données Au-delà des compétences techniques, tu as une vraie sensibilité business : tu es capable de comprendre les enjeux opérationnels, de proposer des solutions pragmatiques à forte valeur ajoutée et de collaborer efficacement avec des équipes non techniques.",
-        "Description du poste: Au sein de l'équipe technique, vous intervenez sur deux fronts : Maintenance et évolution de la plateforme actuelle (V1) : services back-end et API GraphQL (NestJS), base PostgreSQL, interfaces React / Next.js (TypeScript)."
-      ],
-      "example_offers": [
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "derived_sub_0",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Machine Learning",
-      "official_description": "Machine Learning",
-      "normalized_label": "machine learning",
+      "code": "SEMANTIC:1",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
-      "source_page": 1,
-      "offer_count": 1,
-      "weighted_score": 0.8725,
-      "share_percent": 4.0,
-      "coverage_score": 1.29,
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Aujourd'hui, en plus du machine learning classique, nous développons de très nombreux cas d'usage autour de l'IA générative et des agents."
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
       ],
       "example_offers": [
-        "Chef de projet automatisation IA (H/F)"
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
+      "normalized_label": "transformer",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.3598,
+      "share_percent": 12.0,
+      "coverage_score": 4.21,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management.",
+        "Collecte, nettoyage et structuration de données issues de sources internes et externesConception et maintenance de pipelines de données (ETL/ELT)Développement et entraînement de modèles de Machine Learning / Deep LearningAnalyse exploratoire de données (EDA) et production de visualisationsMise en place de tableaux de bord et reporting (Power BI, Tableau, ou équivalent)Contribution à des projets d'IA générative (cas d'usage métier, POC, prototypes)Automatisation de traitements via scripts Python/SQLVeille technologique sur les outils et méthodes Data/IADocumentation technique des modèles et process mis en placeCollaboration avec les équipes métier pour identifier des besoins et cas d'usage data",
+        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+      ],
+      "example_offers": [
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Alternance Data & Intelligence Artificielle - Paris (F/H) (H/F)",
+        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
       ],
       "status": "covered"
     }
@@ -2019,10 +2151,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T09:52:13.485Z",
-      "matches": [
-        "L'IA",
-        "Python"
-      ],
+      "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -2037,10 +2166,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-02T09:56:29.249Z",
-      "matches": [
-        "Python",
-        "SQL"
-      ],
+      "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -2056,13 +2182,28 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-22T11:10:31.866Z",
       "matches": [
-        "L'IA",
-        "Python"
+        "Pilotage d'équipes data,"
       ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
         "Optimiser les performances des systèmes d'IA"
+      ]
+    },
+    {
+      "offer_id": "211CGPL",
+      "title": "Ingénieur Software IA (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-10T18:53:23.011Z",
+      "matches": [],
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA",
+        "Java"
       ]
     },
     {
@@ -2073,26 +2214,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-06-24T11:39:13.539Z",
-      "matches": [
-        "Python"
-      ],
-      "unmatched": [
-        "Développer des modèles prédictifs pour l'analyse de données",
-        "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
-      ]
-    },
-    {
-      "offer_id": "210RVVH",
-      "title": "DEVELOPPEUR IA ET AUTOMATISATION (H/F)",
-      "location_label": "75 - PARIS",
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-07-03T10:14:53.416Z",
-      "matches": [
-        "L'IA"
-      ],
+      "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -2107,10 +2229,7 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T14:38:16.903Z",
-      "matches": [
-        "L'IA",
-        "Machine Learning"
-      ],
+      "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -2125,19 +2244,12 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-15T10:41:57.967Z",
-      "matches": [
-        "L'IA",
-        "L'IA",
-        "L'IA",
-        "L'IA",
-        "L'IA",
-        "L'IA"
-      ],
+      "matches": [],
       "unmatched": [
+        "Développement de produits basés sur l'IA",
         "Evaluation de modèles d'IA",
         "Gestion de projets IA",
-        "Intégration de systèmes d'intelligence artificielle",
-        "Développer des modèles prédictifs pour l'analyse de données"
+        "Intégration de systèmes d'intelligence artificielle"
       ]
     },
     {

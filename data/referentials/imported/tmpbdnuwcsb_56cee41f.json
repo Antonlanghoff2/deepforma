@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "referential_id": "8507f12c36d16f179b4d8f0a4c3a1e413f0f4ed33b49c2fc32b9ea4e5ee4a2c7",
+  "title": "CQP Conseiller de vente de produits non alimentaires et services",
+  "version": "1.0",
+  "annotation_validated": true,
+  "validated_at": "2026-07-10T16:53:43.377126+00:00",
+  "skills": [
+    {
+      "id": "SEMANTIC:2",
+      "label": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "type": "official_skill",
+      "description": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "aliases": [],
+      "category": "skill",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.85,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:2",
+      "block_name": "",
+      "activity": "",
+      "official_description": "Analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "normalized_label": "analyser la demande client en échangeant avec lui afin d'identifier son besoin.",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    },
+    {
+      "id": "SEMANTIC:2",
+      "label": "assurer l'acte d'achat.",
+      "type": "official_skill",
+      "description": "assurer l'acte d'achat.",
+      "aliases": [],
+      "category": "skill",
+      "block": "",
+      "source_page": 0,
+      "source_text": "",
+      "confidence": 0.78,
+      "status": "validated",
+      "children": [],
+      "parent_id": null,
+      "code": "SEMANTIC:2",
+      "block_name": "",
+      "activity": "",
+      "official_description": "assurer l'acte d'achat.",
+      "normalized_label": "assurer l'acte d'achat.",
+      "subcategory": "",
+      "technical_keywords": [],
+      "active": true
+    }
+  ],
+  "metadata": {
+    "source": "annotation_validated",
+    "source_file": "tmpbdnuwcsb.pdf",
+    "document_id": "56cee41f241c33d8ca05a696",
+    "official_skills_count": 2,
+    "subskills_count": 0,
+    "exploitable_skills_count": 2,
+    "skills_count": 2
+  },
+  "document": {
+    "id": "56cee41f241c33d8ca05a696",
+    "file_name": "tmpbdnuwcsb.pdf",
+    "sha256": "8507f12c36d16f179b4d8f0a4c3a1e413f0f4ed33b49c2fc32b9ea4e5ee4a2c7",
+    "title": "CQP Conseiller de vente de produits non alimentaires et services"
+  }
+}
