@@ -18,7 +18,7 @@
       "text_characters": 1879,
       "mean_density": 0.00374933,
       "needs_ocr": false,
-      "title_detected": "Data Scientist — Machine Learning & Deep",
+      "title_detected": "Data Scientist — Machine Learning & Deep Learning",
       "section_candidates": [
         {
           "page": 1,
@@ -82,19 +82,19 @@
         },
         {
           "page": 1,
-          "text": "Module 1 — Fondamentaux",
+          "text": "Module 1 — Fondamentaux Python & Stats",
           "label": "MODULE",
           "confidence": 0.84
         },
         {
           "page": 1,
-          "text": "Module 2 — Machine Learning",
+          "text": "Module 2 — Machine Learning supervisé",
           "label": "MODULE",
           "confidence": 0.84
         },
         {
           "page": 1,
-          "text": "Module 3 — Machine Learning",
+          "text": "Module 3 — Machine Learning non supervisé",
           "label": "MODULE",
           "confidence": 0.84
         },
@@ -106,13 +106,13 @@
         },
         {
           "page": 1,
-          "text": "Module 5 — NLP —",
+          "text": "Module 5 — NLP — Traitement du langage naturel",
           "label": "MODULE",
           "confidence": 0.84
         },
         {
           "page": 1,
-          "text": "Module 6 — MLOps &",
+          "text": "Module 6 — MLOps & Déploiement",
           "label": "MODULE",
           "confidence": 0.84
         },
@@ -134,10 +134,12 @@
           "page": 1,
           "text_length": 1879,
           "density": 0.00374933,
-          "block_count": 48
+          "block_count": 38
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -151,7 +153,7 @@
       "text_characters": 1379,
       "mean_density": 0.00275164,
       "needs_ocr": false,
-      "title_detected": "Data Analyst — Analyse & Visualisation de données",
+      "title_detected": "Data Analyst — Analyse & Visualisation de données DataScientest",
       "section_candidates": [
         {
           "page": 1,
@@ -243,10 +245,12 @@
           "page": 1,
           "text_length": 1379,
           "density": 0.00275164,
-          "block_count": 48
+          "block_count": 47
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -361,7 +365,9 @@
           "block_count": 31
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -440,7 +446,9 @@
           "block_count": 37
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -454,7 +462,7 @@
       "text_characters": 865,
       "mean_density": 0.00172601,
       "needs_ocr": false,
-      "title_detected": "Data Engineer — Architecture & Pipelines de",
+      "title_detected": "Data Engineer — Architecture & Pipelines de données",
       "section_candidates": [
         {
           "page": 1,
@@ -506,7 +514,7 @@
         },
         {
           "page": 1,
-          "text": "Titre RNCP Niveau 7 — Data",
+          "text": "Titre RNCP Niveau 7 — Data Engineer...",
           "label": "TITLE",
           "confidence": 0.84
         },
@@ -546,10 +554,12 @@
           "page": 1,
           "text_length": 865,
           "density": 0.00172601,
-          "block_count": 35
+          "block_count": 31
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -649,10 +659,12 @@
           "page": 1,
           "text_length": 1668,
           "density": 0.0033283,
-          "block_count": 45
+          "block_count": 31
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -664,21 +676,15 @@
       "page_count": 1,
       "text_layer_present": true,
       "text_characters": 1195,
-      "mean_density": 0.00238449,
+      "mean_density": 0.00238448,
       "needs_ocr": false,
-      "title_detected": "FORMATION ENTREPRISE Jedha Bootcamp",
+      "title_detected": "JEDHA-DA-ESS Réf. Formation",
       "section_candidates": [
         {
           "page": 1,
           "text": "FORMATION ENTREPRISE Jedha Bootcamp",
           "label": "TITLE",
           "confidence": 0.84
-        },
-        {
-          "page": 1,
-          "text": "Formation",
-          "label": "TITLE",
-          "confidence": 0.98
         },
         {
           "page": 1,
@@ -757,11 +763,13 @@
         {
           "page": 1,
           "text_length": 1195,
-          "density": 0.00238449,
-          "block_count": 49
+          "density": 0.00238448,
+          "block_count": 46
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -775,7 +783,7 @@
       "text_characters": 1252,
       "mean_density": 0.00249822,
       "needs_ocr": false,
-      "title_detected": "Lead Data Scientist — Management & IA",
+      "title_detected": "Lead Data Scientist — Management & IA avancée",
       "section_candidates": [
         {
           "page": 1,
@@ -815,12 +823,6 @@
         },
         {
           "page": 1,
-          "text": "CPF",
-          "label": "CPF",
-          "confidence": 0.98
-        },
-        {
-          "page": 1,
           "text": "Certification : Certificat Lead Data Scientist Jedha",
           "label": "REFERENCE",
           "confidence": 0.84
@@ -855,10 +857,12 @@
           "page": 1,
           "text_length": 1252,
           "density": 0.00249822,
-          "block_count": 37
+          "block_count": 33
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -872,7 +876,7 @@
       "text_characters": 1250,
       "mean_density": 0.00249423,
       "needs_ocr": false,
-      "title_detected": "Machine Learning Engineer — Production &",
+      "title_detected": "Machine Learning Engineer — Production & Industrialisation Jedha Bootcamp",
       "section_candidates": [
         {
           "page": 1,
@@ -964,10 +968,12 @@
           "page": 1,
           "text_length": 1250,
           "density": 0.00249423,
-          "block_count": 48
+          "block_count": 46
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -979,7 +985,7 @@
       "page_count": 1,
       "text_layer_present": true,
       "text_characters": 1572,
-      "mean_density": 0.00313675,
+      "mean_density": 0.00313674,
       "needs_ocr": false,
       "title_detected": "LE WAGON",
       "section_candidates": [
@@ -1042,11 +1048,13 @@
         {
           "page": 1,
           "text_length": 1572,
-          "density": 0.00313675,
-          "block_count": 41
+          "density": 0.00313674,
+          "block_count": 40
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1134,10 +1142,12 @@
           "page": 1,
           "text_length": 884,
           "density": 0.00176392,
-          "block_count": 31
+          "block_count": 27
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1151,7 +1161,7 @@
       "text_characters": 1080,
       "mean_density": 0.00215502,
       "needs_ocr": false,
-      "title_detected": "FORMATION ENTREPRISE Le Wagon",
+      "title_detected": "LW-DA Réf. Formation",
       "section_candidates": [
         {
           "page": 1,
@@ -1237,10 +1247,12 @@
           "page": 1,
           "text_length": 1080,
           "density": 0.00215502,
-          "block_count": 46
+          "block_count": 45
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1254,7 +1266,7 @@
       "text_characters": 1200,
       "mean_density": 0.00239446,
       "needs_ocr": false,
-      "title_detected": "FORMATION ENTREPRISE Le Wagon",
+      "title_detected": "LW-B2B Réf. Formation",
       "section_candidates": [
         {
           "page": 1,
@@ -1294,7 +1306,7 @@
         },
         {
           "page": 1,
-          "text": "Sur devis (à partir de",
+          "text": "Sur devis (à partir de 3 000 € / jour)",
           "label": "PRICE",
           "confidence": 0.84
         },
@@ -1352,10 +1364,12 @@
           "page": 1,
           "text_length": 1200,
           "density": 0.00239446,
-          "block_count": 47
+          "block_count": 44
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1476,7 +1490,9 @@
           "block_count": 28
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1576,10 +1592,12 @@
           "page": 1,
           "text_length": 1490,
           "density": 0.00297312,
-          "block_count": 43
+          "block_count": 31
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1627,12 +1645,6 @@
         },
         {
           "page": 1,
-          "text": "CPF",
-          "label": "CPF",
-          "confidence": 0.98
-        },
-        {
-          "page": 1,
           "text": "Certification : Certificat Wild Code School IA & Big Data",
           "label": "REFERENCE",
           "confidence": 0.84
@@ -1667,10 +1679,12 @@
           "page": 1,
           "text_length": 1071,
           "density": 0.00213706,
-          "block_count": 34
+          "block_count": 32
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1684,7 +1698,7 @@
       "text_characters": 1516,
       "mean_density": 0.003025,
       "needs_ocr": false,
-      "title_detected": "Développeur en Intelligence Artificielle — Titre",
+      "title_detected": "Développeur en Intelligence Artificielle — Titre Professionnel RNCP Simplon.co",
       "section_candidates": [
         {
           "page": 1,
@@ -1715,12 +1729,6 @@
           "text": "Prix TTC",
           "label": "PRICE",
           "confidence": 0.84
-        },
-        {
-          "page": 1,
-          "text": "Éligible CPF",
-          "label": "CPF",
-          "confidence": 0.98
         },
         {
           "page": 1,
@@ -1788,10 +1796,12 @@
           "page": 1,
           "text_length": 1516,
           "density": 0.003025,
-          "block_count": 47
+          "block_count": 44
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1870,7 +1880,9 @@
           "block_count": 35
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -1884,19 +1896,13 @@
       "text_characters": 1263,
       "mean_density": 0.00252017,
       "needs_ocr": false,
-      "title_detected": "FORMATION ENTREPRISE Simplon.co",
+      "title_detected": "SIMPLON-IAG-PRO Réf. Formation",
       "section_candidates": [
         {
           "page": 1,
           "text": "FORMATION ENTREPRISE Simplon.co",
           "label": "TITLE",
           "confidence": 0.84
-        },
-        {
-          "page": 1,
-          "text": "Formation",
-          "label": "TITLE",
-          "confidence": 0.98
         },
         {
           "page": 1,
@@ -1988,10 +1994,12 @@
           "page": 1,
           "text_length": 1263,
           "density": 0.00252017,
-          "block_count": 47
+          "block_count": 45
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2097,7 +2105,7 @@
           "page": 1,
           "text_length": 230,
           "density": 0.00045894,
-          "block_count": 9
+          "block_count": 8
         },
         {
           "page": 2,
@@ -2106,7 +2114,9 @@
           "block_count": 28
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2118,7 +2128,7 @@
       "page_count": 1,
       "text_layer_present": true,
       "text_characters": 1507,
-      "mean_density": 0.00300705,
+      "mean_density": 0.00300704,
       "needs_ocr": false,
       "title_detected": "Guide Apprenant",
       "section_candidates": [
@@ -2205,11 +2215,13 @@
         {
           "page": 1,
           "text_length": 1507,
-          "density": 0.00300705,
-          "block_count": 46
+          "density": 0.00300704,
+          "block_count": 31
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2269,7 +2281,7 @@
         },
         {
           "page": 1,
-          "text": "RNCP Niveau 7 — Ingénieur",
+          "text": "RNCP Niveau 7 — Ingénieur Machine Learning (CentraleSupélec)...",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2299,12 +2311,6 @@
         },
         {
           "page": 1,
-          "text": "certification",
-          "label": "REFERENCE",
-          "confidence": 0.98
-        },
-        {
-          "page": 1,
           "text": "COMPÉTENCES",
           "label": "SKILLS",
           "confidence": 0.98
@@ -2315,10 +2321,12 @@
           "page": 1,
           "text_length": 832,
           "density": 0.00166016,
-          "block_count": 34
+          "block_count": 30
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2332,7 +2340,7 @@
       "text_characters": 1055,
       "mean_density": 0.00210513,
       "needs_ocr": false,
-      "title_detected": "FORMATION ENTREPRISE OpenClassrooms",
+      "title_detected": "OC-DA Réf. Formation",
       "section_candidates": [
         {
           "page": 1,
@@ -2421,7 +2429,9 @@
           "block_count": 44
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2435,7 +2445,7 @@
       "text_characters": 1185,
       "mean_density": 0.00236453,
       "needs_ocr": false,
-      "title_detected": "IA — Traitement du Langage Naturel (NLP)",
+      "title_detected": "IA — Traitement du Langage Naturel (NLP) M2i Formation",
       "section_candidates": [
         {
           "page": 1,
@@ -2527,10 +2537,12 @@
           "page": 1,
           "text_length": 1185,
           "density": 0.00236453,
-          "block_count": 46
+          "block_count": 45
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2636,7 +2648,7 @@
           "page": 1,
           "text_length": 209,
           "density": 0.00041704,
-          "block_count": 9
+          "block_count": 8
         },
         {
           "page": 2,
@@ -2645,7 +2657,9 @@
           "block_count": 30
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     },
     {
@@ -2656,21 +2670,15 @@
       "file_size": 115093,
       "page_count": 11,
       "text_layer_present": true,
-      "text_characters": 27604,
-      "mean_density": 0.00500059,
+      "text_characters": 27455,
+      "mean_density": 0.00497359,
       "needs_ocr": false,
-      "title_detected": "Accueil",
+      "title_detected": "RNCP37537 CAP Boulanger",
       "section_candidates": [
         {
           "page": 1,
-          "text": "RNCP37537",
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
-          "confidence": 0.84
-        },
-        {
-          "page": 1,
-          "text": "Objectifs et contexte de la certification :",
-          "label": "OBJECTIVES",
           "confidence": 0.84
         },
         {
@@ -2681,13 +2689,19 @@
         },
         {
           "page": 1,
-          "text": "Certification",
+          "text": "RNCP37537",
           "label": "REFERENCE",
-          "confidence": 0.98
+          "confidence": 0.84
         },
         {
           "page": 1,
-          "text": "RNCP42115 - CAP - Boulanger",
+          "text": "Certification remplacée par",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 1,
+          "text": "RNCP42115 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2699,7 +2713,13 @@
         },
         {
           "page": 1,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "text": "Objectifs et contexte de la certification :",
+          "label": "OBJECTIVES",
+          "confidence": 0.84
+        },
+        {
+          "page": 2,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2710,8 +2730,8 @@
           "confidence": 0.84
         },
         {
-          "page": 2,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "page": 3,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2722,8 +2742,8 @@
           "confidence": 0.84
         },
         {
-          "page": 3,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "page": 4,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2735,43 +2755,37 @@
         },
         {
           "page": 4,
-          "text": "RNCP37537BC01 - Approvisionnement, communication, sécurité alimentaire et hygiène en boulangerie",
-          "label": "REFERENCE",
-          "confidence": 0.84
-        },
-        {
-          "page": 4,
-          "text": "Modalités d'évaluation",
-          "label": "FORMAT",
-          "confidence": 0.84
-        },
-        {
-          "page": 4,
-          "text": "Formation (CCF)",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 4,
-          "text": "RNCP37537BC02 - Production et présentation de produits de panification et de boulangerie",
-          "label": "REFERENCE",
-          "confidence": 0.84
-        },
-        {
-          "page": 4,
-          "text": "Modalités d'évaluation",
-          "label": "FORMAT",
-          "confidence": 0.84
-        },
-        {
-          "page": 4,
           "text": "Blocs de compétences",
           "label": "PROGRAM",
           "confidence": 0.72
         },
         {
           "page": 4,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "text": "RNCP37537BC01 Approvisionnement, communication, sécurité alimentaire et hygiène en boulangerie",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "RNCP37537BC02 Production et présentation de produits de panification et de boulangerie",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 4,
+          "text": "Modalités d'évaluation",
+          "label": "FORMAT",
+          "confidence": 0.84
+        },
+        {
+          "page": 5,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2783,7 +2797,7 @@
         },
         {
           "page": 5,
-          "text": "RNCP37537BC03 - Français et histoire-géographie-enseignement moral et civique",
+          "text": "RNCP37537BC03 Français et histoire-géographie-enseignement moral et civique",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2795,31 +2809,7 @@
         },
         {
           "page": 5,
-          "text": "Reformuler, à l’écrit ou à l’oral, un message lu ou entendu",
-          "label": "FOOTER",
-          "confidence": 0.84
-        },
-        {
-          "page": 5,
-          "text": "programme",
-          "label": "PROGRAM",
-          "confidence": 0.98
-        },
-        {
-          "page": 5,
-          "text": "formation théorique) et formation professionnelle continue",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 5,
-          "text": "Formation (CCF)",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 5,
-          "text": "RNCP37537BC04 - Mathématiques et physique-chimie",
+          "text": "RNCP37537BC04 Mathématiques et physique-chimie",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2831,25 +2821,13 @@
         },
         {
           "page": 5,
-          "text": "outils et un langage appropriés",
-          "label": "TOOLS",
-          "confidence": 0.84
-        },
-        {
-          "page": 5,
-          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 5,
-          "text": "RNCP37537BC05 - Langue vivante étrangère",
+          "text": "RNCP37537BC05 Langue vivante étrangère",
           "label": "REFERENCE",
           "confidence": 0.84
         },
         {
-          "page": 5,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "page": 6,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2861,7 +2839,7 @@
         },
         {
           "page": 6,
-          "text": "RNCP37537BC06 - Éducation physique et sportive",
+          "text": "RNCP37537BC06 Éducation physique et sportive",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2873,13 +2851,7 @@
         },
         {
           "page": 6,
-          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle en",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 6,
-          "text": "RNCP37537BC07 - Prévention-santé-environnement",
+          "text": "RNCP37537BC07 Prévention-santé-environnement",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2891,13 +2863,7 @@
         },
         {
           "page": 6,
-          "text": "formation professionnelle continue (établissement public au CCF intégral) : Contrôle",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 6,
-          "text": "RNCP37537BC08 - Mobilité (bloc facultatif)",
+          "text": "RNCP37537BC08 Mobilité (bloc facultatif)",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2908,14 +2874,8 @@
           "confidence": 0.84
         },
         {
-          "page": 6,
-          "text": "formation professionnelle continue (établissement public au CCF intégral) : Pratique, oral",
-          "label": "TITLE",
-          "confidence": 0.84
-        },
-        {
-          "page": 6,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "page": 7,
+          "text": "RNCP37537 CAP Boulanger",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2927,7 +2887,7 @@
         },
         {
           "page": 7,
-          "text": "RNCP37537BC09 - Langue vivante (Bloc facultatif)",
+          "text": "RNCP37537BC09 Langue vivante (Bloc facultatif)",
           "label": "REFERENCE",
           "confidence": 0.84
         },
@@ -2936,12 +2896,6 @@
           "text": "Modalités d'évaluation",
           "label": "FORMAT",
           "confidence": 0.84
-        },
-        {
-          "page": 7,
-          "text": "blocs de compétences peut être dispensé des épreuves correspondantes.",
-          "label": "PROGRAM",
-          "confidence": 0.72
         },
         {
           "page": 7,
@@ -2956,8 +2910,68 @@
           "confidence": 0.84
         },
         {
-          "page": 7,
-          "text": "RNCP37537 - CAP - Boulanger",
+          "page": 8,
+          "text": "RNCP37537 CAP Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 8,
+          "text": "Pré-requis disctincts pour les blocs de compétences :",
+          "label": "PREREQUISITES",
+          "confidence": 0.84
+        },
+        {
+          "page": 8,
+          "text": "formation sous statut",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 8,
+          "text": "formation continue",
+          "label": "TITLE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "RNCP37537 CAP Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "Bloc(s) de compétences concernés",
+          "label": "PROGRAM",
+          "confidence": 0.72
+        },
+        {
+          "page": 9,
+          "text": "RNCP37537BC01 Approvisionnement,",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "RNCP18704BC01 Bloc de compétence n°1 fiche",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "RNCP18704 CAP Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "RNCP18704 CAP Boulanger",
+          "label": "REFERENCE",
+          "confidence": 0.84
+        },
+        {
+          "page": 9,
+          "text": "RNCP37537BC03 Français et histoire-",
           "label": "REFERENCE",
           "confidence": 0.84
         }
@@ -2965,72 +2979,74 @@
       "page_summaries": [
         {
           "page": 1,
-          "text_length": 1080,
-          "density": 0.00215211,
-          "block_count": 46
+          "text_length": 1062,
+          "density": 0.00211625,
+          "block_count": 42
         },
         {
           "page": 2,
-          "text_length": 2462,
-          "density": 0.00490602,
-          "block_count": 47
+          "text_length": 2450,
+          "density": 0.00488211,
+          "block_count": 44
         },
         {
           "page": 3,
-          "text_length": 3409,
-          "density": 0.00679311,
-          "block_count": 50
+          "text_length": 3405,
+          "density": 0.00678514,
+          "block_count": 45
         },
         {
           "page": 4,
-          "text_length": 2914,
-          "density": 0.00580672,
-          "block_count": 73
+          "text_length": 2906,
+          "density": 0.00579078,
+          "block_count": 29
         },
         {
           "page": 5,
-          "text_length": 3394,
-          "density": 0.00676322,
-          "block_count": 86
+          "text_length": 3384,
+          "density": 0.00674329,
+          "block_count": 21
         },
         {
           "page": 6,
-          "text_length": 3575,
-          "density": 0.0071239,
-          "block_count": 83
+          "text_length": 3565,
+          "density": 0.00710397,
+          "block_count": 27
         },
         {
           "page": 7,
-          "text_length": 3124,
-          "density": 0.00622519,
-          "block_count": 64
+          "text_length": 3113,
+          "density": 0.00620327,
+          "block_count": 32
         },
         {
           "page": 8,
-          "text_length": 2764,
-          "density": 0.00550782,
-          "block_count": 78
+          "text_length": 2760,
+          "density": 0.00549985,
+          "block_count": 32
         },
         {
           "page": 9,
-          "text_length": 2472,
-          "density": 0.00492595,
-          "block_count": 74
+          "text_length": 2444,
+          "density": 0.00487016,
+          "block_count": 49
         },
         {
           "page": 10,
-          "text_length": 1888,
-          "density": 0.00376222,
-          "block_count": 57
+          "text_length": 1852,
+          "density": 0.00369048,
+          "block_count": 50
         },
         {
           "page": 11,
-          "text_length": 522,
-          "density": 0.00104019,
+          "text_length": 514,
+          "density": 0.00102425,
           "block_count": 17
         }
       ],
-      "warnings": [],
+      "warnings": [
+        "Fallback texte: PyMuPDF indisponible"
+      ],
       "errors": []
     }
   ]
