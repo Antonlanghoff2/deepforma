@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from common.text import clean_text
 from config.thresholds import THRESHOLDS
 from config.weights import SCORING_WEIGHTS
 from models.analysis_result import (
@@ -24,6 +25,7 @@ from models.analysis_result import (
 from data_sources.ia_recommendations import load_ia_recommendations_csv
 from domain.ia_recommendation_matching import match_ia_recommendations
 from domain.models import IARecommendationMatch
+from ai_recommendations.matcher import match_ai_recommendations
 from pathlib import Path
 from services.skill_normalization import normalize_skill_label
 
@@ -416,6 +418,42 @@ def build_analysis_result(
         if skill_dicts:
             ia_matches = match_ia_recommendations(skill_dicts, ia_recommendation_records)
     result.ia_recommendations = ia_matches
+
+    ai_hybrid = analysis.get('ai_recommendations_hybrid')
+    if not ai_hybrid:
+        ai_hybrid = match_ai_recommendations(
+            referential_title=clean_text(str(analysis.get('document_title') or analysis.get('title') or '')),
+            activities=[str(item) for item in (analysis.get('activities') or []) if clean_text(item)],
+            official_skills=[s.label for s in result.detected_skills if clean_text(s.label)],
+            subskills=[s.label for s in result.skill_extraction.skills if clean_text(s.label)],
+            full_text=clean_text(str(analysis.get('full_text') or analysis.get('text') or '')),
+            model_score_std=result.ia_classification.score_std,
+            model_mean_score=result.ia_classification.score_mean,
+            model_non_discriminant=not result.quality.skills_discriminating,
+        )
+    if isinstance(ai_hybrid, dict):
+        category_labels = {item.get('label') for item in result.ia_classification.categories if isinstance(item, dict)}
+        for category in ai_hybrid.get('detected_categories') or []:
+            if not isinstance(category, dict):
+                continue
+            label = clean_text(category.get('label') or '')
+            if label and label not in category_labels:
+                result.ia_classification.categories.append(category)
+                category_labels.add(label)
+        for rec in ai_hybrid.get('recommendations') or []:
+            if not isinstance(rec, dict):
+                continue
+            result.recommendations.append(Recommendation(
+                type='ia_recommendation',
+                skill=clean_text(rec.get('keyword') or ''),
+                justification=clean_text(rec.get('recommendation') or ''),
+                impact_estime='moyen',
+                offer_count=0,
+                offer_percent=0.0,
+                priorite='moyenne',
+                niveau_confiance=clean_text(rec.get('status') or 'à vérifier'),
+            ))
+        result.summary['ai_default_recommendation_applied'] = bool(ai_hybrid.get('default_recommendation_applied'))
 
     return result
 

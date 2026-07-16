@@ -25,10 +25,17 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
+<<<<<<< HEAD
   "covered_offer_count": 3,
   "total_market_weight": 92.5037,
   "covered_weight": 2.2269,
   "global_coverage_score": 2.41,
+=======
+  "covered_offer_count": 2,
+  "total_market_weight": 89.1213,
+  "covered_weight": 1.2769,
+  "global_coverage_score": 1.43,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
   "block_summaries": [
     {
       "block": "Other",
@@ -121,6 +128,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -136,6 +144,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -152,6 +174,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -167,6 +190,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -183,6 +220,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -198,6 +236,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -217,7 +269,11 @@
       "offer_count": 1,
       "weighted_score": 0.7703,
       "share_percent": 4.0,
+<<<<<<< HEAD
       "coverage_score": 0.83,
+=======
+      "coverage_score": 0.86,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "match_methods": {
         "exact": 1
       },
@@ -232,6 +288,7 @@
   ],
   "top_demanded_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "SEMANTIC:4",
       "block": "",
       "block_name": "",
@@ -329,6 +386,12 @@
       "block": "",
       "block_name": "",
       "activity": "",
+=======
+      "referential_id": "SEMANTIC:5",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "code": "SEMANTIC:5",
       "label": "transformer",
       "official_description": "transformer",
@@ -340,7 +403,11 @@
       "offer_count": 1,
       "weighted_score": 0.7703,
       "share_percent": 4.0,
+<<<<<<< HEAD
       "coverage_score": 0.83,
+=======
+      "coverage_score": 0.86,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "match_methods": {
         "exact": 1
       },
@@ -353,6 +420,93 @@
       "status": "covered"
     },
     {
+<<<<<<< HEAD
+=======
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "apprentissage automatique",
+      "official_description": "apprentissage automatique",
+      "normalized_label": "apprentissage automatique",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réaliser un prototype innovant.",
+      "official_description": "réaliser un prototype innovant.",
+      "normalized_label": "réaliser un prototype innovant.",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réseaux de neurones",
+      "official_description": "réseaux de neurones",
+      "normalized_label": "réseaux de neurones",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
@@ -433,6 +587,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -448,6 +603,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -464,6 +633,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -479,6 +649,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -495,6 +679,7 @@
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 2,
       "weighted_score": 1.4566,
       "share_percent": 8.0,
@@ -510,6 +695,20 @@
       "example_offers": [
         "Expert IA (H/F)",
         "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+=======
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       ],
       "status": "covered"
     },
@@ -529,7 +728,11 @@
       "offer_count": 1,
       "weighted_score": 0.7703,
       "share_percent": 4.0,
+<<<<<<< HEAD
       "coverage_score": 0.83,
+=======
+      "coverage_score": 0.86,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "match_methods": {
         "exact": 1
       },
@@ -678,6 +881,93 @@
       "status": "missing"
     },
     {
+<<<<<<< HEAD
+=======
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "apprentissage automatique",
+      "official_description": "apprentissage automatique",
+      "normalized_label": "apprentissage automatique",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réaliser un prototype innovant.",
+      "official_description": "réaliser un prototype innovant.",
+      "normalized_label": "réaliser un prototype innovant.",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réseaux de neurones",
+      "official_description": "réseaux de neurones",
+      "normalized_label": "réseaux de neurones",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "referential_id": "SEMANTIC:5",
       "block": "",
       "block_name": "",
@@ -693,7 +983,11 @@
       "offer_count": 1,
       "weighted_score": 0.7703,
       "share_percent": 4.0,
+<<<<<<< HEAD
       "coverage_score": 0.83,
+=======
+      "coverage_score": 0.86,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "match_methods": {
         "exact": 1
       },
@@ -813,9 +1107,15 @@
       "subcategory": "Développer des modèles prédictifs pour l'analyse de données",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 10,
       "weighted_score": 7.9990000000000006,
       "share_percent": 40.0,
+=======
+      "offer_count": 9,
+      "weighted_score": 7.1882,
+      "share_percent": 36.0,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -843,9 +1143,15 @@
       "subcategory": "Optimiser les performances des systèmes d'IA",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 10,
       "weighted_score": 7.9990000000000006,
       "share_percent": 40.0,
+=======
+      "offer_count": 9,
+      "weighted_score": 7.1882,
+      "share_percent": 36.0,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -873,9 +1179,15 @@
       "subcategory": "Documenter les processus et les architectures d'IA",
       "technical_keywords": [],
       "source_page": 0,
+<<<<<<< HEAD
       "offer_count": 9,
       "weighted_score": 7.1166,
       "share_percent": 36.0,
+=======
+      "offer_count": 8,
+      "weighted_score": 6.305800000000001,
+      "share_percent": 32.0,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -2808,6 +3120,7 @@
   ],
   "common_skills": [
     {
+<<<<<<< HEAD
       "referential_id": "SEMANTIC:4",
       "block": "",
       "block_name": "",
@@ -2905,6 +3218,12 @@
       "block": "",
       "block_name": "",
       "activity": "",
+=======
+      "referential_id": "SEMANTIC:5",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "code": "SEMANTIC:5",
       "label": "transformer",
       "official_description": "transformer",
@@ -2916,7 +3235,11 @@
       "offer_count": 1,
       "weighted_score": 0.7703,
       "share_percent": 4.0,
+<<<<<<< HEAD
       "coverage_score": 0.83,
+=======
+      "coverage_score": 0.86,
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "match_methods": {
         "exact": 1
       },
@@ -2925,6 +3248,90 @@
       ],
       "example_offers": [
         "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "apprentissage automatique",
+      "official_description": "apprentissage automatique",
+      "normalized_label": "apprentissage automatique",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réaliser un prototype innovant.",
+      "official_description": "réaliser un prototype innovant.",
+      "normalized_label": "réaliser un prototype innovant.",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:4",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:4",
+      "label": "réseaux de neurones",
+      "official_description": "réseaux de neurones",
+      "normalized_label": "réseaux de neurones",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.5066,
+      "share_percent": 4.0,
+      "coverage_score": 0.57,
+      "match_methods": {
+        "implicit": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Expert IA (H/F)"
       ],
       "status": "covered"
     }
@@ -2995,6 +3402,7 @@
       "offer_id": "210SJLB",
       "title": "Machine Learning Engineer (H/F)",
       "location_label": "75 - Paris",
+<<<<<<< HEAD
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
@@ -3011,15 +3419,18 @@
       "offer_id": "210GJZN",
       "title": "Ingénieur IA Générative & Agents IA (H/F)",
       "location_label": "75 - PARIS",
+=======
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-06-24T11:39:13.539Z",
+      "date": "2026-07-03T14:17:53.400Z",
       "matches": [],
       "unmatched": [
-        "Développer des modèles prédictifs pour l'analyse de données",
-        "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
+        "Connaissance approfondie en mathématiques",
+        "Développement de produits basés sur l'IA",
+        "Développer des algorithmes pour l'analyse de données",
+        "Développer des modèles prédictifs pour l'analyse de données"
       ]
     },
     {

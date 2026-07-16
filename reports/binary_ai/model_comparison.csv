@@ -1,0 +1,3 @@
+model,accuracy,balanced_accuracy,precision_ia,recall_ia,f1_ia,f1_macro,pr_auc,roc_auc,mcc,threshold,predicted_positive_rate,real_positive_rate,inference_time_ms,model_size_bytes,train_rows,validation_rows,test_rows,alerts
+binary_ai_ml,0.9972144846796658,0.9935897435897436,1.0,0.9871794871794872,0.9935483870967742,0.9958860940812468,0.9999999999999999,1.0,0.991805853330241,0.5,0.21448467966573817,0.21727019498607242,0.0758029247794954,2711276,465,355,359,Seuil de décision par défaut 0.5 utilisé.
+binary_ai_textcnn,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.5,0.21727019498607242,0.21727019498607242,0.4476940250906232,4093314,465,355,359,Seuil de décision par défaut 0.5 utilisé.

@@ -2,9 +2,15 @@ type,label,block,category,subcategory,offer_count,weighted_score
 missing,"organisation et management d'entreprise,",,soft_skill,,0,0.0
 missing,"Analyse et aide à la décision : business analyst,",,skill,,0,0.0
 missing,"savoir dans un domaine de travail ou d’études,",,skill,,0,0.0
+<<<<<<< HEAD
 unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,10,7.999
 unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,10,7.999
 unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,9,7.1166
+=======
+unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,9,7.1882
+unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,9,7.1882
+unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,8,6.3058
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
 unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",5,4.2915
 unmapped,Concevoir une application web,,Other,Concevoir une application web,2,1.8571
 unmapped,Anglais technique,,Other,Anglais technique,2,1.8286

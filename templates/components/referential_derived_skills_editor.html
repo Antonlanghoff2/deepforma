@@ -10,9 +10,9 @@
           <th>Libellé</th>
           <th>Canonique</th>
           <th>Catégorie</th>
-          <th>Source</th>
+          <!--<th>Source</th>-->
           <th>Confiance</th>
-          <th>Actions</th>
+         <!-- <th>Actions</th>-->
         </tr>
       </thead>
       <tbody>
@@ -28,8 +28,10 @@
               {% endfor %}
             </select>
           </td>
-          <td>{{ item.source_code }} · {{ item.source_type }}</td>
+          <!--<td>{{ item.source_code }} · {{ item.source_type }}</td>-->
           <td>{{ item.confidence }}</td>
+
+          <!--
           <td class="table-actions">
             {% if not show_admin_actions and analysis_id %}
               {% if item.review_status in ('rejected', 'excluded') %}
@@ -49,6 +51,7 @@
               {% endif %}
             {% endif %}
           </td>
+        -->
         </tr>
         {% endif %}
         {% endfor %}

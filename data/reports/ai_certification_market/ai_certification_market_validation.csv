@@ -2,7 +2,14 @@ referential_id,block,block_name,activity,code,label,category,subcategory,technic
 SEMANTIC:1,,,,SEMANTIC:1,"organisation et management d'entreprise,",soft_skill,,,0,0.0,0.0,0.0,missing,{},,
 SEMANTIC:1,,,,SEMANTIC:1,"Analyse et aide à la décision : business analyst,",skill,,,0,0.0,0.0,0.0,missing,{},,
 SEMANTIC:1,,,,SEMANTIC:1,"savoir dans un domaine de travail ou d’études,",skill,,,0,0.0,0.0,0.0,missing,{},,
+<<<<<<< HEAD
 SEMANTIC:4,,,,SEMANTIC:4,apprentissage automatique,domain,,,2,1.4566,8.0,1.57,covered,"{""implicit"": 1, ""exact"": 1}","Concevoir des algorithmes d'apprentissage automatique || Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants.",Expert IA (H/F) || Ingénieur intelligence artificielle & cybersécurité (h/f)
 SEMANTIC:4,,,,SEMANTIC:4,réseaux de neurones,method,,,2,1.4566,8.0,1.57,covered,"{""implicit"": 1, ""exact"": 1}","Concevoir des algorithmes d'apprentissage automatique || Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants.",Expert IA (H/F) || Ingénieur intelligence artificielle & cybersécurité (h/f)
 SEMANTIC:4,,,,SEMANTIC:4,réaliser un prototype innovant.,skill,,,2,1.4566,8.0,1.57,covered,"{""implicit"": 1, ""exact"": 1}","Concevoir des algorithmes d'apprentissage automatique || Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants.",Expert IA (H/F) || Ingénieur intelligence artificielle & cybersécurité (h/f)
 SEMANTIC:5,,,,SEMANTIC:5,transformer,method,,,1,0.7703,4.0,0.83,covered,"{""exact"": 1}","Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers.",Pathé - Expert / Experte en Intelligence Artificielle (H/F)
+=======
+SEMANTIC:4,,,,SEMANTIC:4,apprentissage automatique,domain,,,1,0.5066,4.0,0.57,covered,"{""implicit"": 1}",Concevoir des algorithmes d'apprentissage automatique,Expert IA (H/F)
+SEMANTIC:4,,,,SEMANTIC:4,réseaux de neurones,method,,,1,0.5066,4.0,0.57,covered,"{""implicit"": 1}",Concevoir des algorithmes d'apprentissage automatique,Expert IA (H/F)
+SEMANTIC:4,,,,SEMANTIC:4,réaliser un prototype innovant.,skill,,,1,0.5066,4.0,0.57,covered,"{""implicit"": 1}",Concevoir des algorithmes d'apprentissage automatique,Expert IA (H/F)
+SEMANTIC:5,,,,SEMANTIC:5,transformer,method,,,1,0.7703,4.0,0.86,covered,"{""exact"": 1}","Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers.",Pathé - Expert / Experte en Intelligence Artificielle (H/F)
+>>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88

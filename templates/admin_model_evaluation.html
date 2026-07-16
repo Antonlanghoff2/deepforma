@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Évaluation modèles{% endblock %}
+{% block extra_head %}
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0b1220; color: #e5eefb; margin: 0; }
+  .wrap { padding: 24px; display: grid; gap: 18px; grid-template-columns: 320px 1fr; }
+  .panel, .card { background: rgba(15, 23, 42, 0.94); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 16px; padding: 16px; }
+  .card { margin-bottom: 14px; }
+  .muted { color: #94a3b8; }
+  .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; background: #1e293b; color: #cbd5e1; margin-right: 6px; margin-bottom: 6px; font-size: 12px; }
+  .badge.ok { background: #14532d; color: #bbf7d0; }
+  .badge.warn { background: #78350f; color: #fde68a; }
+  .badge.danger { background: #7f1d1d; color: #fecaca; }
+  .badge.neutral { background: #334155; color: #cbd5e1; }
+  .run-list { display: grid; gap: 8px; }
+  .run-link { display: block; text-decoration: none; color: inherit; background: rgba(30, 41, 59, 0.65); border-radius: 12px; padding: 10px 12px; }
+  .run-link.active { outline: 2px solid #38bdf8; }
+  table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+  th, td { border: 1px solid rgba(148, 163, 184, 0.18); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: rgba(30, 41, 59, 0.85); }
+  pre { white-space: pre-wrap; word-break: break-word; background: #020617; border-radius: 12px; padding: 12px; border: 1px solid rgba(148, 163, 184, 0.15); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .artifacts a { color: #7dd3fc; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .metric-box { border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 12px; padding: 10px 12px; background: rgba(15, 23, 42, 0.65); }
+  .metric-label { font-size: 12px; color: #94a3b8; }
+  .metric-value { font-size: 22px; font-weight: 700; margin-top: 2px; }
+  .legend { display:flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .legend .badge { margin: 0; }
+  @media (max-width: 1100px) { .wrap { grid-template-columns: 1fr; } .grid-2, .grid-3, .metrics-grid { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+{% block content %}
+<div class="wrap">
+  <aside class="panel">
+    <h1>Évaluation modèles</h1>
+    <p class="muted">Lecture des artefacts produits dans `artifacts/evaluations/<model>/<timestamp>/`.</p>
+    <div class="card">
+      <form method="get">
+        <label>Modèle
+          <select name="model_name" style="width:100%;margin-top:6px;padding:8px;border-radius:10px;background:#0f172a;color:#e5eefb;border:1px solid rgba(148,163,184,0.22);">
+            <option value="">Tous les modèles</option>
+            {% for model in available_models %}
+            <option value="{{ model }}" {% if selected_model == model %}selected{% endif %}>{{ model }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <button type="submit" style="margin-top:10px;padding:8px 12px;border:0;border-radius:10px;background:#38bdf8;color:#082f49;">Afficher</button>
+      </form>
+    </div>
+    <div class="run-list">
+      {% for run in runs %}
+      <a class="run-link {% if selected_run and run.run_name == selected_run.run_name %}active{% endif %}" href="?model_name={{ run.model_name|urlencode }}">
+        <div><strong>{{ run.model_name }}</strong></div>
+        <div class="muted">{{ run.run_name }} · {{ run.task }}</div>
+        <div class="muted">{{ run.generated_at }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </aside>
+  <main>
+    {% if selected_run %}
+    <div class="card">
+      <h2>Aperçu rapide des modèles</h2>
+      <p class="muted">Les colonnes vides signifient que la métrique n'est pas présente dans l'artefact. Les couleurs suivent la valeur principale du modèle: vert ≥ 0.80, orange ≥ 0.60, rouge < 0.60.</p>
+      {{ summary_table|safe }}
+    </div>
+    <div class="card">
+      <h2>{{ selected_run.model_name }}</h2>
+      <div class="muted">Dernière évaluation: {{ selected_run.generated_at }} · version {{ selected_run.run_name }}</div>
+      <div style="margin-top:10px">
+        <span class="badge neutral">{{ selected_run.task }}</span>
+        <span class="badge {{ selected_run.severity }}">{{ selected_run.severity_label }}</span>
+        <span class="badge neutral">{{ selected_run.evaluation_status }}</span>
+        {% if selected_run.non_discriminant %}<span class="badge danger">Modèle inexploitable</span>{% endif %}
+      </div>
+      <div class="metrics-grid" style="margin-top:12px">
+        <div class="metric-box"><div class="metric-label">Métrique principale</div><div class="metric-value">{{ selected_run.metric_display|safe }}</div><div class="muted">{{ selected_run.primary_metric }}</div></div>
+        <div class="metric-box"><div class="metric-label">Nombre d'exemples</div><div class="metric-value">{{ selected_run.total_examples if selected_run.total_examples is not none else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Seuil utilisé</div><div class="metric-value">{{ selected_run.decision_threshold_display|safe if selected_run.decision_threshold_display is defined else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Prédits positifs</div><div class="metric-value">{{ selected_run.predicted_positive_count if selected_run.predicted_positive_count is not none else '—' }}</div></div>
+      </div>
+      <div class="metrics-grid" style="margin-top:10px">
+        <div class="metric-box"><div class="metric-label">Positifs réels</div><div class="metric-value">{{ selected_run.real_positive_count if selected_run.real_positive_count is not none else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Négatifs réels</div><div class="metric-value">{{ selected_run.real_negative_count if selected_run.real_negative_count is not none else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Taux de positifs</div><div class="metric-value">{{ selected_run.positive_prevalence_display|safe if selected_run.positive_prevalence_display is defined else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Taux de prédits positifs</div><div class="metric-value">{{ selected_run.predicted_positive_rate_display|safe if selected_run.predicted_positive_rate_display is defined else '—' }}</div></div>
+      </div>
+      <div class="legend">
+        <span class="badge ok">satisfaisant ≥ 0.80</span>
+        <span class="badge warn">à surveiller ≥ 0.60</span>
+        <span class="badge danger">non exploitable &lt; 0.60</span>
+        <span class="badge neutral">non évalué</span>
+      </div>
+      <div class="artifacts" style="margin-top:10px">
+        {% for artifact in selected_run.artifacts %}<div><a href="{{ artifact.url }}">{{ artifact.name }}</a></div>{% endfor %}
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Métriques principales</h3>
+        {{ metrics_table|safe }}
+      </div>
+      <div class="card">
+        <h3>Comparaison version précédente</h3>
+        {% if comparison_rows %}{{ comparison_table|safe }}{% else %}<p class="muted">Pas de version précédente disponible.</p>{% endif %}
+      </div>
+    </div>
+    {% if per_label_table %}
+    <div class="card">
+      <h3>Métriques par label</h3>
+      {{ per_label_table|safe }}
+    </div>
+    {% endif %}
+    <div class="grid-2">
+      <div class="card">
+        <h3>Confusion / distribution</h3>
+        {% if selected_run.confusion_counts %}<pre>{{ selected_run.confusion_counts | tojson(indent=2) }}</pre>{% else %}<p class="muted">Aucune matrice de confusion disponible.</p>{% endif %}
+        {% if selected_run.probability_stats %}<pre>{{ selected_run.probability_stats | tojson(indent=2) }}</pre>{% endif %}
+      </div>
+      <div class="card">
+        <h3>Seuils sélectionnés</h3>
+        {% if selected_run.threshold_optimization %}<pre>{{ selected_run.threshold_optimization | tojson(indent=2) }}</pre>{% elif selected_run.thresholds %}<pre>{{ selected_run.thresholds_json }}</pre>{% else %}<p class="muted">Aucun seuil versionné.</p>{% endif %}
+      </div>
+    </div>
+    {% if selected_run.label_cardinality_true is not none or selected_run.label_cardinality_predicted is not none %}
+    <div class="card">
+      <h3>Cardinalité multilabel</h3>
+      <div class="metrics-grid">
+        <div class="metric-box"><div class="metric-label">Cardinalité réelle</div><div class="metric-value">{{ selected_run.label_cardinality_true_display|safe if selected_run.label_cardinality_true_display is defined else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Cardinalité prédite</div><div class="metric-value">{{ selected_run.label_cardinality_predicted_display|safe if selected_run.label_cardinality_predicted_display is defined else '—' }}</div></div>
+        <div class="metric-box"><div class="metric-label">Moyenne labels / exemple</div><div class="metric-value">{{ selected_run.mean_labels_per_example_display|safe if selected_run.mean_labels_per_example_display is defined else '—' }}</div></div>
+      </div>
+    </div>
+    {% endif %}
+    <div class="grid-2">
+      <div class="card">
+        <h3>Avertissements</h3>
+        {% if selected_run.alerts %}{% for warning in selected_run.alerts %}<p class="badge danger" style="display:block;white-space:normal;">{{ warning }}</p>{% endfor %}{% endif %}
+        {% if selected_run.warnings %}{% for warning in selected_run.warnings %}<p class="badge warn" style="display:block;white-space:normal;">{{ warning }}</p>{% endfor %}{% else %}{% if not selected_run.alerts %}<p class="muted">Aucun avertissement.</p>{% endif %}{% endif %}
+      </div>
+      <div class="card">
+        <h3>Détails JSON</h3>
+        <pre>{{ selected_run.report_json }}</pre>
+      </div>
+    </div>
+    {% else %}
+    <div class="card"><p class="muted">Aucun artefact trouvé dans `artifacts/evaluations`.</p></div>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

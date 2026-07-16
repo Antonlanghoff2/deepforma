@@ -1,0 +1,8 @@
+{
+  "chosen_model": "binary_ai_textcnn",
+  "criterion": "test f1_ia",
+  "ml_f1_ia": 0.9935483870967742,
+  "textcnn_f1_ia": 1.0,
+  "ml_pr_auc": 0.9999999999999999,
+  "textcnn_pr_auc": 1.0
+}
