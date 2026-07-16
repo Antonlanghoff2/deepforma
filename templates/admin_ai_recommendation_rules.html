@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Règles recommandations IA{% endblock %}
+{% block content %}
+<div class="container" style="padding:24px">
+  <h1>Règles recommandations IA</h1>
+  <p class="muted">{{ total_rules }} règles chargées depuis le fichier JSON normalisé. Les modifications sont réécrites dans ce fichier.</p>
+  <form method="get" style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:end;margin:16px 0 20px;">
+    <label>Recherche<br><input name="q" value="{{ query }}" style="width:100%"></label>
+    <label>Catégorie<br>
+      <select name="category" style="width:100%">
+        <option value="">Toutes</option>
+        {% for item in categories %}<option value="{{ item }}" {% if selected_category == item %}selected{% endif %}>{{ item }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Statut<br>
+      <select name="review_status" style="width:100%">
+        <option value="">Tous</option>
+        {% for item in ['auto_accepted', 'to_review', 'accepted', 'rejected'] %}<option value="{{ item }}" {% if selected_review_status == item %}selected{% endif %}>{{ item }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Anomalie<br>
+      <select name="anomaly" style="width:100%">
+        <option value="">Toutes</option>
+        {% for item in anomalies %}<option value="{{ item }}" {% if selected_anomaly == item %}selected{% endif %}>{{ item }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>État<br>
+      <select name="enabled" style="width:100%">
+        <option value="">Tous</option>
+        <option value="enabled" {% if selected_enabled == 'enabled' %}selected{% endif %}>Activées</option>
+        <option value="disabled" {% if selected_enabled == 'disabled' %}selected{% endif %}>Désactivées</option>
+      </select>
+    </label>
+    <div style="grid-column:1 / -1"><button type="submit">Filtrer</button></div>
+  </form>
+
+  {% if rules %}
+  <div style="display:grid;gap:16px;">
+    {% for rule in rules %}
+    <form method="post" style="border:1px solid #ddd;border-radius:12px;padding:14px;background:#fff">
+      <input type="hidden" name="rule_id" value="{{ rule.id }}">
+      <div style="display:grid;grid-template-columns:1.2fr 2fr;gap:12px;align-items:start;">
+        <div>
+          <div><strong>{{ rule.keyword }}</strong></div>
+          <div class="muted">Normalisé: {{ rule.normalized_keyword }}</div>
+          <div class="muted">Source ligne {{ rule.source_line }} · {{ rule.source }}</div>
+          <div class="muted">Review: {{ rule.review_status }} · {{ 'activée' if rule.enabled else 'désactivée' }}</div>
+          <div class="muted">Priorité: {{ rule.priority }}</div>
+          {% if rule.categories %}
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;">
+            {% for cat in rule.categories %}<span style="padding:4px 8px;background:#eef;border-radius:999px;">{{ cat.label }} · {{ cat.score }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div>
+          <label>Mot-clé<br><input name="keyword" value="{{ rule.keyword }}" style="width:100%"></label><br>
+          <label>Recommandation<br><textarea name="recommendation" rows="4" style="width:100%">{{ rule.recommendation }}</textarea></label><br>
+          <label>Catégories (séparées par virgule)<br><input name="categories" value="{% for cat in rule.categories %}{{ cat.label }}{% if not loop.last %}, {% endif %}{% endfor %}" style="width:100%"></label><br>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <label>Priorité<br><input name="priority" type="number" value="{{ rule.priority }}" style="width:100%"></label>
+            <label>Statut<br>
+              <select name="review_status" style="width:100%">
+                {% for item in ['auto_accepted', 'to_review', 'accepted', 'rejected'] %}<option value="{{ item }}" {% if rule.review_status == item %}selected{% endif %}>{{ item }}</option>{% endfor %}
+              </select>
+            </label>
+            <label>Activée<br>
+              <select name="enabled" style="width:100%">
+                <option value="true" {% if rule.enabled %}selected{% endif %}>Oui</option>
+                <option value="false" {% if not rule.enabled %}selected{% endif %}>Non</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin-top:8px;"><button type="submit">Enregistrer</button></div>
+          {% set metadata = rule.metadata | default({}, true) %}
+          <details style="margin-top:8px;">
+            <summary>Métadonnées</summary>
+            <pre style="white-space:pre-wrap;">{{ metadata | tojson(indent=2) }}</pre>
+          </details>
+        </div>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>Aucune règle ne correspond aux filtres.</p>
+  {% endif %}
+</div>
+{% endblock %}

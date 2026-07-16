@@ -1,0 +1,41 @@
+{
+  "source_files": [
+    "data/processed/dataset_entrainement.csv"
+  ],
+  "source_fingerprint": "7dfb911591506eacc7344b0016fe697e16be1aa9",
+  "rows_read": 1235,
+  "rows_kept": 1179,
+  "rows_dropped_empty_text": 0,
+  "rows_dropped_missing_label": 0,
+  "exact_duplicates": 56,
+  "near_duplicates": 56,
+  "conflicts": 0,
+  "positives": 279,
+  "negatives": 900,
+  "positive_rate": 0.2366412213740458,
+  "unique_groups": 1179,
+  "duplicate_texts": 55,
+  "duplicate_group_ids": 37,
+  "label_convention": "0 = non_ia, 1 = ia",
+  "class_distribution": {
+    "non_ia": 900,
+    "ia": 279
+  },
+  "column_selection": {
+    "dataset_entrainement.csv": [
+      "certification",
+      "competences_ia",
+      "competences_ia_suggerees",
+      "description",
+      "est_lie_ia",
+      "intitule",
+      "niveau",
+      "objectifs",
+      "organisme",
+      "programme",
+      "texte_modele"
+    ]
+  },
+  "warnings": [],
+  "generated_at": "2026-07-15T12:14:15.359086+00:00"
+}

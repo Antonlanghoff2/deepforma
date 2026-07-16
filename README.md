@@ -100,6 +100,13 @@ make train-referential-multilabel
 make evaluate-referential-models
 make test-referential-ml-dl
 ```
+# binary model from scratch
+ make binary-ai-prepare
+ make binary-ai-train-ml
+ make binary-ai-train-dl
+ make binary-ai-compare
+ make binary-ai-all
+
 
 ### 6. IA recommendations (pedagogical knowledge base)
 

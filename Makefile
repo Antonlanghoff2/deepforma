@@ -64,85 +64,34 @@ IA_BATCH_SIZE ?= 16
 IA_LEARNING_RATE ?= 2e-5
 IA_DEVICE ?=
 
-# ----- CPF Generaliste variables -----
-CPF_GENERAL_DATASET ?= data/raw/Dataset_Generaliste_CPF_V4.xlsx
-CPF_GENERAL_PROCESSED_DIR ?= data/processed/cpf
-CPF_GENERAL_PAIRS ?= data/processed/cpf/pairs_generalistes.jsonl
-CPF_BASE_MODEL ?= sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
-CPF_MODEL_OUTPUT ?= models/cpf-recommender
+# ----- Binary AI from scratch -----
+BINARY_AI_DATASET_INPUTS ?= data/processed/dataset_entrainement.csv
+BINARY_AI_PROCESSED_DATASET ?= data/processed/binary_ai/dataset.parquet
+BINARY_AI_REPORT_DIR ?= reports/binary_ai
+BINARY_AI_SPLIT_DIR ?= data/training/binary_ai
+BINARY_AI_ML_MODEL_OUTPUT ?= models/binary_ai_ml
+BINARY_AI_TEXTCNN_MODEL_OUTPUT ?= models/binary_ai_textcnn
+BINARY_AI_SEED ?= 42
+BINARY_AI_CLASSIFIER ?= logistic
+BINARY_AI_THRESHOLD_MODE ?= maximize_f1
+BINARY_AI_TEXTCNN_DEVICE ?= cpu
 
-.PHONY: install-dev collect-france-travail build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model cpf-download cpf-source-check cpf-inspect cpf-prepare cpf-enrich-skills cpf-embed cpf-check-imports cpf-test cpf-build-pairs cpf-train-v3 cpf-train cpf-evaluate cpf-reindex cpf-v3-all cpf-all test ia-prepare ia-train ia-evaluate ia-all cpf-general-prepare cpf-pairs cpf-general-all deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test import-referential-preview validate-referential-import approve-referential-import audit-referential-pdfs build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner evaluate-referential-models test-referential-import deploy-referential-models generate-annotation-candidates
+# ----- Binary AI from scratch -----
+binary-ai-prepare:
+	$(PYTHON) scripts/build_binary_ai_dataset.py 		$(if $(strip $(BINARY_AI_DATASET_INPUTS)),--inputs $(BINARY_AI_DATASET_INPUTS),) 		--output-dataset "$(BINARY_AI_PROCESSED_DATASET)" 		--audit-output "$(BINARY_AI_REPORT_DIR)/dataset_audit.json" 		--duplicates-output "$(BINARY_AI_REPORT_DIR)/dataset_duplicates.csv" 		--conflicts-output "$(BINARY_AI_REPORT_DIR)/dataset_conflicts.csv" 		--splits-output-dir "$(BINARY_AI_SPLIT_DIR)" 		--seed $(BINARY_AI_SEED)
 
-install-dev:
-	$(PYTHON) -m pip install -e .
+binary-ai-train-ml: binary-ai-prepare
+	$(PYTHON) scripts/train_binary_ai_ml.py 		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" 		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--output-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" 		--classifier "$(BINARY_AI_CLASSIFIER)" 		--seed $(BINARY_AI_SEED) 		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
 
-collect-france-travail:
-	$(PYTHON) -m src.jobs.collect_france_travail_offers $(COLLECT_ARGS)
+binary-ai-train-dl: binary-ai-prepare
+	$(PYTHON) scripts/train_binary_ai_textcnn.py 		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" 		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--output-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" 		--seed $(BINARY_AI_SEED) 		--device "$(BINARY_AI_TEXTCNN_DEVICE)" 		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
 
-cpf-source-check:
-	@$(PYTHON) -c "from data.cpf_loader import resolve_cpf_source; print(resolve_cpf_source('$(CPF_SOURCE_FILE)'))"
+binary-ai-compare:
+	$(PYTHON) scripts/compare_binary_ai_models.py 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--ml-model-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" 		--textcnn-model-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" 		--output-dir "$(BINARY_AI_REPORT_DIR)"
 
-cpf-download:
-	@if [ -z "$(strip $(CPF_SOURCE_URL))" ] && [ -z "$(strip $(CPF_SOURCE_FILE))" ]; then 		echo "Set CPF_SOURCE_URL or CPF_SOURCE_FILE before running cpf-download or cpf-all"; 		exit 1; 	fi
-	$(PYTHON) scripts/download_cpf_catalog.py --output-dir "$(CPF_RAW_DIR)" $(if $(strip $(CPF_SOURCE_FILE)),--source-file "$(CPF_SOURCE_FILE)",) $(if $(strip $(CPF_SOURCE_URL)),--source-url "$(CPF_SOURCE_URL)",)
+binary-ai-evaluate: binary-ai-compare
 
-cpf-inspect: cpf-source-check
-	$(PYTHON) scripts/inspect_cpf_dataset.py --input "$(CPF_SOURCE_FILE)" --output "$(CPF_INSPECT_REPORT)"
-
-cpf-prepare: cpf-inspect
-	$(PYTHON) scripts/prepare_cpf_dataset.py --input "$(CPF_SOURCE_FILE)" --output-dir "$(CPF_PROCESSED_DIR)"
-
-cpf-enrich-skills: cpf-prepare
-	$(PYTHON) scripts/extract_cpf_skills.py --input "$(CPF_FORMATIONS_NORMALIZED)" --output "$(CPF_FORMATIONS)"
-
-cpf-embed: cpf-enrich-skills
-	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS)" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
-
-cpf-check-imports:
-	$(PYTHON) -c "import deepforma; import deepforma.cpf"
-
-cpf-test:
-	$(PYTHON) -m pytest -q tests/test_cpf_pipeline.py
-
-cpf-build-pairs: cpf-enrich-skills
-	$(PYTHON) scripts/build_cpf_training_pairs.py --formations "$(CPF_FORMATIONS)" --offers-dir "$(CPF_OFFERS_DIR)" --output "$(CPF_PAIRS)" --review-output "$(CPF_REVIEW)" --train-output "$(CPF_TRAIN)" --validation-output "$(CPF_VALIDATION)" --test-output "$(CPF_TEST)" --min-skill-coverage $(CPF_MIN_SKILL_COVERAGE) --min-semantic-similarity $(CPF_MIN_SEMANTIC_SIMILARITY) --max-queries $(CPF_MAX_QUERIES)
-
-cpf-train-v3: cpf-build-pairs
-	$(PYTHON) scripts/train_cpf_recommender.py --train "$(CPF_TRAIN)" --validation "$(CPF_VALIDATION)" --base-model "$(CPF_BASE_MODEL)" --output-dir "$(CPF_MODEL_OUTPUT)" --epochs $(CPF_EPOCHS) --batch-size $(CPF_BATCH_SIZE) --learning-rate $(CPF_LEARNING_RATE) --warmup-ratio $(CPF_WARMUP_RATIO) --max-seq-length $(CPF_MAX_SEQ_LENGTH) --loss $(CPF_LOSS) --seed $(CPF_SEED) --gradient-accumulation $(CPF_GRADIENT_ACCUMULATION) $(if $(strip $(CPF_DEVICE)),--device "$(CPF_DEVICE)",) $(if $(filter true,$(CPF_MIXED_PRECISION)),--mixed-precision,--no-mixed-precision)
-
-cpf-evaluate: cpf-train-v3
-	$(PYTHON) scripts/evaluate_cpf_recommender.py --test "$(CPF_TEST)" --formations "$(CPF_FORMATIONS)" --base-model "$(CPF_BASE_MODEL)" --fine-tuned-model "$(CPF_MODEL_OUTPUT)/final"
-
-cpf-reindex: cpf-evaluate
-	$(PYTHON) scripts/build_cpf_embeddings.py --input "$(CPF_FORMATIONS)" --model "$(CPF_MODEL_OUTPUT)/final" --metadata "$(CPF_INDEX_METADATA)" --index "$(CPF_INDEX_FILE)" --manifest "$(CPF_INDEX_MANIFEST)"
-
-cpf-v3-all: cpf-reindex
-
-cpf-all: cpf-general-all
-
-# ----- IA Classifier -----
-ia-prepare:
-	$(PYTHON) scripts/prepare_ia_training_dataset.py \
-		--input "$(IA_DATASET)" \
-		--output-dir "$(IA_PROCESSED_DIR)" \
-		--taxonomy "$(IA_TAXONOMY)"
-
-ia-train: ia-prepare
-	$(PYTHON) scripts/train_ia_multilabel_classifier.py \
-		--input-dir "$(IA_PROCESSED_DIR)" \
-		--output-dir "$(IA_MODEL_OUTPUT)" \
-		--base-model "$(IA_BASE_MODEL)" \
-		--epochs $(IA_EPOCHS) --batch-size $(IA_BATCH_SIZE) --lr $(IA_LEARNING_RATE) \
-		$(if $(strip $(IA_DEVICE)),--device "$(IA_DEVICE)",)
-
-ia-evaluate:
-	$(PYTHON) scripts/evaluate_ia_multilabel_classifier.py \
-		--model-dir "$(IA_MODEL_OUTPUT)/final" \
-		--test-file "$(IA_PROCESSED_DIR)/ia_multilabel_test.jsonl" \
-		--output-dir reports \
-		--taxonomy "$(IA_TAXONOMY)"
-
-ia-all: ia-train ia-evaluate
+binary-ai-all: binary-ai-train-ml binary-ai-train-dl binary-ai-compare
 
 # ----- CPF Generaliste -----
 cpf-general-prepare:
@@ -248,6 +197,20 @@ generate-annotation-candidates:
 	$(PYTHON) scripts/generate_annotation_candidates.py
 
 
+
+evaluate-binary:
+	$(PYTHON) -m src.evaluation --task binary --model-path "models/binary_ia_v2/final" --test-file "data/processed/dataset_entrainement.csv" --output-dir artifacts/evaluations --model-name binary_ia
+
+evaluate-multilabel:
+	$(PYTHON) -m src.evaluation --task multilabel --model-path "models/multilabel_competences_v2/final" --test-file "data/multilabel/multilabel_dataset.csv" --validation-file "data/multilabel/multilabel_dataset.csv" --output-dir artifacts/evaluations --model-name ia_multilabel
+
+evaluate-extraction:
+	$(PYTHON) -m src.evaluation --task extraction --test-file "data/training/skill_extraction/test.jsonl" --output-dir artifacts/evaluations --model-name skill_extraction
+
+evaluate-recommendation:
+	$(PYTHON) -m src.evaluation --task recommendation --model-path "$(CPF_MODEL_OUTPUT)/final" --test-file "data/training/cpf_pairs_review.csv" --output-dir artifacts/evaluations --model-name cpf_recommender
+
+evaluate-all: evaluate-binary evaluate-multilabel evaluate-extraction evaluate-recommendation
 
 test:
 	$(PYTHON) -m pytest -q

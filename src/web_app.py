@@ -56,6 +56,9 @@ from referentials.referential_registry import (
 from services.certification_market_comparison import CertificationMarketComparator, collect_market_offers, write_comparison_outputs
 from services.market_context import build_market_context, fetch_offers_by_rome, fetch_offers_by_rome_codes, serialize_record
 from services.recommendation_service import RecommendationService
+from ai_recommendations import import_ai_recommendation_dataset, load_ai_recommendation_rules, normalize_ai_keyword
+from ai_recommendations.matcher import match_ai_recommendations
+from evaluation.report import latest_evaluation_dir, load_evaluation_report
 
 logger = logging.getLogger(__name__)
 
@@ -186,6 +189,205 @@ def _admin_redirect_url(*, offer_row_id: int | None = None, filters: dict[str, s
 def _admin_validation_log(message: str) -> None:
     logger.info('[ADMIN_CONTINUAL_LEARNING] %s', message)
 
+
+
+def _evaluation_root() -> Path:
+    return PROJECT_ROOT / 'artifacts' / 'evaluations'
+
+
+def _load_evaluation_bundle_from_root(model_name: str) -> list[dict[str, Any]]:
+    root = _evaluation_root() / model_name
+    if not root.exists():
+        return []
+    runs: list[dict[str, Any]] = []
+    for run_dir in sorted((path for path in root.iterdir() if path.is_dir()), key=lambda path: path.name, reverse=True):
+        report_path = run_dir / 'report.json'
+        if not report_path.exists():
+            continue
+        try:
+            report = load_evaluation_report(report_path)
+        except Exception as exc:
+            LOGGER.warning('Impossible de lire %s: %s', report_path, exc)
+            continue
+        runs.append({
+            'model_name': model_name,
+            'run_name': run_dir.name,
+            'task': report.get('task', 'model'),
+            'generated_at': report.get('generated_at', ''),
+            'report': report,
+            'run_dir': run_dir,
+        })
+    return runs
+
+
+def _metric_from_report(report: dict[str, Any], *keys: str) -> Any:
+    metrics = report.get('metrics') if isinstance(report, dict) else None
+    if isinstance(metrics, dict):
+        for key in keys:
+            value = metrics.get(key)
+            if value is not None:
+                return round(float(value), 4) if isinstance(value, (int, float)) else value
+    if isinstance(report, dict):
+        for key in keys:
+            value = report.get(key)
+            if value is not None:
+                return round(float(value), 4) if isinstance(value, (int, float)) else value
+    return None
+
+
+def _format_eval_value(value: Any) -> Markup:
+    if value is None:
+        return Markup('<span class="muted">—</span>')
+    if isinstance(value, bool):
+        return Markup('Oui' if value else 'Non')
+    if isinstance(value, int) and not isinstance(value, bool):
+        return Markup(escape(str(value)))
+    if isinstance(value, float):
+        display = f"{value:.4f}"
+        tooltip = f"{value * 100:.2f}%" if 0.0 <= value <= 1.0 else display
+        return Markup(f'<span title="{escape(tooltip)}">{escape(display)}</span>')
+    if isinstance(value, (list, tuple)):
+        return Markup(escape(', '.join(str(item) for item in value) if value else '—'))
+    if isinstance(value, dict):
+        return Markup(f'<pre style="margin:0;background:transparent;border:0;padding:0;white-space:pre-wrap;">{escape(json.dumps(value, ensure_ascii=False, indent=2))}</pre>')
+    text = str(value)
+    return Markup(escape(text if text else '—'))
+
+
+def _table_cell(value: Any) -> str:
+    return str(_format_eval_value(value))
+
+
+def _primary_metric_info(report: dict[str, Any]) -> tuple[str, Any]:
+    task = str(report.get('task') or '')
+    if task == 'binary':
+        return 'f1', _metric_from_report(report, 'f1')
+    if task == 'multilabel':
+        return 'micro_f1', _metric_from_report(report, 'micro_f1')
+    if task == 'recommendation':
+        return 'precision_at_1', _metric_from_report(report, 'precision_at_1')
+    if task == 'extraction':
+        semantic = report.get('semantic_match') if isinstance(report, dict) else None
+        if isinstance(semantic, dict):
+            return 'semantic_f1', semantic.get('f1')
+        return 'semantic_f1', None
+    return 'metric', _metric_from_report(report, 'f1', 'micro_f1', 'precision_at_1')
+
+
+def _severity_from_value(value: Any) -> tuple[str, str]:
+    if value is None:
+        return 'neutral', 'non évalué'
+    try:
+        numeric = float(value)
+    except Exception:
+        return 'neutral', 'inconnu'
+    if numeric >= 0.80:
+        return 'ok', 'satisfaisant'
+    if numeric >= 0.60:
+        return 'warn', 'à surveiller'
+    return 'danger', 'non exploitable'
+
+
+def _normalize_per_label_rows(per_label: Any) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    label_type = type(per_label).__name__
+
+    def _row_from_scalar(label: Any, value: Any) -> dict[str, Any]:
+        row: dict[str, Any] = {}
+        if label is not None:
+            row['label'] = label
+        row['value'] = value
+        return row
+
+    if per_label is None:
+        logger.debug('[admin-model-evaluation] per_label type=%s count=0', label_type)
+        return []
+
+    if isinstance(per_label, dict):
+        sample_keys = list(per_label.keys())[:5]
+        logger.debug(
+            '[admin-model-evaluation] per_label type=%s count=%s keys=%s',
+            label_type,
+            len(per_label),
+            sample_keys,
+        )
+        if not per_label:
+            return []
+        for label, value in per_label.items():
+            if isinstance(value, dict):
+                row = {'label': label, **value}
+            elif hasattr(value, '__dict__'):
+                row = {'label': label, **vars(value)}
+            elif isinstance(value, (list, tuple)) and value and all(isinstance(item, dict) for item in value):
+                row = {'label': label, **value[0]}
+            else:
+                row = _row_from_scalar(label, value)
+            rows.append(row)
+        return rows
+
+    if isinstance(per_label, (list, tuple)):
+        logger.debug(
+            '[admin-model-evaluation] per_label type=%s count=%s',
+            label_type,
+            len(per_label),
+        )
+        if not per_label:
+            return []
+        for item in per_label:
+            if isinstance(item, dict):
+                rows.append(dict(item))
+            elif hasattr(item, '__dict__'):
+                rows.append(dict(vars(item)))
+            elif isinstance(item, str):
+                rows.append({'label': item})
+            elif isinstance(item, (int, float, bool)) or item is None:
+                rows.append(_row_from_scalar(None, item))
+            else:
+                logger.warning(
+                    '[admin-model-evaluation] per_label element type inattendu: %s',
+                    type(item).__name__,
+                )
+                rows.append(_row_from_scalar(None, str(item)))
+        return rows
+
+    logger.warning(
+        '[admin-model-evaluation] per_label type inattendu: %s',
+        label_type,
+    )
+    return [_row_from_scalar(None, str(per_label))]
+
+def _evaluation_summary_rows(model_names: list[str]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for model_name in model_names:
+        bundle = _load_evaluation_bundle_from_root(model_name)
+        if not bundle:
+            continue
+        latest = bundle[0]
+        report = latest['report']
+        primary_metric, primary_value = _primary_metric_info(report)
+        _severity, severity_label = _severity_from_value(primary_value)
+        rows.append({
+            'model_name': model_name,
+            'task': latest['task'],
+            'run_name': latest['run_name'],
+            'generated_at': latest['generated_at'],
+            'primary_metric': primary_metric,
+            'primary_value': primary_value,
+            'severity': severity_label,
+            'threshold': _metric_from_report(report, 'threshold'),
+            'accuracy': _metric_from_report(report, 'accuracy'),
+            'loss': _metric_from_report(report, 'loss', 'val_loss'),
+            'f1': _metric_from_report(report, 'f1', 'micro_f1', 'semantic_match_f1'),
+            'micro_f1': _metric_from_report(report, 'micro_f1'),
+            'macro_f1': _metric_from_report(report, 'macro_f1'),
+            'pr_auc': _metric_from_report(report, 'pr_auc'),
+            'roc_auc': _metric_from_report(report, 'roc_auc'),
+            'exact_match_ratio': _metric_from_report(report, 'exact_match_ratio'),
+            'precision_at_1': _metric_from_report(report, 'precision_at_1'),
+            'mrr': _metric_from_report(report, 'mrr'),
+            'ndcg_at_10': _metric_from_report(report, 'ndcg_at_10'),
+        })
+    return rows
 
 
 def _build_france_travail_client() -> FranceTravailClient:
@@ -426,13 +628,17 @@ def create_app(
     app.extensions['deepforma_predictor_error'] = predictor_error
 
     ia_recommendation_records: list[dict[str, Any]] = []
-    ia_csv_path = PROJECT_ROOT / 'data' / 'raw' / 'recommandations_IA_consolide.csv'
-    if ia_csv_path.exists():
-        try:
-            ia_recommendation_records, _ = load_ia_recommendations_csv(ia_csv_path)
-        except Exception:
-            logger.warning('Impossible de charger les recommandations IA depuis %s', ia_csv_path)
+    ai_rules_json = PROJECT_ROOT / 'data' / 'referentials' / 'ai_recommendation_rules.json'
+    legacy_ia_csv = PROJECT_ROOT / 'data' / 'raw' / 'recommandations_IA_consolide.csv'
+    try:
+        if ai_rules_json.exists():
+            ia_recommendation_records = load_ai_recommendation_rules(ai_rules_json)
+        elif legacy_ia_csv.exists():
+            ia_recommendation_records, _ = load_ia_recommendations_csv(legacy_ia_csv)
+    except Exception:
+        logger.warning('Impossible de charger les recommandations IA depuis %s', ai_rules_json if ai_rules_json.exists() else legacy_ia_csv)
     app.extensions['ia_recommendation_records'] = ia_recommendation_records
+    app.extensions['ai_recommendation_rules_path'] = ai_rules_json
     app.extensions['recommendation_service'] = RecommendationService()
     app.extensions['certification_market_comparator'] = CertificationMarketComparator()
     app.extensions['market_cache'] = TTLCache(app.config['CACHE_TTL_SECONDS'])
@@ -832,6 +1038,15 @@ def create_app(
 
         # 2. Run the open extractor (primary skill extraction)
         skill_extraction = _build_skill_extraction(text)
+        ai_hybrid_result = match_ai_recommendations(
+            referential_title=clean_text(text[:120]),
+            activities=[],
+            official_skills=[item.normalized_label or item.source_label for item in skill_extraction.skills],
+            subskills=[item.normalized_label or item.source_label for item in skill_extraction.tools],
+            full_text=text,
+            rules_path=app.extensions.get('ai_recommendation_rules_path'),
+            model_non_discriminant=False,
+        )
 
         normalized_offers: list[dict[str, Any]] = []
         recommendation = None
@@ -931,6 +1146,7 @@ def create_app(
             if not normalized_offers and market_error is None:
                 market_status = 'empty'
 
+        analysis['ai_recommendations_hybrid'] = ai_hybrid_result
         analysis_result = _build_analysis_result(
             analysis, normalized_offers, recommendation, territorial_stats,
             departement, threshold, skill_extraction=skill_extraction,
@@ -1645,6 +1861,281 @@ def create_app(
             activities=[],
             analysis_json='',
             source_path='',
+        )
+
+    def _evaluation_root() -> Path:
+        return PROJECT_ROOT / 'artifacts' / 'evaluations'
+
+    def _ai_recommendation_rules_path() -> Path:
+        return PROJECT_ROOT / 'data' / 'referentials' / 'ai_recommendation_rules.json'
+
+    def _load_ai_recommendation_rules() -> list[dict[str, Any]]:
+        path = _ai_recommendation_rules_path()
+        if path.exists():
+            try:
+                return load_ai_recommendation_rules(path)
+            except Exception as exc:
+                LOGGER.warning('Impossible de charger les règles IA normalisées depuis %s: %s', path, exc)
+        legacy_path = PROJECT_ROOT / 'data' / 'raw' / 'recommandations_IA_consolide.csv'
+        if legacy_path.exists():
+            try:
+                return load_ia_recommendations_csv(legacy_path)[0]
+            except Exception as exc:
+                LOGGER.warning('Impossible de charger les recommandations IA historiques depuis %s: %s', legacy_path, exc)
+        return []
+
+    def _save_ai_recommendation_rules(rules: list[dict[str, Any]]) -> None:
+        path = _ai_recommendation_rules_path()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        payload = {
+            'source': 'dataset_recommandations_IA_complet.csv',
+            'generated_at': datetime.now(timezone.utc).isoformat(),
+            'rules': rules,
+        }
+        path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+
+    def _rule_matches_ai_filters(rule: dict[str, Any], query: str, category: str, review_status: str, anomaly: str, enabled: str) -> bool:
+        if query:
+            haystack = ' '.join([
+                clean_text(rule.get('keyword') or ''),
+                clean_text(rule.get('recommendation') or ''),
+                clean_text(rule.get('source') or ''),
+                clean_text(json.dumps(rule.get('metadata') or {}, ensure_ascii=False)),
+            ]).lower()
+            if query.lower() not in haystack:
+                return False
+        if category:
+            labels = [clean_text(item.get('label') or '') for item in (rule.get('categories') or []) if isinstance(item, dict)]
+            if category not in labels:
+                return False
+        if review_status and clean_text(rule.get('review_status') or '') != review_status:
+            return False
+        if anomaly:
+            anomalies = rule.get('metadata', {}).get('anomalies', []) if isinstance(rule.get('metadata'), dict) else []
+            if anomaly not in [clean_text(item) for item in anomalies]:
+                return False
+        if enabled:
+            if enabled == 'enabled' and not rule.get('enabled', True):
+                return False
+            if enabled == 'disabled' and rule.get('enabled', True):
+                return False
+        return True
+
+    def _evaluation_models() -> list[str]:
+        root = _evaluation_root()
+        if not root.exists():
+            return []
+        return sorted(path.name for path in root.iterdir() if path.is_dir())
+
+    def _load_evaluation_bundle(model_name: str) -> list[dict[str, Any]]:
+        root = _evaluation_root() / model_name
+        if not root.exists():
+            return []
+        runs: list[dict[str, Any]] = []
+        for run_dir in sorted((path for path in root.iterdir() if path.is_dir()), key=lambda path: path.name, reverse=True):
+            report_path = run_dir / 'report.json'
+            if not report_path.exists():
+                continue
+            try:
+                report = load_evaluation_report(report_path)
+            except Exception as exc:
+                LOGGER.warning('Impossible de lire %s: %s', report_path, exc)
+                continue
+            runs.append({
+                'model_name': model_name,
+                'run_name': run_dir.name,
+                'task': report.get('task', 'model'),
+                'generated_at': report.get('generated_at', ''),
+                'report': report,
+                'run_dir': run_dir,
+            })
+        return runs
+
+    def _comparison_rows(current: dict[str, Any], previous: dict[str, Any] | None) -> list[dict[str, Any]]:
+        if not previous:
+            return []
+        current_metrics = current.get('metrics') or {}
+        previous_metrics = previous.get('metrics') or {}
+        rows: list[dict[str, Any]] = []
+        for metric, value in current_metrics.items():
+            if not isinstance(value, (int, float)):
+                continue
+            prev_value = previous_metrics.get(metric)
+            if not isinstance(prev_value, (int, float)):
+                continue
+            rows.append({
+                'metric': metric,
+                'current': round(float(value), 4),
+                'previous': round(float(prev_value), 4),
+                'delta': round(float(value) - float(prev_value), 4),
+            })
+        return rows
+
+    def _format_table(rows: list[dict[str, Any]], title: str) -> str:
+        if not rows:
+            return f'<p class="muted">Aucune donnée pour {title}.</p>'
+        headers = list(rows[0].keys())
+        head = ''.join(f'<th>{escape(str(h))}</th>' for h in headers)
+        body = []
+        for row in rows:
+            body.append('<tr>' + ''.join(f'<td>{_table_cell(row.get(h, None))}</td>' for h in headers) + '</tr>')
+        return f'<table><thead><tr>{head}</tr></thead><tbody>{"".join(body)}</tbody></table>'
+
+    @app.route('/admin/model-evaluation')
+    @require_admin_auth
+    def admin_model_evaluation():
+        available_models = _evaluation_models()
+        selected_model = clean_text(request.args.get('model_name') or '')
+        runs: list[dict[str, Any]] = []
+        selected_run: dict[str, Any] | None = None
+        comparison_rows: list[dict[str, Any]] = []
+        summary_models = [selected_model] if selected_model else available_models
+        if selected_model:
+            runs = _load_evaluation_bundle(selected_model)
+        else:
+            for model_name in available_models:
+                runs.extend(_load_evaluation_bundle(model_name))
+        summary_rows = _evaluation_summary_rows(summary_models)
+        if runs:
+            selected_run = runs[0]
+            report = selected_run['report']
+            previous = runs[1]['report'] if len(runs) > 1 and runs[1]['model_name'] == selected_run['model_name'] else None
+            comparison_rows = _comparison_rows(report, previous)
+            selected_run = {
+                **selected_run,
+                'warnings': report.get('warnings') or [],
+                'alerts': report.get('alerts') or [],
+                'status': report.get('status') or ('not_evaluated' if _primary_metric_info(report)[1] is None else 'evaluated'),
+                'thresholds': report.get('thresholds') or {},
+                'threshold_optimization': report.get('threshold_optimization') or {},
+                'decision_threshold': report.get('threshold') if report.get('threshold') is not None else (report.get('threshold_optimization') or {}).get('threshold'),
+                'thresholds_json': json.dumps(report.get('thresholds') or {}, ensure_ascii=False, indent=2),
+                'report_json': json.dumps(report, ensure_ascii=False, indent=2),
+                'artifacts': [
+                    {'name': 'report.html', 'url': url_for('admin_model_evaluation_artifact', model_name=selected_run['model_name'], run_name=selected_run['run_name'], filename='report.html')},
+                    {'name': 'report.json', 'url': url_for('admin_model_evaluation_artifact', model_name=selected_run['model_name'], run_name=selected_run['run_name'], filename='report.json')},
+                    {'name': 'summary.csv', 'url': url_for('admin_model_evaluation_artifact', model_name=selected_run['model_name'], run_name=selected_run['run_name'], filename='summary.csv')},
+                ],
+                'non_discriminant': bool(report.get('non_discriminant')),
+                'primary_metric': _primary_metric_info(report)[0],
+                'primary_value': _primary_metric_info(report)[1],
+                'severity': _severity_from_value(_primary_metric_info(report)[1])[0],
+                'severity_label': _severity_from_value(_primary_metric_info(report)[1])[1],
+                'metric_display': _format_eval_value(_primary_metric_info(report)[1]),
+                'total_examples': report.get('total_examples'),
+                'real_positive_count': report.get('real_positive_count'),
+                'real_negative_count': report.get('real_negative_count'),
+                'predicted_positive_count': report.get('predicted_positive_count'),
+                'predicted_negative_count': report.get('predicted_negative_count'),
+                'positive_prevalence': report.get('positive_prevalence'),
+                'positive_prevalence_display': _format_eval_value(report.get('positive_prevalence')),
+                'predicted_positive_rate': report.get('predicted_positive_rate'),
+                'predicted_positive_rate_display': _format_eval_value(report.get('predicted_positive_rate')),
+                'decision_threshold_display': _format_eval_value(report.get('threshold') if report.get('threshold') is not None else (report.get('threshold_optimization') or {}).get('threshold')),
+                'probability_stats': report.get('probability_stats') or {},
+                'confusion_counts': report.get('confusion_counts') or {},
+                'label_cardinality_true': report.get('label_cardinality_true'),
+                'label_cardinality_true_display': _format_eval_value(report.get('label_cardinality_true')),
+                'label_cardinality_predicted': report.get('label_cardinality_predicted'),
+                'label_cardinality_predicted_display': _format_eval_value(report.get('label_cardinality_predicted')),
+                'mean_labels_per_example': report.get('mean_labels_per_example'),
+                'mean_labels_per_example_display': _format_eval_value(report.get('mean_labels_per_example')),
+                'evaluation_status': report.get('status') or ('not_evaluated' if _primary_metric_info(report)[1] is None else 'evaluated'),
+            }
+            per_label = report.get('per_label') or report.get('per_class') or []
+            try:
+                per_label_rows = _normalize_per_label_rows(per_label)
+            except Exception as exc:  # pragma: no cover - defensive fallback
+                LOGGER.warning(
+                    '[admin-model-evaluation] impossible de normaliser per_label (%s): %s',
+                    type(per_label).__name__,
+                    exc,
+                )
+                per_label_rows = [{'label': 'per_label', 'value': 'format inattendu'}]
+            per_label_table = _format_table(per_label_rows, 'per_label') if per_label_rows else ''
+            metrics_table = _format_table([report.get('metrics') or {}], 'metrics')
+            comparison_table = _format_table(comparison_rows, 'comparison') if comparison_rows else ''
+        else:
+            per_label_table = ''
+            metrics_table = "<p class=\"muted\">Aucun artefact d'évaluation trouvé.</p>"
+            comparison_table = ''
+        summary_table = _format_table(summary_rows, 'model_summary') if summary_rows else "<p class=\"muted\">Aucun résumé disponible.</p>"
+        return render_template(
+            'admin_model_evaluation.html',
+            available_models=available_models,
+            runs=runs,
+            selected_model=selected_model,
+            selected_run=selected_run,
+            comparison_rows=comparison_rows,
+            metrics_table=metrics_table,
+            comparison_table=comparison_table,
+            per_label_table=per_label_table,
+            summary_table=summary_table,
+        )
+
+    @app.route('/admin/model-evaluation/<model_name>/<run_name>/<path:filename>')
+    @require_admin_auth
+    def admin_model_evaluation_artifact(model_name: str, run_name: str, filename: str):
+        from flask import send_from_directory
+
+        directory = _evaluation_root() / model_name / run_name
+        if not directory.exists():
+            return redirect(url_for('admin_model_evaluation'))
+        return send_from_directory(str(directory), filename)
+
+    @app.route('/admin/ai-recommendation-rules', methods=['GET', 'POST'])
+    @require_admin_auth
+    def admin_ai_recommendation_rules():
+        rules = _load_ai_recommendation_rules()
+        if request.method == 'POST':
+            rule_id = clean_text(request.form.get('rule_id') or '')
+            if not rule_id:
+                return redirect(url_for('admin_ai_recommendation_rules'))
+            updated_rules: list[dict[str, Any]] = []
+            for rule in rules:
+                if clean_text(rule.get('id') or '') != rule_id:
+                    updated_rules.append(rule)
+                    continue
+                categories_raw = clean_text(request.form.get('categories') or '')
+                categories = []
+                if categories_raw:
+                    for label in [item.strip() for item in re.split(r'[\n,;|]+', categories_raw) if item.strip()]:
+                        categories.append({'label': label, 'score': 1.0, 'method': 'manual', 'status': 'accepted'})
+                metadata = rule.get('metadata') if isinstance(rule.get('metadata'), dict) else {}
+                metadata = {**metadata, 'manual_edit_at': datetime.now(timezone.utc).isoformat(), 'manual_edit_source': 'admin_ai_recommendation_rules'}
+                updated_rules.append({
+                    **rule,
+                    'keyword': clean_text(request.form.get('keyword') or rule.get('keyword') or ''),
+                    'normalized_keyword': normalize_ai_keyword(request.form.get('keyword') or rule.get('keyword') or ''),
+                    'recommendation': clean_text(request.form.get('recommendation') or rule.get('recommendation') or ''),
+                    'priority': int(clean_text(request.form.get('priority') or str(rule.get('priority', 50))) or 50),
+                    'enabled': clean_text(request.form.get('enabled') or 'true').lower() in {'1', 'true', 'yes', 'on', 'enabled'},
+                    'review_status': clean_text(request.form.get('review_status') or rule.get('review_status') or 'to_review') or 'to_review',
+                    'categories': categories or rule.get('categories') or [],
+                    'metadata': metadata,
+                })
+            _save_ai_recommendation_rules(updated_rules)
+            return redirect(url_for('admin_ai_recommendation_rules'))
+
+        query = clean_text(request.args.get('q') or '')
+        category = clean_text(request.args.get('category') or '')
+        review_status = clean_text(request.args.get('review_status') or '')
+        anomaly = clean_text(request.args.get('anomaly') or '')
+        enabled = clean_text(request.args.get('enabled') or '')
+        filtered_rules = [rule for rule in rules if _rule_matches_ai_filters(rule, query, category, review_status, anomaly, enabled)]
+        categories = sorted({clean_text(item.get('label') or '') for rule in rules for item in (rule.get('categories') or []) if isinstance(item, dict) and clean_text(item.get('label') or '')})
+        anomalies = sorted({clean_text(item) for rule in rules for item in (rule.get('metadata', {}).get('anomalies', []) if isinstance(rule.get('metadata'), dict) else []) if clean_text(item)})
+        return render_template(
+            'admin_ai_recommendation_rules.html',
+            rules=filtered_rules,
+            total_rules=len(rules),
+            categories=categories,
+            anomalies=anomalies,
+            query=query,
+            selected_category=category,
+            selected_review_status=review_status,
+            selected_anomaly=anomaly,
+            selected_enabled=enabled,
         )
 
     def _render_referential_import_context(analysis: dict[str, Any], *, source_path: str, success: str | None = None, error: str | None = None):
