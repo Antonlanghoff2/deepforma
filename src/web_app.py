@@ -59,6 +59,7 @@ from services.recommendation_service import RecommendationService
 from ai_recommendations import import_ai_recommendation_dataset, load_ai_recommendation_rules, normalize_ai_keyword
 from ai_recommendations.matcher import match_ai_recommendations
 from evaluation.report import latest_evaluation_dir, load_evaluation_report
+from inference.binary_ai_predictor import predict_binary_ai
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +78,8 @@ DEFAULT_MAX_FORM_PARTS = int(os.getenv('DEEPFORMA_MAX_FORM_PARTS', '2000'))
 MODEL_SCORE_STD_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_STD_MIN', '0.05'))
 MODEL_SCORE_MAX_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_MAX_MIN', '0.70'))
 MODEL_SCORE_GAP_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_GAP_MIN', '0.05'))
+DEFAULT_BINARY_AI_MODEL = os.getenv('DEEPFORMA_DEFAULT_BINARY_AI_MODEL', 'ml').strip().lower()
+ALLOWED_BINARY_AI_MODEL_NAMES = {'ml', 'textcnn'}
 
 EXPERIMENTAL_WARNING = (
     'Resultat experimental. Le modele doit encore etre valide '
@@ -118,6 +121,15 @@ class DiagnosticLogger:
 def _make_cache_key(departement: str, keywords: str | None) -> str:
     normalized_keywords = (keywords or '').strip().lower()
     return f"{departement.strip()}::{normalized_keywords}"
+
+
+def _normalize_binary_ai_model_name(model_name: str | None) -> str:
+    candidate = clean_text(model_name or '').lower()
+    if not candidate:
+        candidate = DEFAULT_BINARY_AI_MODEL if DEFAULT_BINARY_AI_MODEL in ALLOWED_BINARY_AI_MODEL_NAMES else 'ml'
+    if candidate not in ALLOWED_BINARY_AI_MODEL_NAMES:
+        raise ValueError("Le modèle binaire doit valoir 'ml' ou 'textcnn'.")
+    return candidate
 
 def parse_rome_codes_from_request(req: Any) -> list[str]:
     values: list[str] = []
@@ -1147,6 +1159,7 @@ def create_app(
                 market_status = 'empty'
 
         analysis['ai_recommendations_hybrid'] = ai_hybrid_result
+        binary_ai_context = _build_binary_ai_comparison(text)
         analysis_result = _build_analysis_result(
             analysis, normalized_offers, recommendation, territorial_stats,
             departement, threshold, skill_extraction=skill_extraction,
@@ -1167,6 +1180,8 @@ def create_app(
                 'market_error': market_error,
             },
             'analysis_result': analysis_result,
+            'binary_ai_predictions': binary_ai_context['binary_ai_predictions'],
+            'binary_ai_prediction_errors': binary_ai_context['binary_ai_prediction_errors'],
             'department': departement,
             'keywords': keywords,
             'threshold': threshold,
@@ -1174,12 +1189,40 @@ def create_app(
             'warning': EXPERIMENTAL_WARNING,
         }
 
+    def _extract_binary_ai_inputs(payload: dict[str, Any]) -> tuple[str, str]:
+        text = clean_text(payload.get('text') or payload.get('program') or payload.get('programme') or payload.get('competence') or '')
+        model_name = _normalize_binary_ai_model_name(payload.get('binary_model_name') or payload.get('model_name') or payload.get('classifier_model'))
+        if not text:
+            raise ValueError('Le texte de compétence est obligatoire.')
+        return text, model_name
+
+    def _build_binary_ai_context(text: str, model_name: str) -> dict[str, Any]:
+        prediction = predict_binary_ai(text, model_name=model_name)
+        return {
+            'binary_ai_prediction': prediction,
+            'binary_ai_model': model_name,
+            'binary_ai_error': None,
+        }
+
+    def _build_binary_ai_comparison(text: str) -> dict[str, Any]:
+        predictions: dict[str, dict[str, Any]] = {}
+        errors: dict[str, str] = {}
+        for model_name in ('ml', 'textcnn'):
+            try:
+                predictions[model_name] = predict_binary_ai(text, model_name=model_name)
+            except Exception as exc:  # pragma: no cover - surfaced in UI
+                errors[model_name] = str(exc)
+        return {
+            'binary_ai_predictions': predictions,
+            'binary_ai_prediction_errors': errors,
+        }
+
     def _render_error(message: str, status_code: int = 400):
         if request.path.startswith('/api/'):
             return jsonify({'ok': False, 'error': message}), status_code
-        return render_template('index.html', error=message, default_threshold=app.config['DEFAULT_THRESHOLD']), status_code
+        return _render_home_page(error=message), status_code
 
-    def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_validation: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None):
+    def _render_home_page(*, error: str | None = None, referential_analysis: dict[str, Any] | None = None, referential_validation: dict[str, Any] | None = None, referential_error: str | None = None, referential_success: str | None = None, binary_ai_prediction: dict[str, Any] | None = None, binary_ai_error: str | None = None, binary_ai_model: str | None = None):
         return render_template(
             'index.html',
             error=error,
@@ -1188,6 +1231,10 @@ def create_app(
             referential_validation=referential_validation,
             referential_error=referential_error,
             referential_success=referential_success,
+            binary_ai_prediction=binary_ai_prediction,
+            binary_ai_error=binary_ai_error,
+            binary_ai_model=binary_ai_model or DEFAULT_BINARY_AI_MODEL,
+            allowed_binary_ai_model_names=sorted(ALLOWED_BINARY_AI_MODEL_NAMES),
         )
 
     def _build_referential_preview_payload(analysis: dict[str, Any], *, source_path: str) -> dict[str, Any]:
@@ -1754,6 +1801,28 @@ def create_app(
             result_json=result.to_json(),
             result_dict=result.to_dict(),
         )
+
+    @app.post('/binary-ai')
+    def binary_ai_predict_page():
+        try:
+            text, model_name = _extract_binary_ai_inputs(_parse_request_payload())
+            context = _build_binary_ai_context(text, model_name)
+        except ValueError as exc:
+            return _render_home_page(binary_ai_error=str(exc), binary_ai_model=DEFAULT_BINARY_AI_MODEL), 400
+        except RuntimeError as exc:
+            return _render_home_page(binary_ai_error=str(exc), binary_ai_model=DEFAULT_BINARY_AI_MODEL), 503
+        return _render_home_page(**context)
+
+    @app.post('/api/binary-ai/predict')
+    def api_binary_ai_predict():
+        try:
+            text, model_name = _extract_binary_ai_inputs(_parse_request_payload())
+            prediction = predict_binary_ai(text, model_name=model_name)
+        except ValueError as exc:
+            return jsonify({'ok': False, 'error': str(exc)}), 400
+        except RuntimeError as exc:
+            return jsonify({'ok': False, 'error': str(exc)}), 503
+        return jsonify({'ok': True, 'model_name': model_name, 'result': prediction})
 
     @app.post('/api/analyze')
     def api_analyze():
