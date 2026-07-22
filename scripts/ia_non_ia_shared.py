@@ -216,6 +216,60 @@ def threshold_grid(start: float = 0.05, end: float = 0.95, step: float = 0.01) -
     return values[(values >= start) & (values <= end)]
 
 
+ERROR_ANALYSIS_COLUMNS = [
+    'source_index',
+    'record_id',
+    'split',
+    'text',
+    'true_label',
+    'predicted_label',
+    'probability_ia',
+    'threshold',
+    'error_type',
+]
+
+
+def error_analysis(frame: pd.DataFrame, scores: np.ndarray, threshold: float) -> pd.DataFrame:
+    frame = frame.copy()
+    if 'is_ai' not in frame.columns:
+        raise KeyError("La colonne 'is_ai' est obligatoire pour l'analyse des erreurs.")
+
+    scores_array = np.asarray(scores, dtype=float).reshape(-1)
+    if len(frame) != len(scores_array):
+        raise ValueError(
+            f"Nombre de lignes et de scores incompatibles : {len(frame)} contre {len(scores_array)}"
+        )
+
+    if 'source_index' not in frame.columns:
+        frame['source_index'] = frame.index
+    for column in ('record_id', 'split', 'text'):
+        if column not in frame.columns:
+            frame[column] = pd.NA
+
+    true_labels = pd.to_numeric(frame['is_ai'], errors='raise').astype(int)
+    score_series = pd.Series(scores_array, index=frame.index, name='probability_ia')
+    prediction_series = pd.Series((scores_array >= threshold).astype(int), index=frame.index, name='predicted_label')
+
+    error_mask = prediction_series.ne(true_labels)
+    errors = frame.loc[error_mask].copy()
+    if errors.empty:
+        return pd.DataFrame(columns=ERROR_ANALYSIS_COLUMNS)
+
+    errors['true_label'] = errors['is_ai'].map({0: 'non-IA', 1: 'IA'})
+    errors['predicted_label'] = prediction_series.loc[errors.index].map({0: 'non-IA', 1: 'IA'})
+    errors['probability_ia'] = score_series.loc[errors.index].to_numpy()
+    errors['threshold'] = float(threshold)
+    errors['error_type'] = np.where(pd.to_numeric(errors['is_ai'], errors='raise').astype(int) == 1, 'faux négatif', 'faux positif')
+    return (
+        errors[ERROR_ANALYSIS_COLUMNS]
+        .sort_values('probability_ia', ascending=False)
+        .reset_index(drop=True)
+    )
+
+
+build_error_analysis = error_analysis
+
+
 def _score_row(y_true: np.ndarray, y_score: np.ndarray, threshold: float) -> dict[str, float | None]:
     report = evaluate_binary_classification(y_true, y_score, threshold=threshold, model_name="threshold_scan")
     metrics = report.metrics
