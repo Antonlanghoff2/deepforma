@@ -78,13 +78,154 @@ DEFAULT_MAX_FORM_PARTS = int(os.getenv('DEEPFORMA_MAX_FORM_PARTS', '2000'))
 MODEL_SCORE_STD_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_STD_MIN', '0.05'))
 MODEL_SCORE_MAX_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_MAX_MIN', '0.70'))
 MODEL_SCORE_GAP_MIN = float(os.getenv('DEEPFORMA_MODEL_SCORE_GAP_MIN', '0.05'))
+BIN_AI_LOW_CONFIDENCE_MAX_PROBABILITY = float(os.getenv('DEEPFORMA_BINARY_AI_LOW_CONFIDENCE_MAX_PROBABILITY', '0.60'))
 DEFAULT_BINARY_AI_MODEL = os.getenv('DEEPFORMA_DEFAULT_BINARY_AI_MODEL', 'ml').strip().lower()
 ALLOWED_BINARY_AI_MODEL_NAMES = {'ml', 'textcnn'}
+BINARY_AI_MODEL_DISPLAY_NAMES = {
+    'ml': 'Machine learning',
+    'textcnn': 'TextCNN',
+}
 
 EXPERIMENTAL_WARNING = (
     'Resultat experimental. Le modele doit encore etre valide '
     'avant utilisation operationnelle.'
 )
+
+
+def _binary_ai_display_name(model_name: str) -> str:
+    normalized = clean_text(model_name).strip().lower()
+    return BINARY_AI_MODEL_DISPLAY_NAMES.get(normalized, clean_text(model_name) or model_name)
+
+
+def serialize_binary_ai_prediction(
+    prediction: dict[str, Any] | None,
+    *,
+    model_name: str,
+    display_name: str | None = None,
+    status: str | None = None,
+    available: bool | None = None,
+    warning: str | None = None,
+    error: str | None = None,
+) -> dict[str, Any]:
+    model_name = clean_text(model_name).strip().lower() or model_name
+    display_name = display_name or _binary_ai_display_name(model_name)
+    payload = dict(prediction or {})
+    probability_ia_raw = payload.get('probability_ai')
+    probability_non_ia_raw = payload.get('probability_non_ia')
+    threshold_raw = payload.get('threshold', 0.5)
+    latency_raw = payload.get('latency_ms')
+    try:
+        probability_ia = float(probability_ia_raw) if probability_ia_raw is not None else None
+    except (TypeError, ValueError):
+        probability_ia = None
+    try:
+        probability_non_ia = float(probability_non_ia_raw) if probability_non_ia_raw is not None else None
+    except (TypeError, ValueError):
+        probability_non_ia = None
+    try:
+        threshold = float(threshold_raw) if threshold_raw is not None else 0.5
+    except (TypeError, ValueError):
+        threshold = 0.5
+    if probability_ia is None and probability_non_ia is None:
+        confidence = None
+    else:
+        if probability_ia is None:
+            confidence = float(probability_non_ia if probability_non_ia is not None else 0.0)
+        elif probability_non_ia is None:
+            confidence = float(probability_ia)
+        else:
+            confidence = float(max(probability_ia, probability_non_ia))
+    if probability_ia is not None and probability_non_ia is None:
+        probability_non_ia = float(max(0.0, 1.0 - probability_ia))
+    if probability_non_ia is not None and probability_ia is None:
+        probability_ia = float(max(0.0, 1.0 - probability_non_ia))
+    if probability_ia is None:
+        prediction_label = payload.get('label') or payload.get('prediction')
+        is_ai = payload.get('is_ai')
+    else:
+        prediction_label = 'IA' if probability_ia >= threshold else 'non-IA'
+        is_ai = bool(probability_ia >= threshold)
+    if status is None:
+        if prediction is None:
+            status = 'error' if error else 'unavailable'
+        elif confidence is not None and confidence < BIN_AI_LOW_CONFIDENCE_MAX_PROBABILITY:
+            status = 'low_confidence'
+        else:
+            status = 'ok'
+    if available is None:
+        available = status in {'ok', 'low_confidence'}
+    if warning is None:
+        if status == 'low_confidence':
+            warning = 'Scores proches de 0,5 : classification peu fiable.'
+        elif status in {'error', 'unavailable'}:
+            warning = error or payload.get('warning') or 'Modèle indisponible.'
+        else:
+            warning = payload.get('warning')
+    return {
+        'display_name': display_name,
+        'label': prediction_label,
+        'prediction': prediction_label,
+        'is_ai': None if is_ai is None else bool(is_ai),
+        'probability_ai': probability_ia,
+        'probability_ia': probability_ia,
+        'probability_non_ia': probability_non_ia,
+        'confidence': confidence,
+        'threshold': threshold,
+        'available': bool(available),
+        'status': status,
+        'warning': warning,
+        'latency_ms': float(latency_raw) if latency_raw is not None else None,
+        'model_name': model_name,
+        'model_version': payload.get('model_version'),
+        'pretrained': payload.get('pretrained'),
+        'error': error or payload.get('error'),
+    }
+
+
+def build_binary_ai_prediction(text: str, model_name: str, *, display_name: str | None = None) -> dict[str, Any]:
+    try:
+        prediction = predict_binary_ai(text, model_name=model_name)
+    except FileNotFoundError as exc:
+        logger.warning('Binary AI model unavailable for %s: %s', model_name, exc)
+        return serialize_binary_ai_prediction(
+            None,
+            model_name=model_name,
+            display_name=display_name,
+            status='unavailable',
+            available=False,
+            warning=str(exc),
+            error=str(exc),
+        )
+    except Exception as exc:  # pragma: no cover - surfaced in UI/tests
+        logger.exception('Binary AI inference failed')
+        return serialize_binary_ai_prediction(
+            None,
+            model_name=model_name,
+            display_name=display_name,
+            status='error',
+            available=False,
+            warning=str(exc),
+            error=str(exc),
+        )
+    return serialize_binary_ai_prediction(
+        prediction,
+        model_name=model_name,
+        display_name=display_name,
+    )
+
+
+def build_binary_ai_predictions(text: str, model_names: tuple[str, ...] = ('ml', 'textcnn')) -> tuple[dict[str, dict[str, Any]], dict[str, str]]:
+    cleaned = clean_text(text)
+    predictions: dict[str, dict[str, Any]] = {}
+    errors: dict[str, str] = {}
+    if not cleaned:
+        return predictions, errors
+    for model_name in model_names:
+        payload = build_binary_ai_prediction(cleaned, model_name, display_name=_binary_ai_display_name(model_name))
+        predictions[model_name] = payload
+        if payload.get('status') in {'error', 'unavailable'} and payload.get('warning'):
+            errors[model_name] = str(payload['warning'])
+    return predictions, errors
 
 
 class TTLCache:
@@ -1199,19 +1340,18 @@ def create_app(
     def _build_binary_ai_context(text: str, model_name: str) -> dict[str, Any]:
         prediction = predict_binary_ai(text, model_name=model_name)
         return {
-            'binary_ai_prediction': prediction,
+            'binary_ai_prediction': serialize_binary_ai_prediction(
+                prediction,
+                model_name=model_name,
+                display_name=_binary_ai_display_name(model_name),
+            ),
             'binary_ai_model': model_name,
             'binary_ai_error': None,
         }
 
     def _build_binary_ai_comparison(text: str) -> dict[str, Any]:
-        predictions: dict[str, dict[str, Any]] = {}
-        errors: dict[str, str] = {}
-        for model_name in ('ml', 'textcnn'):
-            try:
-                predictions[model_name] = predict_binary_ai(text, model_name=model_name)
-            except Exception as exc:  # pragma: no cover - surfaced in UI
-                errors[model_name] = str(exc)
+        predictions, errors = build_binary_ai_predictions(text)
+        logger.info('Binary AI predictions prepared: models=%s', list(predictions.keys()))
         return {
             'binary_ai_predictions': predictions,
             'binary_ai_prediction_errors': errors,
@@ -1235,6 +1375,19 @@ def create_app(
             binary_ai_error=binary_ai_error,
             binary_ai_model=binary_ai_model or DEFAULT_BINARY_AI_MODEL,
             allowed_binary_ai_model_names=sorted(ALLOWED_BINARY_AI_MODEL_NAMES),
+        )
+
+    def _render_result_page(*, context: dict[str, Any], result: Any, binary_ai_predictions: dict[str, dict[str, Any]] | None = None, binary_ai_prediction_errors: dict[str, str] | None = None):
+        payload = dict(context)
+        payload.pop('binary_ai_predictions', None)
+        payload.pop('binary_ai_prediction_errors', None)
+        return render_template(
+            'result.html',
+            **payload,
+            binary_ai_predictions=binary_ai_predictions or {},
+            binary_ai_prediction_errors=binary_ai_prediction_errors or {},
+            result_json=result.to_json(),
+            result_dict=result.to_dict(),
         )
 
     def _build_referential_preview_payload(analysis: dict[str, Any], *, source_path: str) -> dict[str, Any]:
@@ -1775,11 +1928,11 @@ def create_app(
                 state['market_search_status'] = 'MARKET_ANALYZED'
                 _referential_state_cache().set(state['analysis_id'], state)
                 result = context['analysis_result']
-                return render_template(
-                    'result.html',
-                    **context,
-                    result_json=result.to_json(),
-                    result_dict=result.to_dict(),
+                return _render_result_page(
+                    context=context,
+                    result=result,
+                    binary_ai_predictions=context.get('binary_ai_predictions'),
+                    binary_ai_prediction_errors=context.get('binary_ai_prediction_errors'),
                 )
             elif request.files.get('pdf') and request.files.get('pdf').filename:
                 pdf_path, departement = _extract_referential_inputs(payload, request.files)
@@ -1795,11 +1948,11 @@ def create_app(
             return _render_error(str(exc), 503)
 
         result = context['analysis_result']
-        return render_template(
-            'result.html',
-            **context,
-            result_json=result.to_json(),
-            result_dict=result.to_dict(),
+        return _render_result_page(
+            context=context,
+            result=result,
+            binary_ai_predictions=context.get('binary_ai_predictions'),
+            binary_ai_prediction_errors=context.get('binary_ai_prediction_errors'),
         )
 
     @app.post('/binary-ai')
@@ -1809,7 +1962,7 @@ def create_app(
             context = _build_binary_ai_context(text, model_name)
         except ValueError as exc:
             return _render_home_page(binary_ai_error=str(exc), binary_ai_model=DEFAULT_BINARY_AI_MODEL), 400
-        except RuntimeError as exc:
+        except (FileNotFoundError, RuntimeError) as exc:
             return _render_home_page(binary_ai_error=str(exc), binary_ai_model=DEFAULT_BINARY_AI_MODEL), 503
         return _render_home_page(**context)
 
@@ -1820,7 +1973,7 @@ def create_app(
             prediction = predict_binary_ai(text, model_name=model_name)
         except ValueError as exc:
             return jsonify({'ok': False, 'error': str(exc)}), 400
-        except RuntimeError as exc:
+        except (FileNotFoundError, RuntimeError) as exc:
             return jsonify({'ok': False, 'error': str(exc)}), 503
         return jsonify({'ok': True, 'model_name': model_name, 'result': prediction})
 

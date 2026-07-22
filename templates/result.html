@@ -897,6 +897,9 @@
             {% endif %}
 
             <h3>Classifieur IA binaire interrogé directement</h3>
+            {% set binary_predictions = binary_ai_predictions | default({}, true) %}
+            {% set binary_prediction_errors = binary_ai_prediction_errors | default({}, true) %}
+            {% if binary_predictions %}
             <table class="table" style="width:100%; margin-top:0.75rem;">
               <thead>
                 <tr>
@@ -908,22 +911,48 @@
                 </tr>
               </thead>
               <tbody>
-                {% for model_name, prediction in binary_ai_predictions.items() %}
+                {% for model_name, prediction in binary_predictions.items() %}
                 <tr>
-                  <td>{{ 'Machine learning' if model_name == 'ml' else 'TextCNN' }}</td>
-                  <td><strong>{{ prediction.label }}</strong></td>
-                  <td>{{ '%.4f'|format(prediction.probability_ai) }}</td>
-                  <td>{{ '%.4f'|format(prediction.threshold) }}</td>
-                  <td>{{ '%.1f'|format(prediction.latency_ms) }} ms</td>
+                  <td>{{ prediction.display_name | default(model_name, true) }}</td>
+                  <td>
+                    <strong>{{ prediction.prediction | default('Indisponible', true) }}</strong>
+                    {% if prediction.warning %}
+                    <div class="muted">{{ prediction.warning }}</div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if prediction.probability_ia is not none %}
+                    {{ '%.1f'|format(prediction.probability_ia * 100) }} %
+                    {% else %}
+                    Indisponible
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if prediction.threshold is not none %}
+                    {{ '%.4f'|format(prediction.threshold) }}
+                    {% else %}
+                    Indisponible
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if prediction.latency_ms is not none %}
+                    {{ '%.1f'|format(prediction.latency_ms) }} ms
+                    {% else %}
+                    Indisponible
+                    {% endif %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
             </table>
-            {% if binary_ai_prediction_errors %}
+            {% else %}
+            <p class="muted" style="margin-top:0.75rem;">Aucune prédiction binaire disponible.</p>
+            {% endif %}
+            {% if binary_prediction_errors %}
             <div class="alert alert-warning" role="alert" style="margin-top:0.75rem;">
               <strong>Modèles indisponibles :</strong>
               <ul>
-                {% for model_name, message in binary_ai_prediction_errors.items() %}
+                {% for model_name, message in binary_prediction_errors.items() %}
                 <li>{{ model_name }} : {{ message }}</li>
                 {% endfor %}
               </ul>
