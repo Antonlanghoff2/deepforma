@@ -1,8 +1,8 @@
 {
-  "referential_id": "a7ec62e6887c5c343e33da258b609c0314e13daa242e4b3bb01f031924ec9750",
-  "referential_title": "Intelligence Artificielle appliquée aux enjeux sociétaux",
+  "referential_id": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+  "referential_title": "Data Analyst",
   "referential_version": "1.0",
-  "territory": "75 / 75056",
+  "territory": "75 / 75",
   "radius_km": null,
   "period": "",
   "job_titles": [
@@ -25,22 +25,15 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
-<<<<<<< HEAD
-  "covered_offer_count": 3,
-  "total_market_weight": 92.5037,
-  "covered_weight": 2.2269,
-  "global_coverage_score": 2.41,
-=======
-  "covered_offer_count": 2,
-  "total_market_weight": 89.1213,
-  "covered_weight": 1.2769,
-  "global_coverage_score": 1.43,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+  "covered_offer_count": 8,
+  "total_market_weight": 111.9216,
+  "covered_weight": 6.6904,
+  "global_coverage_score": 5.98,
   "block_summaries": [
     {
       "block": "Other",
       "block_name": "Bloc ther",
-      "skill_count": 7,
+      "skill_count": 6,
       "covered_skill_count": 0,
       "total_weight": 0,
       "covered_weight": 0,
@@ -55,764 +48,582 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "organisation et management d'entreprise,",
-      "official_description": "organisation et management d'entreprise,",
-      "normalized_label": "organisation et management d'entreprise,",
-      "category": "soft_skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Analyse et aide à la décision : business analyst,",
-      "official_description": "Analyse et aide à la décision : business analyst,",
-      "normalized_label": "analyse et aide à la décision : business analyst,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "savoir dans un domaine de travail ou d’études,",
-      "official_description": "savoir dans un domaine de travail ou d’études,",
-      "normalized_label": "savoir dans un domaine de travail ou d’études,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
-        "implicit": 1,
         "exact": 1
       },
       "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "SEMANTIC:4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:5",
-      "label": "transformer",
-      "official_description": "transformer",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
       "normalized_label": "transformer",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7703,
-      "share_percent": 4.0,
-<<<<<<< HEAD
-      "coverage_score": 0.83,
-=======
-      "coverage_score": 0.86,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     }
   ],
   "top_demanded_skills": [
     {
-<<<<<<< HEAD
-      "referential_id": "SEMANTIC:4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
-        "implicit": 1,
         "exact": 1
       },
       "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "SEMANTIC:5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-=======
-      "referential_id": "SEMANTIC:5",
+      "code": "SEMANTIC:1",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "code": "SEMANTIC:5",
-      "label": "transformer",
-      "official_description": "transformer",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
       "normalized_label": "transformer",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7703,
-      "share_percent": 4.0,
-<<<<<<< HEAD
-      "coverage_score": 0.83,
-=======
-      "coverage_score": 0.86,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
-    },
-    {
-<<<<<<< HEAD
-=======
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Analyse et aide à la décision : business analyst,",
-      "official_description": "Analyse et aide à la décision : business analyst,",
-      "normalized_label": "analyse et aide à la décision : business analyst,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "organisation et management d'entreprise,",
-      "official_description": "organisation et management d'entreprise,",
-      "normalized_label": "organisation et management d'entreprise,",
-      "category": "soft_skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "savoir dans un domaine de travail ou d’études,",
-      "official_description": "savoir dans un domaine de travail ou d’études,",
-      "normalized_label": "savoir dans un domaine de travail ou d’études,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
     }
   ],
   "covered_skills": [
     {
-      "referential_id": "SEMANTIC:4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
+      "code": "SEMANTIC:1",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
-        "implicit": 1,
         "exact": 1
       },
       "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "SEMANTIC:4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-=======
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:5",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:5",
-      "label": "transformer",
-      "official_description": "transformer",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
       "normalized_label": "transformer",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7703,
-      "share_percent": 4.0,
-<<<<<<< HEAD
-      "coverage_score": 0.83,
-=======
-      "coverage_score": 0.86,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     }
   ],
-  "missing_skills": [
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "organisation et management d'entreprise,",
-      "official_description": "organisation et management d'entreprise,",
-      "normalized_label": "organisation et management d'entreprise,",
-      "category": "soft_skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Analyse et aide à la décision : business analyst,",
-      "official_description": "Analyse et aide à la décision : business analyst,",
-      "normalized_label": "analyse et aide à la décision : business analyst,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "savoir dans un domaine de travail ou d’études,",
-      "official_description": "savoir dans un domaine de travail ou d’études,",
-      "normalized_label": "savoir dans un domaine de travail ou d’études,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    }
-  ],
+  "missing_skills": [],
   "low_demand_skills": [
     {
       "referential_id": "SEMANTIC:1",
@@ -820,316 +631,194 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Analyse et aide à la décision : business analyst,",
-      "official_description": "Analyse et aide à la décision : business analyst,",
-      "normalized_label": "analyse et aide à la décision : business analyst,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "organisation et management d'entreprise,",
-      "official_description": "organisation et management d'entreprise,",
-      "normalized_label": "organisation et management d'entreprise,",
-      "category": "soft_skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "savoir dans un domaine de travail ou d’études,",
-      "official_description": "savoir dans un domaine de travail ou d’études,",
-      "normalized_label": "savoir dans un domaine de travail ou d’études,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 0,
-      "weighted_score": 0.0,
-      "share_percent": 0.0,
-      "coverage_score": 0.0,
-      "match_methods": {},
-      "evidence_examples": [],
-      "example_offers": [],
-      "status": "missing"
-    },
-    {
-<<<<<<< HEAD
-=======
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
-        "implicit": 1
+        "exact": 1
       },
       "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Expert IA (H/F)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     },
     {
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "referential_id": "SEMANTIC:5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:5",
-      "label": "transformer",
-      "official_description": "transformer",
+      "code": "SEMANTIC:1",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
       "normalized_label": "transformer",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7703,
-      "share_percent": 4.0,
-<<<<<<< HEAD
-      "coverage_score": 0.83,
-=======
-      "coverage_score": 0.86,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     }
   ],
   "unmapped_market_skills": [
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Développer des modèles prédictifs pour l'analyse de données",
-      "official_description": "",
-      "normalized_label": "Développer des modèles prédictifs pour l'analyse de données",
-      "category": "Other",
-      "subcategory": "Développer des modèles prédictifs pour l'analyse de données",
-      "technical_keywords": [],
-      "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 10,
-      "weighted_score": 7.9990000000000006,
-      "share_percent": 40.0,
-=======
-      "offer_count": 9,
-      "weighted_score": 7.1882,
-      "share_percent": 36.0,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Développer des modèles prédictifs pour l'analyse de données"
-      ],
-      "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "unmapped"
-    },
     {
       "referential_id": "",
       "block": "",
@@ -1143,15 +832,9 @@
       "subcategory": "Optimiser les performances des systèmes d'IA",
       "technical_keywords": [],
       "source_page": 0,
-<<<<<<< HEAD
-      "offer_count": 10,
-      "weighted_score": 7.9990000000000006,
-      "share_percent": 40.0,
-=======
-      "offer_count": 9,
-      "weighted_score": 7.1882,
-      "share_percent": 36.0,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 13,
+      "weighted_score": 11.052999999999999,
+      "share_percent": 52.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -1161,8 +844,38 @@
       ],
       "example_offers": [
         "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+        "Intelligence Artificielle Manager (H/F)",
+        "Machine Learning & Computer Vision (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développer des modèles prédictifs pour l'analyse de données",
+      "official_description": "",
+      "normalized_label": "Développer des modèles prédictifs pour l'analyse de données",
+      "category": "Other",
+      "subcategory": "Développer des modèles prédictifs pour l'analyse de données",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 12,
+      "weighted_score": 10.1056,
+      "share_percent": 48.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développer des modèles prédictifs pour l'analyse de données"
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Intelligence Artificielle Manager (H/F)",
+        "Machine Learning & Computer Vision (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1179,15 +892,9 @@
       "subcategory": "Documenter les processus et les architectures d'IA",
       "technical_keywords": [],
       "source_page": 0,
-<<<<<<< HEAD
       "offer_count": 9,
-      "weighted_score": 7.1166,
+      "weighted_score": 7.3248999999999995,
       "share_percent": 36.0,
-=======
-      "offer_count": 8,
-      "weighted_score": 6.305800000000001,
-      "share_percent": 32.0,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -1197,8 +904,8 @@
       ],
       "example_offers": [
         "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Ingénieur IA - Alternance - H/F/X (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+        "Intelligence Artificielle Manager (H/F)",
+        "Alternance - IA Engineer (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1216,7 +923,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 5,
-      "weighted_score": 4.2915,
+      "weighted_score": 4.3053,
       "share_percent": 20.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1227,8 +934,187 @@
       ],
       "example_offers": [
         "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)",
-        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+        "Ingénieur-e Logiciel (Backend, Python) (H/F)",
+        "Ingénieur d'études et développement logiciel - Full-Stack (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développement de produits basés sur l'IA",
+      "official_description": "",
+      "normalized_label": "Développement de produits basés sur l'IA",
+      "category": "Other",
+      "subcategory": "Développement de produits basés sur l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 4,
+      "weighted_score": 3.3539,
+      "share_percent": 16.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développement de produits basés sur l'IA"
+      ],
+      "example_offers": [
+        "Machine Learning & Computer Vision (H/F)",
+        "Machine Learning Engineer (H/F)",
+        "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Connaissance approfondie en mathématiques",
+      "official_description": "",
+      "normalized_label": "Connaissance approfondie en mathématiques",
+      "category": "Other",
+      "subcategory": "Connaissance approfondie en mathématiques",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.7807,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Connaissance approfondie en mathématiques"
+      ],
+      "example_offers": [
+        "Machine Learning & Computer Vision (H/F)",
+        "Machine Learning Engineer (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développer des algorithmes pour l'analyse de données",
+      "official_description": "",
+      "normalized_label": "Développer des algorithmes pour l'analyse de données",
+      "category": "Other",
+      "subcategory": "Développer des algorithmes pour l'analyse de données",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.7807,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développer des algorithmes pour l'analyse de données"
+      ],
+      "example_offers": [
+        "Machine Learning & Computer Vision (H/F)",
+        "Machine Learning Engineer (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "#TDFE2026",
+      "official_description": "",
+      "normalized_label": "#TDFE2026",
+      "category": "Other",
+      "subcategory": "#TDFE2026",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.6227,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "#TDFE2026"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Chef de projet automatisation IA (H/F)",
+        "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Déterminer des mesures correctives",
+      "official_description": "",
+      "normalized_label": "Déterminer des mesures correctives",
+      "category": "Other",
+      "subcategory": "Déterminer des mesures correctives",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.5642,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Déterminer des mesures correctives"
+      ],
+      "example_offers": [
+        "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)",
+        "Ingénieur-e Logiciel (Backend, Python) (H/F)",
+        "Ingénieur en Optimisation R&D (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Programmation en Python",
+      "official_description": "",
+      "normalized_label": "Programmation en Python",
+      "category": "Other",
+      "subcategory": "Programmation en Python",
+      "technical_keywords": [
+        "Python"
+      ],
+      "source_page": 0,
+      "offer_count": 2,
+      "weighted_score": 1.8298,
+      "share_percent": 8.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Programmation en Python"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1246,7 +1132,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.8571,
+      "weighted_score": 1.7410999999999999,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1275,7 +1161,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.8286,
+      "weighted_score": 1.7235,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1304,7 +1190,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.8286,
+      "weighted_score": 1.7235,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1325,26 +1211,26 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Recueillir et analyser les besoins client",
+      "label": "Développer un logiciel, un système d'informations, une application",
       "official_description": "",
-      "normalized_label": "Recueillir et analyser les besoins client",
+      "normalized_label": "Développer un logiciel, un système d'informations, une application",
       "category": "Other",
-      "subcategory": "Recueillir et analyser les besoins client",
+      "subcategory": "Développer un logiciel, un système d'informations, une application",
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.6737,
+      "weighted_score": 1.6818,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Recueillir et analyser les besoins client"
+        "Développer un logiciel, un système d'informations, une application"
       ],
       "example_offers": [
-        "Ingénieur(e) Structure (H/F)",
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+        "Ingénieur-e Logiciel (Backend, Python) (H/F)",
+        "Ingénieur en Optimisation R&D (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1362,7 +1248,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.6518000000000002,
+      "weighted_score": 1.5642,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1383,26 +1269,26 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Déterminer des mesures correctives",
+      "label": "Concevoir des algorithmes d'apprentissage automatique",
       "official_description": "",
-      "normalized_label": "Déterminer des mesures correctives",
-      "category": "Other",
-      "subcategory": "Déterminer des mesures correctives",
+      "normalized_label": "Concevoir des algorithmes d'apprentissage automatique",
+      "category": "Machine Learning",
+      "subcategory": "Concevoir des algorithmes d'apprentissage automatique",
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.6518000000000002,
+      "weighted_score": 1.5206,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Déterminer des mesures correctives"
+        "Concevoir des algorithmes d'apprentissage automatique"
       ],
       "example_offers": [
-        "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)",
-        "Ingénieur en Optimisation R&D (H/F)"
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert IA (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1412,26 +1298,113 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Développement de produits basés sur l'IA",
+      "label": "Evaluation de modèles d'IA",
       "official_description": "",
-      "normalized_label": "Développement de produits basés sur l'IA",
+      "normalized_label": "Evaluation de modèles d'IA",
       "category": "Other",
-      "subcategory": "Développement de produits basés sur l'IA",
+      "subcategory": "Evaluation de modèles d'IA",
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.4784,
+      "weighted_score": 1.5206,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Développement de produits basés sur l'IA"
+        "Evaluation de modèles d'IA"
       ],
       "example_offers": [
-        "Machine Learning Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert IA (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Configurer et optimiser des systèmes DevOps",
+      "official_description": "",
+      "normalized_label": "Configurer et optimiser des systèmes DevOps",
+      "category": "Other",
+      "subcategory": "Configurer et optimiser des systèmes DevOps",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 1.0,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Configurer et optimiser des systèmes DevOps"
+      ],
+      "example_offers": [
+        "Ingénieur-e Logiciel (Backend, Python) (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Computer vision",
+      "official_description": "",
+      "normalized_label": "Computer vision",
+      "category": "Computer Vision",
+      "subcategory": "Computer vision",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Computer vision"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Utilisation de TensorFlow et PyTorch",
+      "official_description": "",
+      "normalized_label": "Utilisation de TensorFlow et PyTorch",
+      "category": "Other",
+      "subcategory": "Utilisation de TensorFlow et PyTorch",
+      "technical_keywords": [
+        "TensorFlow",
+        "PyTorch"
+      ],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9474,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Utilisation de TensorFlow et PyTorch"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
       ],
       "status": "unmapped"
     },
@@ -1449,7 +1422,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 1.0,
+      "weighted_score": 0.9375,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1477,7 +1450,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9574,
+      "weighted_score": 0.9,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1505,7 +1478,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9574,
+      "weighted_score": 0.9,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1533,7 +1506,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9574,
+      "weighted_score": 0.9,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1561,7 +1534,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1589,7 +1562,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1617,7 +1590,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1645,7 +1618,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1673,7 +1646,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1701,7 +1674,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1729,7 +1702,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1757,7 +1730,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1785,7 +1758,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1813,7 +1786,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1841,7 +1814,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1869,7 +1842,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1897,7 +1870,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1925,7 +1898,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1953,7 +1926,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1981,7 +1954,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2009,7 +1982,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2037,7 +2010,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2065,7 +2038,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2093,7 +2066,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2101,36 +2074,6 @@
       },
       "evidence_examples": [
         "Parler une ou plusieurs langues étrangères"
-      ],
-      "example_offers": [
-        "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Programmation en Python",
-      "official_description": "",
-      "normalized_label": "Programmation en Python",
-      "category": "Other",
-      "subcategory": "Programmation en Python",
-      "technical_keywords": [
-        "Python"
-      ],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.9375,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Programmation en Python"
       ],
       "example_offers": [
         "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)"
@@ -2151,7 +2094,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2179,7 +2122,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2207,7 +2150,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2235,7 +2178,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.8824,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2255,34 +2198,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "#TDFE2026",
-      "official_description": "",
-      "normalized_label": "#TDFE2026",
-      "category": "Other",
-      "subcategory": "#TDFE2026",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.9091,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "#TDFE2026"
-      ],
-      "example_offers": [
-        "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Analyser les données d'une étude, d'un projet",
       "official_description": "",
       "normalized_label": "Analyser les données d'une étude, d'un projet",
@@ -2291,7 +2206,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2319,7 +2234,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2347,7 +2262,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2375,7 +2290,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2403,7 +2318,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2431,7 +2346,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2459,7 +2374,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2487,7 +2402,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2515,7 +2430,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2523,6 +2438,34 @@
       },
       "evidence_examples": [
         "Préparer et animer une réunion, un groupe de travail, un atelier"
+      ],
+      "example_offers": [
+        "Ingénieur(e) Structure (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Recueillir et analyser les besoins client",
+      "official_description": "",
+      "normalized_label": "Recueillir et analyser les besoins client",
+      "category": "Other",
+      "subcategory": "Recueillir et analyser les besoins client",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.8411,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Recueillir et analyser les besoins client"
       ],
       "example_offers": [
         "Ingénieur(e) Structure (H/F)"
@@ -2543,7 +2486,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2571,7 +2514,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8911,
+      "weighted_score": 0.8411,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2591,165 +2534,25 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Connaissance approfondie en mathématiques",
+      "label": "210PBYW",
       "official_description": "",
-      "normalized_label": "Connaissance approfondie en mathématiques",
+      "normalized_label": "210PBYW",
       "category": "Other",
-      "subcategory": "Connaissance approfondie en mathématiques",
+      "subcategory": "210PBYW",
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8182,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Connaissance approfondie en mathématiques"
+        "210PBYW"
       ],
       "example_offers": [
-        "Machine Learning Engineer (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Développer des algorithmes pour l'analyse de données",
-      "official_description": "",
-      "normalized_label": "Développer des algorithmes pour l'analyse de données",
-      "category": "Other",
-      "subcategory": "Développer des algorithmes pour l'analyse de données",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.8824,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Développer des algorithmes pour l'analyse de données"
-      ],
-      "example_offers": [
-        "Machine Learning Engineer (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Concevoir et réaliser des éléments graphiques et visuels",
-      "official_description": "",
-      "normalized_label": "Concevoir et réaliser des éléments graphiques et visuels",
-      "category": "Other",
-      "subcategory": "Concevoir et réaliser des éléments graphiques et visuels",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7826,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Concevoir et réaliser des éléments graphiques et visuels"
-      ],
-      "example_offers": [
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Concevoir un site web",
-      "official_description": "",
-      "normalized_label": "Concevoir un site web",
-      "category": "Other",
-      "subcategory": "Concevoir un site web",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7826,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Concevoir un site web"
-      ],
-      "example_offers": [
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Déployer, intégrer un logiciel, un système d'informations, une application",
-      "official_description": "",
-      "normalized_label": "Déployer, intégrer un logiciel, un système d'informations, une application",
-      "category": "Other",
-      "subcategory": "Déployer, intégrer un logiciel, un système d'informations, une application",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7826,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Déployer, intégrer un logiciel, un système d'informations, une application"
-      ],
-      "example_offers": [
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Paramétrer un logiciel, un outil, un système numérique",
-      "official_description": "",
-      "normalized_label": "Paramétrer un logiciel, un outil, un système numérique",
-      "category": "Other",
-      "subcategory": "Paramétrer un logiciel, un outil, un système numérique",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7826,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Paramétrer un logiciel, un outil, un système numérique"
-      ],
-      "example_offers": [
-        "Ingénieur Logiciel Junior (Early Career) - Datadog (H/F)"
+        "Ingénieur en intelligence artificielle H/F (H/F)"
       ],
       "status": "unmapped"
     },
@@ -2767,7 +2570,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.7143,
+      "weighted_score": 0.6818,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2775,34 +2578,6 @@
       },
       "evidence_examples": [
         "Concevoir et gérer un projet"
-      ],
-      "example_offers": [
-        "Ingénieur en Optimisation R&D (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Développer un logiciel, un système d'informations, une application",
-      "official_description": "",
-      "normalized_label": "Développer un logiciel, un système d'informations, une application",
-      "category": "Other",
-      "subcategory": "Développer un logiciel, un système d'informations, une application",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7143,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Développer un logiciel, un système d'informations, une application"
       ],
       "example_offers": [
         "Ingénieur en Optimisation R&D (H/F)"
@@ -2823,7 +2598,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2851,7 +2626,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2879,7 +2654,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2907,7 +2682,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2915,34 +2690,6 @@
       },
       "evidence_examples": [
         "Communiquer clairement les concepts d'IA aux parties prenantes non techniques"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Evaluation de modèles d'IA",
-      "official_description": "",
-      "normalized_label": "Evaluation de modèles d'IA",
-      "category": "Other",
-      "subcategory": "Evaluation de modèles d'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.596,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Evaluation de modèles d'IA"
       ],
       "example_offers": [
         "Expert IA (H/F)"
@@ -2963,7 +2710,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2991,7 +2738,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -3019,7 +2766,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -3047,7 +2794,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -3075,7 +2822,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -3103,7 +2850,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.596,
+      "weighted_score": 0.5732,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -3120,218 +2867,194 @@
   ],
   "common_skills": [
     {
-<<<<<<< HEAD
-      "referential_id": "SEMANTIC:4",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
-      "match_methods": {
-        "implicit": 1,
-        "exact": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
-      ],
-      "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
+      "code": "SEMANTIC:1",
+      "label": "BERT",
+      "official_description": "BERT",
+      "normalized_label": "bert",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.4566,
-      "share_percent": 8.0,
-      "coverage_score": 1.57,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
-        "implicit": 1,
         "exact": 1
       },
       "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique",
-        "Vous travaillerez sur des projets variés, allant de la conception d'algorithmes à l'implémentation de modèles d'apprentissage automatique, en passant par l'optimisation de systèmes existants."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Expert IA (H/F)",
-        "Ingénieur intelligence artificielle & cybersécurité (h/f)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     },
     {
-      "referential_id": "SEMANTIC:5",
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
-=======
-      "referential_id": "SEMANTIC:5",
+      "code": "SEMANTIC:1",
+      "label": "Deep Learning",
+      "official_description": "Deep Learning",
+      "normalized_label": "deep learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
       "block": "",
       "block_name": "",
       "activity": "",
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "code": "SEMANTIC:5",
-      "label": "transformer",
-      "official_description": "transformer",
+      "code": "SEMANTIC:1",
+      "label": "GPT",
+      "official_description": "GPT",
+      "normalized_label": "gpt",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Maîtrise Python,",
+      "official_description": "Maîtrise Python,",
+      "normalized_label": "maîtrise python,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Pilotage d'équipes data,",
+      "official_description": "Pilotage d'équipes data,",
+      "normalized_label": "pilotage d'équipes data,",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+      ],
+      "example_offers": [
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Transformer",
+      "official_description": "Transformer",
       "normalized_label": "transformer",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.7703,
-      "share_percent": 4.0,
-<<<<<<< HEAD
-      "coverage_score": 0.83,
-=======
-      "coverage_score": 0.86,
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
+      "offer_count": 8,
+      "weighted_score": 6.6904,
+      "share_percent": 32.0,
+      "coverage_score": 5.98,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "Il ou elle joue un rôle clé pour transformer les ambitions IA en résultats visibles, utiles et mesurables dans les métiers."
+        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
+        "Deep Learning",
+        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
       ],
       "example_offers": [
-        "Pathé - Expert / Experte en Intelligence Artificielle (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "apprentissage automatique",
-      "official_description": "apprentissage automatique",
-      "normalized_label": "apprentissage automatique",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réaliser un prototype innovant.",
-      "official_description": "réaliser un prototype innovant.",
-      "normalized_label": "réaliser un prototype innovant.",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:4",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:4",
-      "label": "réseaux de neurones",
-      "official_description": "réseaux de neurones",
-      "normalized_label": "réseaux de neurones",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5066,
-      "share_percent": 4.0,
-      "coverage_score": 0.57,
-      "match_methods": {
-        "implicit": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
+        "Alternance - IA Engineer (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "covered"
     }
@@ -3349,22 +3072,77 @@
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
+        "Optimiser les performances des systèmes d'IA",
+        "210PBYW"
       ]
     },
     {
-      "offer_id": "209BWSX",
-      "title": "Ingénieur IA - Alternance - H/F/X (H/F)",
-      "location_label": "75 - PARIS 17",
+      "offer_id": "211MFLC",
+      "title": "Intelligence Artificielle Manager (H/F)",
+      "location_label": "75 - PARIS",
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-06-02T09:56:29.249Z",
+      "date": "2026-07-21T18:33:01.168Z",
       "matches": [],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
         "Optimiser les performances des systèmes d'IA"
+      ]
+    },
+    {
+      "offer_id": "211LXFM",
+      "title": "Machine Learning & Computer Vision (H/F)",
+      "location_label": "75 - PARIS 01",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-21T15:37:21.118Z",
+      "matches": [],
+      "unmatched": [
+        "Connaissance approfondie en mathématiques",
+        "Développement de produits basés sur l'IA",
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Optimiser les performances des systèmes d'IA"
+      ]
+    },
+    {
+      "offer_id": "211KNVL",
+      "title": "Alternance - IA Engineer (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-20T15:15:17.463Z",
+      "matches": [
+        "Pilotage d'équipes data,"
+      ],
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA"
+      ]
+    },
+    {
+      "offer_id": "211HDNX",
+      "title": "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+      "location_label": "75 - Paris 13e Arrondissement",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-16T16:54:50.564Z",
+      "matches": [
+        "Deep Learning",
+        "Deep Learning",
+        "Deep Learning",
+        "Pilotage d'équipes data,"
+      ],
+      "unmatched": [
+        "Evaluation de modèles d'IA",
+        "Programmation en Python",
+        "Utilisation de TensorFlow et PyTorch",
+        "Concevoir des algorithmes d'apprentissage automatique"
       ]
     },
     {
@@ -3375,7 +3153,9 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-22T11:10:31.866Z",
-      "matches": [],
+      "matches": [
+        "Pilotage d'équipes data,"
+      ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -3402,7 +3182,6 @@
       "offer_id": "210SJLB",
       "title": "Machine Learning Engineer (H/F)",
       "location_label": "75 - Paris",
-<<<<<<< HEAD
       "contract_label": "",
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
@@ -3413,59 +3192,6 @@
         "Développement de produits basés sur l'IA",
         "Développer des algorithmes pour l'analyse de données",
         "Développer des modèles prédictifs pour l'analyse de données"
-      ]
-    },
-    {
-      "offer_id": "210GJZN",
-      "title": "Ingénieur IA Générative & Agents IA (H/F)",
-      "location_label": "75 - PARIS",
-=======
->>>>>>> 8815918cef2f5a5c5c4cd8398be57d50a653de88
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-07-03T14:17:53.400Z",
-      "matches": [],
-      "unmatched": [
-        "Connaissance approfondie en mathématiques",
-        "Développement de produits basés sur l'IA",
-        "Développer des algorithmes pour l'analyse de données",
-        "Développer des modèles prédictifs pour l'analyse de données"
-      ]
-    },
-    {
-      "offer_id": "210PRHT",
-      "title": "Chef de projet automatisation IA (H/F)",
-      "location_label": "75 - PARIS",
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-07-01T14:38:16.903Z",
-      "matches": [],
-      "unmatched": [
-        "Développer des modèles prédictifs pour l'analyse de données",
-        "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
-      ]
-    },
-    {
-      "offer_id": "208HJGN",
-      "title": "Expert IA (H/F)",
-      "location_label": "75 - PARIS 12",
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-05-15T10:41:57.967Z",
-      "matches": [
-        "réaliser un prototype innovant.",
-        "réaliser un prototype innovant.",
-        "réaliser un prototype innovant."
-      ],
-      "unmatched": [
-        "Développement de produits basés sur l'IA",
-        "Evaluation de modèles d'IA",
-        "Gestion de projets IA",
-        "Intégration de systèmes d'intelligence artificielle"
       ]
     }
   ],
