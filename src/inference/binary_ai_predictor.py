@@ -23,8 +23,16 @@ def _existing_predictor() -> DeepformaPredictor:
 def predict_binary_ai(text: str, model_name: str = "ml") -> dict[str, Any]:
     cleaned = clean_text(text)
 
-    backend = BINARY_AI_SETTINGS.backend
-    if model_name == "existing" or backend == "existing":
+    selected_model = (model_name or BINARY_AI_SETTINGS.backend).strip().lower()
+    if selected_model in {"ml_from_scratch", "ml"}:
+        if not DEFAULT_ML_MODEL_DIR.exists():
+            raise FileNotFoundError(f"Modèle ML introuvable: {DEFAULT_ML_MODEL_DIR}")
+        return predict_binary_ai_ml(cleaned, model_dir=DEFAULT_ML_MODEL_DIR)
+    if selected_model in {"textcnn_from_scratch", "textcnn"}:
+        if not DEFAULT_TEXTCNN_MODEL_DIR.exists():
+            raise FileNotFoundError(f"Modèle TextCNN introuvable: {DEFAULT_TEXTCNN_MODEL_DIR}")
+        return predict_binary_ai_textcnn(cleaned, model_dir=DEFAULT_TEXTCNN_MODEL_DIR)
+    if selected_model == "existing":
         if not cleaned:
             raise ValueError("Le texte a analyser est vide.")
         start = time.perf_counter()
@@ -42,14 +50,5 @@ def predict_binary_ai(text: str, model_name: str = "ml") -> dict[str, Any]:
             "pretrained": True,
             "latency_ms": latency_ms,
         }
-
-    if model_name == "ml":
-        if not DEFAULT_ML_MODEL_DIR.exists():
-            raise FileNotFoundError(f"Modèle ML introuvable: {DEFAULT_ML_MODEL_DIR}")
-        return predict_binary_ai_ml(cleaned, model_dir=DEFAULT_ML_MODEL_DIR)
-    if model_name == "textcnn":
-        if not DEFAULT_TEXTCNN_MODEL_DIR.exists():
-            raise FileNotFoundError(f"Modèle TextCNN introuvable: {DEFAULT_TEXTCNN_MODEL_DIR}")
-        return predict_binary_ai_textcnn(cleaned, model_dir=DEFAULT_TEXTCNN_MODEL_DIR)
-    raise ValueError("model_name doit valoir 'existing', 'ml' ou 'textcnn'")
+    raise ValueError("model_name doit valoir 'existing', 'ml', 'ml_from_scratch', 'textcnn' ou 'textcnn_from_scratch'")
 

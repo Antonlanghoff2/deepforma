@@ -8,6 +8,39 @@
     <p class="lead">Chargez le PDF du référentiel et laissez l'application extraire les compétences officielles avant de comparer au marché local. La zone de recherche France Travail est paramétrable dans la section métier cible.</p>
   </section>
 
+  <section class="card">
+    <h2>Classifieur IA binaire</h2>
+    <p>Interrogez directement le classifieur IA/non-IA avec le modèle machine learning ou le TextCNN entraîné from scratch.</p>
+    {% if binary_ai_error %}
+    <div class="alert alert-error">{{ binary_ai_error }}</div>
+    {% endif %}
+    <form method="post" action="{{ url_for('binary_ai_predict_page') }}" class="form-grid">
+      <label class="field field-full">
+        <span>Compétence ou description à classer</span>
+        <textarea name="text" rows="4" placeholder="Ex: Entraîner un réseau neuronal convolutif">{{ request.form.get('text', '') }}</textarea>
+      </label>
+      <label class="field">
+        <span>Modèle binaire</span>
+        <select name="binary_model_name">
+          {% for option in allowed_binary_ai_model_names %}
+          <option value="{{ option }}" {% if binary_ai_model == option %}selected{% endif %}>{{ 'Machine learning' if option == 'ml' else 'TextCNN' }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <div class="actions field-full">
+        <button type="submit">Classer la compétence</button>
+      </div>
+    </form>
+    {% if binary_ai_prediction %}
+    <div class="alert alert-success" style="margin-top:1rem;">
+      <strong>Résultat :</strong> {{ binary_ai_prediction.label }}<br>
+      <strong>Probabilité IA :</strong> {{ '%.4f'|format(binary_ai_prediction.probability_ai) }}<br>
+      <strong>Seuil :</strong> {{ '%.4f'|format(binary_ai_prediction.threshold) }}<br>
+      <strong>Modèle :</strong> {{ binary_ai_prediction.model_name }}
+    </div>
+    {% endif %}
+  </section>
+
     <section class="card">
       {% if error %}
       <div class="alert alert-error">{{ error }}</div>

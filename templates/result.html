@@ -895,6 +895,40 @@
               </ul>
             </div>
             {% endif %}
+
+            <h3>Classifieur IA binaire interrogé directement</h3>
+            <table class="table" style="width:100%; margin-top:0.75rem;">
+              <thead>
+                <tr>
+                  <th>Modèle</th>
+                  <th>Prédiction</th>
+                  <th>Probabilité IA</th>
+                  <th>Seuil</th>
+                  <th>Latence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for model_name, prediction in binary_ai_predictions.items() %}
+                <tr>
+                  <td>{{ 'Machine learning' if model_name == 'ml' else 'TextCNN' }}</td>
+                  <td><strong>{{ prediction.label }}</strong></td>
+                  <td>{{ '%.4f'|format(prediction.probability_ai) }}</td>
+                  <td>{{ '%.4f'|format(prediction.threshold) }}</td>
+                  <td>{{ '%.1f'|format(prediction.latency_ms) }} ms</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% if binary_ai_prediction_errors %}
+            <div class="alert alert-warning" role="alert" style="margin-top:0.75rem;">
+              <strong>Modèles indisponibles :</strong>
+              <ul>
+                {% for model_name, message in binary_ai_prediction_errors.items() %}
+                <li>{{ model_name }} : {{ message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
           </div>
           <div>
             <h3>Metadonnees du modele</h3>
@@ -945,6 +979,7 @@
             <h4>Classification IA (secondaire)</h4>
             <p>Les scores de categories IA sont produits par un classifieur <strong>CamemBERT</strong> entraine pour une tache de classification multi-etiquette.</p>
             <p>Ce modele est <strong>uniquement</strong> utilise pour categoriser les competences extraites dans des familles IA. Il ne determine pas quelles competences sont presentes ou absentes.</p>
+            <p>Les deux classifieurs binaires entraînés à part sont affichés plus haut pour comparaison directe : machine learning et TextCNN.</p>
 
             <h4>Limites</h4>
             <ul>
