@@ -8,6 +8,7 @@ from typing import Any, Iterable
 import json
 
 from common.text import clean_text, normalize_for_match
+from services.skill_normalization import normalize_skill_label
 
 
 DEFAULT_REFERENTIAL = Path(__file__).resolve().parents[3] / "data" / "referentials" / "skills.json"
@@ -39,9 +40,13 @@ def load_referential(path: str | Path | None = None) -> list[dict[str, Any]]:
     if not referential_path.exists():
         raise FileNotFoundError(f"Référentiel de compétences introuvable: {referential_path}")
     payload = json.loads(referential_path.read_text(encoding="utf-8"))
-    if not isinstance(payload, list):
-        raise ValueError(f"Référentiel invalide: {referential_path}")
-    return payload
+    if isinstance(payload, list):
+        return payload
+    if isinstance(payload, dict):
+        skills = payload.get("skills")
+        if isinstance(skills, list):
+            return skills
+    raise ValueError(f"Référentiel invalide: {referential_path}")
 
 
 def _token_set(value: str) -> set[str]:

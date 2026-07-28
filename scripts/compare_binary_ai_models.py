@@ -21,6 +21,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from deepforma.evaluation.binary_classification_metrics import evaluate_binary_classification  # noqa: E402
+from deepforma.training.binary_ai_common import positive_class_probability  # noqa: E402
 from deepforma.training.binary_ai_ml import load_binary_ai_ml  # noqa: E402
 from deepforma.training.binary_ai_textcnn import load_binary_ai_textcnn  # noqa: E402
 
@@ -49,7 +50,7 @@ def _model_size_bytes(model_dir: Path) -> int:
 def _predict_pipeline(model, frame: pd.DataFrame, *, model_name: str, model_dir: Path) -> tuple[np.ndarray, np.ndarray, dict[str, Any]]:
     texts = frame["text"].fillna("").astype(str).tolist()
     start = __import__("time").perf_counter()
-    scores = model.predict_proba(texts)[:, 1]
+    scores = positive_class_probability(model.predict_proba(texts), model.named_steps["classifier"].classes_)
     latency_ms = (__import__("time").perf_counter() - start) * 1000.0
     metadata = json.loads((model_dir / "metadata.json").read_text(encoding="utf-8"))
     threshold = float(metadata.get("threshold", 0.5))

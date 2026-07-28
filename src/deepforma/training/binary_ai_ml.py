@@ -21,6 +21,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.svm import LinearSVC
 
 from common.text import clean_text
+from deepforma.training.binary_ai_common import assess_text_sufficiency, positive_class_probability
 from deepforma.evaluation.binary_classification_metrics import (
     BinaryClassificationReport,
     ThresholdOptimizationResult,
@@ -46,7 +47,7 @@ class BinaryAITrainingConfig:
     char_min_df: int = 2
     word_max_features: int | None = 50_000
     char_max_features: int | None = 50_000
-    c_values: tuple[float, ...] = (0.5, 1.0, 2.0, 4.0)
+    c_values: tuple[float, ...] = (0.5, 1.0, 2.0)
     class_weight: str = "balanced"
     max_iter: int = 2000
     cv_splits: int = 5
@@ -173,20 +174,28 @@ def _group_cv_splits(frame: pd.DataFrame, *, seed: int, n_splits: int) -> list[t
 
 def _candidate_grid(config: BinaryAITrainingConfig) -> list[dict[str, Any]]:
     grid: list[dict[str, Any]] = []
+    class_weight_candidates = [config.class_weight]
+    word_ngram_max_candidates = sorted({1, max(1, config.word_ngram_max), 2, 3})
+    word_min_df_candidates = sorted({1, max(1, config.word_min_df)})
+    word_max_feature_candidates = [config.word_max_features or 50_000]
     for use_char in (False, True):
         if use_char and not config.use_char_features:
             continue
-        for word_min_df in (1, config.word_min_df, max(1, config.word_min_df + 1)):
-            for word_max_features in (20_000, 50_000, config.word_max_features):
-                for c_value in config.c_values:
-                    grid.append(
-                        {
-                            "use_char_features": use_char,
-                            "word_min_df": int(word_min_df),
-                            "word_max_features": None if word_max_features is None else int(word_max_features),
-                            "c_value": float(c_value),
-                        }
-                    )
+        for word_ngram_max in word_ngram_max_candidates:
+            for word_min_df in word_min_df_candidates:
+                for word_max_features in word_max_feature_candidates:
+                    for c_value in config.c_values:
+                        for class_weight in class_weight_candidates:
+                            grid.append(
+                                {
+                                    "use_char_features": use_char,
+                                    "word_ngram_max": int(word_ngram_max),
+                                    "word_min_df": int(word_min_df),
+                                    "word_max_features": None if word_max_features is None else int(word_max_features),
+                                    "c_value": float(c_value),
+                                    "class_weight": class_weight,
+                                }
+                            )
     unique = []
     seen = set()
     for candidate in grid:
@@ -215,14 +224,14 @@ def search_best_configuration(
         base_config = config
         pipeline = build_pipeline(base_config, c_value=1.0)
         pipeline.fit(_ensure_text_column(train_frame), train_frame["is_ai"].astype(int))
-        proba = pipeline.predict_proba(_ensure_text_column(train_frame))[:, 1]
+        proba = positive_class_probability(pipeline.predict_proba(_ensure_text_column(train_frame)), pipeline.named_steps["classifier"].classes_)
         threshold_result = optimize_binary_threshold(train_frame["is_ai"], proba, mode=config.threshold_mode, min_recall=config.min_recall, min_precision=config.min_precision)
         return {
             "config": base_config,
             "pipeline": pipeline,
             "mean_cv_f1": float(f1_score(train_frame["is_ai"], (proba >= threshold_result.threshold).astype(int), zero_division=0)),
             "threshold_result": threshold_result,
-            "best_params": {"c_value": 1.0, "use_char_features": base_config.use_char_features, "word_min_df": base_config.word_min_df, "word_max_features": base_config.word_max_features},
+            "best_params": {"c_value": 1.0, "class_weight": base_config.class_weight, "use_char_features": base_config.use_char_features, "word_ngram_max": base_config.word_ngram_max, "word_min_df": base_config.word_min_df, "word_max_features": base_config.word_max_features},
         }
 
     candidates = _candidate_grid(config)
@@ -236,8 +245,10 @@ def search_best_configuration(
             config,
             {
                 "use_char_features": candidate["use_char_features"],
+                "word_ngram_max": candidate["word_ngram_max"],
                 "word_min_df": candidate["word_min_df"],
                 "word_max_features": candidate["word_max_features"],
+                "class_weight": candidate["class_weight"] or config.class_weight,
             },
         )
         fold_scores: list[float] = []
@@ -246,7 +257,7 @@ def search_best_configuration(
             try:
                 pipeline = build_pipeline(candidate_config, c_value=candidate["c_value"])
                 pipeline.fit(texts.iloc[train_idx], y[train_idx])
-                score = pipeline.predict_proba(texts.iloc[valid_idx])[:, 1]
+                score = positive_class_probability(pipeline.predict_proba(texts.iloc[valid_idx]), pipeline.named_steps["classifier"].classes_)
                 threshold = optimize_binary_threshold(
                     y[valid_idx],
                     score,
@@ -275,11 +286,11 @@ def search_best_configuration(
         best = {
             "config": config,
             "mean_cv_f1": 0.0,
-            "best_params": {"c_value": 1.0, "use_char_features": config.use_char_features, "word_min_df": config.word_min_df, "word_max_features": config.word_max_features},
+            "best_params": {"c_value": 1.0, "class_weight": config.class_weight, "use_char_features": config.use_char_features, "word_ngram_max": config.word_ngram_max, "word_min_df": config.word_min_df, "word_max_features": config.word_max_features},
         }
     final_pipeline = build_pipeline(best["config"], c_value=best["best_params"]["c_value"])
     final_pipeline.fit(texts, y)
-    proba = final_pipeline.predict_proba(texts)[:, 1]
+    proba = positive_class_probability(final_pipeline.predict_proba(texts), final_pipeline.named_steps["classifier"].classes_)
     threshold_result = optimize_binary_threshold(
         y,
         proba,
@@ -337,7 +348,7 @@ def fit_binary_ai_ml(
 
     def _predict(frame: pd.DataFrame) -> tuple[np.ndarray, np.ndarray]:
         texts = _ensure_text_column(frame)
-        probabilities = pipeline.predict_proba(texts)[:, 1]
+        probabilities = positive_class_probability(pipeline.predict_proba(texts), pipeline.named_steps["classifier"].classes_)
         predictions = (probabilities >= search["threshold_result"].threshold).astype(int)
         return probabilities, predictions
 
@@ -445,9 +456,21 @@ def predict_binary_ai_ml(
 ) -> dict[str, Any]:
     pipeline, metadata = load_binary_ai_ml(model_dir)
     start = time.perf_counter()
+    sufficiency = assess_text_sufficiency(text)
     text = clean_text(text)
-    probability = float(pipeline.predict_proba([text])[:, 1][0])
     threshold = float(metadata.get("threshold", 0.5))
+    if not sufficiency.sufficient:
+        latency_ms = (time.perf_counter() - start) * 1000.0
+        return {
+            "label": "indetermine",
+            "probability_ai": 0.5,
+            "threshold": threshold,
+            "model_name": metadata.get("model_name", "binary_ai_ml"),
+            "model_version": metadata.get("model_version", ""),
+            "pretrained": False,
+            "latency_ms": latency_ms,
+        }
+    probability = float(positive_class_probability(pipeline.predict_proba([text]), pipeline.named_steps["classifier"].classes_)[0])
     label = "IA" if probability >= threshold else "non-IA"
     latency_ms = (time.perf_counter() - start) * 1000.0
     return {
