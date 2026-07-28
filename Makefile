@@ -1,4 +1,40 @@
-PYTHON ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python)
+SHELL := /bin/bash
+.SHELLFLAGS := -eu -o pipefail -c
+.DEFAULT_GOAL := help
+MAKEFLAGS += --warn-undefined-variables
+
+PYTHON ?= .venv/bin/python
+PIP ?= $(PYTHON) -m pip
+
+define require_python
+	@if [ ! -x "$(PYTHON)" ]; then \
+		echo "Erreur: Python du venv introuvable: $(PYTHON). Lancez 'make setup'."; \
+		exit 1; \
+	fi
+endef
+
+define require_var
+	@if [ -z "$(strip $($(1)))" ]; then \
+		echo "Erreur: variable $(1) vide pour la cible $(2)"; \
+		exit 1; \
+	fi
+endef
+
+define require_file
+	@if [ ! -f "$(1)" ]; then \
+		echo "Erreur: fichier introuvable: $(1)"; \
+		exit 1; \
+	fi
+endef
+
+define ensure_dir
+	@mkdir -p "$(1)"
+endef
+
+define ensure_parent_dir
+	@mkdir -p "$(dir $(1))"
+endef
+
 COLLECT_ARGS ?=
 CPF_SOURCE_URL ?=
 CPF_SOURCE_FILE ?= data/raw/Dataset_Generaliste_CPF_V3.xlsx
@@ -40,6 +76,103 @@ CPF_DEVICE ?=
 CPF_GRADIENT_ACCUMULATION ?= 2
 CPF_MIXED_PRECISION ?= true
 
+CPF_GENERAL_INPUT ?= data/raw/Dataset_Generaliste_CPF_V4.xlsx
+CPF_GENERAL_SHEET ?= Dataset_Generaliste
+CPF_GENERAL_OUTPUT_DIR ?= data/processed/cpf
+CPF_GENERAL_CHECK_REPORT ?= data/processed/reports/cpf_general_check.json
+CPF_GENERAL_PAIRS ?= $(CPF_GENERAL_OUTPUT_DIR)/pairs_generalistes.jsonl
+CPF_GENERAL_PROCESSED_DIR ?= $(CPF_GENERAL_OUTPUT_DIR)
+
+IA_SHEET ?= Dataset_IA
+IA_SEED ?= 42
+IA_WARMUP_RATIO ?= 0.1
+IA_MAX_SEQ_LENGTH ?= 256
+IA_EVALUATION_DIR ?= reports/ia_multilabel
+
+FRANCE_TRAVAIL_OUTPUT ?= data/france_travail/normalized/offers.jsonl
+FRANCE_TRAVAIL_COLLECT_ARGS ?=
+FRANCE_TRAVAIL_CHECK_VARS ?= FRANCE_TRAVAIL_CLIENT_ID FRANCE_TRAVAIL_CLIENT_SECRET
+
+MODEL_CHECK_DIR ?= $(IA_MODEL_OUTPUT)/final
+MODEL_CHECK_REPORT ?= reports/ia_multilabel_checkpoint_audit.json
+
+SMOKE_TEST_TASK ?= binary
+SMOKE_TEST_TRAIN ?= data/processed/dataset_entrainement.csv
+SMOKE_TEST_BASE_MODEL ?= camembert-base
+SMOKE_TEST_SAMPLES ?= 16
+SMOKE_TEST_EPOCHS ?= 5
+SMOKE_TEST_OUTPUT ?= reports/smoke_test.json
+
+# ----- Binary AI from scratch -----
+BINARY_AI_DATASET_INPUTS ?= data/processed/dataset_entrainement.csv
+BINARY_AI_PROCESSED_DATASET ?= data/processed/binary_ai/dataset.parquet
+BINARY_AI_REPORT_DIR ?= reports/binary_ai
+BINARY_AI_SPLIT_DIR ?= data/training/binary_ai
+BINARY_AI_ML_MODEL_OUTPUT ?= models/binary_ai_ml
+BINARY_AI_TEXTCNN_MODEL_OUTPUT ?= models/binary_ai_textcnn
+BINARY_AI_SEED ?= 42
+BINARY_AI_CLASSIFIER ?= logistic
+BINARY_AI_THRESHOLD_MODE ?= maximize_f1
+BINARY_AI_TEXTCNN_DEVICE ?= cpu
+
+##@ Entraînement Machine Learning
+binary-ai-prepare: ## Prépare le dataset binaire IA/non-IA
+	$(call require_python)
+	$(call require_var,BINARY_AI_DATASET_INPUTS,binary-ai-prepare)
+	$(call ensure_parent_dir,$(BINARY_AI_PROCESSED_DATASET))
+	$(call ensure_dir,$(BINARY_AI_REPORT_DIR))
+	$(call ensure_dir,$(BINARY_AI_SPLIT_DIR))
+	$(PYTHON) scripts/build_binary_ai_dataset.py \
+		$(if $(strip $(BINARY_AI_DATASET_INPUTS)),--inputs $(BINARY_AI_DATASET_INPUTS),) \
+		--output-dataset "$(BINARY_AI_PROCESSED_DATASET)" \
+		--audit-output "$(BINARY_AI_REPORT_DIR)/dataset_audit.json" \
+		--duplicates-output "$(BINARY_AI_REPORT_DIR)/dataset_duplicates.csv" \
+		--conflicts-output "$(BINARY_AI_REPORT_DIR)/dataset_conflicts.csv" \
+		--splits-output-dir "$(BINARY_AI_SPLIT_DIR)" \
+		--seed $(BINARY_AI_SEED)
+
+binary-ai-train-ml: binary-ai-prepare ## Entraîne le modèle ML binaire
+	$(call require_python)
+	$(call ensure_dir,$(BINARY_AI_ML_MODEL_OUTPUT))
+	$(PYTHON) scripts/train_binary_ai_ml.py \
+		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" \
+		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" \
+		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" \
+		--output-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" \
+		--classifier "$(BINARY_AI_CLASSIFIER)" \
+		--seed $(BINARY_AI_SEED) \
+		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
+
+##@ Entraînement Deep Learning
+binary-ai-train-dl: binary-ai-prepare ## Entraîne le modèle TextCNN binaire
+	$(call require_python)
+	$(call ensure_dir,$(BINARY_AI_TEXTCNN_MODEL_OUTPUT))
+	$(PYTHON) scripts/train_binary_ai_textcnn.py \
+		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" \
+		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" \
+		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" \
+		--output-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" \
+		--seed $(BINARY_AI_SEED) \
+		--device "$(BINARY_AI_TEXTCNN_DEVICE)" \
+		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
+
+##@ Évaluation
+binary-ai-compare: binary-ai-train-ml binary-ai-train-dl ## Compare les modèles binaires
+	$(call require_python)
+	$(call ensure_dir,$(BINARY_AI_REPORT_DIR))
+	$(PYTHON) scripts/compare_binary_ai_models.py \
+		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" \
+		--ml-model-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" \
+		--textcnn-model-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" \
+		--output-dir "$(BINARY_AI_REPORT_DIR)"
+
+binary-ai-evaluate: binary-ai-compare ## Alias de binary-ai-compare
+
+binary-ai-all: binary-ai-train-ml binary-ai-train-dl binary-ai-compare ## Chaîne binaire complète
+
+.PHONY: help install setup run dev clean test smoke-test binary-ai-prepare binary-ai-train-ml binary-ai-train-dl binary-ai-compare binary-ai-evaluate binary-ai-all cpf-general-check cpf-general-prepare cpf-pairs cpf-train cpf-general-all cpf-all ia-check ia-prepare ia-train ia-evaluate ia-all france-travail-check france-travail-collect model-check audit-referential-pdfs build-referential-ner-candidates build-referential-multilabel-candidates build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner train-referential-multilabel evaluate-referential-models test-referential-ml-dl import-referential-preview validate-referential-import approve-referential-import generate-annotation-candidates evaluate-binary evaluate-multilabel evaluate-extraction evaluate-recommendation evaluate-all test-referential-import check-referentials-schema check-ai-taxonomy list-routes deploy-referential-models deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model france-competences-download france-competences-inspect france-competences-normalize france-competences-build-training france-competences-all import-france-competences import-rome-referential map-rncp-to-rome build-unified-skill-referential enrich-offers-with-rome-rncp build-rome-rncp-training-dataset train-skill-extractor ia-recommendations-import ia-recommendations-validate ia-recommendations-demo import-ia-cpf-v10 inspect-ia-cpf-v10 test-ia-cpf-v10
+
+
 # ----- France Compétences RNCP/RS -----
 FRANCE_COMPETENCES_DATASET_SLUG ?= repertoire-national-des-certifications-professionnelles-et-repertoire-specifique
 FRANCE_COMPETENCES_INCLUDE_RNCP ?= true
@@ -64,49 +197,58 @@ IA_BATCH_SIZE ?= 16
 IA_LEARNING_RATE ?= 2e-5
 IA_DEVICE ?=
 
-# ----- Binary AI from scratch -----
-BINARY_AI_DATASET_INPUTS ?= data/processed/dataset_entrainement.csv
-BINARY_AI_PROCESSED_DATASET ?= data/processed/binary_ai/dataset.parquet
-BINARY_AI_REPORT_DIR ?= reports/binary_ai
-BINARY_AI_SPLIT_DIR ?= data/training/binary_ai
-BINARY_AI_ML_MODEL_OUTPUT ?= models/binary_ai_ml
-BINARY_AI_TEXTCNN_MODEL_OUTPUT ?= models/binary_ai_textcnn
-BINARY_AI_SEED ?= 42
-BINARY_AI_CLASSIFIER ?= logistic
-BINARY_AI_THRESHOLD_MODE ?= maximize_f1
-BINARY_AI_TEXTCNN_DEVICE ?= cpu
+# ----- Installation / Exécution -----
+help: ## Affiche l'aide
+	@awk 'BEGIN {FS = ":.*## "} /^##@ / {printf "\n%s\n", substr($$0,5); next} /^[[:alnum:]_.%-]+:.*## / {printf "  %-32s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-# ----- Binary AI from scratch -----
-binary-ai-prepare:
-	$(PYTHON) scripts/build_binary_ai_dataset.py 		$(if $(strip $(BINARY_AI_DATASET_INPUTS)),--inputs $(BINARY_AI_DATASET_INPUTS),) 		--output-dataset "$(BINARY_AI_PROCESSED_DATASET)" 		--audit-output "$(BINARY_AI_REPORT_DIR)/dataset_audit.json" 		--duplicates-output "$(BINARY_AI_REPORT_DIR)/dataset_duplicates.csv" 		--conflicts-output "$(BINARY_AI_REPORT_DIR)/dataset_conflicts.csv" 		--splits-output-dir "$(BINARY_AI_SPLIT_DIR)" 		--seed $(BINARY_AI_SEED)
+##@ Installation
+install: ## Installe les dépendances dans le venv
+	$(call require_file,requirements.txt,install)
+	@if [ ! -x "$(PYTHON)" ]; then python3 -m venv .venv; fi
+	$(PYTHON) -m pip install -r requirements.txt
 
-binary-ai-train-ml: binary-ai-prepare
-	$(PYTHON) scripts/train_binary_ai_ml.py 		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" 		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--output-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" 		--classifier "$(BINARY_AI_CLASSIFIER)" 		--seed $(BINARY_AI_SEED) 		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
+setup: install ## Crée le venv si nécessaire puis installe les dépendances
 
-binary-ai-train-dl: binary-ai-prepare
-	$(PYTHON) scripts/train_binary_ai_textcnn.py 		--train "$(BINARY_AI_SPLIT_DIR)/train.parquet" 		--validation "$(BINARY_AI_SPLIT_DIR)/validation.parquet" 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--output-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" 		--seed $(BINARY_AI_SEED) 		--device "$(BINARY_AI_TEXTCNN_DEVICE)" 		--threshold-mode "$(BINARY_AI_THRESHOLD_MODE)"
+run: ## Lance l'application Flask
+	$(call require_python)
+	$(PYTHON) -m src.web_app
 
-binary-ai-compare:
-	$(PYTHON) scripts/compare_binary_ai_models.py 		--test "$(BINARY_AI_SPLIT_DIR)/test.parquet" 		--ml-model-dir "$(BINARY_AI_ML_MODEL_OUTPUT)" 		--textcnn-model-dir "$(BINARY_AI_TEXTCNN_MODEL_OUTPUT)" 		--output-dir "$(BINARY_AI_REPORT_DIR)"
+dev: run ## Alias de run pour le mode développement
 
-binary-ai-evaluate: binary-ai-compare
+clean: ## Supprime les caches et artefacts Python locaux
+	@find src scripts tests -type d -name '__pycache__' -prune -exec rm -rf {} +
+	@rm -rf .pytest_cache .mypy_cache .ruff_cache build dist *.egg-info
 
-binary-ai-all: binary-ai-train-ml binary-ai-train-dl binary-ai-compare
+##@ Données CPF
+cpf-general-check: ## Vérifie le dataset CPF généraliste et produit un rapport
+	$(call require_python)
+	$(call require_file,$(CPF_GENERAL_INPUT),cpf-general-check)
+	$(call ensure_dir,$(dir $(CPF_GENERAL_CHECK_REPORT)))
+	$(PYTHON) scripts/inspect_cpf_dataset.py --input "$(CPF_GENERAL_INPUT)" --sheet "$(CPF_GENERAL_SHEET)" --config config/cpf_columns.yaml --output "$(CPF_GENERAL_CHECK_REPORT)"
 
-# ----- CPF Generaliste -----
-cpf-general-prepare:
+cpf-general-prepare: ## Prépare le dataset CPF généraliste
+	$(call require_python)
+	$(call require_file,$(CPF_GENERAL_INPUT),cpf-general-prepare)
+	$(call ensure_dir,$(CPF_GENERAL_OUTPUT_DIR))
 	$(PYTHON) scripts/prepare_general_cpf_dataset.py \
-		--input "$(CPF_GENERAL_DATASET)" \
-		--output-dir "$(CPF_GENERAL_PROCESSED_DIR)"
+		--input "$(CPF_GENERAL_INPUT)" \
+		--output-dir "$(CPF_GENERAL_OUTPUT_DIR)" \
+		--sheet "$(CPF_GENERAL_SHEET)"
 
-cpf-pairs: cpf-general-prepare
+cpf-pairs: cpf-general-prepare ## Construit les paires CPF
+	$(call require_python)
+	$(call ensure_dir,$(CPF_GENERAL_OUTPUT_DIR))
 	$(PYTHON) scripts/build_cpf_training_pairs.py \
-		--input "$(CPF_GENERAL_PROCESSED_DIR)/formations_generalistes.jsonl" \
-		--output-dir "$(CPF_GENERAL_PROCESSED_DIR)" \
-		--output-pairs "pairs_generalistes.jsonl" \
-		--max-pairs-per-formation $(CPF_MAX_PAIRS_PER_FORMATION)
+		--input "$(CPF_GENERAL_OUTPUT_DIR)/formations_generalistes.jsonl" \
+		--output-dir "$(CPF_GENERAL_OUTPUT_DIR)" \
+		--output-pairs "$(CPF_GENERAL_PAIRS)" \
+		--seed $(CPF_SEED) \
+		--max-pairs-per-formation $(CPF_MAX_PAIRS_PER_FORMATION) \
+		$(if $(strip $(CPF_MAX_TRAIN_SAMPLES)),--max-train-samples $(CPF_MAX_TRAIN_SAMPLES),)
 
-cpf-train: cpf-pairs
+cpf-train: cpf-pairs ## Entraîne le recommender CPF
+	$(call require_python)
+	$(call ensure_dir,$(CPF_MODEL_OUTPUT))
 	$(PYTHON) scripts/train_cpf_recommender.py \
 		--input-pairs "$(CPF_GENERAL_PAIRS)" \
 		--output-dir "$(CPF_MODEL_OUTPUT)" \
@@ -114,7 +256,81 @@ cpf-train: cpf-pairs
 		--epochs $(CPF_EPOCHS) --batch-size $(CPF_BATCH_SIZE) \
 		$(if $(strip $(CPF_MAX_TRAIN_SAMPLES)),--max-train-samples $(CPF_MAX_TRAIN_SAMPLES),)
 
-cpf-general-all: cpf-train
+cpf-general-all: cpf-train ## Exécute toute la chaîne CPF généraliste
+cpf-all: cpf-general-all ## Alias de compatibilité pour cpf-general-all
+
+##@ Données IA
+ia-check: ## Vérifie la taxonomie IA et le dataset d'entrée
+	$(call require_python)
+	$(call require_file,$(IA_DATASET),ia-check)
+	$(call require_file,$(IA_TAXONOMY),ia-check)
+	$(PYTHON) -c "import json, pathlib, sys; p = pathlib.Path('$(IA_TAXONOMY)'); data = json.loads(p.read_text(encoding='utf-8')); labels = data.get('labels', []); sys.exit('Taxonomie IA invalide: $(IA_TAXONOMY)') if not isinstance(labels, list) or not labels else None; print(f'Taxonomie IA OK: {len(labels)} labels')"
+
+ia-prepare: ia-check ## Prépare les splits IA multilabel
+	$(call require_python)
+	$(call ensure_dir,$(IA_PROCESSED_DIR))
+	$(PYTHON) scripts/prepare_ia_training_dataset.py \
+		--input "$(IA_DATASET)" \
+		--output-dir "$(IA_PROCESSED_DIR)" \
+		--taxonomy "$(IA_TAXONOMY)" \
+		--sheet "$(IA_SHEET)" \
+		--seed $(IA_SEED)
+
+ia-train: ia-prepare ## Entraîne le classifieur IA multilabel
+	$(call require_python)
+	$(call ensure_dir,$(IA_MODEL_OUTPUT))
+	$(PYTHON) scripts/train_ia_multilabel_classifier.py \
+		--input-dir "$(IA_PROCESSED_DIR)" \
+		--output-dir "$(IA_MODEL_OUTPUT)" \
+		--base-model "$(IA_BASE_MODEL)" \
+		--epochs $(IA_EPOCHS) \
+		--batch-size $(IA_BATCH_SIZE) \
+		--lr $(IA_LEARNING_RATE) \
+		--warmup-ratio $(IA_WARMUP_RATIO) \
+		--max-seq-length $(IA_MAX_SEQ_LENGTH) \
+		--seed $(IA_SEED) $(if $(strip $(IA_DEVICE)),--device "$(IA_DEVICE)",)
+
+ia-evaluate: ia-train ## Évalue le checkpoint IA final
+	$(call require_python)
+	$(call require_file,$(IA_MODEL_OUTPUT)/final/config.json,ia-evaluate)
+	$(call require_file,$(IA_PROCESSED_DIR)/ia_multilabel_test.jsonl,ia-evaluate)
+	$(call ensure_dir,$(IA_EVALUATION_DIR))
+	$(PYTHON) scripts/evaluate_ia_multilabel_classifier.py \
+		--model-dir "$(IA_MODEL_OUTPUT)/final" \
+		--test-file "$(IA_PROCESSED_DIR)/ia_multilabel_test.jsonl" \
+		--output-dir "$(IA_EVALUATION_DIR)" \
+		--taxonomy "$(IA_TAXONOMY)" $(if $(strip $(IA_DEVICE)),--device "$(IA_DEVICE)",)
+
+ia-all: ia-evaluate ## Exécute toute la chaîne IA multilabel
+
+##@ France Travail
+france-travail-check: ## Vérifie la configuration France Travail sans appel réseau
+	$(call require_python)
+	$(PYTHON) -c 'import os, sys; from src.france_travail.client import FranceTravailClient; required = ["FRANCE_TRAVAIL_CLIENT_ID", "FRANCE_TRAVAIL_CLIENT_SECRET"]; missing = [key for key in required if not os.getenv(key)]; sys.exit("Variables France Travail manquantes: " + ", ".join(missing)) if missing else None; FranceTravailClient(load_env=True); print("Configuration France Travail OK")'
+
+france-travail-collect: ## Collecte et enrichit des offres France Travail
+	$(call require_python)
+	$(call require_var,FRANCE_TRAVAIL_COLLECT_ARGS,france-travail-collect)
+	$(call ensure_parent_dir,$(FRANCE_TRAVAIL_OUTPUT))
+	$(PYTHON) -m src.jobs.collect_france_travail_offers --output "$(FRANCE_TRAVAIL_OUTPUT)" $(FRANCE_TRAVAIL_COLLECT_ARGS)
+
+##@ Modèles
+model-check: ## Vérifie le checkpoint IA multilabel final
+	$(call require_python)
+	$(call require_file,$(MODEL_CHECK_DIR)/config.json,model-check)
+	$(PYTHON) scripts/audit_multilabel_checkpoint.py --model "$(MODEL_CHECK_DIR)" --output "$(MODEL_CHECK_REPORT)"
+
+##@ Tests
+smoke-test: ## Lance le smoke test de classification
+	$(call require_python)
+	$(call require_file,$(SMOKE_TEST_TRAIN),smoke-test)
+	$(PYTHON) scripts/smoke_test_classifier_training.py \
+		--task "$(SMOKE_TEST_TASK)" \
+		--train "$(SMOKE_TEST_TRAIN)" \
+		--base-model "$(SMOKE_TEST_BASE_MODEL)" \
+		--samples $(SMOKE_TEST_SAMPLES) \
+		--epochs $(SMOKE_TEST_EPOCHS) \
+		--output "$(SMOKE_TEST_OUTPUT)"
 
 # ----- Referential Import -----
 REFERENTIAL_INPUT ?=
@@ -212,7 +428,8 @@ evaluate-recommendation:
 
 evaluate-all: evaluate-binary evaluate-multilabel evaluate-extraction evaluate-recommendation
 
-test:
+test: ## Lance la suite de tests pytest
+	$(call require_python)
 	$(PYTHON) -m pytest -q
 
 # check-skills-referential:

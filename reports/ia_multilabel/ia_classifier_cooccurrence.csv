@@ -1,0 +1,21 @@
+,Automatisation,Big Data,Computer Vision,Data Engineering,Data Science,Deep Learning,Ethique IA & RGPD,Gestion de projet IA,IA Generative,LangChain / Agents RAG,Machine Learning,MLOps / Deploiement,NLP / Traitement du langage,No-code / Low-code,Prompt Engineering,Python,Reinforcement Learning,Series temporelles,SQL / Data Engineering,Visualisation
+Automatisation,5,0,0,0,0,0,1,0,4,0,0,0,0,1,1,0,0,0,0,0
+Big Data,0,38,0,38,37,0,0,0,0,1,33,14,0,0,0,27,0,0,18,24
+Computer Vision,0,0,4,3,0,0,0,0,0,2,4,4,2,0,0,4,1,0,1,0
+Data Engineering,0,38,3,50,42,0,0,0,0,6,41,20,2,0,0,36,2,0,22,27
+Data Science,0,37,0,42,42,0,0,0,0,3,36,15,0,0,0,31,0,0,21,27
+Deep Learning,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Ethique IA & RGPD,1,0,0,0,0,0,18,8,9,0,0,0,0,0,2,0,0,0,0,0
+Gestion de projet IA,0,0,0,0,0,0,8,15,9,0,0,0,0,0,3,0,0,0,0,0
+IA Generative,4,0,0,0,0,0,9,9,37,0,0,0,0,1,9,0,0,0,0,0
+LangChain / Agents RAG,0,1,2,6,3,0,0,0,0,6,5,5,2,0,0,5,1,0,4,3
+Machine Learning,0,33,4,41,36,0,0,0,0,5,44,20,2,0,0,37,2,1,22,27
+MLOps / Deploiement,0,14,4,20,15,0,0,0,0,5,20,22,3,0,0,21,2,0,14,13
+NLP / Traitement du langage,0,0,2,2,0,0,0,0,0,2,2,3,3,0,0,3,1,0,1,0
+No-code / Low-code,1,0,0,0,0,0,0,0,1,0,0,0,0,2,0,0,0,0,0,0
+Prompt Engineering,1,0,0,0,0,0,2,3,9,0,0,0,0,0,10,0,0,0,0,0
+Python,0,27,4,36,31,0,0,0,0,5,37,21,3,0,0,40,2,1,22,27
+Reinforcement Learning,0,0,1,2,0,0,0,0,0,1,2,2,1,0,0,2,2,0,0,0
+Series temporelles,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0
+SQL / Data Engineering,0,18,1,22,21,0,0,0,0,4,22,14,1,0,0,22,0,0,22,21
+Visualisation,0,24,0,27,27,0,0,0,0,3,27,13,0,0,0,27,0,0,21,27

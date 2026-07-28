@@ -17,6 +17,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 
 from common.text import clean_text
+from deepforma.training.binary_ai_common import assess_text_sufficiency
 from deepforma.evaluation.binary_classification_metrics import (
     BinaryClassificationReport,
     evaluate_binary_classification,
@@ -38,7 +39,7 @@ class BinaryAITextCNNConfig:
     max_length: int = 256
     embedding_dim: int = 128
     num_filters: int = 128
-    kernel_sizes: tuple[int, ...] = (3, 4, 5)
+    kernel_sizes: tuple[int, ...] = (2, 3, 4)
     dense_dim: int = 128
     dropout: float = 0.4
     batch_size: int = 32
@@ -46,6 +47,7 @@ class BinaryAITextCNNConfig:
     learning_rate: float = 1e-3
     patience: int = 3
     grad_clip: float = 1.0
+    weight_decay: float = 1e-4
     threshold_mode: str = "maximize_f1"
     min_recall: float | None = None
     device: str = "cpu"
@@ -225,7 +227,7 @@ def fit_binary_ai_textcnn(
     n_neg = int(len(y_train) - n_pos)
     pos_weight = torch.tensor([n_neg / max(n_pos, 1)], dtype=torch.float32, device=device)
     criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
 
     history: list[dict[str, Any]] = []
     best_metric = -math.inf
@@ -401,11 +403,23 @@ def load_binary_ai_textcnn(model_dir: str | Path) -> tuple[TextCNN, dict[str, An
 def predict_binary_ai_textcnn(text: str, *, model_dir: str | Path) -> dict[str, Any]:
     model, payload, vocab, device = load_binary_ai_textcnn(model_dir)
     start = time.perf_counter()
+    sufficiency = assess_text_sufficiency(text)
+    threshold = float(payload.get("threshold", 0.5))
+    if not sufficiency.sufficient:
+        latency_ms = (time.perf_counter() - start) * 1000.0
+        return {
+            "label": "indetermine",
+            "probability_ai": 0.5,
+            "threshold": threshold,
+            "model_name": payload.get("model_name", "binary_ai_textcnn"),
+            "model_version": payload.get("model_version", ""),
+            "pretrained": False,
+            "latency_ms": latency_ms,
+        }
     encoded = torch.tensor([encode_text(text, vocab, max_length=payload["config"]["max_length"])], dtype=torch.long)
     with torch.no_grad():
         logits = model(encoded.to(device))
         probability = float(torch.sigmoid(logits)[0].item())
-    threshold = float(payload.get("threshold", 0.5))
     label = "IA" if probability >= threshold else "non-IA"
     latency_ms = (time.perf_counter() - start) * 1000.0
     return {
