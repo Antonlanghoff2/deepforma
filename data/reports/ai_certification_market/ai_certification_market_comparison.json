@@ -1,6 +1,6 @@
 {
-  "referential_id": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
-  "referential_title": "Data Analyst",
+  "referential_id": "f0d4ccbb0ec6a5e24f50b0b232ca0e65ca10eb75451364c855c2fc6936f74f78",
+  "referential_title": "Data Scientist Machine Learning — Parcours certifiant OpenClassrooms",
   "referential_version": "1.0",
   "territory": "75 / 75",
   "radius_km": null,
@@ -25,15 +25,15 @@
   "date_max": null,
   "offer_count": 25,
   "analyzed_offer_count": 25,
-  "covered_offer_count": 8,
-  "total_market_weight": 111.9216,
-  "covered_weight": 6.6904,
-  "global_coverage_score": 5.98,
+  "covered_offer_count": 16,
+  "total_market_weight": 98.0317,
+  "covered_weight": 12.7772,
+  "global_coverage_score": 13.03,
   "block_summaries": [
     {
       "block": "Other",
       "block_name": "Bloc ther",
-      "skill_count": 6,
+      "skill_count": 13,
       "covered_skill_count": 0,
       "total_weight": 0,
       "covered_weight": 0,
@@ -48,27 +48,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Deep Learning",
-      "official_description": "Deep Learning",
-      "normalized_label": "deep learning",
+      "label": "Machine Learning",
+      "official_description": "Machine Learning",
+      "normalized_label": "machine learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -80,27 +80,59 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Transformer",
-      "official_description": "Transformer",
-      "normalized_label": "transformer",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Classification de texte",
+      "official_description": "Classification de texte",
+      "normalized_label": "classification de texte",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -112,27 +144,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "BERT",
-      "official_description": "BERT",
-      "normalized_label": "bert",
+      "label": "sentiment analysis",
+      "official_description": "sentiment analysis",
+      "normalized_label": "sentiment analysis",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -144,27 +176,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "GPT",
-      "official_description": "GPT",
-      "normalized_label": "gpt",
+      "label": "CNN",
+      "official_description": "CNN",
+      "normalized_label": "cnn",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -176,27 +208,91 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Maîtrise Python,",
-      "official_description": "Maîtrise Python,",
-      "normalized_label": "maîtrise python,",
+      "label": "transfer learning",
+      "official_description": "transfer learning",
+      "normalized_label": "transfer learning",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLOps",
+      "official_description": "MLOps",
+      "normalized_label": "mlops",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLflow",
+      "official_description": "MLflow",
+      "normalized_label": "mlflow",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -208,27 +304,155 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Pilotage d'équipes data,",
-      "official_description": "Pilotage d'équipes data,",
-      "normalized_label": "pilotage d'équipes data,",
-      "category": "skill",
+      "label": "CI/CD",
+      "official_description": "CI/CD",
+      "normalized_label": "ci/cd",
+      "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "embeddings",
+      "official_description": "embeddings",
+      "normalized_label": "embeddings",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "déploiement cloud,",
+      "official_description": "déploiement cloud,",
+      "normalized_label": "déploiement cloud,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -242,123 +466,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "BERT",
-      "official_description": "BERT",
-      "normalized_label": "bert",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Deep Learning",
-      "official_description": "Deep Learning",
-      "normalized_label": "deep learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "GPT",
-      "official_description": "GPT",
-      "normalized_label": "gpt",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Maîtrise Python,",
-      "official_description": "Maîtrise Python,",
-      "normalized_label": "maîtrise python,",
+      "label": "CI/CD",
+      "official_description": "CI/CD",
+      "normalized_label": "ci/cd",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -370,59 +498,379 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Pilotage d'équipes data,",
-      "official_description": "Pilotage d'équipes data,",
-      "normalized_label": "pilotage d'équipes data,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Transformer",
-      "official_description": "Transformer",
-      "normalized_label": "transformer",
+      "label": "CNN",
+      "official_description": "CNN",
+      "normalized_label": "cnn",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Classification de texte",
+      "official_description": "Classification de texte",
+      "normalized_label": "classification de texte",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLOps",
+      "official_description": "MLOps",
+      "normalized_label": "mlops",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLflow",
+      "official_description": "MLflow",
+      "normalized_label": "mlflow",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Machine Learning",
+      "official_description": "Machine Learning",
+      "normalized_label": "machine learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "déploiement cloud,",
+      "official_description": "déploiement cloud,",
+      "normalized_label": "déploiement cloud,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "embeddings",
+      "official_description": "embeddings",
+      "normalized_label": "embeddings",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "sentiment analysis",
+      "official_description": "sentiment analysis",
+      "normalized_label": "sentiment analysis",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "transfer learning",
+      "official_description": "transfer learning",
+      "normalized_label": "transfer learning",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -436,27 +884,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Deep Learning",
-      "official_description": "Deep Learning",
-      "normalized_label": "deep learning",
+      "label": "Machine Learning",
+      "official_description": "Machine Learning",
+      "normalized_label": "machine learning",
       "category": "domain",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -468,27 +916,59 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Transformer",
-      "official_description": "Transformer",
-      "normalized_label": "transformer",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Classification de texte",
+      "official_description": "Classification de texte",
+      "normalized_label": "classification de texte",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -500,27 +980,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "BERT",
-      "official_description": "BERT",
-      "normalized_label": "bert",
+      "label": "sentiment analysis",
+      "official_description": "sentiment analysis",
+      "normalized_label": "sentiment analysis",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -532,27 +1012,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "GPT",
-      "official_description": "GPT",
-      "normalized_label": "gpt",
+      "label": "CNN",
+      "official_description": "CNN",
+      "normalized_label": "cnn",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -564,27 +1044,91 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Maîtrise Python,",
-      "official_description": "Maîtrise Python,",
-      "normalized_label": "maîtrise python,",
+      "label": "transfer learning",
+      "official_description": "transfer learning",
+      "normalized_label": "transfer learning",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLOps",
+      "official_description": "MLOps",
+      "normalized_label": "mlops",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLflow",
+      "official_description": "MLflow",
+      "normalized_label": "mlflow",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -596,27 +1140,155 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Pilotage d'équipes data,",
-      "official_description": "Pilotage d'équipes data,",
-      "normalized_label": "pilotage d'équipes data,",
-      "category": "skill",
+      "label": "CI/CD",
+      "official_description": "CI/CD",
+      "normalized_label": "ci/cd",
+      "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "embeddings",
+      "official_description": "embeddings",
+      "normalized_label": "embeddings",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "déploiement cloud,",
+      "official_description": "déploiement cloud,",
+      "normalized_label": "déploiement cloud,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -631,123 +1303,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "BERT",
-      "official_description": "BERT",
-      "normalized_label": "bert",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Deep Learning",
-      "official_description": "Deep Learning",
-      "normalized_label": "deep learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "GPT",
-      "official_description": "GPT",
-      "normalized_label": "gpt",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Maîtrise Python,",
-      "official_description": "Maîtrise Python,",
-      "normalized_label": "maîtrise python,",
+      "label": "CI/CD",
+      "official_description": "CI/CD",
+      "normalized_label": "ci/cd",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -759,59 +1335,379 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Pilotage d'équipes data,",
-      "official_description": "Pilotage d'équipes data,",
-      "normalized_label": "pilotage d'équipes data,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Transformer",
-      "official_description": "Transformer",
-      "normalized_label": "transformer",
+      "label": "CNN",
+      "official_description": "CNN",
+      "normalized_label": "cnn",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Classification de texte",
+      "official_description": "Classification de texte",
+      "normalized_label": "classification de texte",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLOps",
+      "official_description": "MLOps",
+      "normalized_label": "mlops",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLflow",
+      "official_description": "MLflow",
+      "normalized_label": "mlflow",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Machine Learning",
+      "official_description": "Machine Learning",
+      "normalized_label": "machine learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "déploiement cloud,",
+      "official_description": "déploiement cloud,",
+      "normalized_label": "déploiement cloud,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "embeddings",
+      "official_description": "embeddings",
+      "normalized_label": "embeddings",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "sentiment analysis",
+      "official_description": "sentiment analysis",
+      "normalized_label": "sentiment analysis",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "transfer learning",
+      "official_description": "transfer learning",
+      "normalized_label": "transfer learning",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -832,9 +1728,9 @@
       "subcategory": "Optimiser les performances des systèmes d'IA",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 13,
-      "weighted_score": 11.052999999999999,
-      "share_percent": 52.0,
+      "offer_count": 9,
+      "weighted_score": 7.425400000000001,
+      "share_percent": 36.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -844,8 +1740,8 @@
       ],
       "example_offers": [
         "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Intelligence Artificielle Manager (H/F)",
-        "Machine Learning & Computer Vision (H/F)"
+        "Machine Learning & Computer Vision (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
       ],
       "status": "unmapped"
     },
@@ -862,9 +1758,9 @@
       "subcategory": "Développer des modèles prédictifs pour l'analyse de données",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 12,
-      "weighted_score": 10.1056,
-      "share_percent": 48.0,
+      "offer_count": 8,
+      "weighted_score": 6.5163,
+      "share_percent": 32.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
@@ -874,8 +1770,8 @@
       ],
       "example_offers": [
         "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Intelligence Artificielle Manager (H/F)",
-        "Machine Learning & Computer Vision (H/F)"
+        "Machine Learning & Computer Vision (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
       "status": "unmapped"
     },
@@ -885,27 +1781,27 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Documenter les processus et les architectures d'IA",
+      "label": "#TDFE2026",
       "official_description": "",
-      "normalized_label": "Documenter les processus et les architectures d'IA",
+      "normalized_label": "#TDFE2026",
       "category": "Other",
-      "subcategory": "Documenter les processus et les architectures d'IA",
+      "subcategory": "#TDFE2026",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 9,
-      "weighted_score": 7.3248999999999995,
-      "share_percent": 36.0,
+      "offer_count": 5,
+      "weighted_score": 4.2853,
+      "share_percent": 20.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Documenter les processus et les architectures d'IA"
+        "#TDFE2026"
       ],
       "example_offers": [
-        "Ingénieur en intelligence artificielle H/F (H/F)",
-        "Intelligence Artificielle Manager (H/F)",
-        "Alternance - IA Engineer (H/F)"
+        "Machine Learning Engineer (H/F)",
+        "Chef de projet automatisation IA (H/F)",
+        "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)"
       ],
       "status": "unmapped"
     },
@@ -923,7 +1819,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 5,
-      "weighted_score": 4.3053,
+      "weighted_score": 4.1442,
       "share_percent": 20.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -945,27 +1841,27 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Développement de produits basés sur l'IA",
+      "label": "Documenter les processus et les architectures d'IA",
       "official_description": "",
-      "normalized_label": "Développement de produits basés sur l'IA",
+      "normalized_label": "Documenter les processus et les architectures d'IA",
       "category": "Other",
-      "subcategory": "Développement de produits basés sur l'IA",
+      "subcategory": "Documenter les processus et les architectures d'IA",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 4,
-      "weighted_score": 3.3539,
-      "share_percent": 16.0,
+      "offer_count": 5,
+      "weighted_score": 3.8461999999999996,
+      "share_percent": 20.0,
       "coverage_score": 0.0,
       "match_methods": {
         "unmapped": 1
       },
       "evidence_examples": [
-        "Développement de produits basés sur l'IA"
+        "Documenter les processus et les architectures d'IA"
       ],
       "example_offers": [
-        "Machine Learning & Computer Vision (H/F)",
-        "Machine Learning Engineer (H/F)",
-        "Expert IA (H/F)"
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)",
+        "Ingénieur Software IA (H/F)"
       ],
       "status": "unmapped"
     },
@@ -983,7 +1879,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 3,
-      "weighted_score": 2.7807,
+      "weighted_score": 2.6701,
       "share_percent": 12.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -991,6 +1887,35 @@
       },
       "evidence_examples": [
         "Connaissance approfondie en mathématiques"
+      ],
+      "example_offers": [
+        "Machine Learning & Computer Vision (H/F)",
+        "Machine Learning Engineer (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Développement de produits basés sur l'IA",
+      "official_description": "",
+      "normalized_label": "Développement de produits basés sur l'IA",
+      "category": "Other",
+      "subcategory": "Développement de produits basés sur l'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 3,
+      "weighted_score": 2.6701,
+      "share_percent": 12.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Développement de produits basés sur l'IA"
       ],
       "example_offers": [
         "Machine Learning & Computer Vision (H/F)",
@@ -1012,7 +1937,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 3,
-      "weighted_score": 2.7807,
+      "weighted_score": 2.6701,
       "share_percent": 12.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1033,36 +1958,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "#TDFE2026",
-      "official_description": "",
-      "normalized_label": "#TDFE2026",
-      "category": "Other",
-      "subcategory": "#TDFE2026",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 3,
-      "weighted_score": 2.6227,
-      "share_percent": 12.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "#TDFE2026"
-      ],
-      "example_offers": [
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Chef de projet automatisation IA (H/F)",
-        "DTNUM 75 SDID BFN Product Manager - Produits IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Déterminer des mesures correctives",
       "official_description": "",
       "normalized_label": "Déterminer des mesures correctives",
@@ -1071,7 +1966,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 3,
-      "weighted_score": 2.5642,
+      "weighted_score": 2.4683,
       "share_percent": 12.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1093,37 +1988,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Programmation en Python",
-      "official_description": "",
-      "normalized_label": "Programmation en Python",
-      "category": "Other",
-      "subcategory": "Programmation en Python",
-      "technical_keywords": [
-        "Python"
-      ],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.8298,
-      "share_percent": 8.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Programmation en Python"
-      ],
-      "example_offers": [
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Consultant IBM Planning Analytics - Ingénieur IA & Assistant CP (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Concevoir une application web",
       "official_description": "",
       "normalized_label": "Concevoir une application web",
@@ -1132,7 +1996,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.7410999999999999,
+      "weighted_score": 1.6759,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1161,7 +2025,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.7235,
+      "weighted_score": 1.6526999999999998,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1190,7 +2054,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.7235,
+      "weighted_score": 1.6526999999999998,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1219,7 +2083,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.6818,
+      "weighted_score": 1.6192000000000002,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1248,7 +2112,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 2,
-      "weighted_score": 1.5642,
+      "weighted_score": 1.5109,
       "share_percent": 8.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1269,64 +2133,6 @@
       "block_name": "",
       "activity": "",
       "code": "",
-      "label": "Concevoir des algorithmes d'apprentissage automatique",
-      "official_description": "",
-      "normalized_label": "Concevoir des algorithmes d'apprentissage automatique",
-      "category": "Machine Learning",
-      "subcategory": "Concevoir des algorithmes d'apprentissage automatique",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.5206,
-      "share_percent": 8.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Concevoir des algorithmes d'apprentissage automatique"
-      ],
-      "example_offers": [
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Evaluation de modèles d'IA",
-      "official_description": "",
-      "normalized_label": "Evaluation de modèles d'IA",
-      "category": "Other",
-      "subcategory": "Evaluation de modèles d'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 2,
-      "weighted_score": 1.5206,
-      "share_percent": 8.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Evaluation de modèles d'IA"
-      ],
-      "example_offers": [
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
       "label": "Configurer et optimiser des systèmes DevOps",
       "official_description": "",
       "normalized_label": "Configurer et optimiser des systèmes DevOps",
@@ -1335,7 +2141,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 1.0,
+      "weighted_score": 0.9574,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1363,7 +2169,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9474,
+      "weighted_score": 0.9091,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1371,6 +2177,90 @@
       },
       "evidence_examples": [
         "Computer vision"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Concevoir des algorithmes d'apprentissage automatique",
+      "official_description": "",
+      "normalized_label": "Concevoir des algorithmes d'apprentissage automatique",
+      "category": "Machine Learning",
+      "subcategory": "Concevoir des algorithmes d'apprentissage automatique",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9091,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Concevoir des algorithmes d'apprentissage automatique"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Deep Learning",
+      "official_description": "",
+      "normalized_label": "Deep Learning",
+      "category": "Deep Learning",
+      "subcategory": "Deep Learning",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9091,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Deep Learning"
+      ],
+      "example_offers": [
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
+      ],
+      "status": "unmapped"
+    },
+    {
+      "referential_id": "",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "",
+      "label": "Evaluation de modèles d'IA",
+      "official_description": "",
+      "normalized_label": "Evaluation de modèles d'IA",
+      "category": "Other",
+      "subcategory": "Evaluation de modèles d'IA",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 1,
+      "weighted_score": 0.9091,
+      "share_percent": 4.0,
+      "coverage_score": 0.0,
+      "match_methods": {
+        "unmapped": 1
+      },
+      "evidence_examples": [
+        "Evaluation de modèles d'IA"
       ],
       "example_offers": [
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)"
@@ -1394,7 +2284,7 @@
       ],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9474,
+      "weighted_score": 0.9091,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1422,7 +2312,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9375,
+      "weighted_score": 0.9,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1450,7 +2340,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9,
+      "weighted_score": 0.8571,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1478,7 +2368,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9,
+      "weighted_score": 0.8571,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1506,7 +2396,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.9,
+      "weighted_score": 0.8571,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1534,7 +2424,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1562,7 +2452,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1590,7 +2480,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1618,7 +2508,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1646,7 +2536,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1674,7 +2564,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1702,7 +2592,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1730,7 +2620,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1758,7 +2648,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1786,7 +2676,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1814,7 +2704,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1842,7 +2732,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1870,7 +2760,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1898,7 +2788,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1926,7 +2816,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1954,7 +2844,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -1982,7 +2872,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2010,7 +2900,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2038,7 +2928,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2066,7 +2956,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2094,7 +2984,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2122,7 +3012,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2150,7 +3040,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2178,7 +3068,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8824,
+      "weighted_score": 0.8491,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2206,7 +3096,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2234,7 +3124,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2262,7 +3152,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2290,7 +3180,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2318,7 +3208,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2346,7 +3236,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2374,7 +3264,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2402,7 +3292,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2430,7 +3320,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2458,7 +3348,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2486,7 +3376,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2514,7 +3404,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8411,
+      "weighted_score": 0.8036,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2542,7 +3432,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.8182,
+      "weighted_score": 0.7895,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2570,7 +3460,7 @@
       "technical_keywords": [],
       "source_page": 0,
       "offer_count": 1,
-      "weighted_score": 0.6818,
+      "weighted_score": 0.6618,
       "share_percent": 4.0,
       "coverage_score": 0.0,
       "match_methods": {
@@ -2583,286 +3473,6 @@
         "Ingénieur en Optimisation R&D (H/F)"
       ],
       "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
-      "official_description": "",
-      "normalized_label": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
-      "category": "Other",
-      "subcategory": "Analyser les besoins des clients pour proposer des solutions d'IA adaptées",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Analyser les besoins des clients pour proposer des solutions d'IA adaptées"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "official_description": "",
-      "normalized_label": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "category": "Other",
-      "subcategory": "Analyser les tendances du marché pour anticiper les évolutions de l'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Analyser les tendances du marché pour anticiper les évolutions de l'IA"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
-      "official_description": "",
-      "normalized_label": "Assurer la maintenance et l'actualisation des systèmes d'IA",
-      "category": "Other",
-      "subcategory": "Assurer la maintenance et l'actualisation des systèmes d'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Assurer la maintenance et l'actualisation des systèmes d'IA"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
-      "official_description": "",
-      "normalized_label": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
-      "category": "Other",
-      "subcategory": "Communiquer clairement les concepts d'IA aux parties prenantes non techniques",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Communiquer clairement les concepts d'IA aux parties prenantes non techniques"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Gestion de projets IA",
-      "official_description": "",
-      "normalized_label": "Gestion de projets IA",
-      "category": "gestion de projet",
-      "subcategory": "Gestion de projets IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Gestion de projets IA"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Gérer les risques associés aux technologies d'IA",
-      "official_description": "",
-      "normalized_label": "Gérer les risques associés aux technologies d'IA",
-      "category": "Other",
-      "subcategory": "Gérer les risques associés aux technologies d'IA",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Gérer les risques associés aux technologies d'IA"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Implémenter des solutions de cybersécurité adaptées",
-      "official_description": "",
-      "normalized_label": "Implémenter des solutions de cybersécurité adaptées",
-      "category": "RGPD et sécurité",
-      "subcategory": "Sécurité",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Implémenter des solutions de cybersécurité adaptées"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Intégration de systèmes d'intelligence artificielle",
-      "official_description": "",
-      "normalized_label": "Intégration de systèmes d'intelligence artificielle",
-      "category": "Other",
-      "subcategory": "Intégration de systèmes d'intelligence artificielle",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Intégration de systèmes d'intelligence artificielle"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget",
-      "official_description": "",
-      "normalized_label": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget",
-      "category": "Other",
-      "subcategory": "Planifier des projets d'IA en tenant compte des contraintes de temps et de budge",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Planifier des projets d'IA en tenant compte des contraintes de temps et de budget"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
-    },
-    {
-      "referential_id": "",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "",
-      "label": "Traiter les données de manière sécurisée et conforme",
-      "official_description": "",
-      "normalized_label": "Traiter les données de manière sécurisée et conforme",
-      "category": "Other",
-      "subcategory": "Traiter les données de manière sécurisée et conforme",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 1,
-      "weighted_score": 0.5732,
-      "share_percent": 4.0,
-      "coverage_score": 0.0,
-      "match_methods": {
-        "unmapped": 1
-      },
-      "evidence_examples": [
-        "Traiter les données de manière sécurisée et conforme"
-      ],
-      "example_offers": [
-        "Expert IA (H/F)"
-      ],
-      "status": "unmapped"
     }
   ],
   "common_skills": [
@@ -2872,123 +3482,27 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "BERT",
-      "official_description": "BERT",
-      "normalized_label": "bert",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Deep Learning",
-      "official_description": "Deep Learning",
-      "normalized_label": "deep learning",
-      "category": "domain",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "GPT",
-      "official_description": "GPT",
-      "normalized_label": "gpt",
-      "category": "method",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Maîtrise Python,",
-      "official_description": "Maîtrise Python,",
-      "normalized_label": "maîtrise python,",
+      "label": "CI/CD",
+      "official_description": "CI/CD",
+      "normalized_label": "ci/cd",
       "category": "tool",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -3000,59 +3514,379 @@
       "block_name": "",
       "activity": "",
       "code": "SEMANTIC:1",
-      "label": "Pilotage d'équipes data,",
-      "official_description": "Pilotage d'équipes data,",
-      "normalized_label": "pilotage d'équipes data,",
-      "category": "skill",
-      "subcategory": "",
-      "technical_keywords": [],
-      "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
-      "match_methods": {
-        "exact": 1
-      },
-      "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
-      ],
-      "example_offers": [
-        "Alternance - IA Engineer (H/F)",
-        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
-        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
-      ],
-      "status": "covered"
-    },
-    {
-      "referential_id": "SEMANTIC:1",
-      "block": "",
-      "block_name": "",
-      "activity": "",
-      "code": "SEMANTIC:1",
-      "label": "Transformer",
-      "official_description": "Transformer",
-      "normalized_label": "transformer",
+      "label": "CNN",
+      "official_description": "CNN",
+      "normalized_label": "cnn",
       "category": "method",
       "subcategory": "",
       "technical_keywords": [],
       "source_page": 0,
-      "offer_count": 8,
-      "weighted_score": 6.6904,
-      "share_percent": 32.0,
-      "coverage_score": 5.98,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
       "match_methods": {
         "exact": 1
       },
       "evidence_examples": [
-        "- Collaborer : Travailler main dans la main avec les Data Scientists pour transformer leurs prototypes en applications ultra-robustes.",
-        "Deep Learning",
-        "- Compréhension Deep Tech IA : Vous maîtrisez les concepts de LLM (GPT-4), de RAG, d'Embeddings (vectorisation), de Temperature et de Token management."
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
       ],
       "example_offers": [
-        "Alternance - IA Engineer (H/F)",
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Classification de texte",
+      "official_description": "Classification de texte",
+      "normalized_label": "classification de texte",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLOps",
+      "official_description": "MLOps",
+      "normalized_label": "mlops",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "MLflow",
+      "official_description": "MLflow",
+      "normalized_label": "mlflow",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Machine Learning",
+      "official_description": "Machine Learning",
+      "normalized_label": "machine learning",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "NLP",
+      "official_description": "NLP",
+      "normalized_label": "nlp",
+      "category": "domain",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "Python",
+      "official_description": "Python",
+      "normalized_label": "python",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "SQL",
+      "official_description": "SQL",
+      "normalized_label": "sql",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "déploiement cloud,",
+      "official_description": "déploiement cloud,",
+      "normalized_label": "déploiement cloud,",
+      "category": "tool",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "embeddings",
+      "official_description": "embeddings",
+      "normalized_label": "embeddings",
+      "category": "skill",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "sentiment analysis",
+      "official_description": "sentiment analysis",
+      "normalized_label": "sentiment analysis",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
+        "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
+        "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
+      ],
+      "status": "covered"
+    },
+    {
+      "referential_id": "SEMANTIC:1",
+      "block": "",
+      "block_name": "",
+      "activity": "",
+      "code": "SEMANTIC:1",
+      "label": "transfer learning",
+      "official_description": "transfer learning",
+      "normalized_label": "transfer learning",
+      "category": "method",
+      "subcategory": "",
+      "technical_keywords": [],
+      "source_page": 0,
+      "offer_count": 16,
+      "weighted_score": 12.777199999999997,
+      "share_percent": 64.0,
+      "coverage_score": 13.03,
+      "match_methods": {
+        "exact": 1
+      },
+      "evidence_examples": [
+        "- développer des composants en Python et/ou Java",
+        "- Python, bonnes pratiques de software engineering, autonomie, esprit critique, communication claire et anglais professionnel.",
+        "- Développer des scripts (Power Automate, Azure Functions ou Python) pour traiter la donnée brute avant qu'elle ne soit ingérée par l'IA."
+      ],
+      "example_offers": [
+        "Ingénieur en intelligence artificielle H/F (H/F)",
         "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
         "Expert(e) Technique Microsoft 365 & Copilot (H/F)"
       ],
@@ -3068,27 +3902,14 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-01T09:52:13.485Z",
-      "matches": [],
+      "matches": [
+        "déploiement cloud,"
+      ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
         "Optimiser les performances des systèmes d'IA",
         "210PBYW"
-      ]
-    },
-    {
-      "offer_id": "211MFLC",
-      "title": "Intelligence Artificielle Manager (H/F)",
-      "location_label": "75 - PARIS",
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-07-21T18:33:01.168Z",
-      "matches": [],
-      "unmatched": [
-        "Développer des modèles prédictifs pour l'analyse de données",
-        "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -3108,23 +3929,6 @@
       ]
     },
     {
-      "offer_id": "211KNVL",
-      "title": "Alternance - IA Engineer (H/F)",
-      "location_label": "75 - PARIS",
-      "contract_label": "",
-      "rome_code": "M1889",
-      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
-      "date": "2026-07-20T15:15:17.463Z",
-      "matches": [
-        "Pilotage d'équipes data,"
-      ],
-      "unmatched": [
-        "Développer des modèles prédictifs pour l'analyse de données",
-        "Documenter les processus et les architectures d'IA",
-        "Optimiser les performances des systèmes d'IA"
-      ]
-    },
-    {
       "offer_id": "211HDNX",
       "title": "Senior AI Engineer - Computer Vision / DeepTech / Paris (H/F)",
       "location_label": "75 - Paris 13e Arrondissement",
@@ -3133,16 +3937,16 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-16T16:54:50.564Z",
       "matches": [
-        "Deep Learning",
-        "Deep Learning",
-        "Deep Learning",
-        "Pilotage d'équipes data,"
+        "déploiement cloud,",
+        "déploiement cloud,",
+        "déploiement cloud,",
+        "déploiement cloud,"
       ],
       "unmatched": [
         "Evaluation de modèles d'IA",
-        "Programmation en Python",
         "Utilisation de TensorFlow et PyTorch",
-        "Concevoir des algorithmes d'apprentissage automatique"
+        "Concevoir des algorithmes d'apprentissage automatique",
+        "Optimiser les performances des systèmes d'IA"
       ]
     },
     {
@@ -3154,7 +3958,7 @@
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-05-22T11:10:31.866Z",
       "matches": [
-        "Pilotage d'équipes data,"
+        "déploiement cloud,"
       ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
@@ -3170,7 +3974,9 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-10T18:53:23.011Z",
-      "matches": [],
+      "matches": [
+        "déploiement cloud,"
+      ],
       "unmatched": [
         "Développer des modèles prédictifs pour l'analyse de données",
         "Documenter les processus et les architectures d'IA",
@@ -3186,7 +3992,45 @@
       "rome_code": "M1889",
       "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
       "date": "2026-07-03T14:17:53.400Z",
-      "matches": [],
+      "matches": [
+        "déploiement cloud,"
+      ],
+      "unmatched": [
+        "Connaissance approfondie en mathématiques",
+        "Développement de produits basés sur l'IA",
+        "Développer des algorithmes pour l'analyse de données",
+        "Développer des modèles prédictifs pour l'analyse de données"
+      ]
+    },
+    {
+      "offer_id": "210PRHT",
+      "title": "Chef de projet automatisation IA (H/F)",
+      "location_label": "75 - PARIS",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-01T14:38:16.903Z",
+      "matches": [
+        "déploiement cloud,"
+      ],
+      "unmatched": [
+        "Développer des modèles prédictifs pour l'analyse de données",
+        "Documenter les processus et les architectures d'IA",
+        "Optimiser les performances des systèmes d'IA",
+        "#TDFE2026"
+      ]
+    },
+    {
+      "offer_id": "211GRSK",
+      "title": "Machine Learning Engineer (H/F)",
+      "location_label": "75 - Paris 2e Arrondissement",
+      "contract_label": "",
+      "rome_code": "M1889",
+      "rome_label": "Ingénieur / Ingénieure en Intelligence Artificielle (IA)",
+      "date": "2026-07-16T12:48:49.933Z",
+      "matches": [
+        "déploiement cloud,"
+      ],
       "unmatched": [
         "Connaissance approfondie en mathématiques",
         "Développement de produits basés sur l'IA",
