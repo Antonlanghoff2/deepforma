@@ -1,6 +1,5 @@
-\
 [Unit]
-Description=Deepforma application
+Description=Deepforma Flask application (Gunicorn)
 After=network-online.target
 Wants=network-online.target
 
@@ -8,23 +7,27 @@ Wants=network-online.target
 Type=simple
 User=deepforma
 Group=deepforma
-WorkingDirectory=/opt/deepforma
-EnvironmentFile=/opt/deepforma/.env
+WorkingDirectory=/opt/deepforma/app
+EnvironmentFile=-/opt/deepforma/app/.env
 Environment=PYTHONUNBUFFERED=1
-Environment=HF_HOME=/opt/deepforma/.cache/huggingface
-Environment=TRANSFORMERS_CACHE=/opt/deepforma/.cache/huggingface/transformers
+Environment=PYTHONPATH=/opt/deepforma/app/src
+Environment=DEEPFORMA_MODELS_DIR=/opt/deepforma/app/models
+Environment=HF_HOME=/opt/deepforma/app/.cache/huggingface
+Environment=TRANSFORMERS_CACHE=/opt/deepforma/app/.cache/huggingface/transformers
 Environment=TOKENIZERS_PARALLELISM=false
-ExecStart=/opt/deepforma/.venv/bin/gunicorn --bind 127.0.0.1:8001 --workers 1 --threads 4 --timeout 300 src.web_app:create_app()
-Restart=always
+ExecStart=/opt/deepforma/app/.venv/bin/gunicorn --chdir /opt/deepforma/app --pythonpath /opt/deepforma/app/src --workers 1 --bind 127.0.0.1:8001 --timeout 300 --graceful-timeout 30 --access-logfile - --error-logfile - wsgi:application
+Restart=on-failure
 RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
 TimeoutStartSec=300
-TimeoutStopSec=30
+TimeoutStopSec=45
 KillSignal=SIGTERM
 PrivateTmp=true
 NoNewPrivileges=true
 ProtectSystem=full
-ProtectHome=false
-ReadWritePaths=/opt/deepforma/data /opt/deepforma/models /opt/deepforma/logs /opt/deepforma/.cache/huggingface
+ProtectHome=true
+ReadWritePaths=/opt/deepforma/app/data /opt/deepforma/app/models /opt/deepforma/app/logs /opt/deepforma/app/.cache
 UMask=0027
 
 [Install]
