@@ -5,9 +5,18 @@ ERRORS=0; WARNINGS=0
 ok(){ printf '[OK] %s\n' "$*"; }; warning(){ WARNINGS=$((WARNINGS+1)); printf '[WARNING] %s\n' "$*"; }; error(){ ERRORS=$((ERRORS+1)); printf '[ERROR] %s\n' "$*"; }
 for arg in "$@"; do case "$arg" in --dry-run) DRY_RUN=true;; --help) echo "Usage: $0 [--dry-run]"; exit 0;; *) die "Argument inconnu: $arg";; esac; done
 echo '=== Deepforma deployment check ==='
+if is_true "$DRY_RUN"; then
+    log "Dry-run: vérifications système uniquement simulées; aucune modification effectuée."
+    printf 'Bilan: 0 erreur(s), 0 avertissement(s)\n'
+    exit 0
+fi
 if [[ -f /etc/os-release ]]; then . /etc/os-release; ok "OS: ${PRETTY_NAME:-unknown}"; else error "/etc/os-release absent"; fi
 command -v python3 >/dev/null 2>&1 && ok "Python système: $(python3 --version 2>&1)" || error "Python système absent"
-[[ -x "$VENV_DIR/bin/python" ]] && ok "Python applicatif: $($VENV_DIR/bin/python --version 2>&1)" || error "Venv absent: $VENV_DIR"
+[[ -x "$VENV_DIR/bin/python" ]] && ok "Python applicatif: $(run_as_app "$VENV_DIR/bin/python" --version 2>&1)" || error "Venv absent: $VENV_DIR"
+if [[ -x "$VENV_DIR/bin/python" ]]; then
+    run_as_app "$VENV_DIR/bin/python" -c 'import sys; assert sys.version_info[:2] == (3, 12)' && ok "Python applicatif 3.12" || error "Le venv n'utilise pas Python 3.12"
+    run_as_app env PYTHONPATH="$APP_DIR/src" "$VENV_DIR/bin/python" -c 'import wsgi; assert callable(wsgi.application)' && ok "Point d'entrée WSGI wsgi:application" || error "Point d'entrée WSGI invalide"
+fi
 [[ -x "$VENV_DIR/bin/gunicorn" ]] && ok "Gunicorn présent" || error "Gunicorn absent"
 if command -v systemctl >/dev/null 2>&1; then systemctl is-active --quiet "$SERVICE_NAME" && ok "Service actif" || error "Service inactif"; else warning "systemctl indisponible"; fi
 if command -v apache2ctl >/dev/null 2>&1; then apache2ctl configtest >/dev/null 2>&1 && ok "Apache configtest" || error "Apache configuration invalide"; else warning "Apache absent"; fi

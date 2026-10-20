@@ -56,7 +56,7 @@ CPF_PAIRS ?= $(CPF_TRAIN_DIR)/cpf_pairs.jsonl
 CPF_REVIEW ?= $(CPF_TRAIN_DIR)/cpf_pairs_review.csv
 CPF_BASE_MODEL ?= sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 CPF_MODEL_OUTPUT ?= models/cpf-recommender
-DEPLOY_SUDO ?= sudo -E
+DEPLOY_SUDO ?= sudo
 DEPLOY_SERVICE ?= deepforma
 DEPLOY_HEALTH_URL ?= http://127.0.0.1:8001/health
 DEPLOY_ROOT ?= /opt/deepforma
@@ -170,7 +170,7 @@ binary-ai-evaluate: binary-ai-compare ## Alias de binary-ai-compare
 
 binary-ai-all: binary-ai-train-ml binary-ai-train-dl binary-ai-compare ## Chaîne binaire complète
 
-.PHONY: help install setup run dev clean test smoke-test binary-ai-prepare binary-ai-train-ml binary-ai-train-dl binary-ai-compare binary-ai-evaluate binary-ai-all cpf-general-check cpf-general-prepare cpf-pairs cpf-train cpf-general-all cpf-all ia-check ia-prepare ia-train ia-evaluate ia-all france-travail-check france-travail-collect model-check audit-referential-pdfs build-referential-ner-candidates build-referential-multilabel-candidates build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner train-referential-multilabel evaluate-referential-models test-referential-ml-dl import-referential-preview validate-referential-import approve-referential-import generate-annotation-candidates evaluate-binary evaluate-multilabel evaluate-extraction evaluate-recommendation evaluate-all test-referential-import check-referentials-schema check-ai-taxonomy list-routes deploy-referential-models deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-apache-test deploy-nginx-test build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model france-competences-download france-competences-inspect france-competences-normalize france-competences-build-training france-competences-all import-france-competences import-rome-referential map-rncp-to-rome build-unified-skill-referential enrich-offers-with-rome-rncp build-rome-rncp-training-dataset train-skill-extractor ia-recommendations-import ia-recommendations-validate ia-recommendations-demo import-ia-cpf-v10 inspect-ia-cpf-v10 test-ia-cpf-v10
+.PHONY: help install setup run dev clean test smoke-test binary-ai-prepare binary-ai-train-ml binary-ai-train-dl binary-ai-compare binary-ai-evaluate binary-ai-all cpf-general-check cpf-general-prepare cpf-pairs cpf-train cpf-general-all cpf-all ia-check ia-prepare ia-train ia-evaluate ia-all france-travail-check france-travail-collect model-check deploy deploy-check deploy-install deploy-update deploy-restart deploy-status deploy-logs deploy-backup deploy-rollback deploy-prepare-data audit-referential-pdfs build-referential-ner-candidates build-referential-multilabel-candidates build-referential-annotations export-referential-training-data train-referential-section-model train-referential-ner train-referential-multilabel evaluate-referential-models test-referential-ml-dl import-referential-preview validate-referential-import approve-referential-import generate-annotation-candidates evaluate-binary evaluate-multilabel evaluate-extraction evaluate-recommendation evaluate-all test-referential-import check-referentials-schema check-ai-taxonomy list-routes deploy-referential-models deploy-apache-test deploy-nginx-test build-review-queue export-approved-training-data train-continual evaluate-candidate promote-candidate deploy-candidate rollback-model france-competences-download france-competences-inspect france-competences-normalize france-competences-build-training france-competences-all import-france-competences import-rome-referential map-rncp-to-rome build-unified-skill-referential enrich-offers-with-rome-rncp build-rome-rncp-training-dataset train-skill-extractor ia-recommendations-import ia-recommendations-validate ia-recommendations-demo import-ia-cpf-v10 inspect-ia-cpf-v10 test-ia-cpf-v10
 
 
 # ----- France Compétences RNCP/RS -----
@@ -511,27 +511,37 @@ list-routes:
 
 deploy-referential-models:
 	$(PYTHON) scripts/deploy_referential_models.py --source-root "$(REFERENTIAL_SECTION_MODEL_OUTPUT)/.." --target-root "$(DEPLOY_ROOT)/models"
-DEPLOY_SCRIPTS := scripts/deploy_ubuntu.sh scripts/update_production.sh scripts/rollback_production.sh
+DEPLOY_SCRIPTS := deploy/common.sh deploy/install.sh deploy/update.sh deploy/restart.sh deploy/check.sh deploy/backup.sh deploy/rollback.sh deploy/prepare-data.sh
+DEPLOY_TEST_PYTHON ?= python3
+
+deploy: deploy-install ## Installe ou met à jour Deepforma
+deploy-install:
+	$(DEPLOY_SUDO) bash deploy/install.sh
 
 deploy-check:
 	bash -n $(DEPLOY_SCRIPTS)
-	$(PYTHON) -m pytest -q tests/test_deployment.py
-
-deploy-install:
-	$(DEPLOY_SUDO) bash scripts/deploy_ubuntu.sh
+	$(DEPLOY_TEST_PYTHON) -m pytest -q tests/test_deployment.py tests/test_deploy_automation.py
 
 deploy-update:
-	$(DEPLOY_SUDO) bash scripts/update_production.sh
+	$(DEPLOY_SUDO) bash deploy/update.sh
 
 deploy-restart:
-	$(DEPLOY_SUDO) systemctl restart $(DEPLOY_SERVICE)
-	curl --fail --silent --show-error $(DEPLOY_HEALTH_URL)
+	$(DEPLOY_SUDO) bash deploy/restart.sh
 
 deploy-status:
-	$(DEPLOY_SUDO) systemctl status $(DEPLOY_SERVICE)
+	$(DEPLOY_SUDO) systemctl status $(DEPLOY_SERVICE) --no-pager
 
 deploy-logs:
-	$(DEPLOY_SUDO) journalctl -u $(DEPLOY_SERVICE) -f
+	$(DEPLOY_SUDO) journalctl -u $(DEPLOY_SERVICE) -n 100 --no-pager
+
+deploy-backup:
+	$(DEPLOY_SUDO) bash deploy/backup.sh
+
+deploy-rollback:
+	$(DEPLOY_SUDO) bash deploy/rollback.sh
+
+deploy-prepare-data:
+	bash deploy/prepare-data.sh
 
 deploy-apache-test:
 	apache2ctl configtest

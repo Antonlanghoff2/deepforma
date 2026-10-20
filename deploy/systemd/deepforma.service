@@ -15,11 +15,12 @@ Environment=DEEPFORMA_MODELS_DIR=/opt/deepforma/app/models
 Environment=HF_HOME=/opt/deepforma/app/.cache/huggingface
 Environment=TRANSFORMERS_CACHE=/opt/deepforma/app/.cache/huggingface/transformers
 Environment=TOKENIZERS_PARALLELISM=false
-ExecStart=/opt/deepforma/app/.venv/bin/gunicorn --chdir /opt/deepforma/app --pythonpath /opt/deepforma/app/src --workers 1 --bind 127.0.0.1:8001 --timeout 300 --graceful-timeout 30 --access-logfile - --error-logfile - wsgi:application
+Environment=GUNICORN_TIMEOUT=300
+ExecStart=/opt/deepforma/app/.venv/bin/gunicorn --chdir /opt/deepforma/app --pythonpath /opt/deepforma/app/src --workers 1 --bind 127.0.0.1:8001 --timeout ${GUNICORN_TIMEOUT} --graceful-timeout 30 --access-logfile - --error-logfile - wsgi:application
 Restart=on-failure
 RestartSec=5
-StartLimitIntervalSec=60
-StartLimitBurst=5
+StartLimitIntervalSec=300
+StartLimitBurst=3
 TimeoutStartSec=300
 TimeoutStopSec=45
 KillSignal=SIGTERM
