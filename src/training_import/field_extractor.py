@@ -136,10 +136,8 @@ def extract_fields(document: PdfDocument, sections: list[DetectedSection]) -> tu
         pages_source=[page.number for page in document.pages],
         confidence=0.5,
         extraction_method=document.extraction_method,
-        objectives_text="
-".join(section.content for section in sections if section.key == "objectives"),
-        prerequisites_text="
-".join(section.content for section in sections if section.key == "prerequisites"),
+        objectives_text="\n".join(section.content for section in sections if section.key == "objectives"),
+        prerequisites_text="\n".join(section.content for section in sections if section.key == "prerequisites"),
         certification=certification,
         evidence=[*title_evidence, *ref_evidence, *duration_evidence, *level_evidence, *format_evidence, *price_evidence, *cpf_evidence],
     )

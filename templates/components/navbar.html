@@ -1,0 +1,17 @@
+<nav class="top-nav" aria-label="Navigation principale">
+  <div class="nav-inner">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark" aria-hidden="true">D</span>
+      <span>Deepforma</span>
+    </a>
+    <div class="nav-links">
+      <span class="group-label">Espace public</span>
+      <a class="nav-link{% if request.endpoint == 'index' %} is-active{% endif %}" href="{{ url_for('index') }}">Accueil</a>
+      <span class="group-label">Administration</span>
+      <a class="nav-link{% if request.endpoint == 'admin_referential_import' %} is-active{% endif %}" href="{{ url_for('admin_referential_import') }}">Référentiels</a>
+      <a class="nav-link{% if request.endpoint == 'admin_ai_certification_market_comparison' %} is-active{% endif %}" href="{{ url_for('admin_ai_certification_market_comparison') }}">Comparaison marché</a>
+      <a class="nav-link{% if request.endpoint == 'admin_referential_annotation' %} is-active{% endif %}" href="{{ url_for('admin_referential_annotation') }}">Annotation</a>
+      <a class="nav-link{% if request.endpoint == 'admin_continual_learning' %} is-active{% endif %}" href="{{ url_for('admin_continual_learning') }}">Apprentissage continu</a>
+    </div>
+  </div>
+</nav>

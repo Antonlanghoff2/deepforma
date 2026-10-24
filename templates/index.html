@@ -2,13 +2,20 @@
 {% block title %}Deepforma — Analyse RNCP{% endblock %}
 {% block content %}
 <main class="shell">
-  <section class="hero">
-    <p class="eyebrow">Deepforma</p>
-    <h1>Analyse d'un référentiel RNCP</h1>
-    <p class="lead">Chargez le PDF du référentiel et laissez l'application extraire les compétences officielles avant de comparer au marché local. La zone de recherche France Travail est paramétrable dans la section métier cible.</p>
+  <section class="hero hero-home">
+    <div>
+      <p class="eyebrow">Plateforme d'aide à la décision</p>
+      <h1>Relier les compétences aux besoins du marché.</h1>
+      <p class="lead">Deepforma analyse un référentiel de certification, vérifie les compétences détectées et les compare aux offres France Travail pour éclairer les préconisations de formation par territoire.</p>
+    </div>
+    <div class="hero-note" aria-label="Parcours Deepforma">
+      <span class="hero-note-title">Parcours d'analyse</span>
+      <span>Référentiel → compétences → marché → recommandations</span>
+    </div>
   </section>
 
-  <section class="card">
+  <section class="card workflow-card">
+    <div class="section-kicker"><span class="step-number">1</span><span>Analyse exploratoire</span></div>
     <h2>Classifieur IA binaire</h2>
     <p>Interrogez directement le classifieur IA/non-IA avec le modèle machine learning ou le TextCNN entraîné from scratch.</p>
     {% if binary_ai_error %}
@@ -41,7 +48,8 @@
     {% endif %}
   </section>
 
-    <section class="card">
+    <section class="card workflow-card">
+      <div class="section-kicker"><span class="step-number">2</span><span>Importer et valider</span></div>
       {% if error %}
       <div class="alert alert-error">{{ error }}</div>
       {% endif %}
@@ -61,7 +69,8 @@
     </section>
 
     {% if referential_validation %}
-    <section class="card">
+    <section class="card workflow-card">
+      <div class="section-kicker"><span class="step-number">3</span><span>Comparer au marché</span></div>
       <h2>Validation humaine</h2>
       <p>Confirmez ou corrigez l’intitulé du référentiel et les compétences détectées avant de lancer l’analyse marché. Cette validation est enregistrée comme donnée approuvée et réutilisée pour les prochains exports.</p>
       <form method="post" action="{{ url_for('analyze') }}" class="form-grid" style="grid-template-columns:1fr">
