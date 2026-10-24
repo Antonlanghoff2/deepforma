@@ -1,49 +1,300 @@
 type,label,block,category,subcategory,offer_count,weighted_score
-unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,5,4.1603
-unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,5,4.1603
-unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,5,4.1603
-unmapped,Intelligence artificielle,,Other,Intelligence artificielle,2,1.6144
-unmapped,Concevoir une application web,,Other,Concevoir une application web,1,0.8491
-unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",1,0.8491
-unmapped,Adapter les solutions aux contraintes de l'environnement de production,,déploiement,Adapter les solutions aux contraintes de l'environnement de production,1,0.8108
-unmapped,Algorithmique,,Other,Algorithmique,1,0.8108
-unmapped,Analyser les besoins informatiques,,Other,Analyser les besoins informatiques,1,0.8108
-unmapped,"Analyser, exploiter, structurer des données",,Other,"Analyser, exploiter, structurer des données",1,0.8108
-unmapped,Anglais technique,,Other,Anglais technique,1,0.8108
-unmapped,Collaborer avec une équipe projet,,Other,Collaborer avec une équipe projet,1,0.8108
-unmapped,Communiquer auprès de ses interlocuteurs internes et externes,,Other,Communiquer auprès de ses interlocuteurs internes et externes,1,0.8108
-unmapped,Concevoir et gérer un projet,,Other,Concevoir et gérer un projet,1,0.8108
-unmapped,Développement front-end et back-end,,Other,Développement front-end et back-end,1,0.8108
-unmapped,"Développer un logiciel, un système d'informations, une application",,Other,"Développer un logiciel, un système d'informations, une application",1,0.8108
-unmapped,"Enseigner, développer des compétences",,Other,"Enseigner, développer des compétences",1,0.8108
-unmapped,Expliquer les choix techniques aux clients,,Other,Expliquer les choix techniques aux clients,1,0.8108
-unmapped,Gestion de projet informatique,,gestion de projet,Gestion de projet informatique,1,0.8108
-unmapped,Langages de programmation informatique,,Other,Langages de programmation informatique,1,0.8108
-unmapped,Master mention informatique,,Other,Master mention informatique,1,0.8108
-unmapped,"Optimiser des algorithmes, une application informatique et mettre en oeuvre leur développement",,Other,"Optimiser des algorithmes, une application informatique et mettre en oeuvre leur",1,0.8108
-unmapped,"Paramétrer un logiciel, un outil, un système numérique",,Other,"Paramétrer un logiciel, un outil, un système numérique",1,0.8108
-unmapped,Piloter le déploiement et l'intégration d'outils d'optimisation au sein des processus métiers,,analyse des besoins métiers,Piloter le déploiement et l'intégration d'outils d'optimisation au sein des proc,1,0.8108
-unmapped,Planifier et suivre les échéances de projet,,Other,Planifier et suivre les échéances de projet,1,0.8108
-unmapped,Programmation logicielle,,Other,Programmation logicielle,1,0.8108
-unmapped,Proposer des pistes d'amélioration des solutions,,Other,Proposer des pistes d'amélioration des solutions,1,0.8108
-unmapped,"Préparer et animer une réunion, un groupe de travail, un atelier",,cadrage de projet IA,"Préparer et animer une réunion, un groupe de travail, un atelier",1,0.8108
-unmapped,Recueillir et analyser les besoins client,,Other,Recueillir et analyser les besoins client,1,0.8108
-unmapped,Respecter la confidentialité des informations,,Other,Respecter la confidentialité des informations,1,0.8108
-unmapped,"Réaliser un prototype de la solution technique pour validation par le donneur d'ordres (configuration type, ...)",,Other,Réaliser un prototype de la solution technique pour validation par le donneur d',1,0.8108
-unmapped,"Superviser, coordonner les réalisations ou développements informatiques (collaborateurs, sous-traitants)",,Other,"Superviser, coordonner les réalisations ou développements informatiques (collabo",1,0.8108
-unmapped,Tester et valider les fonctionnalités du logiciel,,Other,Tester et valider les fonctionnalités du logiciel,1,0.8108
-unmapped,"Tester un logiciel, un système d'informations, une application",,Other,"Tester un logiciel, un système d'informations, une application",1,0.8108
-unmapped,#TDFE2026,,Other,#TDFE2026,1,0.8036
-unmapped,Adaptation des IA aux besoins spécifiques,,Other,Adaptation des IA aux besoins spécifiques,1,0.8036
-unmapped,Adapter les modèles d'IA aux changements de données ou de contexte,,Other,Adapter les modèles d'IA aux changements de données ou de contexte,1,0.8036
-unmapped,Analyser les tendances du marché pour anticiper les évolutions de l'IA,,Other,Analyser les tendances du marché pour anticiper les évolutions de l'IA,1,0.8036
-unmapped,Assurer la maintenance et l'actualisation des systèmes d'IA,,Other,Assurer la maintenance et l'actualisation des systèmes d'IA,1,0.8036
-unmapped,Collaborer avec des experts en éthique pour évaluer les projets d'IA,,gouvernance et éthique,Éthique,1,0.8036
-unmapped,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,,Other,Communiquer clairement les concepts d'IA aux parties prenantes non techniques,1,0.8036
-unmapped,Concevoir des algorithmes d'apprentissage automatique,,Machine Learning,Concevoir des algorithmes d'apprentissage automatique,1,0.8036
-unmapped,Développer des algorithmes pour l'analyse de données,,Other,Développer des algorithmes pour l'analyse de données,1,0.8036
-unmapped,Evaluation de modèles d'IA,,Other,Evaluation de modèles d'IA,1,0.8036
-unmapped,Exploiter des solutions de Data Science ou d'Intelligence Artificielle,,Other,Exploiter des solutions de Data Science ou d'Intelligence Artificielle,1,0.8036
-unmapped,Faciliter l'intégration de solutions d'intelligence artificielle dans les projets existants,,Other,Faciliter l'intégration de solutions d'intelligence artificielle dans les projet,1,0.8036
-unmapped,Respecter les normes éthiques dans le développement de l'IA,,gouvernance et éthique,Éthique,1,0.8036
-unmapped,Tester rigoureusement les modèles d'IA avant déploiement,,déploiement,Tester rigoureusement les modèles d'IA avant déploiement,1,0.8036
+missing,UN PROJET INTÉGRANT L’IA Bloc 2 : PRÉPARER,,skill,,0,0.0
+missing,DES SOLUTIONS D’APPRENTISSAGE AUTOMATIQUE POUR DES DONNÉES COMPLEXES 5b,,skill,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE,,skill,,0,0.0
+missing,UN PROJET INTÉGRANT L’IA A1,,skill,,0,0.0
+missing,D’intégration de technologies de science des données,,skill,,0,0.0
+missing,D’intégration de technologies d’intelligence artificielle,,skill,,0,0.0
+missing,Évaluation individuelle de la présentation orale,,skill,,0,0.0
+missing,S données personnelles,,skill,,0,0.0
+missing,Que le projet est conforme à ces réglementations,,skill,,0,0.0
+missing,Risques pour le projet,,skill,,0,0.0
+missing,Existante qui sont fortement couplés,,skill,,0,0.0
+missing,Qui tient compte de la privacité dès la conception,,skill,,0,0.0
+missing,Afin de favoriser l'intégration et l'interopérabilité,,skill,,0,0.0
+missing,S biais,,skill,,0,0.0
+missing,Pour identifier les points où les données nécessaires à l'IA sont générées,,skill,,0,0.0
+missing,Continuité opérationnelle,,skill,,0,0.0
+missing,DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A1,,skill,,0,0.0
+missing,Intégrité des données,,skill,,0,0.0
+missing,Les lacunes dans les séries temporelles,,skill,,0,0.0
+missing,Que ces données sont préparées de manière optimale,,skill,,0,0.0
+missing,Des résultats plus stables,,skill,,0,0.0
+missing,Une représentation numérique appropriée des catégories,,skill,,0,0.0
+missing,Les valeurs aberrantes,,skill,,0,0.0
+missing,Tokenisation,,method,,0,0.0
+missing,PCA,,method,,0,0.0
+missing,DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A2,,skill,,0,0.0
+missing,Que les données utilisées dans un projet sont fiables,,skill,,0,0.0
+missing,Et l'analyse,,tool,,0,0.0
+missing,Une modélisation efficaces,,skill,,0,0.0
+missing,Que les données et les analyses sont fiables,,skill,,0,0.0
+missing,La prise de décision informée et à la confiance dans les résultats obtenus,,skill,,0,0.0
+missing,Et leur suivi dans une stratégie de qualité à présenter oralement,,skill,,0,0.0
+missing,La complétude et la détection de biais,,skill,,0,0.0
+missing,K-Means,,method,,0,0.0
+missing,Réseaux de neurones,,method,,0,0.0
+missing,Arbres de décision,,method,,0,0.0
+missing,SVM,,method,,0,0.0
+missing,DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A4,,skill,,0,0.0
+missing,Ayant des besoins spécifiques en matière d'analyse prédictive,,soft_skill,,0,0.0
+missing,Les meilleures pratiques et les tendances actuelles dans le domaine,,skill,,0,0.0
+missing,(simulée) dans une présentation,,soft_skill,,0,0.0
+missing,L'audience des films,,skill,,0,0.0
+missing,Validation croisée,,method,,0,0.0
+missing,Prédire avec précision l'audience des films,,skill,,0,0.0
+missing,Généraliser sur de nouvelles données,,skill,,0,0.0
+missing,S ressources informatiques,,tool,,0,0.0
+missing,DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A6,,skill,,0,0.0
+missing,Des modèles de prédiction adaptés à chaque scénario défini,,skill,,0,0.0
+missing,Gérer les types de données,,skill,,0,0.0
+missing,Les types de données,,skill,,0,0.0
+missing,UN PROJET D’IA A1,,skill,,0,0.0
+missing,D’UN PROJET D’INTELLIGENCE ARTIFICIELLE,,skill,,0,0.0
+missing,REFERENTIEL DE COMPETENCES identifie les compétences et les connaissances,,skill,,0,0.0
+missing,Une roadmap de déploiement,,skill,,0,0.0
+missing,Planifier et gérer les sprints de manière efficace est assurée,,skill,,0,0.0
+missing,Les sprints de manière efficace est assurée,,skill,,0,0.0
+missing,L’avancement du projet,,skill,,0,0.0
+missing,D’un projet fil rouge en intelligence artificielle,,skill,,0,0.0
+missing,Une équipe projet intelligence artificielle,,skill,,0,0.0
+missing,L’activité du projet,,soft_skill,,0,0.0
+missing,Respect de la stratégie du projet,,skill,,0,0.0
+missing,Prise en main de la solution,,skill,,0,0.0
+missing,L’IMPACT DE LA SOLUTION DANS LE TEMPS,,skill,,0,0.0
+missing,S technologies d'IA dans un MVP,,skill,,0,0.0
+missing,En entreprise,,skill,,0,0.0
+missing,Les détails de l'innovation,,skill,,0,0.0
+missing,Deep Learning,,domain,,0,0.0
+missing,RNN,,method,,0,0.0
+missing,Transformers,,method,,0,0.0
+missing,CNN,,method,,0,0.0
+missing,DES SOLUTIONS D’APPRENTISSAGE AUTOMATIQUE POUR DES DONNÉES COMPLEXES A1,,skill,,0,0.0
+missing,LA GÉNÉRATION DE DONNÉES TEXTUELLES,,skill,,0,0.0
+missing,IMAGES ET LA VISION PAR ORDINATEUR,,skill,,0,0.0
+missing,S MÉTHODES DE L’APPRENTISSAGE DANS LE CONTEXTE DE LA ROBOTIQUE A5,,skill,,0,0.0
+missing,LA GÉNÉRATION DE DONNÉES SONORES DE DIALOGUE,,skill,,0,0.0
+missing,Et de mettre en œuvre des modèles d'intelligence artificielle sophistiqués,,skill,,0,0.0
+missing,S modèles d'intelligence artificielle sophistiqués,,skill,,0,0.0
+missing,Et d'interagir avec le langage naturel de manière efficace,,skill,,0,0.0
+missing,Appropriés de chacune dans le contexte juridique,,tool,,0,0.0
+missing,Généraliser sont analysés,,skill,,0,0.0
+missing,Couches de neurones,,skill,,0,0.0
+missing,Plus explicite de la connaissance métier,,tool,,0,0.0
+missing,Efficace des connaissances afin de créer des structures cohérentes,,tool,,0,0.0
+missing,Afin de créer des structures cohérentes,,skill,,0,0.0
+missing,Précise des données symboliques,,tool,,0,0.0
+missing,Des logiciels d’aide à la décision,,skill,,0,0.0
+missing,Concernant les journaux d'événements système,,skill,,0,0.0
+missing,Métier dans le domaine de la cybersécurité,,skill,,0,0.0
+missing,Ou de règles en un seul ensemble est prise en compte (merging),,skill,,0,0.0
+missing,Other,,domain,,0,0.0
+missing,Gestion des contraintes,,skill,,0,0.0
+missing,Et implémenter des modèles d'apprentissage adaptés à la vision par ordinateur,,skill,,0,0.0
+missing,Des modèles d'apprentissage adaptés à la vision par ordinateur,,skill,,0,0.0
+missing,Les techniques de recalage et de consolidation des nuages de points en 3D,,skill,,0,0.0
+missing,Un modèle pour la surveillance des rayons,,skill,,0,0.0
+missing,Images,,skill,,0,0.0
+missing,S données 3D,,tool,,0,0.0
+missing,Régularisation,,tool,,0,0.0
+missing,Les différentes méthodes,,skill,,0,0.0
+missing,S modèles génératifs pour créer de nouvelles données visuelles,,skill,,0,0.0
+missing,Le modèle le plus adapté,,skill,,0,0.0
+missing,Et implémenter un modèle de navigation adapté aux besoins du secteur pétrolier,,skill,,0,0.0
+missing,Un modèle de navigation adapté aux besoins du secteur pétrolier,,skill,,0,0.0
+missing,Évaluation individuelle du rapport écrit,,skill,,0,0.0
+missing,S technologies de vision robotique pour les systèmes autonomes sont identifiés,,skill,,0,0.0
+missing,Un modèle d’apprentissage en tenant compte de facteurs tels que la précision,,skill,,0,0.0
+missing,Un examen écrit individuel englobant les concepts fondamentaux,,skill,,0,0.0
+missing,Une qualité audio optimale,,skill,,0,0.0
+missing,Et extraire les caractéristiques sonores spécifiques des données de dialogue,,skill,,0,0.0
+missing,Le son et identifier les moments clés de l'interview,,skill,,0,0.0
+missing,S données audio,,tool,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A1,,skill,,0,0.0
+missing,MANIÈRE INCRÉMENTALE ET CONTINUE DES MODÈLES D’APPRENTISSAGE AUTOMATIQUE,,skill,,0,0.0
+missing,L'INFRASTRUCTURE D'ANALYSE EN MODE CONTINU,,skill,,0,0.0
+missing,L’interopérabilité du système,,skill,,0,0.0
+missing,Évaluation individuelle d’un rapport écrit,,skill,,0,0.0
+missing,D’un modèle de recommandation de produits,,skill,,0,0.0
+missing,S données sont pris en compte 22,,skill,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A2,,skill,,0,0.0
+missing,Qualité continue des prédictions,,skill,,0,0.0
+missing,S processus de surveillance continue des métriques de qualité du modèle,,skill,,0,0.0
+missing,Critiques liés aux systèmes embarqués tels que les systèmes de freinage,,tool,,0,0.0
+missing,Spécifiques pour lesquels la précision est critique,,tool,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A3,,skill,,0,0.0
+missing,Cohérence des versions,,skill,,0,0.0
+missing,Fréquent de modèles mis à jour tout le long de son cycle de vie,,skill,,0,0.0
+missing,S ressources tout en conservant des performances acceptables,,tool,,0,0.0
+missing,Efficace de modèles dans des environnements contraints,,skill,,0,0.0
+missing,De la compilation des modèles,,skill,,0,0.0
+missing,Le développement de modèles pertinents,,skill,,0,0.0
+missing,Modèles pertinents,,skill,,0,0.0
+missing,Des modèles d'IA visant à prédire les changements climatiques,,skill,,0,0.0
+missing,D’un modèle complexe sont transférées vers un modèle apprenant plus simple,,skill,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A 4,,skill,,0,0.0
+missing,Des workflows d’apprentissage en optimisant l’ensemble du processus,,skill,,0,0.0
+missing,Qualité des modèles produits,,skill,,0,0.0
+missing,Qualité de l'expérience utilisateur dans un environnement dynamique,,skill,,0,0.0
+missing,Le candidat est évalué individuellement lors du rendu de sa présentation écrite,,skill,,0,0.0
+missing,Déploiement dans un environnement distribué,,skill,,0,0.0
+missing,Dans un environnement distribué,,skill,,0,0.0
+missing,Modèles plus légers,,tool,,0,0.0
+missing,Le candidat est évalué individuellement par ses pairs,,skill,,0,0.0
+missing,Plus rentable des ressources,,tool,,0,0.0
+missing,S ressources et d'accélérer le cycle de développement d’un projet IA,,skill,,0,0.0
+missing,ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A5,,skill,,0,0.0
+missing,Cohérence entre les différentes instances de déploiement,,skill,,0,0.0
+missing,Un système automatisé de déploiement de modèles pour une entreprise,,skill,,0,0.0
+missing,Modèles pour une entreprise,,skill,,0,0.0
+missing,Rapide et efficace de modèles dans des environnements de production,,skill,,0,0.0
+missing,Portabilité et la cohérence des déploiements,,skill,,0,0.0
+missing,Techniques de conteneurs (comme Docker) est assurée,,tool,,0,0.0
+missing,"CONCEVOIR UN PROJET INTÉGRANT L’IA Bloc 2 : PRÉPARER,",,skill,,0,0.0
+missing,DÉVELOPPER DES SOLUTIONS D’APPRENTISSAGE AUTOMATIQUE POUR DES DONNÉES COMPLEXES 5b.,,skill,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE,,skill,,0,0.0
+missing,CONCEVOIR UN PROJET INTÉGRANT L’IA A1.,,skill,,0,0.0
+missing,développement et d’intégration de technologies de science des données.,,skill,,0,0.0
+missing,"développement et d’intégration de technologies d’intelligence artificielle,",,skill,,0,0.0
+missing,réalisation : Évaluation individuelle de la présentation orale.,,skill,,0,0.0
+missing,"gestion des données personnelles,",,skill,,0,0.0
+missing,"utilisation des systèmes IA,",,skill,,0,0.0
+missing,assurer que le projet est conforme à ces réglementations.,,skill,,0,0.0
+missing,utilisation de l'IA.,,skill,,0,0.0
+missing,gestion de risques pour le projet.,,skill,,0,0.0
+missing,gestion du risque.,,skill,,0,0.0
+missing,"application existante qui sont fortement couplés,",,skill,,0,0.0
+missing,application qui tient compte de la privacité dès la conception.,,skill,,0,0.0
+missing,application afin de favoriser l'intégration et l'interopérabilité.,,skill,,0,0.0
+missing,organisation de l'application.,,soft_skill,,0,0.0
+missing,gestion des biais.,,skill,,0,0.0
+missing,"application pour identifier les points où les données nécessaires à l'IA sont générées,",,skill,,0,0.0
+missing,assurer la continuité opérationnelle.,,skill,,0,0.0
+missing,ANALYSER DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A1.,,skill,,0,0.0
+missing,assurer l'intégrité des données.,,skill,,0,0.0
+missing,"gérer les lacunes dans les séries temporelles,",,skill,,0,0.0
+missing,garantir que ces données sont préparées de manière optimale.,,skill,,0,0.0
+missing,"garantir des résultats plus stables,",,skill,,0,0.0
+missing,garantir une représentation numérique appropriée des catégories.,,skill,,0,0.0
+missing,"gérer les valeurs aberrantes,",,skill,,0,0.0
+missing,analyse en composantes principales,,method,,0,0.0
+missing,ANALYSER DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A2.,,skill,,0,0.0
+missing,"garantir que les données utilisées dans un projet sont fiables,",,skill,,0,0.0
+missing,manipulation et l'analyse.,,tool,,0,0.0
+missing,"assurer la qualité,",,skill,,0,0.0
+missing,analyse et une modélisation efficaces.,,skill,,0,0.0
+missing,"garantir que les données et les analyses sont fiables,",,skill,,0,0.0
+missing,contribuer à la prise de décision informée et à la confiance dans les résultats obtenus.,,skill,,0,0.0
+missing,mise en œuvre et leur suivi dans une stratégie de qualité à présenter oralement.,,skill,,0,0.0
+missing,analyse de la complétude et la détection de biais.,,skill,,0,0.0
+missing,réseaux neuronaux,,method,,0,0.0
+missing,ANALYSER DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A4.,,skill,,0,0.0
+missing,"organisation ayant des besoins spécifiques en matière d'analyse prédictive,",,soft_skill,,0,0.0
+missing,comprendre les meilleures pratiques et les tendances actuelles dans le domaine.,,skill,,0,0.0
+missing,organisation (simulée) dans une présentation.,,soft_skill,,0,0.0
+missing,analyse de l'audience des films.,,skill,,0,0.0
+missing,analyser l'audience des films.,,skill,,0,0.0
+missing,aptitude à prédire avec précision l'audience des films .,,skill,,0,0.0
+missing,capacité à généraliser sur de nouvelles données.,,skill,,0,0.0
+missing,utilisation des ressources informatiques.,,tool,,0,0.0
+missing,ANALYSER DES DONNÉES POUR LES MODELES D’APPRENTISSAGE AUTOMATIQUE A6.,,skill,,0,0.0
+missing,développer des modèles de prédiction adaptés à chaque scénario défini;,,skill,,0,0.0
+missing,"capacité à gérer les types de données,",,skill,,0,0.0
+missing,PILOTER UN PROJET D’IA A1.,,skill,,0,0.0
+missing,COORDINATION D’UN PROJET D’INTELLIGENCE ARTIFICIELLE.,,skill,,0,0.0
+missing,"DÉPLOIEMENT REFERENTIEL DE COMPETENCES identifie les compétences et les connaissances,",,skill,,0,0.0
+missing,"développement et une roadmap de déploiement,",,skill,,0,0.0
+missing,"capacité de planifier et gérer les sprints de manière efficace est assurée,",,skill,,0,0.0
+missing,"gérer les sprints de manière efficace est assurée,",,skill,,0,0.0
+missing,assurer l’avancement du projet.,,skill,,0,0.0
+missing,"coordination d’un projet fil rouge en intelligence artificielle,",,skill,,0,0.0
+missing,"Encadrer une équipe projet intelligence artificielle,",,skill,,0,0.0
+missing,coordonner l’activité du projet.,,soft_skill,,0,0.0
+missing,assurer le respect de la stratégie du projet.,,skill,,0,0.0
+missing,assurer la prise en main de la solution.,,skill,,0,0.0
+missing,GESTION DE L’IMPACT DE LA SOLUTION DANS LE TEMPS.,,skill,,0,0.0
+missing,application des technologies d'IA dans un MVP.,,skill,,0,0.0
+missing,développer en entreprise.,,skill,,0,0.0
+missing,"analyser les détails de l'innovation,",,skill,,0,0.0
+missing,"utilisation spécifiques,",,tool,,0,0.0
+missing,APPRENTISSAGE PROFOND,,domain,,0,0.0
+missing,traitement du langage naturel,,domain,,0,0.0
+missing,DÉVELOPPER DES SOLUTIONS D’APPRENTISSAGE AUTOMATIQUE POUR DES DONNÉES COMPLEXES A1.,,skill,,0,0.0
+missing,ANALYSE ET LA GÉNÉRATION DE DONNÉES TEXTUELLES.,,skill,,0,0.0
+missing,CONNAISSANCE D'IMAGES ET LA VISION PAR ORDINATEUR.,,skill,,0,0.0
+missing,APPLICATION DES MÉTHODES DE L’APPRENTISSAGE DANS LE CONTEXTE DE LA ROBOTIQUE A5.,,skill,,0,0.0
+missing,ANALYSE ET LA GÉNÉRATION DE DONNÉES SONORES DE DIALOGUE.,,skill,,0,0.0
+missing,concevoir et de mettre en œuvre des modèles d'intelligence artificielle sophistiqués.,,skill,,0,0.0
+missing,mettre en œuvre des modèles d'intelligence artificielle sophistiqués.,,skill,,0,0.0
+missing,comprendre et d'interagir avec le langage naturel de manière efficace.,,skill,,0,0.0
+missing,utilisation appropriés de chacune dans le contexte juridique.,,tool,,0,0.0
+missing,capacité à généraliser sont analysés.,,skill,,0,0.0
+missing,"compréhension des couches de neurones,",,skill,,0,0.0
+missing,manipulation plus explicite de la connaissance métier.,,tool,,0,0.0
+missing,connaissance métier.,,skill,,0,0.0
+missing,utilisation efficace des connaissances afin de créer des structures cohérentes.,,tool,,0,0.0
+missing,connaissances afin de créer des structures cohérentes.,,skill,,0,0.0
+missing,manipulation précise des données symboliques.,,tool,,0,0.0
+missing,développer des logiciels d’aide à la décision.,,skill,,0,0.0
+missing,"connaissances concernant les journaux d'événements système,",,skill,,0,0.0
+missing,connaissances métier dans le domaine de la cybersécurité.,,skill,,0,0.0
+missing,connaissances ou de règles en un seul ensemble est prise en compte (merging).,,skill,,0,0.0
+missing,mettre en œuvre des modèles génératifs pour créer de nouvelles données visuelles.,,skill,,0,0.0
+missing,implémenter le modèle le plus adapté.,,skill,,0,0.0
+missing,"concevoir et implémenter un modèle de navigation adapté aux besoins du secteur pétrolier,",,skill,,0,0.0
+missing,"implémenter un modèle de navigation adapté aux besoins du secteur pétrolier,",,skill,,0,0.0
+missing,réalisation : Évaluation individuelle du rapport écrit.,,skill,,0,0.0
+missing,application des technologies de vision robotique pour les systèmes autonomes sont identifiés.,,skill,,0,0.0
+missing,"développer un modèle d’apprentissage en tenant compte de facteurs tels que la précision,",,skill,,0,0.0
+missing,"réalisation : Un examen écrit individuel englobant les concepts fondamentaux,",,skill,,0,0.0
+missing,assurer une qualité audio optimale.,,skill,,0,0.0
+missing,"manipuler et extraire les caractéristiques sonores spécifiques des données de dialogue,",,skill,,0,0.0
+missing,"analyser le son et identifier les moments clés de l'interview,",,skill,,0,0.0
+missing,manipulation des données audio.,,tool,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A1.,,skill,,0,0.0
+missing,DÉPLOIEMENT DE MANIÈRE INCRÉMENTALE ET CONTINUE DES MODÈLES D’APPRENTISSAGE AUTOMATIQUE.,,skill,,0,0.0
+missing,DÉPLOIEMENT DE L'INFRASTRUCTURE D'ANALYSE EN MODE CONTINU.,,skill,,0,0.0
+missing,assurer l’interopérabilité du système.,,skill,,0,0.0
+missing,"application d'apprentissage automatique,",,skill,,0,0.0
+missing,réalisation : Évaluation individuelle d’un rapport écrit.,,skill,,0,0.0
+missing,"déploiement d’un modèle de recommandation de produits ,",,skill,,0,0.0
+missing,gestion des données sont pris en compte 22,,skill,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A2.,,skill,,0,0.0
+missing,assurer la qualité continue des prédictions.,,skill,,0,0.0
+missing,"mettre en place des processus de surveillance continue des métriques de qualité du modèle,",,skill,,0,0.0
+missing,"utilisation critiques liés aux systèmes embarqués tels que les systèmes de freinage,",,tool,,0,0.0
+missing,"utilisation spécifiques pour lesquels la précision est critique,",,tool,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A3.,,skill,,0,0.0
+missing,"assurer la cohérence des versions,",,skill,,0,0.0
+missing,déploiement fréquent de modèles mis à jour tout le long de son cycle de vie.,,skill,,0,0.0
+missing,"utilisation des ressources tout en conservant des performances acceptables,",,tool,,0,0.0
+missing,déploiement efficace de modèles dans des environnements contraints.,,skill,,0,0.0
+missing,développement et de la compilation des modèles.,,skill,,0,0.0
+missing,"conception et le développement de modèles pertinents,",,skill,,0,0.0
+missing,"développement de modèles pertinents,",,skill,,0,0.0
+missing,développer des modèles d'IA visant à prédire les changements climatiques.,,skill,,0,0.0
+missing,"connaissances d’un modèle complexe sont transférées vers un modèle apprenant plus simple,",,skill,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A 4.,,skill,,0,0.0
+missing,"Gérer des workflows d’apprentissage en optimisant l’ensemble du processus,",,skill,,0,0.0
+missing,garantir la qualité des modèles produits.,,skill,,0,0.0
+missing,garantir la qualité de l'expérience utilisateur dans un environnement dynamique.,,skill,,0,0.0
+missing,réalisation : Le candidat est évalué individuellement lors du rendu de sa présentation écrite.,,skill,,0,0.0
+missing,assurer le déploiement dans un environnement distribué .,,skill,,0,0.0
+missing,"utilisation de modèles plus légers,",,tool,,0,0.0
+missing,réalisation : Le candidat est évalué individuellement par ses pairs.,,skill,,0,0.0
+missing,utilisation plus rentable des ressources.,,tool,,0,0.0
+missing,utilisation des ressources et d'accélérer le cycle de développement d’un projet IA.,,skill,,0,0.0
+missing,DÉPLOYER ET MAINTENIR UN SYSTEME D’APPRENTISSAGE AUTOMATIQUE A5.,,skill,,0,0.0
+missing,garantir la cohérence entre les différentes instances de déploiement.,,skill,,0,0.0
+missing,mettre en œuvre un système automatisé de déploiement de modèles pour une entreprise.,,skill,,0,0.0
+missing,déploiement de modèles pour une entreprise.,,skill,,0,0.0
+missing,"déploiement rapide et efficace de modèles dans des environnements de production,",,skill,,0,0.0
+missing,assurer la portabilité et la cohérence des déploiements.,,skill,,0,0.0
+missing,utilisation de techniques de conteneurs (comme Docker) est assurée.,,tool,,0,0.0
+unmapped,Documenter les processus et les architectures d'IA,,Other,Documenter les processus et les architectures d'IA,6,5.3932
+unmapped,Développer des modèles prédictifs pour l'analyse de données,,Other,Développer des modèles prédictifs pour l'analyse de données,6,5.3932
+unmapped,Optimiser les performances des systèmes d'IA,,Other,Optimiser les performances des systèmes d'IA,6,5.3932
+unmapped,Former et accompagner les équipes,,Other,Former et accompagner les équipes,1,0.9783
+unmapped,Concevoir une application web,,Other,Concevoir une application web,1,0.7965
+unmapped,"Rédiger un cahier des charges, des spécifications techniques",,Other,"Rédiger un cahier des charges, des spécifications techniques",1,0.7965
+unmapped,#TDFE2026,,Other,#TDFE2026,1,0.7563

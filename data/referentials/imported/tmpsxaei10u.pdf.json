@@ -1,0 +1,621 @@
+{
+  "schema_version": "1.0",
+  "document": {
+    "id": "5170e27906934491181794d3",
+    "source_path": "/tmp/tmpsxaei10u.pdf",
+    "file_name": "tmpsxaei10u.pdf",
+    "sha256": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "page_count": 1,
+    "title": "Lead Data Scientist — Management & IA avancée",
+    "document_title": "Lead Data Scientist — Management & IA avancée",
+    "certification_title": "",
+    "target_job_title": "",
+    "rncp_code": "",
+    "title_type": "document_title",
+    "title_confidence": 0.53,
+    "title_source_page": 1,
+    "title_source_text": "IA Générative",
+    "title_candidates": [
+      {
+        "text": "IA Générative",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "IA Générative",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Bac+5+ (Expert)",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Bac+5+ (Expert)",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Compétences visées",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Compétences visées",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Contenu du programme",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Contenu du programme",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Deep Learning avancé",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Deep Learning avancé",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      }
+    ],
+    "title_warnings": [
+      "Plusieurs candidats ont des scores proches.",
+      "Aucun libellé explicite trouvé.",
+      "Confiance inférieure à 0.70."
+    ],
+    "provider": "",
+    "reference": "",
+    "duration_hours": null,
+    "cpf_eligible": null,
+    "source_type": "pdf",
+    "text_extraction_method": "pdftotext-bbox-layout",
+    "review_status": "pending",
+    "collected_at": "2026-10-24T11:35:58.838027+00:00",
+    "validated_at": "",
+    "validated_by": "",
+    "notes": ""
+  },
+  "blocks": [],
+  "activities": [],
+  "competencies": [],
+  "criteria": [],
+  "derived_skills": [
+    {
+      "label": "ML",
+      "canonical_label": "Machine Learning",
+      "category": "domain",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "ML",
+      "normalized_surface": "ml",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Deep Learning",
+      "canonical_label": "Deep Learning",
+      "category": "domain",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Deep Learning",
+      "normalized_surface": "deep learning",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Transformer",
+      "canonical_label": "Transformers",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Transformer",
+      "normalized_surface": "transformer",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "BERT",
+      "canonical_label": "BERT",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "BERT",
+      "normalized_surface": "bert",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "GPT",
+      "canonical_label": "GPT",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "GPT",
+      "normalized_surface": "gpt",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Maîtrise Python,",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Maîtrise Python,",
+      "normalized_surface": "maitrise python",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern",
+      "review_status": "pending"
+    },
+    {
+      "label": "Pilotage d'équipes data,",
+      "canonical_label": "Équipes data",
+      "category": "skill",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Pilotage d'équipes data,",
+      "normalized_surface": "pilotage d equipes data",
+      "provenance": "semantic_match",
+      "confidence": 0.85,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern",
+      "review_status": "pending"
+    }
+  ],
+  "tools_methods": [
+    {
+      "label": "Transformer",
+      "canonical_label": "Transformers",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Transformer",
+      "normalized_surface": "transformer",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "BERT",
+      "canonical_label": "BERT",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "BERT",
+      "normalized_surface": "bert",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "GPT",
+      "canonical_label": "GPT",
+      "category": "method",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "GPT",
+      "normalized_surface": "gpt",
+      "provenance": "semantic_match",
+      "confidence": 0.97,
+      "explicit": false,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "taxonomy_alias",
+      "review_status": "pending"
+    },
+    {
+      "label": "Maîtrise Python,",
+      "canonical_label": "Python",
+      "category": "tool",
+      "source_code": "SEMANTIC:1",
+      "source_type": "semantic_entity",
+      "surface_form": "Maîtrise Python,",
+      "normalized_surface": "maitrise python",
+      "provenance": "semantic_match",
+      "confidence": 0.88,
+      "explicit": true,
+      "page_start": 1,
+      "page_end": 1,
+      "context": "rule_verb_pattern",
+      "review_status": "pending"
+    }
+  ],
+  "report": {
+    "schema_version": "1.0",
+    "importer_version": "0.1.0",
+    "document_id": "5170e27906934491181794d3",
+    "source_hash": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+    "pages": 1,
+    "blocks": 0,
+    "activities": 0,
+    "competencies": 0,
+    "criteria": 0,
+    "derived_skills": 7,
+    "tools_methods": 4,
+    "errors": [],
+    "warnings": [
+      {
+        "severity": "warning",
+        "code": "no_block",
+        "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "no_competency",
+        "message": "Aucune compétence officielle détectée; revue humaine requise.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "title_extraction",
+        "message": "Plusieurs candidats ont des scores proches.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "title_extraction",
+        "message": "Aucun libellé explicite trouvé.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      },
+      {
+        "severity": "warning",
+        "code": "title_extraction",
+        "message": "Confiance inférieure à 0.70.",
+        "page": null,
+        "entity_code": null,
+        "details": {}
+      }
+    ],
+    "review_items": [
+      {
+        "type": "missing_blocks",
+        "message": "Aucun bloc structuré détecté."
+      },
+      {
+        "type": "missing_competencies",
+        "message": "Aucune compétence officielle détectée."
+      }
+    ],
+    "score_global": 0.3,
+    "coverage_score": 0.0,
+    "duplicate_document": false,
+    "extraction_mode": "pdftotext-bbox-layout",
+    "notes": "",
+    "status": "review_required"
+  },
+  "title_extraction": {
+    "title": "IA Générative",
+    "title_type": "document_title",
+    "confidence": 0.53,
+    "source_page": 1,
+    "source_text": "IA Générative",
+    "candidates": [
+      {
+        "text": "IA Générative",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "IA Générative",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Bac+5+ (Expert)",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Bac+5+ (Expert)",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Compétences visées",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Compétences visées",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Contenu du programme",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Contenu du programme",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      },
+      {
+        "text": "Deep Learning avancé",
+        "score": 0.53,
+        "page": 1,
+        "source_text": "Deep Learning avancé",
+        "reasons": [
+          "visual",
+          "first_page",
+          "first_third",
+          "word_count_ok",
+          "title_like"
+        ]
+      }
+    ],
+    "warnings": [
+      "Plusieurs candidats ont des scores proches.",
+      "Aucun libellé explicite trouvé.",
+      "Confiance inférieure à 0.70."
+    ],
+    "document_title": "Lead Data Scientist — Management & IA avancée",
+    "certification_title": "",
+    "target_job_title": "",
+    "rncp_code": ""
+  },
+  "warnings": [
+    {
+      "severity": "warning",
+      "code": "no_block",
+      "message": "Aucun bloc structuré détecté; le document reste exploitable en revue.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "no_competency",
+      "message": "Aucune compétence officielle détectée; revue humaine requise.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "title_extraction",
+      "message": "Plusieurs candidats ont des scores proches.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "title_extraction",
+      "message": "Aucun libellé explicite trouvé.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    },
+    {
+      "severity": "warning",
+      "code": "title_extraction",
+      "message": "Confiance inférieure à 0.70.",
+      "page": null,
+      "entity_code": null,
+      "details": {}
+    }
+  ],
+  "errors": [],
+  "skills": [
+    {
+      "id": "generated_group_0",
+      "label": "Compétences extraites du référentiel",
+      "type": "generated_group",
+      "description": "",
+      "aliases": [],
+      "category": null,
+      "block": null,
+      "source_page": null,
+      "source_text": "",
+      "confidence": 1.0,
+      "status": "pending",
+      "children": [
+        {
+          "id": "derived_sub_0",
+          "label": "Machine Learning",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "domain",
+          "block": null,
+          "source_page": 1,
+          "source_text": "ML",
+          "confidence": 0.97,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_1",
+          "label": "Deep Learning",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "domain",
+          "block": null,
+          "source_page": 1,
+          "source_text": "Deep Learning",
+          "confidence": 0.97,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_2",
+          "label": "Transformers",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "method",
+          "block": null,
+          "source_page": 1,
+          "source_text": "Transformer",
+          "confidence": 0.97,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_3",
+          "label": "BERT",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "method",
+          "block": null,
+          "source_page": 1,
+          "source_text": "BERT",
+          "confidence": 0.97,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_4",
+          "label": "GPT",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "method",
+          "block": null,
+          "source_page": 1,
+          "source_text": "GPT",
+          "confidence": 0.97,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_5",
+          "label": "Python",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "tool",
+          "block": null,
+          "source_page": 1,
+          "source_text": "Maîtrise Python,",
+          "confidence": 0.88,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        },
+        {
+          "id": "derived_sub_6",
+          "label": "Équipes data",
+          "type": "subskill",
+          "description": "",
+          "aliases": [],
+          "category": "skill",
+          "block": null,
+          "source_page": 1,
+          "source_text": "Pilotage d'équipes data,",
+          "confidence": 0.85,
+          "status": "pending",
+          "children": [],
+          "parent_id": "generated_group_0"
+        }
+      ],
+      "parent_id": null
+    }
+  ],
+  "metadata": {
+    "official_skills_count": 0,
+    "subskills_count": 0,
+    "exploitable_skills_count": 7,
+    "skills_count": 7,
+    "source": "imported_pdf",
+    "source_path": "/tmp/tmpsxaei10u.pdf",
+    "file_name": "tmpsxaei10u.pdf",
+    "record_id": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc"
+  },
+  "referential_id": "b3a6fedb0a1a07703826b8dc9009137b5035691305b10e64fd7d45973e5d90cc",
+  "title": "Lead Data Scientist — Management & IA avancée"
+}

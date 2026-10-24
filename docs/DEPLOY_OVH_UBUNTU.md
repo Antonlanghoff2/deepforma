@@ -1,4 +1,4 @@
-# Déploiement OVHcloud / Ubuntu 26.04
+# Déploiement OVHcloud / Ubuntu
 
 Le serveur utilise `ubuntu` pour SSH/SFTP et `deepforma` pour l’application.
 Le dépôt est cloné avec `git@github.com:Antonlanghoff2/deepforma.git`; gardez la
@@ -14,14 +14,10 @@ cd app
 sudo bash deploy/install.sh
 ```
 
-Le script installe Apache, Certbot et les outils de compilation, sans demander
-`python3.12`, `python3.12-venv` ou `python3.12-dev` à APT et sans remplacer
-`/usr/bin/python3`. Il détecte `uv` avec `command -v`, ou
-`/home/deepforma/.local/bin/uv`, puis gère Python 3.12 avec `uv python install`,
-`uv venv --python 3.12` et `uv pip install`. Si `.venv/bin/python` est déjà un
-Python 3.12 fonctionnel, il est conservé; un venv d’une autre version n’est
-jamais supprimé automatiquement. Le script n’exécute pas d’installateur distant
-implicite pour uv.
+Le script installe Apache, les outils de compilation, Python système et
+`python3-venv`, sans remplacer `/usr/bin/python3`. Il crée un venv avec
+`python3 -m venv` et vérifie que la version disponible est au moins Python
+3.11, conformément à `pyproject.toml`.
 
 ## Permissions, secrets et modèles
 
