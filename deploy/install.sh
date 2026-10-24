@@ -3,7 +3,15 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; source "$SCRIPT_DIR/common.sh"; ENABLE_CERTBOT="${ENABLE_CERTBOT:-false}"; SSL_EMAIL="${SSL_EMAIL:-}"
 for arg in "$@"; do case "$arg" in --dry-run) DRY_RUN=true;; --help) echo "Usage: $0 [--dry-run]"; exit 0;; *) die "Argument inconnu: $arg";; esac; done
 require_root; [[ -f /etc/os-release ]] || die "/etc/os-release absent"; . /etc/os-release; [[ "${ID:-}" == ubuntu ]] || die "Distribution non supportée: ${ID:-inconnue}"
-if ! is_true "$DRY_RUN"; then export DEBIAN_FRONTEND=noninteractive; apt-get update; apt-get install -y ca-certificates curl git openssh-client build-essential apache2 certbot python3-certbot-apache; fi
+if ! is_true "$DRY_RUN"; then
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    apt-get install -y ca-certificates curl git openssh-client build-essential \
+        python3 python3-venv python3-dev python3-pip apache2
+    if is_true "$ENABLE_CERTBOT"; then
+        apt-get install -y certbot python3-certbot-apache
+    fi
+fi
 ensure_group_user; run mkdir -p "$(dirname "$APP_DIR")"
 if [[ ! -d "$APP_DIR/.git" ]]; then run chown "$APP_USER:$APP_GROUP" "$(dirname "$APP_DIR")"; run_as_app git clone --branch "$REPO_BRANCH" --single-branch "$REPO_URL" "$APP_DIR"; fi
 ensure_directories; if [[ ! -f "$ENV_FILE" ]]; then run install -m 0600 -o "$APP_USER" -g "$APP_GROUP" "$SCRIPT_DIR/deepforma.env.example" "$ENV_FILE"; else log "$ENV_FILE préservé"; fi
